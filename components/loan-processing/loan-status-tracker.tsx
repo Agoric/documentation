@@ -1,336 +1,334 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { CheckCircle, Clock, AlertCircle, FileText, ArrowRight, Upload, Phone } from "lucide-react"
+import { CheckCircle, Clock, AlertCircle, FileText, RefreshCw, ArrowRight, Calendar } from "lucide-react"
 
-interface ProcessingStep {
+interface LoanStep {
   id: string
   title: string
   description: string
   status: "completed" | "current" | "pending" | "blocked"
-  estimatedTime: string
+  estimatedDays: number
   requirements?: string[]
-  canProceed: boolean
+  documents?: string[]
+  nextAction?: string
 }
 
 interface LoanStatusTrackerProps {
   applicationId: string
-  onStepComplete?: (stepId: string) => void
+  loanType: string
+  amount: number
+  currentStep: number
+  onNextStep?: () => void
 }
 
-export function LoanStatusTracker({ applicationId, onStepComplete }: LoanStatusTrackerProps) {
-  const [steps, setSteps] = useState<ProcessingStep[]>([])
-  const [currentStepIndex, setCurrentStepIndex] = useState(0)
-  const [overallProgress, setOverallProgress] = useState(0)
-  const [loading, setLoading] = useState(false)
+export function LoanStatusTracker({
+  applicationId,
+  loanType,
+  amount,
+  currentStep,
+  onNextStep,
+}: LoanStatusTrackerProps) {
+  const [steps, setSteps] = useState<LoanStep[]>([
+    {
+      id: "application",
+      title: "Application Submitted",
+      description: "Your loan application has been received and is being reviewed",
+      status: "completed",
+      estimatedDays: 1,
+      requirements: ["Complete application form", "Basic personal information"],
+    },
+    {
+      id: "initial-review",
+      title: "Initial Review",
+      description: "Our team is conducting an initial review of your application",
+      status: currentStep >= 1 ? "completed" : "pending",
+      estimatedDays: 2,
+      requirements: ["Application completeness check", "Basic eligibility verification"],
+    },
+    {
+      id: "credit-check",
+      title: "Credit Assessment",
+      description: "We're reviewing your credit history and score",
+      status: currentStep >= 2 ? (currentStep === 2 ? "current" : "completed") : "pending",
+      estimatedDays: 1,
+      requirements: ["Credit report pull", "Credit score analysis", "Debt-to-income calculation"],
+      nextAction: currentStep === 2 ? "Authorize credit check" : undefined,
+    },
+    {
+      id: "income-verification",
+      title: "Income Verification",
+      description: "Verifying your employment and income details",
+      status: currentStep >= 3 ? (currentStep === 3 ? "current" : "completed") : "pending",
+      estimatedDays: 3,
+      requirements: ["Pay stubs (last 2 months)", "Tax returns (last 2 years)", "Employment verification"],
+      documents: ["W-2 forms", "Bank statements", "Employment letter"],
+      nextAction: currentStep === 3 ? "Upload income documents" : undefined,
+    },
+    {
+      id: "asset-verification",
+      title: "Asset Verification",
+      description: "Reviewing your assets and financial reserves",
+      status: currentStep >= 4 ? (currentStep === 4 ? "current" : "completed") : "pending",
+      estimatedDays: 2,
+      requirements: ["Bank statements", "Investment accounts", "Asset documentation"],
+      nextAction: currentStep === 4 ? "Provide asset statements" : undefined,
+    },
+    {
+      id: "property-appraisal",
+      title: "Property Appraisal",
+      description: loanType === "home" ? "Professional appraisal of the property" : "Collateral evaluation",
+      status: currentStep >= 5 ? (currentStep === 5 ? "current" : "completed") : "pending",
+      estimatedDays: 5,
+      requirements:
+        loanType === "home"
+          ? ["Property inspection", "Market analysis", "Appraisal report"]
+          : ["Asset evaluation", "Market value assessment"],
+      nextAction: currentStep === 5 ? "Schedule appraisal" : undefined,
+    },
+    {
+      id: "underwriting",
+      title: "Underwriting Review",
+      description: "Comprehensive review by our underwriting team",
+      status: currentStep >= 6 ? (currentStep === 6 ? "current" : "completed") : "pending",
+      estimatedDays: 7,
+      requirements: ["Complete file review", "Risk assessment", "Final approval decision"],
+      nextAction: currentStep === 6 ? "Await underwriter decision" : undefined,
+    },
+    {
+      id: "final-approval",
+      title: "Final Approval",
+      description: "Your loan has been approved and terms finalized",
+      status: currentStep >= 7 ? (currentStep === 7 ? "current" : "completed") : "pending",
+      estimatedDays: 1,
+      requirements: ["Loan terms confirmation", "Interest rate lock", "Approval letter"],
+      nextAction: currentStep === 7 ? "Review loan terms" : undefined,
+    },
+    {
+      id: "closing-preparation",
+      title: "Closing Preparation",
+      description: "Preparing documents for loan closing",
+      status: currentStep >= 8 ? (currentStep === 8 ? "current" : "completed") : "pending",
+      estimatedDays: 3,
+      requirements: ["Closing documents", "Title work", "Insurance verification"],
+      nextAction: currentStep === 8 ? "Schedule closing" : undefined,
+    },
+    {
+      id: "funding",
+      title: "Loan Funding",
+      description: "Funds are being disbursed",
+      status: currentStep >= 9 ? "completed" : "pending",
+      estimatedDays: 1,
+      requirements: ["Final signatures", "Fund transfer", "Loan activation"],
+      nextAction: currentStep === 9 ? "Complete closing" : undefined,
+    },
+  ])
 
-  useEffect(() => {
-    // Initialize processing steps
-    const processingSteps: ProcessingStep[] = [
-      {
-        id: "application",
-        title: "Application Received",
-        description: "Your loan application has been received and is being reviewed",
-        status: "completed",
-        estimatedTime: "Immediate",
-        canProceed: true,
-      },
-      {
-        id: "initial-review",
-        title: "Initial Review",
-        description: "Basic eligibility and application completeness check",
-        status: "completed",
-        estimatedTime: "1-2 business days",
-        canProceed: true,
-      },
-      {
-        id: "document-collection",
-        title: "Document Collection",
-        description: "Gathering required documentation for underwriting",
-        status: "current",
-        estimatedTime: "3-5 business days",
-        requirements: [
-          "Income verification documents",
-          "Bank statements (last 3 months)",
-          "Tax returns (last 2 years)",
-          "Asset documentation",
-        ],
-        canProceed: false,
-      },
-      {
-        id: "credit-verification",
-        title: "Credit Verification",
-        description: "Comprehensive credit check and analysis",
-        status: "pending",
-        estimatedTime: "1-2 business days",
-        canProceed: false,
-      },
-      {
-        id: "income-verification",
-        title: "Income Verification",
-        description: "Employment and income verification process",
-        status: "pending",
-        estimatedTime: "2-3 business days",
-        canProceed: false,
-      },
-      {
-        id: "appraisal",
-        title: "Property Appraisal",
-        description: "Professional property valuation (for secured loans)",
-        status: "pending",
-        estimatedTime: "5-7 business days",
-        canProceed: false,
-      },
-      {
-        id: "underwriting",
-        title: "Underwriting Review",
-        description: "Final loan decision and terms determination",
-        status: "pending",
-        estimatedTime: "3-5 business days",
-        canProceed: false,
-      },
-      {
-        id: "approval",
-        title: "Loan Approval",
-        description: "Final approval and preparation of loan documents",
-        status: "pending",
-        estimatedTime: "1-2 business days",
-        canProceed: false,
-      },
-      {
-        id: "closing",
-        title: "Closing & Funding",
-        description: "Document signing and fund disbursement",
-        status: "pending",
-        estimatedTime: "1 business day",
-        canProceed: false,
-      },
-    ]
+  const [isProcessing, setIsProcessing] = useState(false)
 
-    setSteps(processingSteps)
+  const getStepIcon = (step: LoanStep) => {
+    switch (step.status) {
+      case "completed":
+        return <CheckCircle className="h-5 w-5 text-green-400" />
+      case "current":
+        return <RefreshCw className="h-5 w-5 text-blue-400 animate-spin" />
+      case "blocked":
+        return <AlertCircle className="h-5 w-5 text-red-400" />
+      default:
+        return <Clock className="h-5 w-5 text-gray-400" />
+    }
+  }
 
-    // Find current step index
-    const currentIndex = processingSteps.findIndex((step) => step.status === "current")
-    setCurrentStepIndex(currentIndex)
-
-    // Calculate overall progress
-    const completedSteps = processingSteps.filter((step) => step.status === "completed").length
-    const progress = (completedSteps / processingSteps.length) * 100
-    setOverallProgress(progress)
-  }, [])
+  const getStepColor = (step: LoanStep) => {
+    switch (step.status) {
+      case "completed":
+        return "border-green-500/30 bg-green-500/10"
+      case "current":
+        return "border-blue-500/30 bg-blue-500/10"
+      case "blocked":
+        return "border-red-500/30 bg-red-500/10"
+      default:
+        return "border-gray-500/30 bg-gray-500/10"
+    }
+  }
 
   const handleNextStep = async () => {
-    if (currentStepIndex >= steps.length - 1) return
+    if (!onNextStep) return
 
-    setLoading(true)
+    setIsProcessing(true)
 
     // Simulate processing time
     await new Promise((resolve) => setTimeout(resolve, 2000))
 
-    setSteps((prev) => {
-      const newSteps = [...prev]
-
-      // Mark current step as completed
-      newSteps[currentStepIndex] = {
-        ...newSteps[currentStepIndex],
-        status: "completed",
-        canProceed: true,
-      }
-
-      // Move to next step if not at the end
-      if (currentStepIndex < newSteps.length - 1) {
-        newSteps[currentStepIndex + 1] = {
-          ...newSteps[currentStepIndex + 1],
-          status: "current",
-          canProceed: currentStepIndex + 1 === 2 ? false : true, // Document collection requires manual action
-        }
-      }
-
-      return newSteps
-    })
-
-    setCurrentStepIndex((prev) => prev + 1)
-    setOverallProgress((prev) => prev + 100 / steps.length)
-
-    if (onStepComplete) {
-      onStepComplete(steps[currentStepIndex].id)
-    }
-
-    setLoading(false)
+    onNextStep()
+    setIsProcessing(false)
   }
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "completed":
-        return <CheckCircle className="h-5 w-5 text-green-400" />
-      case "current":
-        return <Clock className="h-5 w-5 text-blue-400" />
-      case "blocked":
-        return <AlertCircle className="h-5 w-5 text-red-400" />
-      default:
-        return <div className="h-5 w-5 rounded-full border-2 border-gray-500" />
-    }
-  }
+  const completedSteps = steps.filter((step) => step.status === "completed").length
+  const totalSteps = steps.length
+  const progressPercentage = (completedSteps / totalSteps) * 100
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "completed":
-        return "text-green-400 bg-green-500/20"
-      case "current":
-        return "text-blue-400 bg-blue-500/20"
-      case "blocked":
-        return "text-red-400 bg-red-500/20"
-      default:
-        return "text-gray-400 bg-gray-500/20"
-    }
-  }
-
-  const currentStep = steps[currentStepIndex]
+  const currentStepData = steps.find((step) => step.status === "current")
+  const nextStepData = steps.find((step, index) => step.status === "pending" && index === currentStep + 1)
 
   return (
     <div className="space-y-6">
-      {/* Overall Progress */}
-      <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20">
+      {/* Progress Overview */}
+      <Card className="bg-black/20 border-white/10">
         <CardHeader>
-          <CardTitle className="text-blue-200 flex items-center gap-2">
-            <FileText className="h-5 w-5" />
-            Loan Processing Status
-          </CardTitle>
-          <CardDescription className="text-blue-300">Application ID: {applicationId}</CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Loan Processing Status
+              </CardTitle>
+              <CardDescription>Application ID: {applicationId}</CardDescription>
+            </div>
+            <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">
+              Step {currentStep + 1} of {totalSteps}
+            </Badge>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <span className="text-blue-200">Overall Progress</span>
-            <span className="text-blue-300">{Math.round(overallProgress)}%</span>
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span>Overall Progress</span>
+              <span>{Math.round(progressPercentage)}% Complete</span>
+            </div>
+            <Progress value={progressPercentage} className="h-3" />
           </div>
-          <Progress value={overallProgress} className="h-3" />
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-blue-200">
-              Step {currentStepIndex + 1} of {steps.length}
-            </span>
-            <span className="text-blue-300">Est. completion: {steps[steps.length - 1]?.estimatedTime}</span>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-white/10">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Loan Amount</p>
+              <p className="text-lg font-semibold text-green-400">${amount.toLocaleString()}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Loan Type</p>
+              <p className="text-lg font-semibold capitalize">{loanType}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Est. Completion</p>
+              <p className="text-lg font-semibold text-blue-400">
+                {new Date(Date.now() + (7 - currentStep) * 24 * 60 * 60 * 1000).toLocaleDateString()}
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Processing Steps */}
-      <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20">
+      {/* Current Step Details */}
+      {currentStepData && (
+        <Card className="bg-black/20 border-white/10">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <RefreshCw className="h-5 w-5 text-blue-400 animate-spin" />
+              Current Step: {currentStepData.title}
+            </CardTitle>
+            <CardDescription>{currentStepData.description}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {currentStepData.requirements && (
+              <div>
+                <h4 className="font-medium mb-2">Requirements:</h4>
+                <ul className="space-y-1">
+                  {currentStepData.requirements.map((req, index) => (
+                    <li key={index} className="flex items-center gap-2 text-sm">
+                      <CheckCircle className="h-3 w-3 text-green-400" />
+                      {req}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {currentStepData.documents && (
+              <div>
+                <h4 className="font-medium mb-2">Required Documents:</h4>
+                <ul className="space-y-1">
+                  {currentStepData.documents.map((doc, index) => (
+                    <li key={index} className="flex items-center gap-2 text-sm">
+                      <FileText className="h-3 w-3 text-blue-400" />
+                      {doc}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {currentStepData.nextAction && (
+              <div className="pt-4 border-t border-white/10">
+                <Button
+                  onClick={handleNextStep}
+                  disabled={isProcessing}
+                  className="w-full bg-blue-600 hover:bg-blue-700"
+                >
+                  {isProcessing ? (
+                    <>
+                      <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <ArrowRight className="h-4 w-4 mr-2" />
+                      {currentStepData.nextAction}
+                    </>
+                  )}
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* All Steps Timeline */}
+      <Card className="bg-black/20 border-white/10">
         <CardHeader>
-          <CardTitle className="text-blue-200">Processing Timeline</CardTitle>
-          <CardDescription className="text-blue-300">Track each step of your loan application process</CardDescription>
+          <CardTitle>Processing Timeline</CardTitle>
+          <CardDescription>Complete overview of your loan processing steps</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {steps.map((step, index) => (
-              <div
-                key={step.id}
-                className={`relative p-4 rounded-lg border transition-colors ${
-                  step.status === "current"
-                    ? "bg-gradient-to-br from-blue-800/50 to-cyan-800/30 border-blue-400/40"
-                    : step.status === "completed"
-                      ? "bg-gradient-to-br from-green-800/30 to-emerald-800/20 border-green-500/20"
-                      : "bg-gradient-to-br from-gray-800/30 to-gray-800/20 border-gray-500/20"
-                }`}
-              >
+              <div key={step.id} className={`p-4 rounded-lg border ${getStepColor(step)}`}>
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 mt-1">{getStatusIcon(step.status)}</div>
-
-                  <div className="flex-grow">
+                  <div className="flex-shrink-0 mt-1">{getStepIcon(step)}</div>
+                  <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-medium text-white">{step.title}</h4>
-                      <Badge className={getStatusColor(step.status)}>{step.status.toUpperCase()}</Badge>
+                      <h4 className="font-medium">{step.title}</h4>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className="text-xs">
+                          <Calendar className="h-3 w-3 mr-1" />
+                          {step.estimatedDays} day{step.estimatedDays !== 1 ? "s" : ""}
+                        </Badge>
+                        {step.status === "current" && (
+                          <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30 text-xs">In Progress</Badge>
+                        )}
+                      </div>
                     </div>
+                    <p className="text-sm text-muted-foreground mb-3">{step.description}</p>
 
-                    <p className="text-sm text-blue-200 mb-2">{step.description}</p>
-
-                    {step.estimatedTime && (
-                      <p className="text-xs text-blue-300">Estimated time: {step.estimatedTime}</p>
-                    )}
-
-                    {step.requirements && step.status === "current" && (
-                      <div className="mt-3 p-3 rounded-lg bg-blue-900/30 border border-blue-500/20">
-                        <h5 className="text-sm font-medium text-blue-200 mb-2">Required Documents:</h5>
-                        <ul className="text-xs text-blue-300 space-y-1">
-                          {step.requirements.map((req, reqIndex) => (
-                            <li key={reqIndex} className="flex items-center gap-2">
-                              <Upload className="h-3 w-3" />
-                              {req}
-                            </li>
-                          ))}
-                        </ul>
+                    {step.requirements && step.status !== "completed" && (
+                      <div className="space-y-1">
+                        {step.requirements.map((req, reqIndex) => (
+                          <div key={reqIndex} className="flex items-center gap-2 text-xs text-muted-foreground">
+                            <div className="w-1 h-1 bg-gray-400 rounded-full" />
+                            {req}
+                          </div>
+                        ))}
                       </div>
                     )}
                   </div>
                 </div>
-
-                {/* Connect steps with line */}
-                {index < steps.length - 1 && (
-                  <div
-                    className={`absolute left-6 top-12 w-0.5 h-8 ${
-                      step.status === "completed" ? "bg-green-400" : "bg-gray-500"
-                    }`}
-                  />
-                )}
               </div>
             ))}
           </div>
         </CardContent>
       </Card>
-
-      {/* Current Step Actions */}
-      {currentStep && currentStep.status === "current" && (
-        <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20">
-          <CardHeader>
-            <CardTitle className="text-blue-200">Next Steps Required</CardTitle>
-            <CardDescription className="text-blue-300">Actions needed to proceed with your application</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="p-4 rounded-lg bg-gradient-to-br from-yellow-800/30 to-amber-800/20 border border-yellow-500/20">
-              <h4 className="font-medium text-yellow-200 mb-2">Current Step: {currentStep.title}</h4>
-              <p className="text-sm text-yellow-300 mb-3">{currentStep.description}</p>
-
-              {currentStep.canProceed ? (
-                <Button
-                  onClick={handleNextStep}
-                  disabled={loading}
-                  className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
-                >
-                  {loading ? "Processing..." : "Continue to Next Step"}
-                  <ArrowRight className="h-4 w-4 ml-2" />
-                </Button>
-              ) : (
-                <div className="space-y-3">
-                  <p className="text-sm text-yellow-200">
-                    This step requires manual action. Please complete the requirements above.
-                  </p>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-blue-500/30 text-blue-300 hover:bg-blue-500/20 bg-transparent"
-                    >
-                      <Upload className="h-4 w-4 mr-2" />
-                      Upload Documents
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-blue-500/30 text-blue-300 hover:bg-blue-500/20 bg-transparent"
-                    >
-                      <Phone className="h-4 w-4 mr-2" />
-                      Contact Support
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   )
 }

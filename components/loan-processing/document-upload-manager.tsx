@@ -1,317 +1,393 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { Upload, FileText, CheckCircle, AlertCircle, Eye, Plus, Download } from "lucide-react"
+import { Upload, FileText, CheckCircle, AlertCircle, Clock, Download, Eye, Trash2, RefreshCw, Plus } from "lucide-react"
+import { useDropzone } from "react-dropzone"
 
 interface Document {
   id: string
   name: string
   type: string
-  status: "required" | "uploaded" | "verified" | "rejected"
+  size: number
+  status: "pending" | "uploaded" | "verified" | "rejected"
   uploadDate?: string
-  fileSize?: string
   rejectionReason?: string
   required: boolean
+  category: string
 }
 
 interface DocumentUploadManagerProps {
   applicationId: string
-  onDocumentStatusChange?: (documentId: string, status: string) => void
+  onDocumentUpdate?: (documents: Document[]) => void
 }
 
-export function DocumentUploadManager({ applicationId, onDocumentStatusChange }: DocumentUploadManagerProps) {
+export function DocumentUploadManager({ applicationId, onDocumentUpdate }: DocumentUploadManagerProps) {
   const [documents, setDocuments] = useState<Document[]>([
     {
       id: "doc-1",
-      name: "Proof of Income",
-      type: "income",
+      name: "Pay Stub - January 2024",
+      type: "application/pdf",
+      size: 245760,
       status: "verified",
-      uploadDate: "2024-01-20",
-      fileSize: "2.4 MB",
+      uploadDate: "2024-01-15",
       required: true,
+      category: "Income Verification",
     },
     {
       id: "doc-2",
-      name: "Bank Statements",
-      type: "financial",
-      status: "uploaded",
-      uploadDate: "2024-01-22",
-      fileSize: "1.8 MB",
+      name: "Pay Stub - December 2023",
+      type: "application/pdf",
+      size: 238940,
+      status: "verified",
+      uploadDate: "2024-01-15",
       required: true,
+      category: "Income Verification",
     },
     {
       id: "doc-3",
-      name: "Tax Returns (2023)",
-      type: "tax",
-      status: "required",
+      name: "Tax Return 2023",
+      type: "application/pdf",
+      size: 1024000,
+      status: "uploaded",
+      uploadDate: "2024-01-16",
       required: true,
+      category: "Income Verification",
     },
     {
       id: "doc-4",
-      name: "Tax Returns (2022)",
-      type: "tax",
-      status: "required",
+      name: "Bank Statement - January",
+      type: "application/pdf",
+      size: 512000,
+      status: "rejected",
+      uploadDate: "2024-01-14",
+      rejectionReason: "Statement is incomplete - missing page 2",
       required: true,
+      category: "Asset Verification",
     },
     {
       id: "doc-5",
-      name: "Property Insurance",
-      type: "insurance",
-      status: "rejected",
-      uploadDate: "2024-01-21",
-      fileSize: "0.9 MB",
-      rejectionReason: "Document expired. Please upload current policy.",
+      name: "Employment Letter",
+      type: "application/pdf",
+      size: 0,
+      status: "pending",
       required: true,
+      category: "Income Verification",
     },
     {
       id: "doc-6",
-      name: "Employment Letter",
-      type: "employment",
-      status: "uploaded",
-      uploadDate: "2024-01-23",
-      fileSize: "0.5 MB",
+      name: "Insurance Policy",
+      type: "application/pdf",
+      size: 0,
+      status: "pending",
       required: false,
+      category: "Property Documentation",
     },
   ])
 
-  const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({})
+  const [isUploading, setIsUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      setIsUploading(true)
+      setUploadProgress(0)
+
+      // Simulate upload progress
+      const interval = setInterval(() => {
+        setUploadProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(interval)
+            setIsUploading(false)
+
+            // Add uploaded files to documents
+            const newDocuments = acceptedFiles.map((file, index) => ({
+              id: `doc-${Date.now()}-${index}`,
+              name: file.name,
+              type: file.type,
+              size: file.size,
+              status: "uploaded" as const,
+              uploadDate: new Date().toISOString().split("T")[0],
+              required: false,
+              category: "Additional Documents",
+            }))
+
+            setDocuments((prev) => [...prev, ...newDocuments])
+            onDocumentUpdate?.(documents)
+            return 0
+          }
+          return prev + 10
+        })
+      }, 200)
+    },
+    [documents, onDocumentUpdate],
+  )
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "application/pdf": [".pdf"],
+      "image/*": [".png", ".jpg", ".jpeg"],
+      "application/msword": [".doc"],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+    },
+    multiple: true,
+  })
 
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "verified":
         return <CheckCircle className="h-4 w-4 text-green-400" />
       case "uploaded":
-        return <FileText className="h-4 w-4 text-blue-400" />
+        return <Clock className="h-4 w-4 text-blue-400" />
       case "rejected":
         return <AlertCircle className="h-4 w-4 text-red-400" />
       default:
-        return <Upload className="h-4 w-4 text-gray-400" />
+        return <FileText className="h-4 w-4 text-gray-400" />
     }
   }
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "verified":
-        return "text-green-400 bg-green-500/20"
+        return "bg-green-500/20 text-green-400 border-green-500/30"
       case "uploaded":
-        return "text-blue-400 bg-blue-500/20"
+        return "bg-blue-500/20 text-blue-400 border-blue-500/30"
       case "rejected":
-        return "text-red-400 bg-red-500/20"
+        return "bg-red-500/20 text-red-400 border-red-500/30"
       default:
-        return "text-yellow-400 bg-yellow-500/20"
+        return "bg-gray-500/20 text-gray-400 border-gray-500/30"
     }
   }
 
-  const handleFileUpload = async (documentId: string) => {
-    setUploadProgress((prev) => ({ ...prev, [documentId]: 0 }))
+  const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return "0 Bytes"
+    const k = 1024
+    const sizes = ["Bytes", "KB", "MB", "GB"]
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
+  }
 
-    // Simulate file upload progress
-    for (let i = 0; i <= 100; i += 10) {
-      await new Promise((resolve) => setTimeout(resolve, 200))
-      setUploadProgress((prev) => ({ ...prev, [documentId]: i }))
-    }
+  const requiredDocuments = documents.filter((doc) => doc.required)
+  const optionalDocuments = documents.filter((doc) => !doc.required)
+  const completedRequired = requiredDocuments.filter((doc) => doc.status === "verified").length
+  const totalRequired = requiredDocuments.length
+  const completionPercentage = (completedRequired / totalRequired) * 100
 
-    // Update document status
+  const documentsByCategory = documents.reduce(
+    (acc, doc) => {
+      if (!acc[doc.category]) {
+        acc[doc.category] = []
+      }
+      acc[doc.category].push(doc)
+      return acc
+    },
+    {} as Record<string, Document[]>,
+  )
+
+  const handleReupload = (docId: string) => {
     setDocuments((prev) =>
-      prev.map((doc) =>
-        doc.id === documentId
-          ? {
-              ...doc,
-              status: "uploaded",
-              uploadDate: new Date().toISOString().split("T")[0],
-              fileSize: "1.2 MB",
-            }
-          : doc,
-      ),
+      prev.map((doc) => (doc.id === docId ? { ...doc, status: "uploaded" as const, rejectionReason: undefined } : doc)),
     )
-
-    setUploadProgress((prev) => {
-      const newProgress = { ...prev }
-      delete newProgress[documentId]
-      return newProgress
-    })
-
-    if (onDocumentStatusChange) {
-      onDocumentStatusChange(documentId, "uploaded")
-    }
   }
 
-  const requiredDocs = documents.filter((doc) => doc.required)
-  const completedRequired = requiredDocs.filter((doc) => doc.status === "verified").length
-  const completionPercentage = (completedRequired / requiredDocs.length) * 100
+  const handleDelete = (docId: string) => {
+    setDocuments((prev) => prev.filter((doc) => doc.id !== docId))
+  }
 
   return (
     <div className="space-y-6">
-      {/* Progress Overview */}
-      <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20">
+      {/* Upload Progress */}
+      <Card className="bg-black/20 border-white/10">
         <CardHeader>
-          <CardTitle className="text-blue-200 flex items-center gap-2">
-            <FileText className="h-5 w-5" />
-            Document Collection Progress
+          <CardTitle className="flex items-center gap-2">
+            <Upload className="h-5 w-5" />
+            Document Upload Manager
           </CardTitle>
-          <CardDescription className="text-blue-300">Application ID: {applicationId}</CardDescription>
+          <CardDescription>Application ID: {applicationId}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <span className="text-blue-200">Required Documents Verified</span>
-            <span className="text-blue-300">
-              {completedRequired} of {requiredDocs.length}
-            </span>
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span>Required Documents Progress</span>
+              <span>
+                {completedRequired} of {totalRequired} verified
+              </span>
+            </div>
+            <Progress value={completionPercentage} className="h-3" />
           </div>
-          <Progress value={completionPercentage} className="h-3" />
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-blue-200">{Math.round(completionPercentage)}% Complete</span>
-            <span className="text-blue-300">{requiredDocs.length - completedRequired} documents remaining</span>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-white/10">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Total Documents</p>
+              <p className="text-lg font-semibold">{documents.length}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Verified</p>
+              <p className="text-lg font-semibold text-green-400">
+                {documents.filter((d) => d.status === "verified").length}
+              </p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Pending Review</p>
+              <p className="text-lg font-semibold text-blue-400">
+                {documents.filter((d) => d.status === "uploaded").length}
+              </p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Need Attention</p>
+              <p className="text-lg font-semibold text-red-400">
+                {documents.filter((d) => d.status === "rejected" || d.status === "pending").length}
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Document List */}
-      <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20">
+      {/* Upload Area */}
+      <Card className="bg-black/20 border-white/10">
         <CardHeader>
-          <CardTitle className="text-blue-200">Required Documents</CardTitle>
-          <CardDescription className="text-blue-300">Upload and manage your loan application documents</CardDescription>
+          <CardTitle>Upload Documents</CardTitle>
+          <CardDescription>
+            Drag and drop files here or click to browse. Accepted formats: PDF, DOC, DOCX, PNG, JPG
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {documents.map((document) => (
-              <div
-                key={document.id}
-                className={`p-4 rounded-lg border transition-colors ${
-                  document.status === "rejected"
-                    ? "bg-gradient-to-br from-red-800/30 to-red-800/20 border-red-500/20"
-                    : document.status === "verified"
-                      ? "bg-gradient-to-br from-green-800/30 to-emerald-800/20 border-green-500/20"
-                      : document.status === "uploaded"
-                        ? "bg-gradient-to-br from-blue-800/30 to-cyan-800/20 border-blue-500/20"
-                        : "bg-gradient-to-br from-yellow-800/30 to-amber-800/20 border-yellow-500/20"
-                }`}
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start gap-3">
-                    {getStatusIcon(document.status)}
-                    <div className="flex-grow">
+          <div
+            {...getRootProps()}
+            className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
+              isDragActive ? "border-blue-500 bg-blue-500/10" : "border-gray-600 hover:border-gray-500"
+            }`}
+          >
+            <input {...getInputProps()} />
+            <Upload className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+            {isDragActive ? (
+              <p className="text-blue-400">Drop the files here...</p>
+            ) : (
+              <div>
+                <p className="text-lg mb-2">Drop files here to upload</p>
+                <p className="text-sm text-muted-foreground">
+                  or <span className="text-blue-400">click to browse</span>
+                </p>
+              </div>
+            )}
+          </div>
+
+          {isUploading && (
+            <div className="mt-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <RefreshCw className="h-4 w-4 animate-spin" />
+                <span className="text-sm">Uploading documents...</span>
+              </div>
+              <Progress value={uploadProgress} className="h-2" />
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Documents by Category */}
+      {Object.entries(documentsByCategory).map(([category, categoryDocs]) => (
+        <Card key={category} className="bg-black/20 border-white/10">
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <span>{category}</span>
+              <Badge variant="outline">
+                {categoryDocs.filter((d) => d.status === "verified").length} / {categoryDocs.length} verified
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {categoryDocs.map((document) => (
+                <div
+                  key={document.id}
+                  className="flex items-center justify-between p-4 rounded-lg bg-white/5 border border-white/10"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0">{getStatusIcon(document.status)}</div>
+                    <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-medium text-white">{document.name}</h4>
+                        <h4 className="font-medium text-sm">{document.name}</h4>
                         {document.required && (
-                          <Badge variant="outline" className="text-xs text-red-300 border-red-500/30">
+                          <Badge variant="outline" className="text-xs">
                             Required
                           </Badge>
                         )}
+                        <Badge className={`${getStatusColor(document.status)} text-xs`}>{document.status}</Badge>
                       </div>
-
-                      {document.uploadDate && document.fileSize && (
-                        <p className="text-xs text-blue-200">
-                          Uploaded: {document.uploadDate} • {document.fileSize}
-                        </p>
-                      )}
-
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                        {document.size > 0 && <span>{formatFileSize(document.size)}</span>}
+                        {document.uploadDate && (
+                          <span>Uploaded: {new Date(document.uploadDate).toLocaleDateString()}</span>
+                        )}
+                      </div>
                       {document.rejectionReason && (
-                        <p className="text-xs text-red-300 mt-1">Rejection reason: {document.rejectionReason}</p>
-                      )}
-
-                      {uploadProgress[document.id] !== undefined && (
-                        <div className="mt-2">
-                          <Progress value={uploadProgress[document.id]} className="h-2" />
-                          <p className="text-xs text-blue-300 mt-1">Uploading... {uploadProgress[document.id]}%</p>
-                        </div>
+                        <p className="text-xs text-red-400 mt-1">Rejection reason: {document.rejectionReason}</p>
                       )}
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Badge className={getStatusColor(document.status)}>{document.status.toUpperCase()}</Badge>
-
-                    <div className="flex items-center gap-1">
-                      {document.status === "uploaded" || document.status === "verified" ? (
-                        <>
+                    {document.status === "pending" ? (
+                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                        <Plus className="h-3 w-3 mr-1" />
+                        Upload
+                      </Button>
+                    ) : (
+                      <>
+                        {document.status !== "pending" && (
+                          <Button size="sm" variant="outline">
+                            <Eye className="h-3 w-3 mr-1" />
+                            View
+                          </Button>
+                        )}
+                        <Button size="sm" variant="outline">
+                          <Download className="h-3 w-3 mr-1" />
+                          Download
+                        </Button>
+                        {document.status === "rejected" && (
                           <Button
                             size="sm"
-                            variant="outline"
-                            className="border-blue-500/30 text-blue-300 hover:bg-blue-500/20 bg-transparent"
+                            className="bg-orange-600 hover:bg-orange-700"
+                            onClick={() => handleReupload(document.id)}
                           >
-                            <Eye className="h-3 w-3" />
+                            <RefreshCw className="h-3 w-3 mr-1" />
+                            Re-upload
                           </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-blue-500/30 text-blue-300 hover:bg-blue-500/20 bg-transparent"
-                          >
-                            <Download className="h-3 w-3" />
+                        )}
+                        {!document.required && (
+                          <Button size="sm" variant="outline" onClick={() => handleDelete(document.id)}>
+                            <Trash2 className="h-3 w-3" />
                           </Button>
-                        </>
-                      ) : (
-                        <Button
-                          size="sm"
-                          onClick={() => handleFileUpload(document.id)}
-                          disabled={uploadProgress[document.id] !== undefined}
-                          className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
-                        >
-                          <Upload className="h-3 w-3 mr-1" />
-                          Upload
-                        </Button>
-                      )}
-
-                      {document.status === "rejected" && (
-                        <Button
-                          size="sm"
-                          onClick={() => handleFileUpload(document.id)}
-                          disabled={uploadProgress[document.id] !== undefined}
-                          className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-                        >
-                          <Upload className="h-3 w-3 mr-1" />
-                          Re-upload
-                        </Button>
-                      )}
-                    </div>
+                        )}
+                      </>
+                    )}
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      ))}
 
-          <div className="mt-6 pt-4 border-t border-blue-500/20">
-            <Button
-              variant="outline"
-              className="w-full border-blue-500/30 text-blue-300 hover:bg-blue-500/20 bg-transparent"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Additional Document
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Quick Actions */}
-      <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20">
-        <CardHeader>
-          <CardTitle className="text-blue-200">Quick Actions</CardTitle>
-          <CardDescription className="text-blue-300">Common document management tasks</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Button variant="outline" className="border-blue-500/30 text-blue-300 hover:bg-blue-500/20 bg-transparent">
-              <Download className="h-4 w-4 mr-2" />
-              Download All
-            </Button>
-            <Button
-              variant="outline"
-              className="border-green-500/30 text-green-300 hover:bg-green-500/20 bg-transparent"
-            >
-              <CheckCircle className="h-4 w-4 mr-2" />
-              Request Review
-            </Button>
-            <Button
-              variant="outline"
-              className="border-yellow-500/30 text-yellow-300 hover:bg-yellow-500/20 bg-transparent"
-            >
-              <AlertCircle className="h-4 w-4 mr-2" />
-              Get Help
-            </Button>
+      {/* Bulk Actions */}
+      <Card className="bg-black/20 border-white/10">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-muted-foreground">Bulk Actions</div>
+            <div className="flex gap-2">
+              <Button size="sm" variant="outline">
+                <Download className="h-3 w-3 mr-1" />
+                Download All
+              </Button>
+              <Button size="sm" variant="outline">
+                <RefreshCw className="h-3 w-3 mr-1" />
+                Request Review
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
