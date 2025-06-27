@@ -6,8 +6,6 @@ import {
   AlertCircle,
   CheckCircle,
   Clock,
-  Target,
-  BarChart3,
   Settings,
   Bell,
   Filter,
@@ -28,6 +26,8 @@ import {
   Search,
   ChevronDown,
   ChevronUp,
+  Info,
+  Crown,
 } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -46,6 +46,15 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { RoyalDiamondSlabCard } from "@/components/ui/royal-diamond-slab-card"
+import { TierBadge } from "@/components/investors/tier-badge"
+import { TierBenefitsModal } from "@/components/investors/tier-benefits-modal"
+import {
+  getInvestorTier,
+  calculateTierReturn,
+  getProgressToNextTier,
+  formatCurrency,
+  formatPercentage,
+} from "@/utils/investor-tiers"
 
 interface InvestmentOpportunity {
   id: string
@@ -60,7 +69,6 @@ interface InvestmentOpportunity {
   creditScore: number
   loanToValue: number
   expectedReturn: number
-  expectedReturnRate: number
   matchScore: number
   expiresAt: Date
   status: "pending" | "accepted" | "declined" | "expired"
@@ -70,6 +78,7 @@ interface InvestmentOpportunity {
     previousLoans: number
     rating: number
   }
+  tierBonus?: number
 }
 
 interface PortfolioLoan {
@@ -82,12 +91,13 @@ interface PortfolioLoan {
   status: "current" | "late" | "default" | "paid_off"
   nextPaymentDate: Date
   totalReturn: number
-  annualReturnRate: number
   daysLate?: number
   borrower: string
   propertyAddress: string
   startDate: Date
   maturityDate: Date
+  actualReturn: number
+  tierReturn: number
   paymentHistory: Array<{
     date: Date
     amount: number
@@ -106,7 +116,8 @@ interface InvestorStats {
   portfolioValue: number
   monthlyIncome: number
   yearToDateReturn: number
-  yearToDateReturnRate: number
+  tierReturn: number
+  bonusReturn: number
 }
 
 export default function InvestorPortal() {
@@ -120,27 +131,32 @@ export default function InvestorPortal() {
   const [isLoading, setIsLoading] = React.useState(false)
   const [expandedLoan, setExpandedLoan] = React.useState<string | null>(null)
 
-  // Enhanced mock data with 10%-25% returns
+  // Enhanced investor stats with tier-based returns
   const investorStats: InvestorStats = {
-    totalInvested: 2450000,
+    totalInvested: 2450000, // This determines the tier
     availableCapital: 550000,
-    totalReturn: 486750, // Increased returns
-    averageReturn: 18.2, // 18.2% average return
+    totalReturn: 186750,
+    averageReturn: 7.8,
     activeLoans: 23,
     completedLoans: 12,
-    defaultRate: 1.8, // Lower default rate for higher returns
-    portfolioValue: 2936750, // Higher portfolio value
-    monthlyIncome: 35420, // Higher monthly income
-    yearToDateReturn: 289340, // Higher YTD return
-    yearToDateReturnRate: 22.5, // 22.5% YTD return rate
+    defaultRate: 2.1,
+    portfolioValue: 2636750,
+    monthlyIncome: 15420,
+    yearToDateReturn: 89340,
+    tierReturn: calculateTierReturn(2450000, 7.8), // Tier-based return
+    bonusReturn: calculateTierReturn(2450000, 7.8) - 7.8, // Bonus from tier
   }
 
+  const currentTier = getInvestorTier(investorStats.totalInvested)
+  const tierProgress = getProgressToNextTier(investorStats.totalInvested)
+
+  // Enhanced opportunities with tier bonuses
   const opportunities: InvestmentOpportunity[] = [
     {
       id: "OPP-001",
       loanAmount: 450000,
       investmentAmount: 225000,
-      interestRate: 6.25, // Higher interest rate
+      interestRate: 3.25,
       term: 50,
       riskScore: 85,
       riskCategory: "low",
@@ -148,11 +164,11 @@ export default function InvestorPortal() {
       location: "Austin, TX",
       creditScore: 780,
       loanToValue: 82,
-      expectedReturn: 47250, // 21% return
-      expectedReturnRate: 21.0,
+      expectedReturn: 17550,
       matchScore: 94,
       expiresAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
       status: "pending",
+      tierBonus: currentTier.minReturn - 10, // Bonus percentage from tier
       borrowerProfile: {
         name: "Sarah Johnson",
         experience: "First-time buyer",
@@ -164,7 +180,7 @@ export default function InvestorPortal() {
       id: "OPP-002",
       loanAmount: 320000,
       investmentAmount: 160000,
-      interestRate: 7.5, // Higher interest rate
+      interestRate: 3.5,
       term: 50,
       riskScore: 72,
       riskCategory: "medium",
@@ -172,11 +188,11 @@ export default function InvestorPortal() {
       location: "Denver, CO",
       creditScore: 720,
       loanToValue: 85,
-      expectedReturn: 28800, // 18% return
-      expectedReturnRate: 18.0,
+      expectedReturn: 11200,
       matchScore: 87,
       expiresAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       status: "pending",
+      tierBonus: currentTier.minReturn - 10,
       borrowerProfile: {
         name: "Michael Chen",
         experience: "Experienced investor",
@@ -188,7 +204,7 @@ export default function InvestorPortal() {
       id: "OPP-003",
       loanAmount: 680000,
       investmentAmount: 340000,
-      interestRate: 8.75, // Higher interest rate
+      interestRate: 3.75,
       term: 50,
       riskScore: 78,
       riskCategory: "medium",
@@ -196,11 +212,11 @@ export default function InvestorPortal() {
       location: "Miami, FL",
       creditScore: 750,
       loanToValue: 80,
-      expectedReturn: 85000, // 25% return
-      expectedReturnRate: 25.0,
+      expectedReturn: 25500,
       matchScore: 91,
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       status: "pending",
+      tierBonus: currentTier.minReturn - 10,
       borrowerProfile: {
         name: "David Rodriguez",
         experience: "Real estate professional",
@@ -208,110 +224,66 @@ export default function InvestorPortal() {
         rating: 4.7,
       },
     },
-    {
-      id: "OPP-004",
-      loanAmount: 520000,
-      investmentAmount: 260000,
-      interestRate: 5.75,
-      term: 50,
-      riskScore: 88,
-      riskCategory: "low",
-      propertyType: "commercial",
-      location: "Seattle, WA",
-      creditScore: 800,
-      loanToValue: 75,
-      expectedReturn: 31200, // 12% return
-      expectedReturnRate: 12.0,
-      matchScore: 96,
-      expiresAt: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000),
-      status: "pending",
-      borrowerProfile: {
-        name: "Lisa Wang",
-        experience: "Commercial developer",
-        previousLoans: 15,
-        rating: 4.9,
-      },
-    },
-    {
-      id: "OPP-005",
-      loanAmount: 750000,
-      investmentAmount: 375000,
-      interestRate: 9.25, // High interest rate
-      term: 50,
-      riskScore: 65,
-      riskCategory: "high",
-      propertyType: "development",
-      location: "Las Vegas, NV",
-      creditScore: 680,
-      loanToValue: 90,
-      expectedReturn: 93750, // 25% return
-      expectedReturnRate: 25.0,
-      matchScore: 82,
-      expiresAt: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
-      status: "pending",
-      borrowerProfile: {
-        name: "Robert Martinez",
-        experience: "Property developer",
-        previousLoans: 5,
-        rating: 4.3,
-      },
-    },
   ]
 
+  // Enhanced portfolio loans with tier returns
   const portfolioLoans: PortfolioLoan[] = [
     {
       id: "LOAN-001",
       loanAmount: 400000,
       investmentAmount: 200000,
-      interestRate: 6.1, // Higher interest rate
-      monthlyPayment: 2480, // Higher payment
+      interestRate: 3.1,
+      monthlyPayment: 1680,
       remainingBalance: 195000,
       status: "current",
       nextPaymentDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
-      totalReturn: 42600, // Higher return
-      annualReturnRate: 21.3, // 21.3% annual return
+      totalReturn: 15600,
+      actualReturn: 15600,
+      tierReturn: Math.round(15600 * (currentTier.minReturn / 10)), // Enhanced by tier
       borrower: "Jennifer Smith",
       propertyAddress: "123 Oak Street, San Francisco, CA",
       startDate: new Date("2023-06-15"),
       maturityDate: new Date("2073-06-15"),
       paymentHistory: [
-        { date: new Date("2024-01-01"), amount: 2480, status: "paid" },
-        { date: new Date("2023-12-01"), amount: 2480, status: "paid" },
-        { date: new Date("2023-11-01"), amount: 2480, status: "paid" },
+        { date: new Date("2024-01-01"), amount: 1680, status: "paid" },
+        { date: new Date("2023-12-01"), amount: 1680, status: "paid" },
+        { date: new Date("2023-11-01"), amount: 1680, status: "paid" },
       ],
     },
     {
       id: "LOAN-002",
       loanAmount: 350000,
       investmentAmount: 175000,
-      interestRate: 7.4, // Higher interest rate
-      monthlyPayment: 2120, // Higher payment
+      interestRate: 3.4,
+      monthlyPayment: 1520,
       remainingBalance: 168000,
       status: "current",
       nextPaymentDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
-      totalReturn: 31500, // Higher return
-      annualReturnRate: 18.0, // 18% annual return
+      totalReturn: 11900,
+      actualReturn: 11900,
+      tierReturn: Math.round(11900 * (currentTier.minReturn / 10)),
       borrower: "Robert Johnson",
       propertyAddress: "456 Pine Avenue, Seattle, WA",
       startDate: new Date("2023-08-20"),
       maturityDate: new Date("2073-08-20"),
       paymentHistory: [
-        { date: new Date("2024-01-01"), amount: 2120, status: "paid" },
-        { date: new Date("2023-12-01"), amount: 2120, status: "late" },
-        { date: new Date("2023-11-01"), amount: 2120, status: "paid" },
+        { date: new Date("2024-01-01"), amount: 1520, status: "paid" },
+        { date: new Date("2023-12-01"), amount: 1520, status: "late" },
+        { date: new Date("2023-11-01"), amount: 1520, status: "paid" },
       ],
     },
     {
       id: "LOAN-003",
       loanAmount: 275000,
       investmentAmount: 137500,
-      interestRate: 8.8, // Higher interest rate
-      monthlyPayment: 1980, // Higher payment
+      interestRate: 3.8,
+      monthlyPayment: 1280,
       remainingBalance: 132000,
       status: "late",
       nextPaymentDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-      totalReturn: 20625, // Higher return
-      annualReturnRate: 15.0, // 15% annual return
+      totalReturn: 8900,
+      actualReturn: 8900,
+      tierReturn: Math.round(8900 * (currentTier.minReturn / 10)),
       daysLate: 5,
       borrower: "Maria Garcia",
       propertyAddress: "789 Elm Drive, Phoenix, AZ",
@@ -319,50 +291,8 @@ export default function InvestorPortal() {
       maturityDate: new Date("2073-09-10"),
       paymentHistory: [
         { date: new Date("2024-01-01"), amount: 0, status: "missed" },
-        { date: new Date("2023-12-01"), amount: 1980, status: "late" },
-        { date: new Date("2023-11-01"), amount: 1980, status: "paid" },
-      ],
-    },
-    {
-      id: "LOAN-004",
-      loanAmount: 600000,
-      investmentAmount: 300000,
-      interestRate: 9.2, // High interest rate
-      monthlyPayment: 3750, // High payment
-      remainingBalance: 285000,
-      status: "current",
-      nextPaymentDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000),
-      totalReturn: 75000, // High return
-      annualReturnRate: 25.0, // 25% annual return
-      borrower: "Thomas Anderson",
-      propertyAddress: "321 Luxury Lane, Beverly Hills, CA",
-      startDate: new Date("2023-05-01"),
-      maturityDate: new Date("2073-05-01"),
-      paymentHistory: [
-        { date: new Date("2024-01-01"), amount: 3750, status: "paid" },
-        { date: new Date("2023-12-01"), amount: 3750, status: "paid" },
-        { date: new Date("2023-11-01"), amount: 3750, status: "paid" },
-      ],
-    },
-    {
-      id: "LOAN-005",
-      loanAmount: 180000,
-      investmentAmount: 90000,
-      interestRate: 5.5, // Lower risk, moderate return
-      monthlyPayment: 1080, // Moderate payment
-      remainingBalance: 85000,
-      status: "current",
-      nextPaymentDate: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000),
-      totalReturn: 9000, // 10% return
-      annualReturnRate: 10.0, // 10% annual return
-      borrower: "Emily Chen",
-      propertyAddress: "654 Suburban Street, Austin, TX",
-      startDate: new Date("2023-10-15"),
-      maturityDate: new Date("2073-10-15"),
-      paymentHistory: [
-        { date: new Date("2024-01-01"), amount: 1080, status: "paid" },
-        { date: new Date("2023-12-01"), amount: 1080, status: "paid" },
-        { date: new Date("2023-11-01"), amount: 1080, status: "paid" },
+        { date: new Date("2023-12-01"), amount: 1280, status: "late" },
+        { date: new Date("2023-11-01"), amount: 1280, status: "paid" },
       ],
     },
   ]
@@ -370,10 +300,8 @@ export default function InvestorPortal() {
   const handleAcceptOpportunity = async (opportunityId: string) => {
     setIsLoading(true)
     try {
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1500))
       console.log("Accepting opportunity:", opportunityId)
-      // In real app, would update the opportunities list
     } finally {
       setIsLoading(false)
     }
@@ -398,7 +326,6 @@ export default function InvestorPortal() {
       console.log("Adding funds:", addFundsAmount, "via", addFundsMethod)
       setIsAddFundsOpen(false)
       setAddFundsAmount("")
-      // In real app, would update available capital
     } finally {
       setIsLoading(false)
     }
@@ -423,15 +350,6 @@ export default function InvestorPortal() {
     const matchesStatus = filterStatus === "all" || opp.status === filterStatus
     return matchesSearch && matchesRisk && matchesStatus
   })
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount)
-  }
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat("en-US", {
@@ -469,25 +387,27 @@ export default function InvestorPortal() {
     }
   }
 
-  const getReturnColor = (returnRate: number) => {
-    if (returnRate >= 20) return "text-emerald-500 font-bold"
-    if (returnRate >= 15) return "text-green-500 font-semibold"
-    if (returnRate >= 10) return "text-blue-500 font-medium"
-    return "text-gray-500"
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/90 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header */}
+        {/* Header with Tier Information */}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
               Investor Portal
             </h1>
-            <p className="text-muted-foreground mt-2">High-yield loan investments with 10%-25% annual returns</p>
+            <p className="text-muted-foreground mt-2">Manage your loan investments and discover new opportunities</p>
+            <div className="mt-3">
+              <TierBadge totalInvested={investorStats.totalInvested} showProgress={true} variant="detailed" />
+            </div>
           </div>
           <div className="flex items-center gap-4">
+            <TierBenefitsModal totalInvested={investorStats.totalInvested}>
+              <Button variant="outline" className="bg-gradient-to-r from-purple-500 to-blue-600 text-white border-0">
+                <Crown className="h-4 w-4 mr-2" />
+                Tier Benefits
+              </Button>
+            </TierBenefitsModal>
             <Dialog open={isAddFundsOpen} onOpenChange={setIsAddFundsOpen}>
               <DialogTrigger asChild>
                 <Button className="bg-gradient-to-r from-green-500 to-emerald-600">
@@ -499,7 +419,7 @@ export default function InvestorPortal() {
                 <DialogHeader>
                   <DialogTitle>Add Investment Funds</DialogTitle>
                   <DialogDescription>
-                    Add funds to your investment account to participate in high-yield loan opportunities
+                    Add funds to your investment account to participate in loan opportunities
                   </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
@@ -553,7 +473,7 @@ export default function InvestorPortal() {
           </div>
         </div>
 
-        {/* Stats Overview */}
+        {/* Enhanced Stats Overview with Tier Returns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <RoyalDiamondSlabCard
             variant="emerald"
@@ -565,21 +485,21 @@ export default function InvestorPortal() {
           >
             <div className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-emerald-400" />
-              <span className="text-sm text-emerald-400">+{investorStats.yearToDateReturnRate}% YTD</span>
+              <span className="text-sm text-emerald-400">+12.3% YTD</span>
             </div>
           </RoyalDiamondSlabCard>
 
           <RoyalDiamondSlabCard
             variant="sapphire"
             size="md"
-            title="Available Capital"
-            content={formatCurrency(investorStats.availableCapital)}
-            highlightWords={["Available"]}
+            title="Tier Return Rate"
+            content={`${formatPercentage(investorStats.tierReturn)}`}
+            highlightWords={["Tier"]}
             className="h-32"
           >
             <div className="flex items-center gap-2">
-              <Wallet className="h-5 w-5 text-blue-400" />
-              <span className="text-sm text-blue-400">Ready to invest</span>
+              <Crown className="h-5 w-5 text-blue-400" />
+              <span className="text-sm text-blue-400">+{formatPercentage(investorStats.bonusReturn)} tier bonus</span>
             </div>
           </RoyalDiamondSlabCard>
 
@@ -600,17 +520,47 @@ export default function InvestorPortal() {
           <RoyalDiamondSlabCard
             variant="diamond"
             size="md"
-            title="Average Return"
-            content={`${investorStats.averageReturn}%`}
-            highlightWords={["Return"]}
+            title="Available Capital"
+            content={formatCurrency(investorStats.availableCapital)}
+            highlightWords={["Available"]}
             className="h-32"
           >
             <div className="flex items-center gap-2">
-              <Target className="h-5 w-5 text-white" />
-              <span className="text-sm text-white">High yield</span>
+              <Wallet className="h-5 w-5 text-white" />
+              <span className="text-sm text-white">Ready to invest</span>
             </div>
           </RoyalDiamondSlabCard>
         </div>
+
+        {/* Tier Upgrade Notification */}
+        {tierProgress.nextTier && (
+          <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Info className="h-5 w-5 text-blue-600" />
+                  <div>
+                    <p className="font-medium text-blue-800">
+                      Upgrade to {tierProgress.nextTier.name} for {formatPercentage(tierProgress.nextTier.minReturn)}-
+                      {formatPercentage(tierProgress.nextTier.maxReturn)} returns!
+                    </p>
+                    <p className="text-sm text-blue-600">
+                      Only {formatCurrency(tierProgress.amountNeeded)} more needed
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Progress value={tierProgress.progress} className="w-24 h-2" />
+                  <TierBenefitsModal totalInvested={investorStats.totalInvested}>
+                    <Button size="sm" variant="outline" className="border-blue-500 text-blue-600 bg-transparent">
+                      View Benefits
+                    </Button>
+                  </TierBenefitsModal>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Main Content Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -638,8 +588,21 @@ export default function InvestorPortal() {
                     <div className="flex items-center gap-3">
                       <CheckCircle className="h-5 w-5 text-green-400" />
                       <div>
-                        <p className="font-medium">High-Yield Payment Received</p>
-                        <p className="text-sm text-muted-foreground">LOAN-004 • {formatCurrency(3750)} (25% APR)</p>
+                        <p className="font-medium">Tier Bonus Applied</p>
+                        <p className="text-sm text-muted-foreground">
+                          LOAN-001 • +{formatPercentage(investorStats.bonusReturn)} tier bonus
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-sm text-muted-foreground">1 hour ago</span>
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-green-500/10 border border-green-500/20">
+                    <div className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-400" />
+                      <div>
+                        <p className="font-medium">Payment Received</p>
+                        <p className="text-sm text-muted-foreground">LOAN-001 • {formatCurrency(1680)}</p>
                       </div>
                     </div>
                     <span className="text-sm text-muted-foreground">2 hours ago</span>
@@ -649,9 +612,10 @@ export default function InvestorPortal() {
                     <div className="flex items-center gap-3">
                       <Eye className="h-5 w-5 text-blue-400" />
                       <div>
-                        <p className="font-medium">Premium Opportunity</p>
+                        <p className="font-medium">New Opportunity</p>
                         <p className="text-sm text-muted-foreground">
-                          {formatCurrency(450000)} • 21% return • 94% match
+                          {formatCurrency(450000)} • 94% match • +{formatPercentage(currentTier.minReturn - 10)}% tier
+                          bonus
                         </p>
                       </div>
                     </div>
@@ -663,42 +627,45 @@ export default function InvestorPortal() {
                       <AlertCircle className="h-5 w-5 text-yellow-400" />
                       <div>
                         <p className="font-medium">Payment Due Soon</p>
-                        <p className="text-sm text-muted-foreground">LOAN-003 • 5 days overdue • 15% APR</p>
+                        <p className="text-sm text-muted-foreground">LOAN-003 • 3 days overdue</p>
                       </div>
                     </div>
                     <span className="text-sm text-muted-foreground">3 days ago</span>
                   </div>
-
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-purple-500/10 border border-purple-500/20">
-                    <div className="flex items-center gap-3">
-                      <Plus className="h-5 w-5 text-purple-400" />
-                      <div>
-                        <p className="font-medium">Capital Deployed</p>
-                        <p className="text-sm text-muted-foreground">{formatCurrency(300000)} • 25% expected return</p>
-                      </div>
-                    </div>
-                    <span className="text-sm text-muted-foreground">1 week ago</span>
-                  </div>
                 </CardContent>
               </Card>
 
-              {/* Performance Chart */}
+              {/* Tier Performance Chart */}
               <Card className="bg-background/50 backdrop-blur-sm border-white/20">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <LineChart className="h-5 w-5" />
-                    High-Yield Performance
+                    Tier Performance Overview
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm">YTD Return</span>
-                      <span className="font-medium text-green-400">
-                        +{formatCurrency(investorStats.yearToDateReturn)} ({investorStats.yearToDateReturnRate}%)
-                      </span>
+                      <span className="text-sm">Base Return Rate</span>
+                      <span className="font-medium">10.0%</span>
                     </div>
-                    <Progress value={90} className="h-2" />
+                    <Progress value={40} className="h-2" />
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Your Tier Return</span>
+                      <span className="font-medium text-green-400">{formatPercentage(investorStats.tierReturn)}</span>
+                    </div>
+                    <Progress value={investorStats.tierReturn * 4} className="h-2" />
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Tier Bonus</span>
+                      <span className="font-medium text-blue-400">+{formatPercentage(investorStats.bonusReturn)}</span>
+                    </div>
+                    <Progress value={investorStats.bonusReturn * 8} className="h-2" />
                   </div>
 
                   <div className="space-y-3">
@@ -707,22 +674,6 @@ export default function InvestorPortal() {
                       <span className="font-medium">81.7%</span>
                     </div>
                     <Progress value={82} className="h-2" />
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Risk Score</span>
-                      <span className="font-medium text-blue-400">Balanced</span>
-                    </div>
-                    <Progress value={45} className="h-2" />
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Diversification</span>
-                      <span className="font-medium text-purple-400">Excellent</span>
-                    </div>
-                    <Progress value={92} className="h-2" />
                   </div>
                 </CardContent>
               </Card>
@@ -749,7 +700,7 @@ export default function InvestorPortal() {
                     onClick={() => setActiveTab("opportunities")}
                   >
                     <Search className="h-6 w-6" />
-                    Find High-Yield Loans
+                    Find Loans
                   </Button>
                   <Button
                     variant="outline"
@@ -759,14 +710,12 @@ export default function InvestorPortal() {
                     <Minus className="h-6 w-6" />
                     Withdraw
                   </Button>
-                  <Button
-                    variant="outline"
-                    className="h-20 flex-col gap-2 bg-transparent"
-                    onClick={() => setActiveTab("analytics")}
-                  >
-                    <BarChart3 className="h-6 w-6" />
-                    Analytics
-                  </Button>
+                  <TierBenefitsModal totalInvested={investorStats.totalInvested}>
+                    <Button variant="outline" className="h-20 flex-col gap-2 bg-transparent">
+                      <Crown className="h-6 w-6" />
+                      Tier Benefits
+                    </Button>
+                  </TierBenefitsModal>
                 </div>
               </CardContent>
             </Card>
@@ -778,7 +727,7 @@ export default function InvestorPortal() {
             <div className="flex items-center gap-4 p-4 rounded-lg bg-background/50 backdrop-blur-sm border border-white/20">
               <div className="flex-1">
                 <Input
-                  placeholder="Search high-yield opportunities..."
+                  placeholder="Search opportunities..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="bg-background/50"
@@ -790,9 +739,9 @@ export default function InvestorPortal() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Risk Levels</SelectItem>
-                  <SelectItem value="low">Low Risk (10-15%)</SelectItem>
-                  <SelectItem value="medium">Medium Risk (15-20%)</SelectItem>
-                  <SelectItem value="high">High Risk (20-25%)</SelectItem>
+                  <SelectItem value="low">Low Risk</SelectItem>
+                  <SelectItem value="medium">Medium Risk</SelectItem>
+                  <SelectItem value="high">High Risk</SelectItem>
                 </SelectContent>
               </Select>
               <Select value={filterStatus} onValueChange={setFilterStatus}>
@@ -812,7 +761,7 @@ export default function InvestorPortal() {
               </Button>
             </div>
 
-            {/* Opportunities List */}
+            {/* Opportunities List with Tier Bonuses */}
             <div className="space-y-4">
               {filteredOpportunities.map((opportunity) => (
                 <Card
@@ -830,9 +779,11 @@ export default function InvestorPortal() {
                           <Badge variant="outline" className="bg-blue-500/20 text-blue-400">
                             {opportunity.matchScore}% match
                           </Badge>
-                          <Badge className="bg-emerald-500/20 text-emerald-400 font-semibold">
-                            {opportunity.expectedReturnRate}% APR
-                          </Badge>
+                          {opportunity.tierBonus && opportunity.tierBonus > 0 && (
+                            <Badge className="bg-gradient-to-r from-purple-500 to-blue-600 text-white">
+                              +{formatPercentage(opportunity.tierBonus)} tier bonus
+                            </Badge>
+                          )}
                           <div className="flex items-center gap-1">
                             {[...Array(5)].map((_, i) => (
                               <Star
@@ -857,13 +808,16 @@ export default function InvestorPortal() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className={`text-2xl font-bold ${getReturnColor(opportunity.expectedReturnRate)}`}>
+                        <p className="text-2xl font-bold text-green-400">
                           {formatCurrency(opportunity.expectedReturn)}
                         </p>
                         <p className="text-sm text-muted-foreground">Expected Annual Return</p>
-                        <p className={`text-lg font-semibold ${getReturnColor(opportunity.expectedReturnRate)}`}>
-                          {opportunity.expectedReturnRate}% APR
-                        </p>
+                        {opportunity.tierBonus && opportunity.tierBonus > 0 && (
+                          <p className="text-xs text-purple-400">
+                            +{formatCurrency(Math.round(opportunity.expectedReturn * (opportunity.tierBonus / 100)))}{" "}
+                            tier bonus
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -873,12 +827,14 @@ export default function InvestorPortal() {
                         <p className="font-medium">{formatCurrency(opportunity.investmentAmount)}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-muted-foreground">Interest Rate</p>
+                        <p className="text-sm text-muted-foreground">Base Rate</p>
                         <p className="font-medium">{opportunity.interestRate}%</p>
                       </div>
                       <div>
-                        <p className="text-sm text-muted-foreground">Term</p>
-                        <p className="font-medium">{opportunity.term} years</p>
+                        <p className="text-sm text-muted-foreground">Your Rate</p>
+                        <p className="font-medium text-green-600">
+                          {(opportunity.interestRate + (opportunity.tierBonus || 0)).toFixed(2)}%
+                        </p>
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground">Credit Score</p>
@@ -922,14 +878,17 @@ export default function InvestorPortal() {
             </div>
           </TabsContent>
 
-          {/* Portfolio Tab */}
+          {/* Portfolio Tab with Tier Returns */}
           <TabsContent value="portfolio" className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold">High-Yield Investment Portfolio</h2>
-              <Button variant="outline" size="sm">
-                <Download className="h-4 w-4 mr-2" />
-                Export Portfolio
-              </Button>
+              <h2 className="text-2xl font-semibold">Active Investments</h2>
+              <div className="flex items-center gap-2">
+                <TierBadge totalInvested={investorStats.totalInvested} />
+                <Button variant="outline" size="sm">
+                  <Download className="h-4 w-4 mr-2" />
+                  Export Portfolio
+                </Button>
+              </div>
             </div>
 
             <div className="space-y-4">
@@ -944,10 +903,10 @@ export default function InvestorPortal() {
                         <div className="flex items-center gap-3">
                           <h3 className="text-lg font-semibold">{loan.id}</h3>
                           <Badge className={getStatusColor(loan.status)}>{loan.status}</Badge>
-                          <Badge className={`${getReturnColor(loan.annualReturnRate)} bg-emerald-500/20`}>
-                            {loan.annualReturnRate}% APR
-                          </Badge>
                           {loan.daysLate && <Badge variant="destructive">{loan.daysLate} days late</Badge>}
+                          <Badge className="bg-gradient-to-r from-purple-500 to-blue-600 text-white">
+                            {formatPercentage(currentTier.minReturn)} tier rate
+                          </Badge>
                         </div>
                         <p className="text-muted-foreground">Borrower: {loan.borrower}</p>
                         <p className="text-sm text-muted-foreground flex items-center gap-1">
@@ -956,13 +915,9 @@ export default function InvestorPortal() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className={`text-2xl font-bold ${getReturnColor(loan.annualReturnRate)}`}>
-                          +{formatCurrency(loan.totalReturn)}
-                        </p>
-                        <p className="text-sm text-muted-foreground">Total Return</p>
-                        <p className={`text-lg font-semibold ${getReturnColor(loan.annualReturnRate)}`}>
-                          {loan.annualReturnRate}% APR
-                        </p>
+                        <p className="text-2xl font-bold text-green-400">+{formatCurrency(loan.tierReturn)}</p>
+                        <p className="text-sm text-muted-foreground">Tier-Enhanced Return</p>
+                        <p className="text-xs text-gray-500">Base: {formatCurrency(loan.actualReturn)}</p>
                       </div>
                     </div>
 
@@ -1036,13 +991,13 @@ export default function InvestorPortal() {
                                 <span>{formatDate(loan.maturityDate)}</span>
                               </div>
                               <div className="flex justify-between">
-                                <span className="text-muted-foreground">Interest Rate:</span>
-                                <span className="font-semibold text-green-600">{loan.interestRate}%</span>
+                                <span className="text-muted-foreground">Base Rate:</span>
+                                <span>{loan.interestRate}%</span>
                               </div>
                               <div className="flex justify-between">
-                                <span className="text-muted-foreground">Annual Return:</span>
-                                <span className={`font-bold ${getReturnColor(loan.annualReturnRate)}`}>
-                                  {loan.annualReturnRate}%
+                                <span className="text-muted-foreground">Tier Rate:</span>
+                                <span className="text-green-600 font-medium">
+                                  {formatPercentage(currentTier.minReturn)}
                                 </span>
                               </div>
                               <div className="flex justify-between">
@@ -1079,74 +1034,82 @@ export default function InvestorPortal() {
             </div>
           </TabsContent>
 
-          {/* Analytics Tab */}
+          {/* Analytics Tab with Tier Analysis */}
           <TabsContent value="analytics" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="bg-background/50 backdrop-blur-sm border-white/20">
                 <CardHeader>
-                  <CardTitle>High-Yield Return Analysis</CardTitle>
-                  <CardDescription>Performance breakdown by investment type</CardDescription>
+                  <CardTitle>Tier Return Analysis</CardTitle>
+                  <CardDescription>Performance breakdown by tier benefits</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span>Premium Loans (20-25%)</span>
+                      <span>Base Market Rate</span>
                       <div className="flex items-center gap-2">
-                        <Progress value={95} className="w-20 h-2" />
-                        <span className="text-sm font-medium text-emerald-600">23.2%</span>
+                        <Progress value={40} className="w-20 h-2" />
+                        <span className="text-sm font-medium">10.0%</span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span>High-Yield Loans (15-20%)</span>
+                      <span>Your Tier Rate ({currentTier.name})</span>
                       <div className="flex items-center gap-2">
-                        <Progress value={85} className="w-20 h-2" />
-                        <span className="text-sm font-medium text-green-600">18.5%</span>
+                        <Progress value={investorStats.tierReturn * 4} className="w-20 h-2" />
+                        <span className="text-sm font-medium text-green-600">
+                          {formatPercentage(investorStats.tierReturn)}
+                        </span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span>Standard Loans (10-15%)</span>
+                      <span>Tier Bonus</span>
                       <div className="flex items-center gap-2">
-                        <Progress value={72} className="w-20 h-2" />
-                        <span className="text-sm font-medium text-blue-600">12.1%</span>
+                        <Progress value={investorStats.bonusReturn * 8} className="w-20 h-2" />
+                        <span className="text-sm font-medium text-blue-600">
+                          +{formatPercentage(investorStats.bonusReturn)}
+                        </span>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span>Bridge Loans (20-25%)</span>
-                      <div className="flex items-center gap-2">
-                        <Progress value={92} className="w-20 h-2" />
-                        <span className="text-sm font-medium text-emerald-600">24.5%</span>
+                    {tierProgress.nextTier && (
+                      <div className="flex items-center justify-between">
+                        <span>Next Tier Potential ({tierProgress.nextTier.name})</span>
+                        <div className="flex items-center gap-2">
+                          <Progress value={tierProgress.nextTier.minReturn * 4} className="w-20 h-2" />
+                          <span className="text-sm font-medium text-purple-600">
+                            {formatPercentage(tierProgress.nextTier.minReturn)}
+                          </span>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
 
               <Card className="bg-background/50 backdrop-blur-sm border-white/20">
                 <CardHeader>
-                  <CardTitle>Risk vs Return Distribution</CardTitle>
-                  <CardDescription>Portfolio allocation by risk level</CardDescription>
+                  <CardTitle>Risk Distribution</CardTitle>
+                  <CardDescription>Portfolio risk allocation</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span>Low Risk (10-15%)</span>
+                      <span>Low Risk</span>
                       <div className="flex items-center gap-2">
-                        <Progress value={40} className="w-20 h-2" />
-                        <span className="text-sm font-medium">40%</span>
+                        <Progress value={60} className="w-20 h-2" />
+                        <span className="text-sm font-medium">60%</span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span>Medium Risk (15-20%)</span>
+                      <span>Medium Risk</span>
                       <div className="flex items-center gap-2">
-                        <Progress value={35} className="w-20 h-2" />
-                        <span className="text-sm font-medium">35%</span>
+                        <Progress value={30} className="w-20 h-2" />
+                        <span className="text-sm font-medium">30%</span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span>High Risk (20-25%)</span>
+                      <span>High Risk</span>
                       <div className="flex items-center gap-2">
-                        <Progress value={25} className="w-20 h-2" />
-                        <span className="text-sm font-medium">25%</span>
+                        <Progress value={10} className="w-20 h-2" />
+                        <span className="text-sm font-medium">10%</span>
                       </div>
                     </div>
                   </div>
@@ -1194,25 +1157,46 @@ export default function InvestorPortal() {
 
               <Card className="bg-background/50 backdrop-blur-sm border-white/20">
                 <CardHeader>
-                  <CardTitle>Monthly High-Yield Performance</CardTitle>
-                  <CardDescription>Last 12 months returns</CardDescription>
+                  <CardTitle>Monthly Tier Performance</CardTitle>
+                  <CardDescription>Last 12 months tier-enhanced returns</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {[
-                      { month: "Jan 2024", return: 22.2, amount: 35420 },
-                      { month: "Dec 2023", return: 18.8, amount: 28890 },
-                      { month: "Nov 2023", return: 25.5, amount: 42200 },
-                      { month: "Oct 2023", return: 19.9, amount: 31100 },
-                      { month: "Sep 2023", return: 21.3, amount: 36500 },
-                      { month: "Aug 2023", return: 24.1, amount: 39800 },
+                      {
+                        month: "Jan 2024",
+                        baseReturn: 8.2,
+                        tierReturn: investorStats.tierReturn,
+                        amount: Math.round(15420 * (investorStats.tierReturn / 8.2)),
+                      },
+                      {
+                        month: "Dec 2023",
+                        baseReturn: 7.8,
+                        tierReturn: investorStats.tierReturn,
+                        amount: Math.round(14890 * (investorStats.tierReturn / 7.8)),
+                      },
+                      {
+                        month: "Nov 2023",
+                        baseReturn: 8.5,
+                        tierReturn: investorStats.tierReturn,
+                        amount: Math.round(16200 * (investorStats.tierReturn / 8.5)),
+                      },
+                      {
+                        month: "Oct 2023",
+                        baseReturn: 7.9,
+                        tierReturn: investorStats.tierReturn,
+                        amount: Math.round(15100 * (investorStats.tierReturn / 7.9)),
+                      },
                     ].map((data, index) => (
                       <div key={index} className="flex items-center justify-between">
                         <span className="text-sm">{data.month}</span>
                         <div className="flex items-center gap-2">
                           <span className="text-sm font-medium">{formatCurrency(data.amount)}</span>
-                          <Badge className={`text-xs ${getReturnColor(data.return)} bg-emerald-500/20`}>
-                            {data.return}%
+                          <Badge variant="outline" className="text-xs bg-green-500/20 text-green-600">
+                            {formatPercentage(data.tierReturn)}
+                          </Badge>
+                          <Badge variant="outline" className="text-xs">
+                            +{formatPercentage(data.tierReturn - data.baseReturn)} tier
                           </Badge>
                         </div>
                       </div>
@@ -1229,7 +1213,7 @@ export default function InvestorPortal() {
               <Card className="bg-background/50 backdrop-blur-sm border-white/20">
                 <CardHeader>
                   <CardTitle>Account Information</CardTitle>
-                  <CardDescription>Your high-yield investor profile details</CardDescription>
+                  <CardDescription>Your investor profile details</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -1263,21 +1247,20 @@ export default function InvestorPortal() {
 
               <Card className="bg-background/50 backdrop-blur-sm border-white/20">
                 <CardHeader>
-                  <CardTitle>High-Yield Investment Preferences</CardTitle>
-                  <CardDescription>Configure your investment criteria for 10%-25% returns</CardDescription>
+                  <CardTitle>Investment Preferences</CardTitle>
+                  <CardDescription>Configure your investment criteria</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label>Target Return Range</Label>
-                    <Select defaultValue="balanced">
+                    <Label>Risk Tolerance</Label>
+                    <Select defaultValue="moderate">
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="conservative">Conservative (10-15%)</SelectItem>
-                        <SelectItem value="balanced">Balanced (15-20%)</SelectItem>
-                        <SelectItem value="aggressive">Aggressive (20-25%)</SelectItem>
-                        <SelectItem value="mixed">Mixed Portfolio (10-25%)</SelectItem>
+                        <SelectItem value="conservative">Conservative</SelectItem>
+                        <SelectItem value="moderate">Moderate</SelectItem>
+                        <SelectItem value="aggressive">Aggressive</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -1290,12 +1273,11 @@ export default function InvestorPortal() {
                     <Input defaultValue="500000" type="number" />
                   </div>
                   <div className="space-y-2">
-                    <Label>Preferred High-Yield Loan Types</Label>
-                    <div className="flex gap-2 flex-wrap">
-                      <Badge variant="outline">Bridge loans (20-25%)</Badge>
-                      <Badge variant="outline">Commercial (15-20%)</Badge>
-                      <Badge variant="outline">Development (20-25%)</Badge>
-                      <Badge variant="outline">Premium residential (10-15%)</Badge>
+                    <Label>Preferred Loan Terms</Label>
+                    <div className="flex gap-2">
+                      <Badge variant="outline">30 years</Badge>
+                      <Badge variant="outline">50 years</Badge>
+                      <Badge variant="outline">Bridge loans</Badge>
                     </div>
                   </div>
                   <Button className="w-full">Save Preferences</Button>
@@ -1305,7 +1287,7 @@ export default function InvestorPortal() {
               <Card className="bg-background/50 backdrop-blur-sm border-white/20">
                 <CardHeader>
                   <CardTitle>Banking Information</CardTitle>
-                  <CardDescription>Manage your funding sources for high-yield investments</CardDescription>
+                  <CardDescription>Manage your funding sources</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
@@ -1342,20 +1324,27 @@ export default function InvestorPortal() {
               <Card className="bg-background/50 backdrop-blur-sm border-white/20">
                 <CardHeader>
                   <CardTitle>Notification Settings</CardTitle>
-                  <CardDescription>Configure how you receive high-yield investment updates</CardDescription>
+                  <CardDescription>Configure how you receive updates</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">High-Yield Opportunities (20%+ returns)</p>
-                      <p className="text-sm text-muted-foreground">Get notified of premium loan opportunities</p>
+                      <p className="font-medium">New Investment Opportunities</p>
+                      <p className="text-sm text-muted-foreground">Get notified of matching loans</p>
+                    </div>
+                    <input type="checkbox" defaultChecked className="rounded" />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">Tier Bonus Notifications</p>
+                      <p className="text-sm text-muted-foreground">Alert when tier bonuses are applied</p>
                     </div>
                     <input type="checkbox" defaultChecked className="rounded" />
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-medium">Payment Notifications</p>
-                      <p className="text-sm text-muted-foreground">Receive high-yield payment confirmations</p>
+                      <p className="text-sm text-muted-foreground">Receive payment confirmations</p>
                     </div>
                     <input type="checkbox" defaultChecked className="rounded" />
                   </div>
@@ -1368,7 +1357,14 @@ export default function InvestorPortal() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">Monthly High-Yield Reports</p>
+                      <p className="font-medium">Tier Upgrade Notifications</p>
+                      <p className="text-sm text-muted-foreground">Get notified when you can upgrade tiers</p>
+                    </div>
+                    <input type="checkbox" defaultChecked className="rounded" />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">Monthly Reports</p>
                       <p className="text-sm text-muted-foreground">Portfolio performance summaries</p>
                     </div>
                     <input type="checkbox" defaultChecked className="rounded" />
