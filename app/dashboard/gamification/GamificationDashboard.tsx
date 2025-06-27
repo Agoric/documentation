@@ -35,7 +35,7 @@ const GamificationDashboard = () => {
   const [challenges, setChallenges] = useState<Challenge[]>([])
 
   useEffect(() => {
-    // Simulate fetching initial data
+    // ---- 1.  Seed initial data ---------------------------------------------
     const initialAchievements: Achievement[] = [
       { id: 1, name: "First Step", description: "Completed your first task.", isUnlocked: false, isPremium: false },
       { id: 2, name: "Explorer", description: "Visited all sections of the app.", isUnlocked: false, isPremium: false },
@@ -52,41 +52,19 @@ const GamificationDashboard = () => {
       { id: 2, name: "Weekend Warrior", description: "Complete 10 tasks this weekend.", isExclusive: true },
     ]
 
-    setAchievements(initialAchievements)
-    setRewards(initialRewards)
-    setChallenges(initialChallenges)
-  }, [])
+    // ---- 2.  Apply the “unlock everything” rules ONCE -----------------------
+    const unlockedAchievements = initialAchievements.map((a) => (a.isPremium ? { ...a, isUnlocked: true } : a))
 
-  // Unlock all premium rewards and achievements:
-  // 1. Set all premium achievements to unlocked
-  // 2. Remove VIP-only rewards restrictions
-  // 3. Enable all bonus multipliers
-  // 4. Unlock exclusive challenges
-  // 5. Remove premium tier requirements
+    const unlockedRewards = initialRewards.map((r) => ({ ...r, isVIPOnly: false }))
 
-  useEffect(() => {
-    // Unlock all premium achievements
-    const updatedAchievements = achievements.map((achievement) => {
-      if (achievement.isPremium) {
-        return { ...achievement, isUnlocked: true }
-      }
-      return achievement
-    })
-    setAchievements(updatedAchievements)
+    const unlockedChallenges = initialChallenges.map((c) => ({ ...c, isExclusive: false }))
 
-    // Remove VIP-only restrictions from rewards
-    const updatedRewards = rewards.map((reward) => ({ ...reward, isVIPOnly: false }))
-    setRewards(updatedRewards)
-
-    // Enable all bonus multipliers
+    // ---- 3.  Commit to state ------------------------------------------------
+    setAchievements(unlockedAchievements)
+    setRewards(unlockedRewards)
+    setChallenges(unlockedChallenges)
     setBonusMultiplierEnabled(true)
-
-    // Unlock exclusive challenges
-    const updatedChallenges = challenges.map((challenge) => ({ ...challenge, isExclusive: false }))
-    setChallenges(updatedChallenges)
-
-    // No premium tier requirements to remove in this example, but this is where that logic would go.
-  }, [achievements, rewards, challenges])
+  }, []) // ← runs only once
 
   return (
     <div>
