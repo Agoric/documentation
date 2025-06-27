@@ -180,6 +180,15 @@ export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
           { name: "Bill Management", path: "/dashboard/bills", icon: Calendar },
         ],
       },
+      {
+        title: "Digital Assets",
+        items: [
+          { name: "SnapDAX Exchange", path: "/snap-dax/digital-asset-exchange", icon: Coins, badge: "LIVE" },
+          { name: "Asset Portfolio", path: "/snap-dax/portfolio", icon: PieChart },
+          { name: "Trading History", path: "/snap-dax/history", icon: Activity },
+          { name: "Market Analysis", path: "/snap-dax/market", icon: TrendingUp },
+        ],
+      },
     ],
     vendor: [
       {
@@ -218,6 +227,7 @@ export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
           { name: "Liquidity Management", path: "/institutional/liquidity", icon: Coins },
           { name: "Compliance Reporting", path: "/institutional/compliance", icon: FileText },
           { name: "Client Relations", path: "/institutional/clients", icon: Users },
+          { name: "SnapDAX Exchange", path: "/snap-dax/digital-asset-exchange", icon: Coins, badge: "PREMIUM" },
         ],
       },
       {
@@ -238,6 +248,7 @@ export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
           { name: "System Status", path: "/admin/system", icon: Activity, badge: "LIVE" },
           { name: "User Management", path: "/admin/users", icon: Users },
           { name: "Platform Settings", path: "/admin/settings", icon: Settings },
+          { name: "SnapDAX Control", path: "/admin/snap-dax", icon: Coins, badge: "EXCHANGE" },
         ],
       },
       {
@@ -285,6 +296,12 @@ export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
         icon: Building2,
         action: () => router.push("/citizen/loan-center"),
         color: "bg-purple-500",
+      },
+      {
+        name: "Trade Assets",
+        icon: Coins,
+        action: () => router.push("/snap-dax/digital-asset-exchange"),
+        color: "bg-cyan-500",
       },
     ],
     vendor: [
