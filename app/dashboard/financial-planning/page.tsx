@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FuturisticCard } from "@/components/ui/futuristic-card"
 import { usePremiumUnlock } from "@/contexts/premium-unlock-context"
+import { useRouter } from "next/navigation"
 import {
   Brain,
   Target,
@@ -22,10 +23,17 @@ import {
   DollarSign,
   BarChart3,
   LineChart,
+  ArrowRight,
+  CheckCircle,
+  AlertTriangle,
+  Clock,
 } from "lucide-react"
 
 export default function FinancialPlanningPage() {
   const { isPremiumUnlocked, unlockPremium } = usePremiumUnlock()
+  const router = useRouter()
+  const [selectedGoal, setSelectedGoal] = React.useState<string | null>(null)
+  const [isAnalyzing, setIsAnalyzing] = React.useState(false)
 
   // Auto-unlock premium features
   React.useEffect(() => {
@@ -42,6 +50,7 @@ export default function FinancialPlanningPage() {
       icon: Brain,
       variant: "neural" as const,
       description: "Neural analysis complete",
+      action: () => router.push("/dashboard/financial-planning/portfolio-health"),
     },
     {
       title: "Quantum Goals",
@@ -50,6 +59,7 @@ export default function FinancialPlanningPage() {
       icon: Target,
       variant: "quantum" as const,
       description: "AI-optimized targets",
+      action: () => router.push("/dashboard/financial-planning/goals"),
     },
     {
       title: "Holographic Wealth",
@@ -58,6 +68,7 @@ export default function FinancialPlanningPage() {
       icon: TrendingUp,
       variant: "holographic" as const,
       description: "Multi-dimensional tracking",
+      action: () => router.push("/dashboard/financial-planning/wealth-tracker"),
     },
     {
       title: "Neural Credit Score",
@@ -66,6 +77,7 @@ export default function FinancialPlanningPage() {
       icon: Shield,
       variant: "cyber" as const,
       description: "AI-enhanced monitoring",
+      action: () => router.push("/credit"),
     },
   ]
 
@@ -76,6 +88,7 @@ export default function FinancialPlanningPage() {
       icon: Calculator,
       confidence: 97,
       color: "from-blue-500 to-cyan-500",
+      path: "/dashboard/financial-planning/budget-calculator",
     },
     {
       name: "Neural Investment Planner",
@@ -83,6 +96,7 @@ export default function FinancialPlanningPage() {
       icon: PieChart,
       confidence: 94,
       color: "from-purple-500 to-pink-500",
+      path: "/dashboard/financial-planning/investment-planner",
     },
     {
       name: "Holographic Debt Manager",
@@ -90,6 +104,7 @@ export default function FinancialPlanningPage() {
       icon: Sparkles,
       confidence: 91,
       color: "from-green-500 to-emerald-500",
+      path: "/dashboard/financial-planning/debt-manager",
     },
     {
       name: "AI Retirement Simulator",
@@ -97,8 +112,85 @@ export default function FinancialPlanningPage() {
       icon: Rocket,
       confidence: 99,
       color: "from-orange-500 to-red-500",
+      path: "/dashboard/financial-planning/retirement-simulator",
     },
   ]
+
+  const goals = [
+    {
+      id: "emergency",
+      name: "Emergency Fund",
+      progress: 75,
+      target: "$30,000",
+      current: "$22,500",
+      status: "on-track",
+      color: "from-green-500 to-emerald-500",
+      icon: Shield,
+      deadline: "Dec 2024",
+      monthsToGoal: 3,
+    },
+    {
+      id: "house",
+      name: "House Down Payment",
+      progress: 45,
+      target: "$100,000",
+      current: "$45,000",
+      status: "at-risk",
+      color: "from-yellow-500 to-orange-500",
+      icon: Target,
+      deadline: "Jun 2025",
+      monthsToGoal: 8,
+    },
+    {
+      id: "retirement",
+      name: "Retirement Savings",
+      progress: 85,
+      target: "$1,000,000",
+      current: "$850,000",
+      status: "on-track",
+      color: "from-purple-500 to-pink-500",
+      icon: Rocket,
+      deadline: "2055",
+      monthsToGoal: 360,
+    },
+  ]
+
+  const handleToolLaunch = (toolPath: string) => {
+    setIsAnalyzing(true)
+    setTimeout(() => {
+      router.push(toolPath)
+      setIsAnalyzing(false)
+    }, 1500)
+  }
+
+  const handleGoalOptimize = (goalId: string) => {
+    setSelectedGoal(goalId)
+    router.push(`/dashboard/financial-planning/goal-optimizer?goal=${goalId}`)
+  }
+
+  const handleGetPreApproved = () => {
+    router.push("/real-estate?action=pre-approval")
+  }
+
+  const handleExportPortfolio = () => {
+    // Simulate export functionality
+    const portfolioData = {
+      totalValue: "$487,000",
+      goals: goals.length,
+      onTrackGoals: goals.filter((g) => g.status === "on-track").length,
+      exportDate: new Date().toISOString(),
+    }
+
+    const dataStr = JSON.stringify(portfolioData, null, 2)
+    const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr)
+
+    const exportFileDefaultName = `portfolio-export-${new Date().toISOString().split("T")[0]}.json`
+
+    const linkElement = document.createElement("a")
+    linkElement.setAttribute("href", dataUri)
+    linkElement.setAttribute("download", exportFileDefaultName)
+    linkElement.click()
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/90 pl-20">
@@ -125,7 +217,8 @@ export default function FinancialPlanningPage() {
             <FuturisticCard
               key={item.title}
               variant={item.variant}
-              className="hover:scale-105 transition-all duration-300"
+              className="hover:scale-105 transition-all duration-300 cursor-pointer"
+              onClick={item.action}
             >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-cyan-400">{item.title}</CardTitle>
@@ -138,6 +231,9 @@ export default function FinancialPlanningPage() {
                   {item.change}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">{item.description}</p>
+                <Button variant="ghost" size="sm" className="mt-2 p-0 h-auto text-cyan-400 hover:text-cyan-300">
+                  View Details <ArrowRight className="w-3 h-3 ml-1" />
+                </Button>
               </CardContent>
             </FuturisticCard>
           ))}
@@ -191,13 +287,46 @@ export default function FinancialPlanningPage() {
                       <Sparkles className="w-4 h-4 inline mr-1" />
                       AI Recommendation
                     </p>
-                    <p className="text-white">
+                    <p className="text-white mb-4">
                       Based on your financial profile, consider our revolutionary 50-year loan program. It can reduce
                       your monthly payments by 40% while building generational wealth.
                     </p>
-                    <Button className="mt-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700">
-                      <Zap className="w-4 h-4 mr-2" />
-                      Get Pre-Approved
+                    <div className="flex gap-3">
+                      <Button
+                        className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
+                        onClick={handleGetPreApproved}
+                      >
+                        <Zap className="w-4 h-4 mr-2" />
+                        Get Pre-Approved
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 bg-transparent"
+                        onClick={() => router.push("/real-estate?section=calculator")}
+                      >
+                        <Calculator className="w-4 h-4 mr-2" />
+                        Calculate Savings
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Quick Actions */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <Button
+                      variant="outline"
+                      className="justify-start border-white/20 hover:bg-white/5 bg-transparent"
+                      onClick={() => router.push("/dashboard/financial-planning/cash-flow")}
+                    >
+                      <DollarSign className="w-4 h-4 mr-2" />
+                      Analyze Cash Flow
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="justify-start border-white/20 hover:bg-white/5 bg-transparent"
+                      onClick={() => router.push("/dashboard/financial-planning/risk-assessment")}
+                    >
+                      <Shield className="w-4 h-4 mr-2" />
+                      Risk Assessment
                     </Button>
                   </div>
                 </CardContent>
@@ -206,41 +335,27 @@ export default function FinancialPlanningPage() {
           </TabsContent>
 
           <TabsContent value="goals" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                {
-                  name: "Emergency Fund",
-                  progress: 75,
-                  target: "$30,000",
-                  current: "$22,500",
-                  status: "on-track",
-                  color: "from-green-500 to-emerald-500",
-                  icon: Shield,
-                },
-                {
-                  name: "House Down Payment",
-                  progress: 45,
-                  target: "$100,000",
-                  current: "$45,000",
-                  status: "at-risk",
-                  color: "from-yellow-500 to-orange-500",
-                  icon: Target,
-                },
-                {
-                  name: "Retirement Savings",
-                  progress: 85,
-                  target: "$1,000,000",
-                  current: "$850,000",
-                  status: "on-track",
-                  color: "from-purple-500 to-pink-500",
-                  icon: Rocket,
-                },
-              ].map((goal) => (
-                <FuturisticCard
-                  key={goal.name}
-                  variant="quantum"
-                  className="hover:scale-105 transition-all duration-300"
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-semibold text-white">Financial Goals</h2>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => router.push("/dashboard/financial-planning/goal-creator")}
                 >
+                  <Target className="w-4 h-4 mr-2" />
+                  Create Goal
+                </Button>
+                <Button variant="outline" size="sm" onClick={handleExportPortfolio}>
+                  <BarChart3 className="w-4 h-4 mr-2" />
+                  Export Goals
+                </Button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {goals.map((goal) => (
+                <FuturisticCard key={goal.id} variant="quantum" className="hover:scale-105 transition-all duration-300">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-lg text-white flex items-center">
@@ -254,6 +369,11 @@ export default function FinancialPlanningPage() {
                             : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
                         }
                       >
+                        {goal.status === "on-track" ? (
+                          <CheckCircle className="w-3 h-3 mr-1" />
+                        ) : (
+                          <AlertTriangle className="w-3 h-3 mr-1" />
+                        )}
                         {goal.status}
                       </Badge>
                     </div>
@@ -279,7 +399,19 @@ export default function FinancialPlanningPage() {
                         ></div>
                       </div>
                     </div>
-                    <Button className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700">
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center text-muted-foreground">
+                        <Clock className="w-3 h-3 mr-1" />
+                        {goal.monthsToGoal < 12
+                          ? `${goal.monthsToGoal} months`
+                          : `${Math.floor(goal.monthsToGoal / 12)} years`}
+                      </div>
+                      <span className="text-muted-foreground">{goal.deadline}</span>
+                    </div>
+                    <Button
+                      className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
+                      onClick={() => handleGoalOptimize(goal.id)}
+                    >
                       <DollarSign className="w-4 h-4 mr-2" />
                       Optimize Goal
                     </Button>
@@ -304,6 +436,12 @@ export default function FinancialPlanningPage() {
                       <TrendingUp className="w-12 h-12 text-cyan-400 mx-auto mb-2" />
                       <p className="text-white font-medium">Holographic Chart</p>
                       <p className="text-sm text-muted-foreground">3D wealth visualization</p>
+                      <Button
+                        className="mt-4 bg-gradient-to-r from-cyan-500 to-blue-600"
+                        onClick={() => router.push("/dashboard/financial-planning/wealth-visualization")}
+                      >
+                        Launch 3D View
+                      </Button>
                     </div>
                   </div>
                 </CardContent>
@@ -319,15 +457,18 @@ export default function FinancialPlanningPage() {
                 <CardContent>
                   <div className="space-y-4">
                     {[
-                      { name: "Stocks", percentage: 60, color: "from-green-500 to-emerald-500" },
-                      { name: "Bonds", percentage: 25, color: "from-blue-500 to-cyan-500" },
-                      { name: "Real Estate", percentage: 10, color: "from-purple-500 to-pink-500" },
-                      { name: "Crypto", percentage: 5, color: "from-orange-500 to-red-500" },
+                      { name: "Stocks", percentage: 60, color: "from-green-500 to-emerald-500", value: "$292K" },
+                      { name: "Bonds", percentage: 25, color: "from-blue-500 to-cyan-500", value: "$122K" },
+                      { name: "Real Estate", percentage: 10, color: "from-purple-500 to-pink-500", value: "$49K" },
+                      { name: "Crypto", percentage: 5, color: "from-orange-500 to-red-500", value: "$24K" },
                     ].map((asset) => (
                       <div key={asset.name} className="space-y-2">
                         <div className="flex justify-between text-sm">
                           <span className="text-white">{asset.name}</span>
-                          <span className="text-cyan-400">{asset.percentage}%</span>
+                          <div className="text-right">
+                            <span className="text-cyan-400">{asset.percentage}%</span>
+                            <span className="text-muted-foreground ml-2">{asset.value}</span>
+                          </div>
                         </div>
                         <div className="w-full bg-gray-700 rounded-full h-2">
                           <div
@@ -337,6 +478,13 @@ export default function FinancialPlanningPage() {
                         </div>
                       </div>
                     ))}
+                    <Button
+                      className="w-full mt-4 bg-gradient-to-r from-purple-500 to-pink-600"
+                      onClick={() => router.push("/dashboard/financial-planning/rebalance")}
+                    >
+                      <PieChart className="w-4 h-4 mr-2" />
+                      Rebalance Portfolio
+                    </Button>
                   </div>
                 </CardContent>
               </FuturisticCard>
@@ -364,9 +512,22 @@ export default function FinancialPlanningPage() {
                       <Badge className="bg-green-500/20 text-green-400 border-green-500/30">{tool.confidence}%</Badge>
                     </div>
                     <Progress value={tool.confidence} className="h-2" />
-                    <Button className={`w-full bg-gradient-to-r ${tool.color} hover:opacity-90 transition-opacity`}>
-                      <Brain className="w-4 h-4 mr-2" />
-                      Launch AI Tool
+                    <Button
+                      className={`w-full bg-gradient-to-r ${tool.color} hover:opacity-90 transition-opacity`}
+                      onClick={() => handleToolLaunch(tool.path)}
+                      disabled={isAnalyzing}
+                    >
+                      {isAnalyzing ? (
+                        <>
+                          <div className="w-4 h-4 mr-2 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                          Analyzing...
+                        </>
+                      ) : (
+                        <>
+                          <Brain className="w-4 h-4 mr-2" />
+                          Launch AI Tool
+                        </>
+                      )}
                     </Button>
                   </CardContent>
                 </FuturisticCard>
