@@ -25,14 +25,11 @@ import {
   Zap,
   Clock,
   RefreshCw,
-  Check,
-  User,
-  ChevronUp,
 } from "lucide-react"
+import { QuantumProfileCard } from "@/components/ui/quantum-profile-card"
 
 export default function FinancialPlanningPage() {
   const [selectedGoal, setSelectedGoal] = React.useState<string | null>(null)
-  const [isProfileExpanded, setIsProfileExpanded] = React.useState(false)
 
   const goals = [
     {
@@ -220,82 +217,17 @@ export default function FinancialPlanningPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/90 p-6">
-      {/* Floating Profile Card */}
-      <div
-        className="fixed top-4 right-4 z-50 transition-all duration-300 ease-in-out"
-        onMouseEnter={() => setIsProfileExpanded(true)}
-        onMouseLeave={() => setIsProfileExpanded(false)}
-      >
-        <Card
-          className={`bg-gradient-to-br from-background/95 to-background/80 backdrop-blur-xl border-white/20 shadow-2xl transition-all duration-300 ${
-            isProfileExpanded ? "w-80 h-auto" : "w-16 h-16"
-          }`}
-        >
-          <CardContent className="p-4">
-            {!isProfileExpanded ? (
-              <div className="flex items-center justify-center w-8 h-8">
-                <User className="h-6 w-6 text-primary" />
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-                      <User className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">Financial Profile</h3>
-                      <p className="text-sm text-muted-foreground">Overall Progress</p>
-                    </div>
-                  </div>
-                  <ChevronUp className="h-4 w-4 text-muted-foreground" />
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span>Total Progress</span>
-                    <span className="font-medium">{overallProgress.progress.toFixed(1)}%</span>
-                  </div>
-
-                  <div className="relative">
-                    <Progress value={overallProgress.progress} className="h-3 bg-white/10" />
-                    <div
-                      className={`absolute top-0 left-0 h-3 rounded-full transition-all duration-500 ${getProgressBarColor(overallProgress.status)}`}
-                      style={{ width: `${overallProgress.progress}%` }}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-2 text-xs">
-                    <div className="text-center">
-                      <div className="font-medium text-emerald-500">{overallProgress.onTrack}</div>
-                      <div className="text-muted-foreground">On Track</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-medium text-yellow-500">{overallProgress.atRisk}</div>
-                      <div className="text-muted-foreground">At Risk</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-medium text-red-500">{overallProgress.behind}</div>
-                      <div className="text-muted-foreground">Behind</div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2 pt-2 border-t border-white/10">
-                    <Button size="sm" variant="outline" className="flex-1 bg-transparent">
-                      <RefreshCw className="h-3 w-3 mr-1" />
-                      Recalculate
-                    </Button>
-                    <Button size="sm" className="flex-1">
-                      <Check className="h-3 w-3 mr-1" />
-                      Accept
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+      {/* Quantum Profile Card */}
+      <QuantumProfileCard
+        overallProgress={overallProgress}
+        userInfo={{
+          name: "Alexandra Chen",
+          email: "alexandra.chen@snappaifi.com",
+          role: "admin",
+          joinDate: "2023-01-15",
+          lastActive: "2 minutes ago",
+        }}
+      />
 
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
