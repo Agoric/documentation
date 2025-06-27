@@ -41,7 +41,7 @@ const loanTypes = [
   },
 ]
 
-export default function LoanCenterDashboard() {
+export default function LoanCenterPage() {
   const router = useRouter()
 
   return (
