@@ -1,510 +1,338 @@
 "use client"
-
-import { useState } from "react"
 import { useParams } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { LoanStatusTracker } from "@/components/loan-processing/loan-status-tracker"
 import { DocumentUploadManager } from "@/components/loan-processing/document-upload-manager"
-import {
-  ArrowLeft,
-  MessageSquare,
-  Calendar,
-  Phone,
-  Mail,
-  User,
-  Building,
-  DollarSign,
-  MapPin,
-  AlertTriangle,
-  CheckCircle,
-  Download,
-  Share,
-  Bell,
-} from "lucide-react"
-import Link from "next/link"
-
-interface LoanDetails {
-  id: string
-  type: string
-  amount: number
-  interestRate: number
-  term: number
-  status: string
-  currentStep: number
-  lender: {
-    name: string
-    contact: {
-      phone: string
-      email: string
-      address: string
-    }
-    logo?: string
-  }
-  borrower: {
-    name: string
-    email: string
-    phone: string
-  }
-  property?: {
-    address: string
-    value: number
-    type: string
-  }
-  timeline: {
-    applied: string
-    lastUpdate: string
-    estimatedCompletion: string
-  }
-  monthlyPayment: number
-  totalInterest: number
-  loanToValue?: number
-  debtToIncome?: number
-}
+import { ArrowLeft, FileText, Calendar, Building2, Phone, Mail, Download, Share, Bell } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function LoanStatusPage() {
   const params = useParams()
+  const router = useRouter()
   const applicationId = params.applicationId as string
 
-  const [currentStep, setCurrentStep] = useState(2)
-  const [loanDetails, setLoanDetails] = useState<LoanDetails>({
+  // Mock loan application data
+  const loanApplication = {
     id: applicationId,
-    type: "home",
-    amount: 450000,
-    interestRate: 6.75,
-    term: 30,
+    type: "Home Loan",
+    amount: "$450,000",
     status: "processing",
-    currentStep: 2,
-    lender: {
-      name: "First National Bank",
-      contact: {
-        phone: "(555) 123-4567",
-        email: "loans@firstnational.com",
-        address: "123 Banking St, Financial District, NY 10001",
-      },
-    },
-    borrower: {
-      name: "John Doe",
-      email: "john.doe@email.com",
-      phone: "(555) 987-6543",
+    progress: 65,
+    lender: "Snapifi Bank",
+    appliedDate: "2024-01-20",
+    expectedClose: "2024-02-25",
+    interestRate: "6.25%",
+    term: "30 years",
+    loanOfficer: {
+      name: "Sarah Johnson",
+      title: "Senior Loan Officer",
+      phone: "(555) 123-4567",
+      email: "sarah.johnson@snapifibank.com",
+      photo: "/placeholder-user.jpg",
     },
     property: {
-      address: "456 Dream Home Lane, Suburbia, NY 12345",
-      value: 500000,
-      type: "Single Family Home",
+      address: "123 Main Street, Beverly Hills, CA 90210",
+      purchasePrice: "$450,000",
+      downPayment: "$90,000",
+      loanToValue: "80%",
     },
     timeline: {
-      applied: "2024-01-15",
-      lastUpdate: "2024-01-18",
-      estimatedCompletion: "2024-02-28",
+      applicationDate: "2024-01-20",
+      approvalDate: "2024-02-10",
+      closingDate: "2024-02-25",
+      rateLockExpires: "2024-03-15",
     },
-    monthlyPayment: 2847.15,
-    totalInterest: 574572,
-    loanToValue: 90,
-    debtToIncome: 28,
-  })
-
-  const [notifications, setNotifications] = useState([
-    {
-      id: "1",
-      type: "update",
-      title: "Credit Check Completed",
-      message: "Your credit assessment has been completed successfully. Score: 785",
-      timestamp: "2024-01-18T10:30:00Z",
-      read: false,
-    },
-    {
-      id: "2",
-      type: "action",
-      title: "Documents Required",
-      message: "Please upload your recent pay stubs to continue processing",
-      timestamp: "2024-01-17T14:15:00Z",
-      read: false,
-    },
-    {
-      id: "3",
-      type: "info",
-      title: "Application Received",
-      message: "Your loan application has been received and assigned to an underwriter",
-      timestamp: "2024-01-15T09:00:00Z",
-      read: true,
-    },
-  ])
-
-  const handleNextStep = () => {
-    if (currentStep < 9) {
-      setCurrentStep((prev) => prev + 1)
-      setLoanDetails((prev) => ({
-        ...prev,
-        currentStep: currentStep + 1,
-        timeline: {
-          ...prev.timeline,
-          lastUpdate: new Date().toISOString().split("T")[0],
-        },
-      }))
-    }
   }
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "approved":
-        return "bg-green-500/20 text-green-400 border-green-500/30"
-      case "processing":
-        return "bg-blue-500/20 text-blue-400 border-blue-500/30"
-      case "pending":
-        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
-      case "rejected":
-        return "bg-red-500/20 text-red-400 border-red-500/30"
-      default:
-        return "bg-gray-500/20 text-gray-400 border-gray-500/30"
-    }
+  const handleGoBack = () => {
+    router.push("/citizen/loan-center")
   }
 
-  const getNotificationIcon = (type: string) => {
-    switch (type) {
-      case "update":
-        return <CheckCircle className="h-4 w-4 text-green-400" />
-      case "action":
-        return <AlertTriangle className="h-4 w-4 text-yellow-400" />
-      default:
-        return <Bell className="h-4 w-4 text-blue-400" />
+  const handleDownloadSummary = () => {
+    // Mock download functionality
+    const summaryData = {
+      applicationId: loanApplication.id,
+      loanType: loanApplication.type,
+      amount: loanApplication.amount,
+      status: loanApplication.status,
+      lender: loanApplication.lender,
+      interestRate: loanApplication.interestRate,
+      term: loanApplication.term,
+      exportDate: new Date().toISOString(),
+    }
+
+    const dataStr = JSON.stringify(summaryData, null, 2)
+    const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr)
+    const exportFileDefaultName = `loan-application-${applicationId}.json`
+
+    const linkElement = document.createElement("a")
+    linkElement.setAttribute("href", dataUri)
+    linkElement.setAttribute("download", exportFileDefaultName)
+    linkElement.click()
+  }
+
+  const handleShareApplication = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: `Loan Application ${applicationId}`,
+        text: `Check out my loan application status`,
+        url: window.location.href,
+      })
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(window.location.href)
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <div className="container mx-auto p-6 space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-cyan-950 to-blue-950 p-6">
+      <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
-        <div className="flex items-center gap-4">
-          <Link href="/citizen/loan-center">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="h-4 w-4 mr-1" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              onClick={handleGoBack}
+              className="border-blue-500/30 text-blue-300 hover:bg-blue-500/20 bg-transparent"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Loan Center
             </Button>
-          </Link>
-          <div className="flex-1">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Loan Application Status
-            </h1>
-            <p className="text-muted-foreground">Application ID: {applicationId}</p>
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                {loanApplication.type} Status
+              </h1>
+              <p className="text-xl text-blue-200 mt-2">Application ID: {applicationId}</p>
+            </div>
           </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">
-              <Share className="h-4 w-4 mr-1" />
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              onClick={handleDownloadSummary}
+              className="border-blue-500/30 text-blue-300 hover:bg-blue-500/20 bg-transparent"
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Download Summary
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handleShareApplication}
+              className="border-blue-500/30 text-blue-300 hover:bg-blue-500/20 bg-transparent"
+            >
+              <Share className="h-4 w-4 mr-2" />
               Share
             </Button>
-            <Button variant="outline" size="sm">
-              <Download className="h-4 w-4 mr-1" />
-              Export
+            <Button className="bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700">
+              <Bell className="h-4 w-4 mr-2" />
+              Notifications
             </Button>
           </div>
         </div>
 
-        {/* Loan Overview */}
-        <Card className="bg-black/20 border-white/10">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="flex items-center gap-2">
-                  <Building className="h-5 w-5" />
-                  {loanDetails.type.charAt(0).toUpperCase() + loanDetails.type.slice(1)} Loan Application
-                </CardTitle>
-                <CardDescription>
-                  {loanDetails.lender.name} • Applied {new Date(loanDetails.timeline.applied).toLocaleDateString()}
-                </CardDescription>
+        {/* Application Overview */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Card className="lg:col-span-2 bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <FileText className="h-5 w-5 text-blue-400" />
+                Application Overview
+              </CardTitle>
+              <CardDescription className="text-blue-200">Key details about your loan application</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                  <span className="text-blue-300 text-sm">Loan Amount</span>
+                  <div className="font-semibold text-white text-lg">{loanApplication.amount}</div>
+                </div>
+                <div>
+                  <span className="text-blue-300 text-sm">Interest Rate</span>
+                  <div className="font-semibold text-white text-lg">{loanApplication.interestRate}</div>
+                </div>
+                <div>
+                  <span className="text-blue-300 text-sm">Loan Term</span>
+                  <div className="font-semibold text-white text-lg">{loanApplication.term}</div>
+                </div>
+                <div>
+                  <span className="text-blue-300 text-sm">Lender</span>
+                  <div className="font-semibold text-white text-lg">{loanApplication.lender}</div>
+                </div>
               </div>
-              <Badge className={getStatusColor(loanDetails.status)}>
-                {loanDetails.status.charAt(0).toUpperCase() + loanDetails.status.slice(1)}
-              </Badge>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Loan Amount</p>
-                <p className="text-2xl font-bold text-green-400">${loanDetails.amount.toLocaleString()}</p>
-              </div>
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Interest Rate</p>
-                <p className="text-2xl font-bold text-blue-400">{loanDetails.interestRate}%</p>
-              </div>
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Monthly Payment</p>
-                <p className="text-2xl font-bold text-purple-400">${loanDetails.monthlyPayment.toLocaleString()}</p>
-              </div>
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Loan Term</p>
-                <p className="text-2xl font-bold text-orange-400">{loanDetails.term} years</p>
-              </div>
-            </div>
 
-            {loanDetails.property && (
-              <div className="mt-6 pt-6 border-t border-white/10">
-                <h4 className="font-medium mb-3 flex items-center gap-2">
-                  <MapPin className="h-4 w-4" />
-                  Property Details
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div className="bg-blue-800/30 p-4 rounded-lg border border-blue-500/20">
+                <h4 className="font-medium text-white mb-3">Property Information</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-muted-foreground">Address</p>
-                    <p className="font-medium">{loanDetails.property.address}</p>
+                    <span className="text-blue-300">Address:</span>
+                    <div className="text-white">{loanApplication.property.address}</div>
                   </div>
                   <div>
-                    <p className="text-muted-foreground">Property Value</p>
-                    <p className="font-medium">${loanDetails.property.value.toLocaleString()}</p>
+                    <span className="text-blue-300">Purchase Price:</span>
+                    <div className="text-white">{loanApplication.property.purchasePrice}</div>
                   </div>
                   <div>
-                    <p className="text-muted-foreground">Property Type</p>
-                    <p className="font-medium">{loanDetails.property.type}</p>
+                    <span className="text-blue-300">Down Payment:</span>
+                    <div className="text-white">{loanApplication.property.downPayment}</div>
+                  </div>
+                  <div>
+                    <span className="text-blue-300">Loan-to-Value:</span>
+                    <div className="text-white">{loanApplication.property.loanToValue}</div>
                   </div>
                 </div>
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Building2 className="h-5 w-5 text-blue-400" />
+                Your Loan Officer
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
+                  <Building2 className="h-8 w-8 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-white">{loanApplication.loanOfficer.name}</h4>
+                  <p className="text-sm text-blue-200">{loanApplication.loanOfficer.title}</p>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start border-blue-500/30 text-blue-300 bg-transparent"
+                  onClick={() => window.open(`tel:${loanApplication.loanOfficer.phone}`)}
+                >
+                  <Phone className="h-4 w-4 mr-2" />
+                  {loanApplication.loanOfficer.phone}
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start border-blue-500/30 text-blue-300 bg-transparent"
+                  onClick={() => window.open(`mailto:${loanApplication.loanOfficer.email}`)}
+                >
+                  <Mail className="h-4 w-4 mr-2" />
+                  {loanApplication.loanOfficer.email}
+                </Button>
+              </div>
+
+              <div className="bg-blue-800/30 p-3 rounded-lg border border-blue-500/20">
+                <h4 className="font-medium text-white mb-2">Important Dates</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-blue-300">Applied:</span>
+                    <span className="text-white">{loanApplication.timeline.applicationDate}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-blue-300">Expected Approval:</span>
+                    <span className="text-white">{loanApplication.timeline.approvalDate}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-blue-300">Closing Date:</span>
+                    <span className="text-white">{loanApplication.timeline.closingDate}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-blue-300">Rate Lock Expires:</span>
+                    <span className="text-white">{loanApplication.timeline.rateLockExpires}</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="status" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="status">Status Tracker</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 bg-blue-900/30 backdrop-blur-sm">
+            <TabsTrigger value="status">Application Status</TabsTrigger>
             <TabsTrigger value="documents">Documents</TabsTrigger>
-            <TabsTrigger value="details">Loan Details</TabsTrigger>
-            <TabsTrigger value="communication">Messages</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
+            <TabsTrigger value="timeline">Timeline & Updates</TabsTrigger>
           </TabsList>
 
-          {/* Status Tracker Tab */}
           <TabsContent value="status">
-            <LoanStatusTracker
-              applicationId={applicationId}
-              loanType={loanDetails.type}
-              amount={loanDetails.amount}
-              currentStep={currentStep}
-              onNextStep={handleNextStep}
-            />
+            <LoanStatusTracker applicationId={applicationId} currentStep={3} />
           </TabsContent>
 
-          {/* Documents Tab */}
           <TabsContent value="documents">
-            <DocumentUploadManager
-              applicationId={applicationId}
-              onDocumentUpdate={(docs) => console.log("Documents updated:", docs)}
-            />
+            <DocumentUploadManager applicationId={applicationId} />
           </TabsContent>
 
-          {/* Loan Details Tab */}
-          <TabsContent value="details" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Borrower Information */}
-              <Card className="bg-black/20 border-white/10">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="h-5 w-5" />
-                    Borrower Information
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Full Name</p>
-                    <p className="font-medium">{loanDetails.borrower.name}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Email</p>
-                    <p className="font-medium">{loanDetails.borrower.email}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Phone</p>
-                    <p className="font-medium">{loanDetails.borrower.phone}</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Lender Information */}
-              <Card className="bg-black/20 border-white/10">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Building className="h-5 w-5" />
-                    Lender Information
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Institution</p>
-                    <p className="font-medium">{loanDetails.lender.name}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Contact Phone</p>
-                    <p className="font-medium">{loanDetails.lender.contact.phone}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Email</p>
-                    <p className="font-medium">{loanDetails.lender.contact.email}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Address</p>
-                    <p className="font-medium text-sm">{loanDetails.lender.contact.address}</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Financial Summary */}
-              <Card className="bg-black/20 border-white/10">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <DollarSign className="h-5 w-5" />
-                    Financial Summary
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Principal</p>
-                      <p className="font-medium">${loanDetails.amount.toLocaleString()}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Interest Rate</p>
-                      <p className="font-medium">{loanDetails.interestRate}%</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Monthly Payment</p>
-                      <p className="font-medium">${loanDetails.monthlyPayment.toLocaleString()}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Total Interest</p>
-                      <p className="font-medium">${loanDetails.totalInterest.toLocaleString()}</p>
-                    </div>
-                  </div>
-                  {loanDetails.loanToValue && (
-                    <div className="pt-4 border-t border-white/10">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-sm text-muted-foreground">Loan-to-Value</p>
-                          <p className="font-medium">{loanDetails.loanToValue}%</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground">Debt-to-Income</p>
-                          <p className="font-medium">{loanDetails.debtToIncome}%</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Timeline */}
-              <Card className="bg-black/20 border-white/10">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Calendar className="h-5 w-5" />
-                    Timeline
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Application Date</p>
-                    <p className="font-medium">{new Date(loanDetails.timeline.applied).toLocaleDateString()}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Last Update</p>
-                    <p className="font-medium">{new Date(loanDetails.timeline.lastUpdate).toLocaleDateString()}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Estimated Completion</p>
-                    <p className="font-medium">
-                      {new Date(loanDetails.timeline.estimatedCompletion).toLocaleDateString()}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          {/* Communication Tab */}
-          <TabsContent value="communication" className="space-y-6">
-            <Card className="bg-black/20 border-white/10">
+          <TabsContent value="timeline" className="space-y-6">
+            <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageSquare className="h-5 w-5" />
-                  Communication Center
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Calendar className="h-5 w-5 text-blue-400" />
+                  Application Timeline
                 </CardTitle>
-                <CardDescription>Contact your loan officer or send messages about your application</CardDescription>
+                <CardDescription className="text-blue-200">Complete history of your loan application</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Button className="h-12 justify-start">
-                    <Phone className="h-4 w-4 mr-2" />
-                    Call Loan Officer
-                  </Button>
-                  <Button variant="outline" className="h-12 justify-start bg-transparent">
-                    <Mail className="h-4 w-4 mr-2" />
-                    Send Message
-                  </Button>
-                </div>
-
-                <div className="pt-4 border-t border-white/10">
-                  <h4 className="font-medium mb-3">Recent Messages</h4>
-                  <div className="space-y-3">
-                    <div className="p-3 rounded-lg bg-white/5 border border-white/10">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-sm">Loan Officer - Sarah Johnson</span>
-                        <span className="text-xs text-muted-foreground">2 hours ago</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Your credit check has been completed successfully. We'll proceed to the next step shortly.
-                      </p>
+                {[
+                  {
+                    date: "2024-01-22",
+                    time: "2:30 PM",
+                    title: "Document Verification Started",
+                    description: "Income documents are being reviewed by our verification team",
+                    type: "update",
+                  },
+                  {
+                    date: "2024-01-21",
+                    time: "11:15 AM",
+                    title: "Initial Review Completed",
+                    description: "Application passed initial eligibility check",
+                    type: "milestone",
+                  },
+                  {
+                    date: "2024-01-20",
+                    time: "4:45 PM",
+                    title: "Application Submitted",
+                    description: "Your loan application was successfully submitted",
+                    type: "milestone",
+                  },
+                  {
+                    date: "2024-01-20",
+                    time: "3:20 PM",
+                    title: "Pre-qualification Completed",
+                    description: "You were pre-qualified for a loan amount up to $500,000",
+                    type: "update",
+                  },
+                ].map((event, index) => (
+                  <div key={index} className="flex gap-4 p-4 bg-blue-800/30 rounded-lg border border-blue-500/20">
+                    <div className="flex flex-col items-center">
+                      <div
+                        className={`w-3 h-3 rounded-full ${
+                          event.type === "milestone" ? "bg-green-400" : "bg-blue-400"
+                        }`}
+                      />
+                      {index < 3 && <div className="w-0.5 h-8 bg-blue-500/30 mt-2" />}
                     </div>
-                    <div className="p-3 rounded-lg bg-white/5 border border-white/10">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-sm">You</span>
-                        <span className="text-xs text-muted-foreground">1 day ago</span>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <h4 className="font-medium text-white">{event.title}</h4>
+                        <div className="text-sm text-blue-300">
+                          {event.date} at {event.time}
+                        </div>
                       </div>
-                      <p className="text-sm text-muted-foreground">
-                        I've uploaded the requested pay stubs. Please let me know if you need anything else.
-                      </p>
+                      <p className="text-sm text-blue-200">{event.description}</p>
+                      <Badge
+                        className={`mt-2 text-xs ${
+                          event.type === "milestone"
+                            ? "bg-green-500/20 text-green-400 border-green-500/30"
+                            : "bg-blue-500/20 text-blue-400 border-blue-500/30"
+                        }`}
+                      >
+                        {event.type === "milestone" ? "Milestone" : "Update"}
+                      </Badge>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Notifications Tab */}
-          <TabsContent value="notifications" className="space-y-6">
-            <Card className="bg-black/20 border-white/10">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Bell className="h-5 w-5" />
-                  Notifications
-                </CardTitle>
-                <CardDescription>Stay updated on your loan application progress</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {notifications.map((notification) => (
-                    <div
-                      key={notification.id}
-                      className={`p-4 rounded-lg border ${
-                        notification.read ? "bg-white/5 border-white/10" : "bg-blue-500/10 border-blue-500/20"
-                      }`}
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 mt-1">{getNotificationIcon(notification.type)}</div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between mb-1">
-                            <h4 className="font-medium text-sm">{notification.title}</h4>
-                            <span className="text-xs text-muted-foreground">
-                              {new Date(notification.timestamp).toLocaleDateString()}
-                            </span>
-                          </div>
-                          <p className="text-sm text-muted-foreground">{notification.message}</p>
-                        </div>
-                        {!notification.read && <div className="w-2 h-2 bg-blue-400 rounded-full flex-shrink-0 mt-2" />}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                ))}
               </CardContent>
             </Card>
           </TabsContent>

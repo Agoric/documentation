@@ -1,48 +1,15 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { neon } from "@neondatabase/serverless"
 
-const sql = neon(process.env.NEON_NEON_DATABASE_URL)
-
-interface LoanApplication {
-  applicantId: string
-  loanAmount: number
-  loanTerm: number
-  loanType: "50-year" | "30-year" | "15-year" | "commercial" | "investment"
-  propertyType: "primary" | "secondary" | "investment" | "commercial"
-  propertyValue: number
-  downPayment: number
-  annualIncome: number
-  monthlyDebt: number
-  creditScore: number
-  employmentStatus: "employed" | "self-employed" | "retired" | "unemployed"
-  employmentYears: number
-  assets: number
-  liabilities: number
-  propertyAddress: string
-  purpose: "purchase" | "refinance" | "cash-out"
-}
-
-interface UnderwritingResult {
-  approved: boolean
-  riskScore: number
-  riskCategory: "low" | "medium" | "high" | "very-high"
-  interestRate: number
-  monthlyPayment: number
-  loanToValue: number
-  debtToIncome: number
-  conditions: string[]
-  requiredDocuments: string[]
-  investorMatches: string[]
-}
-
 // Handle GET requests (for browser testing)
 export async function GET() {
   return NextResponse.json({
-    message: "Loan Application API is running",
-    status: "ready",
+    message: "Loan Application API is operational",
     endpoints: {
-      POST: "/api/loans/application - Submit loan application",
+      POST: "Submit loan application",
+      GET: "API status check",
     },
+    timestamp: new Date().toISOString(),
   })
 }
 
@@ -50,17 +17,19 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     // Check if database URL is configured
-    if (!process.env.NEON_DATABASE_URL) {
+    if (!process.env.NEON_NEON_DATABASE_URL) {
       return NextResponse.json(
         {
           error: "Database configuration missing",
-          message: "NEON_DATABASE_URL environment variable is not set",
+          message: "NEON_DATABASE_URL environment variable not set",
         },
         { status: 500 },
       )
     }
 
-    // Parse request body
+    const sql = neon(process.env.NEON_DATABASE_URL)
+
+    // Parse and validate request body
     let body
     try {
       body = await request.json()
@@ -74,35 +43,24 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const {
-      applicantName,
-      email,
-      phone,
-      loanType,
-      loanAmount,
-      income,
-      creditScore,
-      employmentStatus,
-      propertyAddress,
-      propertyValue,
-    } = body
-
     // Validate required fields
-    if (!applicantName || !email || !loanType || !loanAmount) {
+    const requiredFields = ["applicantName", "loanType", "loanAmount", "email"]
+    const missingFields = requiredFields.filter((field) => !body[field])
+
+    if (missingFields.length > 0) {
       return NextResponse.json(
         {
           error: "Missing required fields",
-          message: "applicantName, email, loanType, and loanAmount are required",
-          received: Object.keys(body),
+          missingFields,
+          message: `Please provide: ${missingFields.join(", ")}`,
         },
         { status: 400 },
       )
     }
 
-    // Generate application ID
-    const applicationId = `LOAN-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
-
     // Insert loan application
+    const applicationId = `APP-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+
     const result = await sql`
       INSERT INTO loan_applications (
         application_id,
@@ -111,58 +69,41 @@ export async function POST(request: NextRequest) {
         phone,
         loan_type,
         loan_amount,
-        income,
-        credit_score,
+        loan_purpose,
         employment_status,
-        property_address,
-        property_value,
+        annual_income,
+        credit_score,
         status,
-        created_at,
-        updated_at
-      ) VALUES (
-        ${applicationId},
-        ${applicantName},
-        ${email},
-        ${phone || null},
-        ${loanType},
-        ${loanAmount},
-        ${income || null},
-        ${creditScore || null},
-        ${employmentStatus || null},
-        ${propertyAddress || null},
-        ${propertyValue || null},
-        'submitted',
-        NOW(),
-        NOW()
-      )
-      RETURNING *
-    `
-
-    // Create initial status entry
-    await sql`
-      INSERT INTO loan_status_history (
-        application_id,
-        status,
-        notes,
         created_at
       ) VALUES (
         ${applicationId},
+        ${body.applicantName},
+        ${body.email},
+        ${body.phone || null},
+        ${body.loanType},
+        ${body.loanAmount},
+        ${body.loanPurpose || null},
+        ${body.employmentStatus || null},
+        ${body.annualIncome || null},
+        ${body.creditScore || null},
         'submitted',
-        'Application submitted successfully',
         NOW()
       )
+      RETURNING application_id, status, created_at
     `
 
     return NextResponse.json({
       success: true,
       message: "Loan application submitted successfully",
       applicationId,
-      data: result[0],
+      status: "submitted",
+      nextSteps: ["Document verification", "Credit check", "Income verification", "Underwriting review"],
+      estimatedProcessingTime: "3-5 business days",
+      timestamp: new Date().toISOString(),
     })
   } catch (error) {
     console.error("Loan application error:", error)
 
-    // Return more specific error information
     return NextResponse.json(
       {
         error: "Failed to process loan application",
@@ -171,194 +112,5 @@ export async function POST(request: NextRequest) {
       },
       { status: 500 },
     )
-  }
-}
-
-async function processUnderwriting(application: LoanApplication): Promise<UnderwritingResult> {
-  // Calculate key ratios
-  const loanToValue = (application.loanAmount / application.propertyValue) * 100
-  const debtToIncome =
-    ((application.monthlyDebt + calculateMonthlyPayment(application)) / (application.annualIncome / 12)) * 100
-
-  // Risk scoring algorithm
-  let riskScore = 0
-  const conditions: string[] = []
-  const requiredDocuments: string[] = []
-
-  // Credit score impact (40% of risk score)
-  if (application.creditScore >= 800) riskScore += 40
-  else if (application.creditScore >= 750) riskScore += 35
-  else if (application.creditScore >= 700) riskScore += 30
-  else if (application.creditScore >= 650) riskScore += 20
-  else if (application.creditScore >= 600) riskScore += 10
-  else {
-    riskScore += 0
-    conditions.push("Credit enhancement required")
-  }
-
-  // Debt-to-income ratio (25% of risk score)
-  if (debtToIncome <= 28) riskScore += 25
-  else if (debtToIncome <= 36) riskScore += 20
-  else if (debtToIncome <= 43) riskScore += 15
-  else if (debtToIncome <= 50) riskScore += 10
-  else {
-    riskScore += 0
-    conditions.push("Debt consolidation recommended")
-  }
-
-  // Loan-to-value ratio (20% of risk score)
-  if (loanToValue <= 80) riskScore += 20
-  else if (loanToValue <= 90) riskScore += 15
-  else if (loanToValue <= 95) riskScore += 10
-  else {
-    riskScore += 5
-    conditions.push("PMI required")
-  }
-
-  // Employment stability (15% of risk score)
-  if (application.employmentYears >= 5) riskScore += 15
-  else if (application.employmentYears >= 2) riskScore += 12
-  else if (application.employmentYears >= 1) riskScore += 8
-  else {
-    riskScore += 0
-    conditions.push("Employment verification required")
-  }
-
-  // Determine risk category and interest rate
-  let riskCategory: UnderwritingResult["riskCategory"]
-  let baseRate = 3.1 // Base 50-year loan rate
-
-  if (riskScore >= 85) {
-    riskCategory = "low"
-    baseRate += 0.0
-  } else if (riskScore >= 70) {
-    riskCategory = "medium"
-    baseRate += 0.25
-  } else if (riskScore >= 50) {
-    riskCategory = "high"
-    baseRate += 0.5
-  } else {
-    riskCategory = "very-high"
-    baseRate += 1.0
-  }
-
-  // Required documents based on application
-  requiredDocuments.push(
-    "Government-issued ID",
-    "Social Security card",
-    "Pay stubs (last 2 months)",
-    "Tax returns (last 2 years)",
-    "Bank statements (last 3 months)",
-    "Property appraisal",
-    "Purchase agreement",
-  )
-
-  if (application.employmentStatus === "self-employed") {
-    requiredDocuments.push("Business tax returns", "Profit & loss statements")
-  }
-
-  if (application.assets > 100000) {
-    requiredDocuments.push("Investment account statements")
-  }
-
-  const approved = riskScore >= 50 && debtToIncome <= 50 && loanToValue <= 97
-
-  return {
-    approved,
-    riskScore,
-    riskCategory,
-    interestRate: baseRate,
-    monthlyPayment: calculateMonthlyPayment({
-      ...application,
-      loanAmount: application.loanAmount,
-      loanTerm: application.loanTerm,
-      interestRate: baseRate,
-    }),
-    loanToValue,
-    debtToIncome,
-    conditions,
-    requiredDocuments,
-    investorMatches: [],
-  }
-}
-
-function calculateMonthlyPayment(params: {
-  loanAmount: number
-  loanTerm: number
-  interestRate?: number
-}): number {
-  const { loanAmount, loanTerm, interestRate = 3.1 } = params
-  const monthlyRate = interestRate / 100 / 12
-  const numPayments = loanTerm * 12
-
-  if (monthlyRate === 0) return loanAmount / numPayments
-
-  return (
-    (loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments))) / (Math.pow(1 + monthlyRate, numPayments) - 1)
-  )
-}
-
-async function saveApplication(application: LoanApplication, underwriting: UnderwritingResult): Promise<string> {
-  const applicationId = `APP-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-
-  await sql`
-    INSERT INTO loan_applications (
-      id, applicant_id, loan_amount, loan_term, loan_type, property_type,
-      property_value, down_payment, annual_income, monthly_debt, credit_score,
-      employment_status, employment_years, assets, liabilities, property_address,
-      purpose, risk_score, risk_category, interest_rate, monthly_payment,
-      loan_to_value, debt_to_income, approved, conditions, required_documents,
-      status, created_at
-    ) VALUES (
-      ${applicationId}, ${application.applicantId}, ${application.loanAmount},
-      ${application.loanTerm}, ${application.loanType}, ${application.propertyType},
-      ${application.propertyValue}, ${application.downPayment}, ${application.annualIncome},
-      ${application.monthlyDebt}, ${application.creditScore}, ${application.employmentStatus},
-      ${application.employmentYears}, ${application.assets}, ${application.liabilities},
-      ${application.propertyAddress}, ${application.purpose}, ${underwriting.riskScore},
-      ${underwriting.riskCategory}, ${underwriting.interestRate}, ${underwriting.monthlyPayment},
-      ${underwriting.loanToValue}, ${underwriting.debtToIncome}, ${underwriting.approved},
-      ${JSON.stringify(underwriting.conditions)}, ${JSON.stringify(underwriting.requiredDocuments)},
-      'pending', NOW()
-    )
-  `
-
-  return applicationId
-}
-
-async function findMatchingInvestors(application: LoanApplication, underwriting: UnderwritingResult) {
-  const investors = await sql`
-    SELECT * FROM investors 
-    WHERE status = 'active'
-    AND min_loan_amount <= ${application.loanAmount}
-    AND max_loan_amount >= ${application.loanAmount}
-    AND risk_tolerance >= ${underwriting.riskScore}
-    AND preferred_loan_types @> ${JSON.stringify([application.loanType])}
-    ORDER BY available_capital DESC
-    LIMIT 10
-  `
-
-  return investors
-}
-
-async function createProcessingWorkflow(applicationId: string, underwriting: UnderwritingResult) {
-  const workflowSteps = [
-    { step: "document_collection", status: "pending", order: 1 },
-    { step: "income_verification", status: "pending", order: 2 },
-    { step: "property_appraisal", status: "pending", order: 3 },
-    { step: "title_search", status: "pending", order: 4 },
-    { step: "final_underwriting", status: "pending", order: 5 },
-    { step: "investor_funding", status: "pending", order: 6 },
-    { step: "closing_preparation", status: "pending", order: 7 },
-  ]
-
-  for (const step of workflowSteps) {
-    await sql`
-      INSERT INTO loan_workflow (
-        application_id, step_name, status, step_order, created_at
-      ) VALUES (
-        ${applicationId}, ${step.step}, ${step.status}, ${step.order}, NOW()
-      )
-    `
   }
 }
