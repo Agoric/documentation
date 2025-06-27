@@ -68,6 +68,14 @@ interface TaskLocation {
   expectedOutcome: string
 }
 
+// A lightweight shape for UI-ready recommendations
+interface GoalRecommendation {
+  id: string
+  title: string
+  description: string
+  impact: "high" | "medium" | "low"
+}
+
 // Helper function to generate safe IDs
 const generateId = () => {
   if (typeof crypto !== "undefined" && crypto.randomUUID) {
@@ -523,6 +531,18 @@ export function useGoalPrioritizingOrb() {
     }
   }
 
+  // ---  Goal Recommendations ---------------------------------------------
+  // Convert the next actionable steps into a simple, UI-friendly list
+  const getGoalRecommendations = React.useCallback((): GoalRecommendation[] => {
+    // Surface at most the first 5 actionable steps
+    return nextActionableSteps.slice(0, 5).map((step) => ({
+      id: step.id,
+      title: step.title,
+      description: step.description,
+      impact: step.impact,
+    }))
+  }, [nextActionableSteps])
+
   return {
     prioritizedGoals,
     nextActionableSteps,
@@ -538,5 +558,7 @@ export function useGoalPrioritizingOrb() {
     navigateToOpportunity,
     getCurrentTaskGuidance,
     markTaskCompleted,
+    // NEW ➜ allow components to fetch concise AI suggestions
+    getGoalRecommendations,
   }
 }
