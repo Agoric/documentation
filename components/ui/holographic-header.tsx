@@ -9,7 +9,7 @@ interface HolographicHeaderProps {
   subtitle?: string
   description?: string
   className?: string
-  variant?: "primary" | "secondary" | "accent" | "rainbow"
+  variant?: "primary" | "secondary" | "accent" | "rainbow" | "quantum"
   size?: "sm" | "md" | "lg" | "xl"
   animated?: boolean
   glitchEffect?: boolean
@@ -34,6 +34,11 @@ const variantStyles = {
   rainbow: {
     title: "bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 via-indigo-400 to-purple-400",
     subtitle: "text-yellow-300",
+    description: "text-slate-300",
+  },
+  quantum: {
+    title: "bg-gradient-to-r from-cyan-400 via-purple-500 to-emerald-400",
+    subtitle: "text-cyan-300",
     description: "text-slate-300",
   },
 }
