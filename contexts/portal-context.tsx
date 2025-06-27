@@ -3,7 +3,7 @@
 import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
 
-export type PortalType = "imperial" | "citizen" | "vendor"
+export type PortalType = "imperial" | "citizen" | "vendor" | "institutional" | "admin"
 
 interface PortalContextType {
   currentPortal: PortalType
@@ -29,6 +29,24 @@ interface PortalContextType {
       color: "from-green-600 to-emerald-600"
       icon: "🏢"
       access: "vendor"
+    }
+    institutional: {
+      name: "Institutional Investor"
+      description: "High-Volume Investment & Portfolio Management"
+      color: "from-purple-600 to-indigo-600"
+      icon: "🏛️"
+      access: "institutional"
+      as
+      const
+    }
+    admin: {
+      name: "SnappaiFi Admin Office"
+      description: "Platform Administration & Operations"
+      color: "from-gray-800 to-slate-700"
+      icon: "⚡"
+      access: "admin"
+      as
+      const
     }
   }
   getUserPortalAccess: () => PortalType[]
@@ -62,12 +80,26 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
       icon: "🏢",
       access: "vendor" as const,
     },
+    institutional: {
+      name: "Institutional Investor",
+      description: "High-Volume Investment & Portfolio Management",
+      color: "from-purple-600 to-indigo-600",
+      icon: "🏛️",
+      access: "institutional" as const,
+    },
+    admin: {
+      name: "SnappaiFi Admin Office",
+      description: "Platform Administration & Operations",
+      color: "from-gray-800 to-slate-700",
+      icon: "⚡",
+      access: "admin" as const,
+    },
   }
 
   const getUserPortalAccess = (): PortalType[] => {
     // In a real app, this would check user permissions
     // For demo purposes, we'll allow access to all portals
-    return ["imperial", "citizen", "vendor"]
+    return ["imperial", "citizen", "vendor", "institutional", "admin"]
   }
 
   const setPortal = (portal: PortalType) => {
