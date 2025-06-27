@@ -1,78 +1,33 @@
-import { NextResponse } from "next/server"
-import { generateText } from "ai"
-import { groq } from "@ai-sdk/groq"
+import { type NextRequest, NextResponse } from "next/server"
 
-interface ConversationMessage {
-  role: "user" | "assistant"
-  content: string
-}
+export async function POST(request: NextRequest) {
+  try {
+    const { message, context } = await request.json()
 
-interface UserProfile {
-  creditScore: number
-  income: number
-  savings: number
-  goals: string[]
-  riskTolerance: "low" | "medium" | "high"
-}
+    // Simulate AI response processing
+    await new Promise((resolve) => setTimeout(resolve, 1000))
 
-export async function POST(req: Request) {
-  const { userMessage, conversationHistory, context, userProfile } = await req.json()
+    const responses = [
+      "I can help you optimize your SNAP-DAX trading strategy. Based on current market conditions, I recommend diversifying across 3-5 different cryptocurrencies.",
+      "Your portfolio shows strong performance in the DeFi sector. Consider taking some profits and rebalancing into more stable assets.",
+      "The current market volatility presents both opportunities and risks. I suggest implementing stop-loss orders at 15% below your entry points.",
+      "Based on your risk profile, you might want to explore our automated trading bots for more consistent returns.",
+      "I notice you haven't utilized our staking features yet. This could provide passive income on your holdings.",
+    ]
 
-  // ---------- system prompt helpers ----------
-  const getContextSpecificGuidance = (ctx: string) => {
-    if (ctx.includes("real-estate"))
-      return `USER IS BROWSING REAL ESTATE:
-- Emphasize 50-year loan benefits
-- Suggest affordability calculations
-- Highlight investment potential`
-    if (ctx.includes("snap-dax"))
-      return `USER IS ON TRADING PLATFORM:
-- Analyze portfolio
-- Suggest diversification`
-    if (ctx.includes("ecommerex"))
-      return `USER IS SHOPPING:
-- Optimize rewards
-- Highlight exclusive deals`
-    return `GENERAL FINANCIAL GUIDANCE:
-- Improve credit score
-- Optimize savings`
+    const randomResponse = responses[Math.floor(Math.random() * responses.length)]
+
+    return NextResponse.json({
+      response: randomResponse,
+      suggestions: [
+        "View SNAP-DAX Dashboard",
+        "Check Portfolio Performance",
+        "Explore Trading Bots",
+        "Review Risk Assessment",
+      ],
+      timestamp: new Date().toISOString(),
+    })
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to process chat message" }, { status: 500 })
   }
-
-  const getSystemPrompt = () => `You are the Genius Guide, an AI assistant on SnappAiFi.
-
-USER PROFILE
-- Credit Score: ${userProfile.creditScore}
-- Income: $${userProfile.income.toLocaleString()}
-- Savings: $${userProfile.savings.toLocaleString()}
-- Goals: ${userProfile.goals.join(", ")}
-- Risk Tolerance: ${userProfile.riskTolerance}
-- Current Page: ${context}
-
-${getContextSpecificGuidance(context)}
-
-Tone: friendly, expert, actionable. Include specific numbers when useful, suggest 1-2 next steps.`
-
-  // ---------- build full prompt ----------
-  const convo = conversationHistory
-    .slice(-10)
-    .map((m: ConversationMessage) => `${m.role}: ${m.content}`)
-    .join("\n")
-
-  const prompt = `${getSystemPrompt()}
-
-CONVERSATION HISTORY
-${convo}
-
-USER: ${userMessage}
-ASSISTANT:`.trim()
-
-  // ---------- call Groq ----------
-  const { text } = await generateText({
-    model: groq("llama-3.1-70b-versatile"),
-    prompt,
-    temperature: 0.7,
-    maxTokens: 500,
-  })
-
-  return NextResponse.json({ content: text })
 }
