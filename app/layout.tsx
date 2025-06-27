@@ -5,7 +5,6 @@ import { GlobalUnlockProvider } from "@/contexts/global-unlock-context"
 import { EnvironmentSidebar } from "@/components/ui/environment-sidebar"
 import { GoalPrioritizingOrb } from "@/components/genius-guide-orb/goal-prioritizing-orb"
 import { CursorOrb } from "@/components/ui/cursor-orb"
-import { PremiumUnlockProvider } from "@/contexts/premium-unlock-context"
 
 export const metadata: Metadata = {
   title: "SnappAiFi Financial Platform",
@@ -21,16 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <PremiumUnlockProvider>
-          <GlobalUnlockProvider>
-            <div className="flex h-screen bg-gradient-to-br from-background via-background/95 to-background/90">
-              <EnvironmentSidebar />
-              <main className="flex-1 overflow-auto">{children}</main>
-            </div>
-            <GoalPrioritizingOrb />
-            <CursorOrb variant="holographic" size="md" showTrail={true} showParticles={true} />
-          </GlobalUnlockProvider>
-        </PremiumUnlockProvider>
+        <GlobalUnlockProvider>
+          <div className="flex h-screen bg-gradient-to-br from-background via-background/95 to-background/90">
+            <EnvironmentSidebar />
+            <main className="flex-1 overflow-auto">{children}</main>
+          </div>
+          <GoalPrioritizingOrb />
+          <CursorOrb isEnabled={true} />
+        </GlobalUnlockProvider>
       </body>
     </html>
   )
