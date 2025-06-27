@@ -10,6 +10,8 @@ import { TransactionExportModal } from "./transaction-export-modal"
 import { Search, Download, CreditCard, TrendingUp, TrendingDown, ArrowUpDown, Eye } from "lucide-react"
 import { format } from "date-fns"
 import type { Transaction } from "@/utils/transaction-export"
+import { Checkbox } from "@/components/ui/checkbox"
+import { TransactionDetailsModal } from "./transaction-details-modal"
 
 // Sample transaction data
 const sampleTransactions: Transaction[] = [
@@ -118,6 +120,8 @@ export function TransactionList({ transactions = sampleTransactions }: Transacti
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc")
   const [isExportModalOpen, setIsExportModalOpen] = useState(false)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
+  const [selectedTransactions, setSelectedTransactions] = useState<string[]>([])
+  const [showBulkActions, setShowBulkActions] = useState(false)
 
   // Get unique categories for filtering
   const availableCategories = useMemo(() => {
@@ -215,6 +219,36 @@ export function TransactionList({ transactions = sampleTransactions }: Transacti
     }
   }
 
+  const handleSelectTransaction = (transactionId: string, checked: boolean) => {
+    if (checked) {
+      setSelectedTransactions((prev) => [...prev, transactionId])
+    } else {
+      setSelectedTransactions((prev) => prev.filter((id) => id !== transactionId))
+    }
+  }
+
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedTransactions(filteredTransactions.map((t) => t.id))
+    } else {
+      setSelectedTransactions([])
+    }
+  }
+
+  const handleBulkCategorize = (category: string) => {
+    // Mock bulk categorization
+    console.log(`Categorizing ${selectedTransactions.length} transactions as ${category}`)
+    setSelectedTransactions([])
+    setShowBulkActions(false)
+  }
+
+  const handleBulkDelete = () => {
+    // Mock bulk deletion
+    console.log(`Deleting ${selectedTransactions.length} transactions`)
+    setSelectedTransactions([])
+    setShowBulkActions(false)
+  }
+
   return (
     <div className="space-y-6">
       {/* Summary Cards */}
@@ -288,14 +322,22 @@ export function TransactionList({ transactions = sampleTransactions }: Transacti
           {/* Search and Filters */}
           <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
             <div className="md:col-span-2">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  placeholder="Search transactions..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  checked={
+                    selectedTransactions.length === filteredTransactions.length && filteredTransactions.length > 0
+                  }
+                  onCheckedChange={handleSelectAll}
                 />
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Input
+                    placeholder="Search transactions..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
               </div>
             </div>
 
@@ -359,15 +401,51 @@ export function TransactionList({ transactions = sampleTransactions }: Transacti
             </Select>
           </div>
 
+          {selectedTransactions.length > 0 && (
+            <div className="flex items-center justify-between p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="flex items-center space-x-4">
+                <span className="text-sm font-medium text-blue-900">
+                  {selectedTransactions.length} transaction{selectedTransactions.length !== 1 ? "s" : ""} selected
+                </span>
+                <Button variant="outline" size="sm" onClick={() => setSelectedTransactions([])}>
+                  Clear Selection
+                </Button>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Select onValueChange={handleBulkCategorize}>
+                  <SelectTrigger className="w-40">
+                    <SelectValue placeholder="Categorize" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableCategories.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button variant="outline" size="sm" onClick={() => setShowBulkActions(!showBulkActions)}>
+                  More Actions
+                </Button>
+                <Button variant="destructive" size="sm" onClick={handleBulkDelete}>
+                  Delete Selected
+                </Button>
+              </div>
+            </div>
+          )}
+
           {/* Transaction List */}
           <div className="space-y-2">
             {filteredTransactions.map((transaction) => (
               <div
                 key={transaction.id}
-                className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
-                onClick={() => setSelectedTransaction(transaction)}
+                className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <div className="flex items-center space-x-4">
+                  <Checkbox
+                    checked={selectedTransactions.includes(transaction.id)}
+                    onCheckedChange={(checked) => handleSelectTransaction(transaction.id, checked as boolean)}
+                  />
                   {getTransactionIcon(transaction.type)}
                   <div>
                     <p className="font-medium">{transaction.description}</p>
@@ -393,7 +471,7 @@ export function TransactionList({ transactions = sampleTransactions }: Transacti
                     </p>
                     <p className="text-sm text-muted-foreground">{transaction.account}</p>
                   </div>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" onClick={() => setSelectedTransaction(transaction)}>
                     <Eye className="w-4 h-4" />
                   </Button>
                 </div>
@@ -409,6 +487,13 @@ export function TransactionList({ transactions = sampleTransactions }: Transacti
           )}
         </CardContent>
       </Card>
+
+      {/* Transaction Details Modal */}
+      <TransactionDetailsModal
+        isOpen={!!selectedTransaction}
+        onClose={() => setSelectedTransaction(null)}
+        transaction={selectedTransaction}
+      />
 
       {/* Export Modal */}
       <TransactionExportModal
