@@ -60,6 +60,7 @@ interface InvestmentOpportunity {
   creditScore: number
   loanToValue: number
   expectedReturn: number
+  expectedReturnRate: number
   matchScore: number
   expiresAt: Date
   status: "pending" | "accepted" | "declined" | "expired"
@@ -81,6 +82,7 @@ interface PortfolioLoan {
   status: "current" | "late" | "default" | "paid_off"
   nextPaymentDate: Date
   totalReturn: number
+  annualReturnRate: number
   daysLate?: number
   borrower: string
   propertyAddress: string
@@ -104,6 +106,7 @@ interface InvestorStats {
   portfolioValue: number
   monthlyIncome: number
   yearToDateReturn: number
+  yearToDateReturnRate: number
 }
 
 export default function InvestorPortal() {
@@ -117,18 +120,19 @@ export default function InvestorPortal() {
   const [isLoading, setIsLoading] = React.useState(false)
   const [expandedLoan, setExpandedLoan] = React.useState<string | null>(null)
 
-  // Mock data - in real app, this would come from API
+  // Enhanced mock data with 10%-25% returns
   const investorStats: InvestorStats = {
     totalInvested: 2450000,
     availableCapital: 550000,
-    totalReturn: 186750,
-    averageReturn: 7.8,
+    totalReturn: 486750, // Increased returns
+    averageReturn: 18.2, // 18.2% average return
     activeLoans: 23,
     completedLoans: 12,
-    defaultRate: 2.1,
-    portfolioValue: 2636750,
-    monthlyIncome: 15420,
-    yearToDateReturn: 89340,
+    defaultRate: 1.8, // Lower default rate for higher returns
+    portfolioValue: 2936750, // Higher portfolio value
+    monthlyIncome: 35420, // Higher monthly income
+    yearToDateReturn: 289340, // Higher YTD return
+    yearToDateReturnRate: 22.5, // 22.5% YTD return rate
   }
 
   const opportunities: InvestmentOpportunity[] = [
@@ -136,7 +140,7 @@ export default function InvestorPortal() {
       id: "OPP-001",
       loanAmount: 450000,
       investmentAmount: 225000,
-      interestRate: 3.25,
+      interestRate: 6.25, // Higher interest rate
       term: 50,
       riskScore: 85,
       riskCategory: "low",
@@ -144,7 +148,8 @@ export default function InvestorPortal() {
       location: "Austin, TX",
       creditScore: 780,
       loanToValue: 82,
-      expectedReturn: 17550,
+      expectedReturn: 47250, // 21% return
+      expectedReturnRate: 21.0,
       matchScore: 94,
       expiresAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
       status: "pending",
@@ -159,7 +164,7 @@ export default function InvestorPortal() {
       id: "OPP-002",
       loanAmount: 320000,
       investmentAmount: 160000,
-      interestRate: 3.5,
+      interestRate: 7.5, // Higher interest rate
       term: 50,
       riskScore: 72,
       riskCategory: "medium",
@@ -167,7 +172,8 @@ export default function InvestorPortal() {
       location: "Denver, CO",
       creditScore: 720,
       loanToValue: 85,
-      expectedReturn: 11200,
+      expectedReturn: 28800, // 18% return
+      expectedReturnRate: 18.0,
       matchScore: 87,
       expiresAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       status: "pending",
@@ -182,7 +188,7 @@ export default function InvestorPortal() {
       id: "OPP-003",
       loanAmount: 680000,
       investmentAmount: 340000,
-      interestRate: 3.75,
+      interestRate: 8.75, // Higher interest rate
       term: 50,
       riskScore: 78,
       riskCategory: "medium",
@@ -190,7 +196,8 @@ export default function InvestorPortal() {
       location: "Miami, FL",
       creditScore: 750,
       loanToValue: 80,
-      expectedReturn: 25500,
+      expectedReturn: 85000, // 25% return
+      expectedReturnRate: 25.0,
       matchScore: 91,
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       status: "pending",
@@ -201,6 +208,54 @@ export default function InvestorPortal() {
         rating: 4.7,
       },
     },
+    {
+      id: "OPP-004",
+      loanAmount: 520000,
+      investmentAmount: 260000,
+      interestRate: 5.75,
+      term: 50,
+      riskScore: 88,
+      riskCategory: "low",
+      propertyType: "commercial",
+      location: "Seattle, WA",
+      creditScore: 800,
+      loanToValue: 75,
+      expectedReturn: 31200, // 12% return
+      expectedReturnRate: 12.0,
+      matchScore: 96,
+      expiresAt: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000),
+      status: "pending",
+      borrowerProfile: {
+        name: "Lisa Wang",
+        experience: "Commercial developer",
+        previousLoans: 15,
+        rating: 4.9,
+      },
+    },
+    {
+      id: "OPP-005",
+      loanAmount: 750000,
+      investmentAmount: 375000,
+      interestRate: 9.25, // High interest rate
+      term: 50,
+      riskScore: 65,
+      riskCategory: "high",
+      propertyType: "development",
+      location: "Las Vegas, NV",
+      creditScore: 680,
+      loanToValue: 90,
+      expectedReturn: 93750, // 25% return
+      expectedReturnRate: 25.0,
+      matchScore: 82,
+      expiresAt: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+      status: "pending",
+      borrowerProfile: {
+        name: "Robert Martinez",
+        experience: "Property developer",
+        previousLoans: 5,
+        rating: 4.3,
+      },
+    },
   ]
 
   const portfolioLoans: PortfolioLoan[] = [
@@ -208,52 +263,55 @@ export default function InvestorPortal() {
       id: "LOAN-001",
       loanAmount: 400000,
       investmentAmount: 200000,
-      interestRate: 3.1,
-      monthlyPayment: 1680,
+      interestRate: 6.1, // Higher interest rate
+      monthlyPayment: 2480, // Higher payment
       remainingBalance: 195000,
       status: "current",
       nextPaymentDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
-      totalReturn: 15600,
+      totalReturn: 42600, // Higher return
+      annualReturnRate: 21.3, // 21.3% annual return
       borrower: "Jennifer Smith",
       propertyAddress: "123 Oak Street, San Francisco, CA",
       startDate: new Date("2023-06-15"),
       maturityDate: new Date("2073-06-15"),
       paymentHistory: [
-        { date: new Date("2024-01-01"), amount: 1680, status: "paid" },
-        { date: new Date("2023-12-01"), amount: 1680, status: "paid" },
-        { date: new Date("2023-11-01"), amount: 1680, status: "paid" },
+        { date: new Date("2024-01-01"), amount: 2480, status: "paid" },
+        { date: new Date("2023-12-01"), amount: 2480, status: "paid" },
+        { date: new Date("2023-11-01"), amount: 2480, status: "paid" },
       ],
     },
     {
       id: "LOAN-002",
       loanAmount: 350000,
       investmentAmount: 175000,
-      interestRate: 3.4,
-      monthlyPayment: 1520,
+      interestRate: 7.4, // Higher interest rate
+      monthlyPayment: 2120, // Higher payment
       remainingBalance: 168000,
       status: "current",
       nextPaymentDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
-      totalReturn: 11900,
+      totalReturn: 31500, // Higher return
+      annualReturnRate: 18.0, // 18% annual return
       borrower: "Robert Johnson",
       propertyAddress: "456 Pine Avenue, Seattle, WA",
       startDate: new Date("2023-08-20"),
       maturityDate: new Date("2073-08-20"),
       paymentHistory: [
-        { date: new Date("2024-01-01"), amount: 1520, status: "paid" },
-        { date: new Date("2023-12-01"), amount: 1520, status: "late" },
-        { date: new Date("2023-11-01"), amount: 1520, status: "paid" },
+        { date: new Date("2024-01-01"), amount: 2120, status: "paid" },
+        { date: new Date("2023-12-01"), amount: 2120, status: "late" },
+        { date: new Date("2023-11-01"), amount: 2120, status: "paid" },
       ],
     },
     {
       id: "LOAN-003",
       loanAmount: 275000,
       investmentAmount: 137500,
-      interestRate: 3.8,
-      monthlyPayment: 1280,
+      interestRate: 8.8, // Higher interest rate
+      monthlyPayment: 1980, // Higher payment
       remainingBalance: 132000,
       status: "late",
       nextPaymentDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-      totalReturn: 8900,
+      totalReturn: 20625, // Higher return
+      annualReturnRate: 15.0, // 15% annual return
       daysLate: 5,
       borrower: "Maria Garcia",
       propertyAddress: "789 Elm Drive, Phoenix, AZ",
@@ -261,8 +319,50 @@ export default function InvestorPortal() {
       maturityDate: new Date("2073-09-10"),
       paymentHistory: [
         { date: new Date("2024-01-01"), amount: 0, status: "missed" },
-        { date: new Date("2023-12-01"), amount: 1280, status: "late" },
-        { date: new Date("2023-11-01"), amount: 1280, status: "paid" },
+        { date: new Date("2023-12-01"), amount: 1980, status: "late" },
+        { date: new Date("2023-11-01"), amount: 1980, status: "paid" },
+      ],
+    },
+    {
+      id: "LOAN-004",
+      loanAmount: 600000,
+      investmentAmount: 300000,
+      interestRate: 9.2, // High interest rate
+      monthlyPayment: 3750, // High payment
+      remainingBalance: 285000,
+      status: "current",
+      nextPaymentDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000),
+      totalReturn: 75000, // High return
+      annualReturnRate: 25.0, // 25% annual return
+      borrower: "Thomas Anderson",
+      propertyAddress: "321 Luxury Lane, Beverly Hills, CA",
+      startDate: new Date("2023-05-01"),
+      maturityDate: new Date("2073-05-01"),
+      paymentHistory: [
+        { date: new Date("2024-01-01"), amount: 3750, status: "paid" },
+        { date: new Date("2023-12-01"), amount: 3750, status: "paid" },
+        { date: new Date("2023-11-01"), amount: 3750, status: "paid" },
+      ],
+    },
+    {
+      id: "LOAN-005",
+      loanAmount: 180000,
+      investmentAmount: 90000,
+      interestRate: 5.5, // Lower risk, moderate return
+      monthlyPayment: 1080, // Moderate payment
+      remainingBalance: 85000,
+      status: "current",
+      nextPaymentDate: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000),
+      totalReturn: 9000, // 10% return
+      annualReturnRate: 10.0, // 10% annual return
+      borrower: "Emily Chen",
+      propertyAddress: "654 Suburban Street, Austin, TX",
+      startDate: new Date("2023-10-15"),
+      maturityDate: new Date("2073-10-15"),
+      paymentHistory: [
+        { date: new Date("2024-01-01"), amount: 1080, status: "paid" },
+        { date: new Date("2023-12-01"), amount: 1080, status: "paid" },
+        { date: new Date("2023-11-01"), amount: 1080, status: "paid" },
       ],
     },
   ]
@@ -369,6 +469,13 @@ export default function InvestorPortal() {
     }
   }
 
+  const getReturnColor = (returnRate: number) => {
+    if (returnRate >= 20) return "text-emerald-500 font-bold"
+    if (returnRate >= 15) return "text-green-500 font-semibold"
+    if (returnRate >= 10) return "text-blue-500 font-medium"
+    return "text-gray-500"
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/90 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
@@ -378,7 +485,7 @@ export default function InvestorPortal() {
             <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
               Investor Portal
             </h1>
-            <p className="text-muted-foreground mt-2">Manage your loan investments and discover new opportunities</p>
+            <p className="text-muted-foreground mt-2">High-yield loan investments with 10%-25% annual returns</p>
           </div>
           <div className="flex items-center gap-4">
             <Dialog open={isAddFundsOpen} onOpenChange={setIsAddFundsOpen}>
@@ -392,7 +499,7 @@ export default function InvestorPortal() {
                 <DialogHeader>
                   <DialogTitle>Add Investment Funds</DialogTitle>
                   <DialogDescription>
-                    Add funds to your investment account to participate in loan opportunities
+                    Add funds to your investment account to participate in high-yield loan opportunities
                   </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
@@ -458,7 +565,7 @@ export default function InvestorPortal() {
           >
             <div className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-emerald-400" />
-              <span className="text-sm text-emerald-400">+12.3% YTD</span>
+              <span className="text-sm text-emerald-400">+{investorStats.yearToDateReturnRate}% YTD</span>
             </div>
           </RoyalDiamondSlabCard>
 
@@ -500,7 +607,7 @@ export default function InvestorPortal() {
           >
             <div className="flex items-center gap-2">
               <Target className="h-5 w-5 text-white" />
-              <span className="text-sm text-white">Above market</span>
+              <span className="text-sm text-white">High yield</span>
             </div>
           </RoyalDiamondSlabCard>
         </div>
@@ -531,8 +638,8 @@ export default function InvestorPortal() {
                     <div className="flex items-center gap-3">
                       <CheckCircle className="h-5 w-5 text-green-400" />
                       <div>
-                        <p className="font-medium">Payment Received</p>
-                        <p className="text-sm text-muted-foreground">LOAN-001 • {formatCurrency(1680)}</p>
+                        <p className="font-medium">High-Yield Payment Received</p>
+                        <p className="text-sm text-muted-foreground">LOAN-004 • {formatCurrency(3750)} (25% APR)</p>
                       </div>
                     </div>
                     <span className="text-sm text-muted-foreground">2 hours ago</span>
@@ -542,8 +649,10 @@ export default function InvestorPortal() {
                     <div className="flex items-center gap-3">
                       <Eye className="h-5 w-5 text-blue-400" />
                       <div>
-                        <p className="font-medium">New Opportunity</p>
-                        <p className="text-sm text-muted-foreground">{formatCurrency(450000)} • 94% match</p>
+                        <p className="font-medium">Premium Opportunity</p>
+                        <p className="text-sm text-muted-foreground">
+                          {formatCurrency(450000)} • 21% return • 94% match
+                        </p>
                       </div>
                     </div>
                     <span className="text-sm text-muted-foreground">1 day ago</span>
@@ -554,7 +663,7 @@ export default function InvestorPortal() {
                       <AlertCircle className="h-5 w-5 text-yellow-400" />
                       <div>
                         <p className="font-medium">Payment Due Soon</p>
-                        <p className="text-sm text-muted-foreground">LOAN-003 • 3 days overdue</p>
+                        <p className="text-sm text-muted-foreground">LOAN-003 • 5 days overdue • 15% APR</p>
                       </div>
                     </div>
                     <span className="text-sm text-muted-foreground">3 days ago</span>
@@ -564,8 +673,8 @@ export default function InvestorPortal() {
                     <div className="flex items-center gap-3">
                       <Plus className="h-5 w-5 text-purple-400" />
                       <div>
-                        <p className="font-medium">Funds Added</p>
-                        <p className="text-sm text-muted-foreground">{formatCurrency(100000)} • Bank transfer</p>
+                        <p className="font-medium">Capital Deployed</p>
+                        <p className="text-sm text-muted-foreground">{formatCurrency(300000)} • 25% expected return</p>
                       </div>
                     </div>
                     <span className="text-sm text-muted-foreground">1 week ago</span>
@@ -578,7 +687,7 @@ export default function InvestorPortal() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <LineChart className="h-5 w-5" />
-                    Performance Overview
+                    High-Yield Performance
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -586,10 +695,10 @@ export default function InvestorPortal() {
                     <div className="flex items-center justify-between">
                       <span className="text-sm">YTD Return</span>
                       <span className="font-medium text-green-400">
-                        +{formatCurrency(investorStats.yearToDateReturn)}
+                        +{formatCurrency(investorStats.yearToDateReturn)} ({investorStats.yearToDateReturnRate}%)
                       </span>
                     </div>
-                    <Progress value={78} className="h-2" />
+                    <Progress value={90} className="h-2" />
                   </div>
 
                   <div className="space-y-3">
@@ -603,9 +712,9 @@ export default function InvestorPortal() {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-sm">Risk Score</span>
-                      <span className="font-medium text-blue-400">Low Risk</span>
+                      <span className="font-medium text-blue-400">Balanced</span>
                     </div>
-                    <Progress value={25} className="h-2" />
+                    <Progress value={45} className="h-2" />
                   </div>
 
                   <div className="space-y-3">
@@ -640,7 +749,7 @@ export default function InvestorPortal() {
                     onClick={() => setActiveTab("opportunities")}
                   >
                     <Search className="h-6 w-6" />
-                    Find Loans
+                    Find High-Yield Loans
                   </Button>
                   <Button
                     variant="outline"
@@ -669,7 +778,7 @@ export default function InvestorPortal() {
             <div className="flex items-center gap-4 p-4 rounded-lg bg-background/50 backdrop-blur-sm border border-white/20">
               <div className="flex-1">
                 <Input
-                  placeholder="Search opportunities..."
+                  placeholder="Search high-yield opportunities..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="bg-background/50"
@@ -681,9 +790,9 @@ export default function InvestorPortal() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Risk Levels</SelectItem>
-                  <SelectItem value="low">Low Risk</SelectItem>
-                  <SelectItem value="medium">Medium Risk</SelectItem>
-                  <SelectItem value="high">High Risk</SelectItem>
+                  <SelectItem value="low">Low Risk (10-15%)</SelectItem>
+                  <SelectItem value="medium">Medium Risk (15-20%)</SelectItem>
+                  <SelectItem value="high">High Risk (20-25%)</SelectItem>
                 </SelectContent>
               </Select>
               <Select value={filterStatus} onValueChange={setFilterStatus}>
@@ -721,6 +830,9 @@ export default function InvestorPortal() {
                           <Badge variant="outline" className="bg-blue-500/20 text-blue-400">
                             {opportunity.matchScore}% match
                           </Badge>
+                          <Badge className="bg-emerald-500/20 text-emerald-400 font-semibold">
+                            {opportunity.expectedReturnRate}% APR
+                          </Badge>
                           <div className="flex items-center gap-1">
                             {[...Array(5)].map((_, i) => (
                               <Star
@@ -745,10 +857,13 @@ export default function InvestorPortal() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-2xl font-bold text-green-400">
+                        <p className={`text-2xl font-bold ${getReturnColor(opportunity.expectedReturnRate)}`}>
                           {formatCurrency(opportunity.expectedReturn)}
                         </p>
                         <p className="text-sm text-muted-foreground">Expected Annual Return</p>
+                        <p className={`text-lg font-semibold ${getReturnColor(opportunity.expectedReturnRate)}`}>
+                          {opportunity.expectedReturnRate}% APR
+                        </p>
                       </div>
                     </div>
 
@@ -810,7 +925,7 @@ export default function InvestorPortal() {
           {/* Portfolio Tab */}
           <TabsContent value="portfolio" className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold">Active Investments</h2>
+              <h2 className="text-2xl font-semibold">High-Yield Investment Portfolio</h2>
               <Button variant="outline" size="sm">
                 <Download className="h-4 w-4 mr-2" />
                 Export Portfolio
@@ -829,6 +944,9 @@ export default function InvestorPortal() {
                         <div className="flex items-center gap-3">
                           <h3 className="text-lg font-semibold">{loan.id}</h3>
                           <Badge className={getStatusColor(loan.status)}>{loan.status}</Badge>
+                          <Badge className={`${getReturnColor(loan.annualReturnRate)} bg-emerald-500/20`}>
+                            {loan.annualReturnRate}% APR
+                          </Badge>
                           {loan.daysLate && <Badge variant="destructive">{loan.daysLate} days late</Badge>}
                         </div>
                         <p className="text-muted-foreground">Borrower: {loan.borrower}</p>
@@ -838,8 +956,13 @@ export default function InvestorPortal() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-2xl font-bold text-green-400">+{formatCurrency(loan.totalReturn)}</p>
+                        <p className={`text-2xl font-bold ${getReturnColor(loan.annualReturnRate)}`}>
+                          +{formatCurrency(loan.totalReturn)}
+                        </p>
                         <p className="text-sm text-muted-foreground">Total Return</p>
+                        <p className={`text-lg font-semibold ${getReturnColor(loan.annualReturnRate)}`}>
+                          {loan.annualReturnRate}% APR
+                        </p>
                       </div>
                     </div>
 
@@ -914,7 +1037,13 @@ export default function InvestorPortal() {
                               </div>
                               <div className="flex justify-between">
                                 <span className="text-muted-foreground">Interest Rate:</span>
-                                <span>{loan.interestRate}%</span>
+                                <span className="font-semibold text-green-600">{loan.interestRate}%</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Annual Return:</span>
+                                <span className={`font-bold ${getReturnColor(loan.annualReturnRate)}`}>
+                                  {loan.annualReturnRate}%
+                                </span>
                               </div>
                               <div className="flex justify-between">
                                 <span className="text-muted-foreground">Original Amount:</span>
@@ -955,37 +1084,37 @@ export default function InvestorPortal() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="bg-background/50 backdrop-blur-sm border-white/20">
                 <CardHeader>
-                  <CardTitle>Return Analysis</CardTitle>
+                  <CardTitle>High-Yield Return Analysis</CardTitle>
                   <CardDescription>Performance breakdown by investment type</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span>50-Year Loans</span>
+                      <span>Premium Loans (20-25%)</span>
+                      <div className="flex items-center gap-2">
+                        <Progress value={95} className="w-20 h-2" />
+                        <span className="text-sm font-medium text-emerald-600">23.2%</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>High-Yield Loans (15-20%)</span>
                       <div className="flex items-center gap-2">
                         <Progress value={85} className="w-20 h-2" />
-                        <span className="text-sm font-medium">8.2%</span>
+                        <span className="text-sm font-medium text-green-600">18.5%</span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span>30-Year Loans</span>
+                      <span>Standard Loans (10-15%)</span>
                       <div className="flex items-center gap-2">
                         <Progress value={72} className="w-20 h-2" />
-                        <span className="text-sm font-medium">7.1%</span>
+                        <span className="text-sm font-medium text-blue-600">12.1%</span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span>Commercial Loans</span>
-                      <div className="flex items-center gap-2">
-                        <Progress value={68} className="w-20 h-2" />
-                        <span className="text-sm font-medium">6.8%</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>Bridge Loans</span>
+                      <span>Bridge Loans (20-25%)</span>
                       <div className="flex items-center gap-2">
                         <Progress value={92} className="w-20 h-2" />
-                        <span className="text-sm font-medium">12.5%</span>
+                        <span className="text-sm font-medium text-emerald-600">24.5%</span>
                       </div>
                     </div>
                   </div>
@@ -994,30 +1123,30 @@ export default function InvestorPortal() {
 
               <Card className="bg-background/50 backdrop-blur-sm border-white/20">
                 <CardHeader>
-                  <CardTitle>Risk Distribution</CardTitle>
-                  <CardDescription>Portfolio risk allocation</CardDescription>
+                  <CardTitle>Risk vs Return Distribution</CardTitle>
+                  <CardDescription>Portfolio allocation by risk level</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span>Low Risk</span>
+                      <span>Low Risk (10-15%)</span>
                       <div className="flex items-center gap-2">
-                        <Progress value={60} className="w-20 h-2" />
-                        <span className="text-sm font-medium">60%</span>
+                        <Progress value={40} className="w-20 h-2" />
+                        <span className="text-sm font-medium">40%</span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span>Medium Risk</span>
+                      <span>Medium Risk (15-20%)</span>
                       <div className="flex items-center gap-2">
-                        <Progress value={30} className="w-20 h-2" />
-                        <span className="text-sm font-medium">30%</span>
+                        <Progress value={35} className="w-20 h-2" />
+                        <span className="text-sm font-medium">35%</span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span>High Risk</span>
+                      <span>High Risk (20-25%)</span>
                       <div className="flex items-center gap-2">
-                        <Progress value={10} className="w-20 h-2" />
-                        <span className="text-sm font-medium">10%</span>
+                        <Progress value={25} className="w-20 h-2" />
+                        <span className="text-sm font-medium">25%</span>
                       </div>
                     </div>
                   </div>
@@ -1065,22 +1194,24 @@ export default function InvestorPortal() {
 
               <Card className="bg-background/50 backdrop-blur-sm border-white/20">
                 <CardHeader>
-                  <CardTitle>Monthly Performance</CardTitle>
+                  <CardTitle>Monthly High-Yield Performance</CardTitle>
                   <CardDescription>Last 12 months returns</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {[
-                      { month: "Jan 2024", return: 8.2, amount: 15420 },
-                      { month: "Dec 2023", return: 7.8, amount: 14890 },
-                      { month: "Nov 2023", return: 8.5, amount: 16200 },
-                      { month: "Oct 2023", return: 7.9, amount: 15100 },
+                      { month: "Jan 2024", return: 22.2, amount: 35420 },
+                      { month: "Dec 2023", return: 18.8, amount: 28890 },
+                      { month: "Nov 2023", return: 25.5, amount: 42200 },
+                      { month: "Oct 2023", return: 19.9, amount: 31100 },
+                      { month: "Sep 2023", return: 21.3, amount: 36500 },
+                      { month: "Aug 2023", return: 24.1, amount: 39800 },
                     ].map((data, index) => (
                       <div key={index} className="flex items-center justify-between">
                         <span className="text-sm">{data.month}</span>
                         <div className="flex items-center gap-2">
                           <span className="text-sm font-medium">{formatCurrency(data.amount)}</span>
-                          <Badge variant="outline" className="text-xs">
+                          <Badge className={`text-xs ${getReturnColor(data.return)} bg-emerald-500/20`}>
                             {data.return}%
                           </Badge>
                         </div>
@@ -1098,7 +1229,7 @@ export default function InvestorPortal() {
               <Card className="bg-background/50 backdrop-blur-sm border-white/20">
                 <CardHeader>
                   <CardTitle>Account Information</CardTitle>
-                  <CardDescription>Your investor profile details</CardDescription>
+                  <CardDescription>Your high-yield investor profile details</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -1132,20 +1263,21 @@ export default function InvestorPortal() {
 
               <Card className="bg-background/50 backdrop-blur-sm border-white/20">
                 <CardHeader>
-                  <CardTitle>Investment Preferences</CardTitle>
-                  <CardDescription>Configure your investment criteria</CardDescription>
+                  <CardTitle>High-Yield Investment Preferences</CardTitle>
+                  <CardDescription>Configure your investment criteria for 10%-25% returns</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label>Risk Tolerance</Label>
-                    <Select defaultValue="moderate">
+                    <Label>Target Return Range</Label>
+                    <Select defaultValue="balanced">
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="conservative">Conservative</SelectItem>
-                        <SelectItem value="moderate">Moderate</SelectItem>
-                        <SelectItem value="aggressive">Aggressive</SelectItem>
+                        <SelectItem value="conservative">Conservative (10-15%)</SelectItem>
+                        <SelectItem value="balanced">Balanced (15-20%)</SelectItem>
+                        <SelectItem value="aggressive">Aggressive (20-25%)</SelectItem>
+                        <SelectItem value="mixed">Mixed Portfolio (10-25%)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -1158,11 +1290,12 @@ export default function InvestorPortal() {
                     <Input defaultValue="500000" type="number" />
                   </div>
                   <div className="space-y-2">
-                    <Label>Preferred Loan Terms</Label>
-                    <div className="flex gap-2">
-                      <Badge variant="outline">30 years</Badge>
-                      <Badge variant="outline">50 years</Badge>
-                      <Badge variant="outline">Bridge loans</Badge>
+                    <Label>Preferred High-Yield Loan Types</Label>
+                    <div className="flex gap-2 flex-wrap">
+                      <Badge variant="outline">Bridge loans (20-25%)</Badge>
+                      <Badge variant="outline">Commercial (15-20%)</Badge>
+                      <Badge variant="outline">Development (20-25%)</Badge>
+                      <Badge variant="outline">Premium residential (10-15%)</Badge>
                     </div>
                   </div>
                   <Button className="w-full">Save Preferences</Button>
@@ -1172,7 +1305,7 @@ export default function InvestorPortal() {
               <Card className="bg-background/50 backdrop-blur-sm border-white/20">
                 <CardHeader>
                   <CardTitle>Banking Information</CardTitle>
-                  <CardDescription>Manage your funding sources</CardDescription>
+                  <CardDescription>Manage your funding sources for high-yield investments</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
@@ -1209,20 +1342,20 @@ export default function InvestorPortal() {
               <Card className="bg-background/50 backdrop-blur-sm border-white/20">
                 <CardHeader>
                   <CardTitle>Notification Settings</CardTitle>
-                  <CardDescription>Configure how you receive updates</CardDescription>
+                  <CardDescription>Configure how you receive high-yield investment updates</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">New Investment Opportunities</p>
-                      <p className="text-sm text-muted-foreground">Get notified of matching loans</p>
+                      <p className="font-medium">High-Yield Opportunities (20%+ returns)</p>
+                      <p className="text-sm text-muted-foreground">Get notified of premium loan opportunities</p>
                     </div>
                     <input type="checkbox" defaultChecked className="rounded" />
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-medium">Payment Notifications</p>
-                      <p className="text-sm text-muted-foreground">Receive payment confirmations</p>
+                      <p className="text-sm text-muted-foreground">Receive high-yield payment confirmations</p>
                     </div>
                     <input type="checkbox" defaultChecked className="rounded" />
                   </div>
@@ -1235,7 +1368,7 @@ export default function InvestorPortal() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">Monthly Reports</p>
+                      <p className="font-medium">Monthly High-Yield Reports</p>
                       <p className="text-sm text-muted-foreground">Portfolio performance summaries</p>
                     </div>
                     <input type="checkbox" defaultChecked className="rounded" />
