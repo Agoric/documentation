@@ -59,7 +59,7 @@ const newsData = [
   },
 ]
 
-export default function SnapDaxDashboard() {
+export function SnapDaxDashboard() {
   const [selectedTab, setSelectedTab] = useState("markets")
 
   const totalPortfolioValue = 80904.53
@@ -407,3 +407,5 @@ export default function SnapDaxDashboard() {
     </div>
   )
 }
+
+export default SnapDaxDashboard
