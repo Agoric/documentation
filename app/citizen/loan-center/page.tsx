@@ -9,8 +9,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useRouter } from "next/navigation"
 import {
   Home,
-  Car,
-  CreditCard,
   Building2,
   Calculator,
   FileText,
@@ -38,60 +36,64 @@ export default function LoanCenterPage() {
 
   const loanTypes = [
     {
-      id: "home-loan",
-      name: "Home Loan",
+      id: "fha-loan",
+      name: "FHA Home Loan",
       icon: Home,
-      description: "Purchase or refinance your dream home",
-      rate: "6.25%",
-      amount: "Up to $2M",
+      description: "Government-backed home loan with low down payment",
+      rate: "6.50%",
+      amount: "Up to $766K",
       term: "15-30 years",
-      features: ["Low down payment options", "Fixed & adjustable rates", "First-time buyer programs"],
+      features: ["3.5% down payment", "Government guaranteed", "Flexible credit requirements"],
       color: "from-blue-500 to-cyan-500",
       category: "real-estate",
       popularity: 95,
-      path: "/citizen/loan-center/home-loan",
+      path: "/citizen/loan-center/fha-loan",
+      guarantee: "FHA Guaranteed",
     },
     {
-      id: "auto-loan",
-      name: "Auto Loan",
-      icon: Car,
-      description: "Finance your next vehicle purchase",
-      rate: "4.75%",
-      amount: "Up to $150K",
-      term: "12-84 months",
-      features: ["New & used vehicles", "Quick approval", "No prepayment penalty"],
+      id: "va-loan",
+      name: "VA Home Loan",
+      icon: Shield,
+      description: "Exclusive benefit for military veterans",
+      rate: "6.00%",
+      amount: "No Limit",
+      term: "15-30 years",
+      features: ["0% down payment", "No PMI required", "Government guaranteed"],
       color: "from-green-500 to-emerald-500",
-      category: "vehicle",
-      popularity: 88,
-      path: "/citizen/loan-center/auto-loan",
+      category: "real-estate",
+      popularity: 92,
+      path: "/citizen/loan-center/va-loan",
+      guarantee: "VA Guaranteed",
     },
     {
-      id: "personal-loan",
-      name: "Personal Loan",
-      icon: CreditCard,
-      description: "Flexible financing for personal needs",
-      rate: "8.99%",
-      amount: "Up to $50K",
-      term: "24-72 months",
-      features: ["No collateral required", "Fixed rates", "Multiple purposes"],
+      id: "usda-loan",
+      name: "USDA Rural Loan",
+      icon: Target,
+      description: "Rural development loan program",
+      rate: "6.75%",
+      amount: "Based on Income",
+      term: "30 years",
+      features: ["0% down payment", "Rural areas only", "Government guaranteed"],
       color: "from-purple-500 to-pink-500",
-      category: "personal",
-      popularity: 82,
-      path: "/citizen/loan-center/personal-loan",
+      category: "real-estate",
+      popularity: 78,
+      path: "/citizen/loan-center/usda-loan",
+      guarantee: "USDA Guaranteed",
     },
     {
-      id: "business-loan",
-      name: "Business Loan",
+      id: "sba-loan",
+      name: "SBA Business Loan",
       icon: Building2,
-      description: "Fuel your business growth",
-      rate: "7.50%",
+      description: "Small Business Administration guaranteed loan",
+      rate: "8.25%",
       amount: "Up to $5M",
-      term: "12-120 months",
-      features: ["SBA programs available", "Working capital", "Equipment financing"],
+      term: "Up to 25 years",
+      features: ["Government guaranteed", "Lower down payments", "Competitive rates"],
       color: "from-orange-500 to-red-500",
       category: "business",
-      popularity: 76,
-      path: "/citizen/loan-center/business-loan",
+      popularity: 85,
+      path: "/citizen/loan-center/sba-loan",
+      guarantee: "SBA Guaranteed",
     },
   ]
 
@@ -129,23 +131,23 @@ export default function LoanCenterPage() {
   const loanBenefits = [
     {
       icon: Shield,
-      title: "Secure & Protected",
-      description: "Bank-level security for all your information",
+      title: "Government Guaranteed",
+      description: "All loans backed by federal agencies for your protection",
     },
     {
       icon: Zap,
-      title: "Fast Approval",
-      description: "Get approved in as little as 24 hours",
+      title: "Lower Down Payments",
+      description: "Government programs offer reduced down payment requirements",
     },
     {
       icon: Target,
       title: "Competitive Rates",
-      description: "Best-in-market interest rates",
+      description: "Government backing enables better interest rates",
     },
     {
       icon: Award,
-      title: "Expert Support",
-      description: "Dedicated loan specialists to help you",
+      title: "Federal Support",
+      description: "Access to specialized government loan programs",
     },
   ]
 
@@ -193,7 +195,8 @@ export default function LoanCenterPage() {
             Loan Center
           </h1>
           <p className="text-xl text-blue-200 max-w-3xl mx-auto">
-            Find the perfect loan for your needs with competitive rates, fast approval, and expert support
+            Access government-guaranteed loans with competitive rates, lower down payments, and federal backing for your
+            peace of mind
           </p>
         </div>
 
@@ -329,9 +332,14 @@ export default function LoanCenterPage() {
                     </div>
 
                     <div className="flex items-center justify-between pt-2">
-                      <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">
-                        {loanType.popularity}% Popular
-                      </Badge>
+                      <div className="flex gap-2">
+                        <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                          {loanType.guarantee}
+                        </Badge>
+                        <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">
+                          {loanType.popularity}% Popular
+                        </Badge>
+                      </div>
                       <Button className={`bg-gradient-to-r ${loanType.color} text-white`}>Apply Now</Button>
                     </div>
                   </CardContent>
