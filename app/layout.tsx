@@ -7,7 +7,6 @@ import { EnvironmentSidebar } from "@/components/ui/environment-sidebar"
 import { PremiumUnlockProvider } from "@/contexts/premium-unlock-context"
 import { GlobalUnlockProvider } from "@/contexts/global-unlock-context"
 import { DemoContextProvider } from "@/contexts/demo-context"
-import { GamificationProvider } from "@/contexts/gamification-context"
 import { ProductComparisonProvider } from "@/contexts/product-comparison-context"
 import { PropertyComparisonProvider } from "@/contexts/property-comparison-context"
 import { CreditProvider } from "@/contexts/credit-context"
@@ -36,21 +35,19 @@ export default function RootLayout({
             <PremiumUnlockProvider>
               <GlobalUnlockProvider>
                 <DemoContextProvider>
-                  <GamificationProvider>
-                    <ProductComparisonProvider>
-                      <PropertyComparisonProvider>
-                        <CreditProvider>
-                          <DiplomaticAgentProvider>
-                            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-                              <EnvironmentSidebar />
-                              <main className="pl-20">{children}</main>
-                              <CursorOrb />
-                            </div>
-                          </DiplomaticAgentProvider>
-                        </CreditProvider>
-                      </PropertyComparisonProvider>
-                    </ProductComparisonProvider>
-                  </GamificationProvider>
+                  <ProductComparisonProvider>
+                    <PropertyComparisonProvider>
+                      <CreditProvider>
+                        <DiplomaticAgentProvider>
+                          <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+                            <EnvironmentSidebar />
+                            <main className="pl-20">{children}</main>
+                            <CursorOrb />
+                          </div>
+                        </DiplomaticAgentProvider>
+                      </CreditProvider>
+                    </PropertyComparisonProvider>
+                  </ProductComparisonProvider>
                 </DemoContextProvider>
               </GlobalUnlockProvider>
             </PremiumUnlockProvider>
