@@ -43,11 +43,12 @@ export default function LoanCenterPage() {
       rate: "6.50%",
       amount: "Up to $766K",
       term: "15-30 years",
-      features: ["3.5% down payment", "Government insured", "Flexible credit requirements"],
+      features: ["3.5% down payment", "Government guaranteed", "Flexible credit requirements"],
       color: "from-blue-500 to-cyan-500",
       category: "real-estate",
       popularity: 95,
       path: "/citizen/loan-center/fha-loan",
+      guarantee: "FHA Guaranteed",
     },
     {
       id: "va-loan",
@@ -55,32 +56,34 @@ export default function LoanCenterPage() {
       icon: Shield,
       description: "Exclusive benefit for military veterans",
       rate: "6.00%",
-      amount: "No limit",
+      amount: "No Limit",
       term: "15-30 years",
       features: ["0% down payment", "No PMI required", "Government guaranteed"],
       color: "from-green-500 to-emerald-500",
       category: "real-estate",
       popularity: 92,
       path: "/citizen/loan-center/va-loan",
+      guarantee: "VA Guaranteed",
     },
     {
       id: "usda-loan",
       name: "USDA Rural Loan",
-      icon: Building2,
-      description: "Government-backed rural development loan",
+      icon: Target,
+      description: "Rural development loan program",
       rate: "6.75%",
-      amount: "Based on income",
+      amount: "Based on Income",
       term: "30 years",
-      features: ["0% down payment", "Rural areas only", "Income restrictions apply"],
+      features: ["0% down payment", "Rural areas only", "Government guaranteed"],
       color: "from-purple-500 to-pink-500",
       category: "real-estate",
       popularity: 78,
       path: "/citizen/loan-center/usda-loan",
+      guarantee: "USDA Guaranteed",
     },
     {
       id: "sba-loan",
       name: "SBA Business Loan",
-      icon: Award,
+      icon: Building2,
       description: "Small Business Administration guaranteed loan",
       rate: "8.25%",
       amount: "Up to $5M",
@@ -90,6 +93,7 @@ export default function LoanCenterPage() {
       category: "business",
       popularity: 85,
       path: "/citizen/loan-center/sba-loan",
+      guarantee: "SBA Guaranteed",
     },
   ]
 
@@ -132,18 +136,18 @@ export default function LoanCenterPage() {
     },
     {
       icon: Zap,
-      title: "Lower Requirements",
-      description: "Reduced down payments and flexible credit standards",
+      title: "Lower Down Payments",
+      description: "Government programs offer reduced down payment requirements",
     },
     {
       icon: Target,
       title: "Competitive Rates",
-      description: "Government-backed programs offer excellent rates",
+      description: "Government backing enables better interest rates",
     },
     {
       icon: Award,
       title: "Federal Support",
-      description: "Dedicated support from government-approved lenders",
+      description: "Access to specialized government loan programs",
     },
   ]
 
@@ -192,7 +196,7 @@ export default function LoanCenterPage() {
           </h1>
           <p className="text-xl text-blue-200 max-w-3xl mx-auto">
             Access government-guaranteed loans with competitive rates, lower down payments, and federal backing for your
-            security
+            peace of mind
           </p>
         </div>
 
@@ -328,9 +332,14 @@ export default function LoanCenterPage() {
                     </div>
 
                     <div className="flex items-center justify-between pt-2">
-                      <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">
-                        {loanType.popularity}% Popular
-                      </Badge>
+                      <div className="flex gap-2">
+                        <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                          {loanType.guarantee}
+                        </Badge>
+                        <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">
+                          {loanType.popularity}% Popular
+                        </Badge>
+                      </div>
                       <Button className={`bg-gradient-to-r ${loanType.color} text-white`}>Apply Now</Button>
                     </div>
                   </CardContent>
