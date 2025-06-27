@@ -318,7 +318,7 @@ export function EnvironmentSidebar() {
     if (mouseNearSidebar) {
       timeout = setTimeout(() => setIsExpanded(true), 100)
     } else {
-      timeout = setTimeout(() => setIsExpanded(false), 300)
+      timeout = setTimeout(() => setIsExpanded(false), 3000) // Changed from 300 to 3000 (3 seconds)
     }
 
     return () => clearTimeout(timeout)
