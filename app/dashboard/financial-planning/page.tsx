@@ -1,12 +1,9 @@
 "use client"
 
-import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
 import {
   Calculator,
   TrendingUp,
@@ -14,200 +11,194 @@ import {
   PiggyBank,
   Target,
   DollarSign,
-  BarChart3,
-  Shield,
-  Clock,
-  CheckCircle,
-  Star,
-  Zap,
+  ChevronRight,
+  Sparkles,
   Brain,
-  Search,
-  ArrowRight,
-  Home,
-  Briefcase,
-  ShoppingCart,
-  Gamepad2,
+  Zap,
+  CheckCircle,
+  AlertTriangle,
+  Clock,
 } from "lucide-react"
 import Link from "next/link"
 import { useGlobalUnlock } from "@/contexts/global-unlock-context"
 
-const financialTools = [
+const planningTools = [
   {
+    id: "budget-calculator",
     title: "Budget Calculator",
-    description: "Create and manage your personal budget with AI-powered insights",
+    description: "AI-powered budget optimization and expense tracking",
     icon: Calculator,
     href: "/dashboard/financial-planning/budget-calculator",
-    color: "from-blue-500 to-cyan-500",
+    color: "bg-blue-500",
+    status: "active",
   },
   {
+    id: "investment-planner",
     title: "Investment Planner",
-    description: "Plan your investment strategy with portfolio optimization",
+    description: "Portfolio optimization and investment strategy",
     icon: TrendingUp,
     href: "/dashboard/financial-planning/investment-planner",
-    color: "from-green-500 to-emerald-500",
+    color: "bg-green-500",
+    status: "active",
   },
   {
+    id: "debt-manager",
     title: "Debt Manager",
-    description: "Optimize your debt payoff strategy and save on interest",
+    description: "Strategic debt payoff and consolidation planning",
     icon: CreditCard,
     href: "/dashboard/financial-planning/debt-manager",
-    color: "from-red-500 to-pink-500",
+    color: "bg-red-500",
+    status: "active",
   },
   {
+    id: "retirement-simulator",
     title: "Retirement Simulator",
-    description: "Simulate retirement scenarios and plan for your future",
+    description: "Retirement planning and savings optimization",
     icon: PiggyBank,
     href: "/dashboard/financial-planning/retirement-simulator",
-    color: "from-purple-500 to-indigo-500",
+    color: "bg-purple-500",
+    status: "active",
   },
 ]
 
 export default function FinancialPlanningPage() {
   const { getAllSuggestions } = useGlobalUnlock()
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("all")
-  const [selectedImpact, setSelectedImpact] = useState("all")
-
   const allSuggestions = getAllSuggestions()
+  const financialSuggestions = allSuggestions.filter((s) => s.category === "financial")
 
-  // Filter suggestions for financial planning
-  const financialSuggestions = allSuggestions.filter(
-    (suggestion) =>
-      suggestion.category === "financial" || suggestion.category === "credit" || suggestion.category === "trading",
-  )
-
-  const filteredSuggestions = financialSuggestions.filter((suggestion) => {
-    const matchesSearch =
-      suggestion.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      suggestion.description.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory = selectedCategory === "all" || suggestion.category === selectedCategory
-    const matchesImpact = selectedImpact === "all" || suggestion.impact === selectedImpact
-
-    return matchesSearch && matchesCategory && matchesImpact
-  })
-
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case "financial":
-        return <DollarSign className="h-4 w-4" />
-      case "credit":
-        return <Shield className="h-4 w-4" />
-      case "trading":
-        return <BarChart3 className="h-4 w-4" />
-      case "business":
-        return <Briefcase className="h-4 w-4" />
-      case "realestate":
-        return <Home className="h-4 w-4" />
-      case "ecommerce":
-        return <ShoppingCart className="h-4 w-4" />
-      case "gamification":
-        return <Gamepad2 className="h-4 w-4" />
-      default:
-        return <Target className="h-4 w-4" />
-    }
-  }
-
-  const getImpactColor = (impact: string) => {
-    switch (impact) {
-      case "high":
-        return "bg-red-500/20 text-red-400 border-red-500/30"
-      case "medium":
-        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
-      case "low":
-        return "bg-green-500/20 text-green-400 border-green-500/30"
-      default:
-        return "bg-gray-500/20 text-gray-400 border-gray-500/30"
-    }
-  }
-
-  const highImpactSuggestions = filteredSuggestions.filter((s) => s.impact === "high")
-  const immediateSuggestions = filteredSuggestions.filter((s) => s.timeframe === "immediate")
+  const prioritySuggestions = financialSuggestions.filter((s) => s.impact === "high").slice(0, 3)
+  const immediateSuggestions = financialSuggestions.filter((s) => s.timeframe === "immediate").slice(0, 2)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <div className="container mx-auto p-6 space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
+      <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center gap-3">
-            <div className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-600">
-              <Calculator className="h-8 w-8 text-white" />
+            <div className="p-3 rounded-full bg-gradient-to-r from-green-500 to-emerald-600">
+              <DollarSign className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Financial Planning Hub
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+              Financial Planning Suite
             </h1>
           </div>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Comprehensive financial planning tools and AI-powered suggestions to optimize your financial future
+            AI-powered financial planning tools to optimize your money management and wealth building
           </p>
-          <div className="flex items-center justify-center gap-2">
-            <Badge variant="secondary" className="text-sm">
-              <CheckCircle className="h-3 w-3 mr-1" />
-              All Tools Unlocked
-            </Badge>
-            <Badge variant="outline" className="text-sm">
-              {filteredSuggestions.length} Active Suggestions
-            </Badge>
-          </div>
         </div>
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="bg-black/20 border-white/10">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-green-400">{highImpactSuggestions.length}</div>
-              <div className="text-sm text-muted-foreground">High Impact</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-black/20 border-white/10">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-blue-400">{immediateSuggestions.length}</div>
-              <div className="text-sm text-muted-foreground">Immediate Actions</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-black/20 border-white/10">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-purple-400">{financialTools.length}</div>
-              <div className="text-sm text-muted-foreground">Planning Tools</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-black/20 border-white/10">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-yellow-400">100%</div>
-              <div className="text-sm text-muted-foreground">Unlocked</div>
-            </CardContent>
-          </Card>
-        </div>
+        {/* Priority Suggestions */}
+        <Card className="bg-black/20 border-yellow-500/30">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-yellow-400" />
+              Priority Financial Actions
+            </CardTitle>
+            <CardDescription>High-impact suggestions for immediate financial improvement</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {prioritySuggestions.map((suggestion) => (
+                <Card
+                  key={suggestion.id}
+                  className="bg-gradient-to-br from-yellow-500/10 to-orange-600/10 border-yellow-500/20"
+                >
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between">
+                      <CardTitle className="text-sm font-medium">{suggestion.title}</CardTitle>
+                      <Badge className="bg-red-500/20 text-red-400">
+                        <AlertTriangle className="h-3 w-3 mr-1" />
+                        High Impact
+                      </Badge>
+                    </div>
+                    <CardDescription className="text-xs">{suggestion.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        {suggestion.timeframe}
+                      </div>
+                      <Button size="sm" className="h-6 text-xs bg-yellow-600 hover:bg-yellow-700">
+                        <Target className="h-3 w-3 mr-1" />
+                        Act Now
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Immediate Actions */}
+        <Card className="bg-black/20 border-green-500/30">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Zap className="h-5 w-5 text-green-400" />
+              Immediate Actions Available
+            </CardTitle>
+            <CardDescription>Quick wins you can implement right now</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {immediateSuggestions.map((suggestion) => (
+                <Card
+                  key={suggestion.id}
+                  className="bg-gradient-to-br from-green-500/10 to-emerald-600/10 border-green-500/20"
+                >
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between">
+                      <CardTitle className="text-sm font-medium">{suggestion.title}</CardTitle>
+                      <Badge className="bg-green-500/20 text-green-400">
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        Ready
+                      </Badge>
+                    </div>
+                    <CardDescription className="text-xs">{suggestion.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <Button size="sm" className="w-full bg-green-600 hover:bg-green-700">
+                      <Zap className="h-3 w-3 mr-1" />
+                      Take Action
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Financial Planning Tools */}
         <Card className="bg-black/20 border-white/10">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calculator className="h-5 w-5" />
-              Financial Planning Tools
+              <Brain className="h-5 w-5 text-purple-400" />
+              AI-Powered Planning Tools
             </CardTitle>
-            <CardDescription>Access comprehensive financial planning and analysis tools</CardDescription>
+            <CardDescription>Comprehensive financial planning and optimization suite</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {financialTools.map((tool) => (
+              {planningTools.map((tool) => (
                 <Card
-                  key={tool.title}
+                  key={tool.id}
                   className="bg-white/5 border-white/10 hover:border-purple-500/30 transition-all duration-300 group"
                 >
-                  <CardHeader className="pb-3">
+                  <CardHeader className="text-center">
                     <div
-                      className={`w-12 h-12 rounded-lg bg-gradient-to-r ${tool.color} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}
+                      className={`w-16 h-16 mx-auto rounded-full ${tool.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
                     >
-                      <tool.icon className="h-6 w-6 text-white" />
+                      <tool.icon className="h-8 w-8 text-white" />
                     </div>
                     <CardTitle className="text-lg">{tool.title}</CardTitle>
                     <CardDescription className="text-sm">{tool.description}</CardDescription>
                   </CardHeader>
-                  <CardContent className="pt-0">
+                  <CardContent>
                     <Link href={tool.href}>
-                      <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+                      <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700">
                         Launch Tool
-                        <ArrowRight className="h-4 w-4 ml-2" />
+                        <ChevronRight className="h-4 w-4 ml-2" />
                       </Button>
                     </Link>
                   </CardContent>
@@ -217,204 +208,101 @@ export default function FinancialPlanningPage() {
           </CardContent>
         </Card>
 
-        {/* AI Suggestions */}
+        {/* All Financial Suggestions */}
         <Card className="bg-black/20 border-white/10">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Brain className="h-5 w-5" />
-              AI-Powered Financial Suggestions
+              <Target className="h-5 w-5 text-blue-400" />
+              All Financial Suggestions ({financialSuggestions.length})
             </CardTitle>
-            <CardDescription>Personalized recommendations to optimize your financial strategy</CardDescription>
+            <CardDescription>Complete list of AI-powered financial recommendations</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            {/* Search and Filters */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  placeholder="Search suggestions..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-white/10 border-white/20"
-                />
-              </div>
-
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="bg-white/10 border-white/20">
-                  <SelectValue placeholder="Category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  <SelectItem value="financial">Financial Planning</SelectItem>
-                  <SelectItem value="credit">Credit Optimization</SelectItem>
-                  <SelectItem value="trading">Investment & Trading</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={selectedImpact} onValueChange={setSelectedImpact}>
-                <SelectTrigger className="bg-white/10 border-white/20">
-                  <SelectValue placeholder="Impact Level" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Impact Levels</SelectItem>
-                  <SelectItem value="high">High Impact</SelectItem>
-                  <SelectItem value="medium">Medium Impact</SelectItem>
-                  <SelectItem value="low">Low Impact</SelectItem>
-                </SelectContent>
-              </Select>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {financialSuggestions.map((suggestion) => (
+                <Card key={suggestion.id} className="bg-white/5 border-white/10">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between">
+                      <CardTitle className="text-sm font-medium">{suggestion.title}</CardTitle>
+                      <Badge
+                        variant={
+                          suggestion.impact === "high"
+                            ? "destructive"
+                            : suggestion.impact === "medium"
+                              ? "default"
+                              : "secondary"
+                        }
+                      >
+                        {suggestion.impact}
+                      </Badge>
+                    </div>
+                    <CardDescription className="text-xs">{suggestion.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        {suggestion.timeframe}
+                      </div>
+                      <Button size="sm" variant="outline" className="h-6 text-xs bg-transparent">
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        Apply
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-
-            {/* Suggestions Tabs */}
-            <Tabs defaultValue="all" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="all">All ({filteredSuggestions.length})</TabsTrigger>
-                <TabsTrigger value="high-impact">High Impact ({highImpactSuggestions.length})</TabsTrigger>
-                <TabsTrigger value="immediate">Immediate ({immediateSuggestions.length})</TabsTrigger>
-                <TabsTrigger value="favorites">Favorites</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="all" className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {filteredSuggestions.map((suggestion) => (
-                    <Card
-                      key={suggestion.id}
-                      className="bg-white/5 border-white/10 hover:border-purple-500/30 transition-colors"
-                    >
-                      <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-center gap-2">
-                            {getCategoryIcon(suggestion.category)}
-                            <CardTitle className="text-sm font-medium">{suggestion.title}</CardTitle>
-                          </div>
-                          <Badge className={getImpactColor(suggestion.impact)}>{suggestion.impact}</Badge>
-                        </div>
-                        <CardDescription className="text-xs">{suggestion.description}</CardDescription>
-                      </CardHeader>
-                      <CardContent className="pt-0">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                            <Clock className="h-3 w-3" />
-                            {suggestion.timeframe}
-                          </div>
-                          <Button
-                            size="sm"
-                            className="h-6 text-xs bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
-                          >
-                            <Zap className="h-3 w-3 mr-1" />
-                            Apply
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="high-impact" className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {highImpactSuggestions.map((suggestion) => (
-                    <Card
-                      key={suggestion.id}
-                      className="bg-gradient-to-br from-red-500/10 to-orange-600/10 border-red-500/20"
-                    >
-                      <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-center gap-2">
-                            {getCategoryIcon(suggestion.category)}
-                            <CardTitle className="text-sm font-medium">{suggestion.title}</CardTitle>
-                          </div>
-                          <Badge className="bg-red-500/20 text-red-400 border-red-500/30">
-                            <Star className="h-3 w-3 mr-1" />
-                            High Impact
-                          </Badge>
-                        </div>
-                        <CardDescription className="text-xs">{suggestion.description}</CardDescription>
-                      </CardHeader>
-                      <CardContent className="pt-0">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                            <Clock className="h-3 w-3" />
-                            {suggestion.timeframe}
-                          </div>
-                          <Button size="sm" className="h-6 text-xs bg-red-600 hover:bg-red-700">
-                            <Target className="h-3 w-3 mr-1" />
-                            Priority Action
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="immediate" className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {immediateSuggestions.map((suggestion) => (
-                    <Card
-                      key={suggestion.id}
-                      className="bg-gradient-to-br from-green-500/10 to-emerald-600/10 border-green-500/20"
-                    >
-                      <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-center gap-2">
-                            {getCategoryIcon(suggestion.category)}
-                            <CardTitle className="text-sm font-medium">{suggestion.title}</CardTitle>
-                          </div>
-                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                            <Zap className="h-3 w-3 mr-1" />
-                            Immediate
-                          </Badge>
-                        </div>
-                        <CardDescription className="text-xs">{suggestion.description}</CardDescription>
-                      </CardHeader>
-                      <CardContent className="pt-0">
-                        <Button size="sm" className="w-full bg-green-600 hover:bg-green-700">
-                          <CheckCircle className="h-3 w-3 mr-1" />
-                          Take Action Now
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="favorites" className="space-y-4">
-                <div className="text-center py-12">
-                  <Star className="h-12 w-12 mx-auto text-yellow-400 mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">Favorite Suggestions</h3>
-                  <p className="text-muted-foreground">Star suggestions to add them to your favorites</p>
-                </div>
-              </TabsContent>
-            </Tabs>
           </CardContent>
         </Card>
 
-        {/* Quick Actions */}
+        {/* Financial Health Score */}
         <Card className="bg-black/20 border-white/10">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Zap className="h-5 w-5" />
-              Quick Actions
+              <TrendingUp className="h-5 w-5 text-green-400" />
+              Financial Health Score
             </CardTitle>
+            <CardDescription>AI assessment of your overall financial wellness</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Button className="h-16 flex-col gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600">
-                <Calculator className="h-5 w-5" />
-                <span className="text-xs">Budget Now</span>
-              </Button>
-              <Button className="h-16 flex-col gap-2 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600">
-                <TrendingUp className="h-5 w-5" />
-                <span className="text-xs">Invest</span>
-              </Button>
-              <Button className="h-16 flex-col gap-2 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600">
-                <CreditCard className="h-5 w-5" />
-                <span className="text-xs">Pay Debt</span>
-              </Button>
-              <Button className="h-16 flex-col gap-2 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600">
-                <PiggyBank className="h-5 w-5" />
-                <span className="text-xs">Retire</span>
-              </Button>
+          <CardContent className="space-y-6">
+            <div className="text-center">
+              <div className="text-6xl font-bold text-green-400 mb-2">85</div>
+              <div className="text-lg text-muted-foreground">Excellent Financial Health</div>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span>Emergency Fund</span>
+                  <span>90%</span>
+                </div>
+                <Progress value={90} className="h-2" />
+              </div>
+
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span>Debt Management</span>
+                  <span>75%</span>
+                </div>
+                <Progress value={75} className="h-2" />
+              </div>
+
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span>Investment Portfolio</span>
+                  <span>85%</span>
+                </div>
+                <Progress value={85} className="h-2" />
+              </div>
+
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span>Retirement Planning</span>
+                  <span>80%</span>
+                </div>
+                <Progress value={80} className="h-2" />
+              </div>
             </div>
           </CardContent>
         </Card>
