@@ -9,20 +9,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { useRouter } from "next/navigation"
-import {
-  Home,
-  ArrowLeft,
-  Calculator,
-  FileText,
-  DollarSign,
-  User,
-  CheckCircle,
-  Shield,
-  MapPin,
-  Target,
-} from "lucide-react"
+import { Home, ArrowLeft, Calculator, FileText, DollarSign, User, CheckCircle, Shield } from "lucide-react"
 
-export default function USDALoanPage() {
+export default function FHALoanPage() {
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState({
@@ -39,13 +28,12 @@ export default function USDALoanPage() {
     jobTitle: "",
     employmentLength: "",
     annualIncome: "",
-    householdSize: "",
 
     // Property Information
     propertyAddress: "",
     propertyType: "single-family",
     purchasePrice: "",
-    downPayment: "0",
+    downPayment: "",
 
     // Loan Information
     loanAmount: "",
@@ -57,41 +45,41 @@ export default function USDALoanPage() {
     { id: 1, title: "Personal Info", icon: User, completed: false },
     { id: 2, title: "Employment", icon: FileText, completed: false },
     { id: 3, title: "Property", icon: Home, completed: false },
-    { id: 4, title: "Income Verification", icon: DollarSign, completed: false },
+    { id: 4, title: "Loan Details", icon: DollarSign, completed: false },
     { id: 5, title: "Review", icon: CheckCircle, completed: false },
   ]
 
-  const usdaLoanPrograms = [
+  const fhaLoanPrograms = [
     {
-      name: "USDA Direct Loan",
-      rate: "Variable",
-      downPayment: "0%",
-      description: "Direct funding from USDA for low-income applicants",
-      features: ["Payment assistance available", "Income-based payments", "Direct USDA funding"],
-      color: "from-green-500 to-emerald-500",
-    },
-    {
-      name: "USDA Guaranteed Loan",
-      rate: "6.75%",
-      downPayment: "0%",
-      description: "USDA-backed loan through approved lenders",
-      features: ["No down payment", "Competitive rates", "Private lender funding"],
+      name: "FHA Purchase Loan",
+      rate: "6.50%",
+      downPayment: "3.5%",
+      description: "Government-backed loan for home purchases",
+      features: ["Low down payment", "Flexible credit requirements", "Government guaranteed"],
       color: "from-blue-500 to-cyan-500",
     },
     {
-      name: "USDA Home Improvement",
-      rate: "1.00%",
+      name: "FHA Streamline Refinance",
+      rate: "6.25%",
       downPayment: "N/A",
-      description: "Grants and loans for home repairs",
-      features: ["Very low interest", "Grant options available", "Health/safety improvements"],
+      description: "Simplified refinancing for existing FHA loans",
+      features: ["No appraisal required", "Reduced documentation", "Lower payments"],
+      color: "from-green-500 to-emerald-500",
+    },
+    {
+      name: "FHA 203(k) Renovation",
+      rate: "6.75%",
+      downPayment: "3.5%",
+      description: "Purchase and renovate with one loan",
+      features: ["Finance renovations", "Single closing", "Government backed"],
       color: "from-purple-500 to-pink-500",
     },
     {
-      name: "USDA Refinance",
-      rate: "6.50%",
-      downPayment: "N/A",
-      description: "Refinance existing USDA loans",
-      features: ["Streamlined process", "Lower payments", "Cash-out options"],
+      name: "FHA Energy Efficient Mortgage",
+      rate: "6.40%",
+      downPayment: "3.5%",
+      description: "Finance energy improvements",
+      features: ["Energy upgrades included", "Lower utility costs", "Government guaranteed"],
       color: "from-orange-500 to-red-500",
     },
   ]
@@ -113,29 +101,30 @@ export default function USDALoanPage() {
   }
 
   const handleSubmitApplication = () => {
-    const applicationId = `USDA-${Date.now()}`
+    const applicationId = `FHA-${Date.now()}`
     router.push(`/citizen/loan-center/status/${applicationId}`)
   }
 
   const calculateMonthlyPayment = () => {
-    const principal = Number(formData.loanAmount) || 300000
-    const rate = 6.75 / 100 / 12
+    const principal = Number(formData.loanAmount) || 450000
+    const rate = 6.5 / 100 / 12
     const payments = 30 * 12
 
     if (rate === 0) return principal / payments
 
     const monthlyPayment = (principal * rate * Math.pow(1 + rate, payments)) / (Math.pow(1 + rate, payments) - 1)
 
-    // Add USDA guarantee fee (1% upfront, 0.35% annual)
-    const guaranteeFee = (principal * 0.0035) / 12
+    // Add FHA MIP (Mortgage Insurance Premium)
+    const mipRate = 0.0085 / 12 // 0.85% annual MIP
+    const mipPayment = principal * mipRate
 
-    return monthlyPayment + guaranteeFee
+    return monthlyPayment + mipPayment
   }
 
   const monthlyPayment = calculateMonthlyPayment()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-950 via-pink-950 to-purple-950 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-cyan-950 to-blue-950 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -143,19 +132,19 @@ export default function USDALoanPage() {
             <Button
               variant="outline"
               onClick={() => router.back()}
-              className="border-purple-500/30 text-purple-300 hover:bg-purple-500/20 bg-transparent"
+              className="border-blue-500/30 text-blue-300 hover:bg-blue-500/20 bg-transparent"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
             </Button>
             <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
-                USDA Rural Loan Application
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                FHA Home Loan Application
               </h1>
-              <p className="text-xl text-purple-200 mt-2">Rural development loan program for eligible areas</p>
+              <p className="text-xl text-blue-200 mt-2">Government-guaranteed home loan with low down payment</p>
               <Badge className="bg-green-500/20 text-green-400 border-green-500/30 mt-2">
                 <Shield className="h-4 w-4 mr-1" />
-                USDA Government Guaranteed
+                FHA Government Guaranteed
               </Badge>
             </div>
           </div>
@@ -163,24 +152,24 @@ export default function USDALoanPage() {
             <Button
               variant="outline"
               onClick={() => router.push("/citizen/loan-center/calculator")}
-              className="border-purple-500/30 text-purple-300 hover:bg-purple-500/20 bg-transparent"
+              className="border-blue-500/30 text-blue-300 hover:bg-blue-500/20 bg-transparent"
             >
               <Calculator className="h-4 w-4 mr-2" />
-              USDA Calculator
+              FHA Calculator
             </Button>
           </div>
         </div>
 
-        {/* USDA Benefits Banner */}
-        <Card className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-green-500/20">
+        {/* FHA Benefits Banner */}
+        <Card className="bg-gradient-to-r from-green-500/10 to-blue-500/10 border-green-500/20">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <Target className="h-12 w-12 text-green-400" />
+              <Shield className="h-12 w-12 text-green-400" />
               <div>
-                <h3 className="text-xl font-semibold text-green-400">USDA Rural Development Benefits</h3>
-                <p className="text-purple-200">
-                  • No down payment required • Rural and suburban eligible areas • Income limits apply • Government
-                  backing provides security
+                <h3 className="text-xl font-semibold text-green-400">FHA Loan Benefits</h3>
+                <p className="text-blue-200">
+                  • Only 3.5% down payment required • Credit scores as low as 580 accepted • Government backing provides
+                  security • Assumable loans available
                 </p>
               </div>
             </div>
@@ -188,7 +177,7 @@ export default function USDALoanPage() {
         </Card>
 
         {/* Progress Steps */}
-        <Card className="bg-gradient-to-br from-purple-900/50 to-pink-900/30 backdrop-blur-sm border-purple-500/20">
+        <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               {loanSteps.map((step, index) => (
@@ -197,18 +186,16 @@ export default function USDALoanPage() {
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center border-2 ${
                         currentStep >= step.id
-                          ? "bg-purple-500 border-purple-500 text-white"
-                          : "border-purple-500/30 text-purple-300"
+                          ? "bg-blue-500 border-blue-500 text-white"
+                          : "border-blue-500/30 text-blue-300"
                       }`}
                     >
                       <step.icon className="h-6 w-6" />
                     </div>
-                    <span className="text-sm text-purple-200 mt-2">{step.title}</span>
+                    <span className="text-sm text-blue-200 mt-2">{step.title}</span>
                   </div>
                   {index < loanSteps.length - 1 && (
-                    <div
-                      className={`w-16 h-0.5 mx-4 ${currentStep > step.id ? "bg-purple-500" : "bg-purple-500/30"}`}
-                    />
+                    <div className={`w-16 h-0.5 mx-4 ${currentStep > step.id ? "bg-blue-500" : "bg-blue-500/30"}`} />
                   )}
                 </div>
               ))}
@@ -220,23 +207,23 @@ export default function USDALoanPage() {
         </Card>
 
         <Tabs defaultValue="application" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 bg-purple-900/30 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-3 bg-blue-900/30 backdrop-blur-sm">
             <TabsTrigger value="application">Application</TabsTrigger>
-            <TabsTrigger value="programs">USDA Programs</TabsTrigger>
-            <TabsTrigger value="eligibility">USDA Eligibility</TabsTrigger>
+            <TabsTrigger value="programs">FHA Programs</TabsTrigger>
+            <TabsTrigger value="requirements">FHA Requirements</TabsTrigger>
           </TabsList>
 
           <TabsContent value="application" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Application Form */}
               <div className="lg:col-span-2">
-                <Card className="bg-gradient-to-br from-purple-900/50 to-pink-900/30 backdrop-blur-sm border-purple-500/20">
+                <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20">
                   <CardHeader>
                     <CardTitle className="text-white">
                       Step {currentStep}: {loanSteps[currentStep - 1]?.title}
                     </CardTitle>
-                    <CardDescription className="text-purple-200">
-                      USDA loans help rural communities achieve homeownership
+                    <CardDescription className="text-blue-200">
+                      FHA loans are designed to help more Americans achieve homeownership
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
@@ -247,7 +234,7 @@ export default function USDALoanPage() {
                           <Input
                             value={formData.firstName}
                             onChange={(e) => handleInputChange("firstName", e.target.value)}
-                            className="bg-purple-800/30 border-purple-500/30 text-white"
+                            className="bg-blue-800/30 border-blue-500/30 text-white"
                             placeholder="Enter your first name"
                           />
                         </div>
@@ -256,7 +243,7 @@ export default function USDALoanPage() {
                           <Input
                             value={formData.lastName}
                             onChange={(e) => handleInputChange("lastName", e.target.value)}
-                            className="bg-purple-800/30 border-purple-500/30 text-white"
+                            className="bg-blue-800/30 border-blue-500/30 text-white"
                             placeholder="Enter your last name"
                           />
                         </div>
@@ -266,7 +253,7 @@ export default function USDALoanPage() {
                             type="email"
                             value={formData.email}
                             onChange={(e) => handleInputChange("email", e.target.value)}
-                            className="bg-purple-800/30 border-purple-500/30 text-white"
+                            className="bg-blue-800/30 border-blue-500/30 text-white"
                             placeholder="Enter your email"
                           />
                         </div>
@@ -276,7 +263,7 @@ export default function USDALoanPage() {
                             type="tel"
                             value={formData.phone}
                             onChange={(e) => handleInputChange("phone", e.target.value)}
-                            className="bg-purple-800/30 border-purple-500/30 text-white"
+                            className="bg-blue-800/30 border-blue-500/30 text-white"
                             placeholder="Enter your phone number"
                           />
                         </div>
@@ -285,7 +272,7 @@ export default function USDALoanPage() {
                           <Input
                             value={formData.ssn}
                             onChange={(e) => handleInputChange("ssn", e.target.value)}
-                            className="bg-purple-800/30 border-purple-500/30 text-white"
+                            className="bg-blue-800/30 border-blue-500/30 text-white"
                             placeholder="XXX-XX-XXXX"
                           />
                         </div>
@@ -295,7 +282,7 @@ export default function USDALoanPage() {
                             type="date"
                             value={formData.dateOfBirth}
                             onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
-                            className="bg-purple-800/30 border-purple-500/30 text-white"
+                            className="bg-blue-800/30 border-blue-500/30 text-white"
                           />
                         </div>
                       </div>
@@ -308,7 +295,7 @@ export default function USDALoanPage() {
                           <Input
                             value={formData.employer}
                             onChange={(e) => handleInputChange("employer", e.target.value)}
-                            className="bg-purple-800/30 border-purple-500/30 text-white"
+                            className="bg-blue-800/30 border-blue-500/30 text-white"
                             placeholder="Enter your employer"
                           />
                         </div>
@@ -317,7 +304,7 @@ export default function USDALoanPage() {
                           <Input
                             value={formData.jobTitle}
                             onChange={(e) => handleInputChange("jobTitle", e.target.value)}
-                            className="bg-purple-800/30 border-purple-500/30 text-white"
+                            className="bg-blue-800/30 border-blue-500/30 text-white"
                             placeholder="Enter your job title"
                           />
                         </div>
@@ -326,7 +313,7 @@ export default function USDALoanPage() {
                           <Input
                             value={formData.employmentLength}
                             onChange={(e) => handleInputChange("employmentLength", e.target.value)}
-                            className="bg-purple-800/30 border-purple-500/30 text-white"
+                            className="bg-blue-800/30 border-blue-500/30 text-white"
                             placeholder="e.g., 2 years"
                           />
                         </div>
@@ -336,7 +323,7 @@ export default function USDALoanPage() {
                             type="number"
                             value={formData.annualIncome}
                             onChange={(e) => handleInputChange("annualIncome", e.target.value)}
-                            className="bg-purple-800/30 border-purple-500/30 text-white"
+                            className="bg-blue-800/30 border-blue-500/30 text-white"
                             placeholder="Enter your annual income"
                           />
                         </div>
@@ -350,7 +337,7 @@ export default function USDALoanPage() {
                           <Input
                             value={formData.propertyAddress}
                             onChange={(e) => handleInputChange("propertyAddress", e.target.value)}
-                            className="bg-purple-800/30 border-purple-500/30 text-white"
+                            className="bg-blue-800/30 border-blue-500/30 text-white"
                             placeholder="Enter the property address"
                           />
                         </div>
@@ -360,12 +347,12 @@ export default function USDALoanPage() {
                             <select
                               value={formData.propertyType}
                               onChange={(e) => handleInputChange("propertyType", e.target.value)}
-                              className="w-full p-2 bg-purple-800/30 border border-purple-500/30 rounded-md text-white"
+                              className="w-full p-2 bg-blue-800/30 border border-blue-500/30 rounded-md text-white"
                             >
                               <option value="single-family">Single Family Home</option>
-                              <option value="manufactured">Manufactured Home</option>
                               <option value="condo">Condominium</option>
                               <option value="townhouse">Townhouse</option>
+                              <option value="multi-family">Multi-Family</option>
                             </select>
                           </div>
                           <div className="space-y-2">
@@ -374,19 +361,19 @@ export default function USDALoanPage() {
                               type="number"
                               value={formData.purchasePrice}
                               onChange={(e) => handleInputChange("purchasePrice", e.target.value)}
-                              className="bg-purple-800/30 border-purple-500/30 text-white"
+                              className="bg-blue-800/30 border-blue-500/30 text-white"
                               placeholder="Enter purchase price"
                             />
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <Label className="text-white">Loan Amount</Label>
+                          <Label className="text-white">Down Payment (minimum 3.5%)</Label>
                           <Input
                             type="number"
-                            value={formData.loanAmount}
-                            onChange={(e) => handleInputChange("loanAmount", e.target.value)}
-                            className="bg-purple-800/30 border-purple-500/30 text-white"
-                            placeholder="Enter loan amount"
+                            value={formData.downPayment}
+                            onChange={(e) => handleInputChange("downPayment", e.target.value)}
+                            className="bg-blue-800/30 border-blue-500/30 text-white"
+                            placeholder="Enter down payment amount"
                           />
                         </div>
                       </div>
@@ -394,83 +381,84 @@ export default function USDALoanPage() {
 
                     {currentStep === 4 && (
                       <div className="space-y-4">
-                        <div className="bg-purple-800/30 p-4 rounded-lg border border-purple-500/20">
-                          <h4 className="font-medium text-white mb-2">USDA Income Limits</h4>
-                          <p className="text-sm text-purple-200 mb-3">
-                            Your household income must not exceed 115% of the median income for your area.
-                          </p>
-                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
-                            <Label className="text-white">Annual Household Income</Label>
+                            <Label className="text-white">Loan Amount</Label>
                             <Input
                               type="number"
-                              value={formData.annualIncome}
-                              onChange={(e) => handleInputChange("annualIncome", e.target.value)}
-                              className="bg-purple-800/30 border-purple-500/30 text-white"
-                              placeholder="Enter total household income"
+                              value={formData.loanAmount}
+                              onChange={(e) => handleInputChange("loanAmount", e.target.value)}
+                              className="bg-blue-800/30 border-blue-500/30 text-white"
+                              placeholder="Enter loan amount"
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label className="text-white">Household Size</Label>
+                            <Label className="text-white">Loan Purpose</Label>
                             <select
-                              value={formData.householdSize}
-                              onChange={(e) => handleInputChange("householdSize", e.target.value)}
-                              className="w-full p-2 bg-purple-800/30 border border-purple-500/30 rounded-md text-white"
+                              value={formData.loanPurpose}
+                              onChange={(e) => handleInputChange("loanPurpose", e.target.value)}
+                              className="w-full p-2 bg-blue-800/30 border border-blue-500/30 rounded-md text-white"
                             >
-                              <option value="">Select household size</option>
-                              <option value="1">1 person</option>
-                              <option value="2">2 people</option>
-                              <option value="3">3 people</option>
-                              <option value="4">4 people</option>
-                              <option value="5">5 people</option>
-                              <option value="6">6 people</option>
-                              <option value="7">7 people</option>
-                              <option value="8">8+ people</option>
+                              <option value="purchase">Purchase</option>
+                              <option value="refinance">Refinance</option>
+                              <option value="cash-out">Cash-Out Refinance</option>
                             </select>
                           </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-white">Occupancy</Label>
+                          <select
+                            value={formData.occupancy}
+                            onChange={(e) => handleInputChange("occupancy", e.target.value)}
+                            className="w-full p-2 bg-blue-800/30 border border-blue-500/30 rounded-md text-white"
+                          >
+                            <option value="primary">Primary Residence</option>
+                            <option value="secondary">Secondary Home</option>
+                            <option value="investment">Investment Property</option>
+                          </select>
                         </div>
                       </div>
                     )}
 
                     {currentStep === 5 && (
                       <div className="space-y-6">
-                        <h3 className="text-xl font-semibold text-white">Review Your USDA Application</h3>
+                        <h3 className="text-xl font-semibold text-white">Review Your FHA Application</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-4">
                             <div>
-                              <h4 className="font-medium text-purple-300">Personal Information</h4>
+                              <h4 className="font-medium text-blue-300">Personal Information</h4>
                               <p className="text-white">
                                 {formData.firstName} {formData.lastName}
                               </p>
-                              <p className="text-purple-200">{formData.email}</p>
-                              <p className="text-purple-200">{formData.phone}</p>
+                              <p className="text-blue-200">{formData.email}</p>
+                              <p className="text-blue-200">{formData.phone}</p>
                             </div>
                             <div>
-                              <h4 className="font-medium text-purple-300">Employment</h4>
+                              <h4 className="font-medium text-blue-300">Employment</h4>
                               <p className="text-white">
                                 {formData.jobTitle} at {formData.employer}
                               </p>
-                              <p className="text-purple-200">
+                              <p className="text-blue-200">
                                 Annual Income: ${Number(formData.annualIncome).toLocaleString()}
                               </p>
-                              <p className="text-purple-200">Household Size: {formData.householdSize} people</p>
                             </div>
                           </div>
                           <div className="space-y-4">
                             <div>
-                              <h4 className="font-medium text-purple-300">Property</h4>
+                              <h4 className="font-medium text-blue-300">Property</h4>
                               <p className="text-white">{formData.propertyAddress}</p>
-                              <p className="text-purple-200">
+                              <p className="text-blue-200">
                                 Purchase Price: ${Number(formData.purchasePrice).toLocaleString()}
                               </p>
-                              <p className="text-purple-200">Property Type: {formData.propertyType}</p>
+                              <p className="text-blue-200">
+                                Down Payment: ${Number(formData.downPayment).toLocaleString()}
+                              </p>
                             </div>
                             <div>
-                              <h4 className="font-medium text-purple-300">USDA Loan Details</h4>
+                              <h4 className="font-medium text-blue-300">FHA Loan Details</h4>
                               <p className="text-white">Loan Amount: ${Number(formData.loanAmount).toLocaleString()}</p>
-                              <p className="text-purple-200">Down Payment: $0 (0%)</p>
-                              <p className="text-purple-200">Purpose: {formData.loanPurpose}</p>
+                              <p className="text-blue-200">Purpose: {formData.loanPurpose}</p>
+                              <p className="text-blue-200">Occupancy: {formData.occupancy}</p>
                             </div>
                           </div>
                         </div>
@@ -482,12 +470,12 @@ export default function USDALoanPage() {
                         variant="outline"
                         onClick={handlePrevStep}
                         disabled={currentStep === 1}
-                        className="border-purple-500/30 text-purple-300 bg-transparent"
+                        className="border-blue-500/30 text-blue-300 bg-transparent"
                       >
                         Previous
                       </Button>
                       {currentStep < loanSteps.length ? (
-                        <Button onClick={handleNextStep} className="bg-gradient-to-r from-purple-500 to-pink-600">
+                        <Button onClick={handleNextStep} className="bg-gradient-to-r from-blue-500 to-cyan-600">
                           Next Step
                         </Button>
                       ) : (
@@ -495,7 +483,7 @@ export default function USDALoanPage() {
                           onClick={handleSubmitApplication}
                           className="bg-gradient-to-r from-green-500 to-emerald-600"
                         >
-                          Submit USDA Application
+                          Submit FHA Application
                         </Button>
                       )}
                     </div>
@@ -505,11 +493,11 @@ export default function USDALoanPage() {
 
               {/* Loan Summary */}
               <div className="space-y-6">
-                <Card className="bg-gradient-to-br from-purple-900/50 to-pink-900/30 backdrop-blur-sm border-purple-500/20">
+                <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20">
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
-                      <Calculator className="h-5 w-5 text-purple-400" />
-                      USDA Loan Summary
+                      <Calculator className="h-5 w-5 text-blue-400" />
+                      FHA Loan Summary
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -517,60 +505,33 @@ export default function USDALoanPage() {
                       <div className="text-3xl font-bold text-white mb-2">
                         ${monthlyPayment.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                       </div>
-                      <div className="text-purple-200">Monthly Payment (includes guarantee fee)</div>
+                      <div className="text-blue-200">Monthly Payment (includes MIP)</div>
                     </div>
 
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-purple-300">Loan Amount:</span>
-                        <span className="text-white">${Number(formData.loanAmount || 300000).toLocaleString()}</span>
+                        <span className="text-blue-300">Loan Amount:</span>
+                        <span className="text-white">${Number(formData.loanAmount || 450000).toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-purple-300">USDA Rate:</span>
-                        <span className="text-white">6.75%</span>
+                        <span className="text-blue-300">FHA Rate:</span>
+                        <span className="text-white">6.50%</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-purple-300">Down Payment:</span>
-                        <span className="text-white">$0 (0%)</span>
+                        <span className="text-blue-300">Down Payment:</span>
+                        <span className="text-white">3.5% minimum</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-purple-300">Guarantee Fee:</span>
-                        <span className="text-white">0.35% annually</span>
+                        <span className="text-blue-300">MIP (Insurance):</span>
+                        <span className="text-white">0.85% annually</span>
                       </div>
                     </div>
 
                     <div className="bg-green-800/30 p-3 rounded-lg border border-green-500/20">
                       <p className="text-sm text-green-200">
                         <Shield className="h-4 w-4 inline mr-1" />
-                        USDA Government Guarantee
+                        FHA Government Guarantee
                       </p>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-gradient-to-br from-purple-900/50 to-pink-900/30 backdrop-blur-sm border-purple-500/20">
-                  <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
-                      <MapPin className="h-5 w-5 text-purple-400" />
-                      Rural Eligibility
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-400" />
-                      <span className="text-purple-200">Rural and suburban areas</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-400" />
-                      <span className="text-purple-200">Population under 35,000</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-400" />
-                      <span className="text-purple-200">Income limits apply</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-400" />
-                      <span className="text-purple-200">Primary residence only</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -580,29 +541,29 @@ export default function USDALoanPage() {
 
           <TabsContent value="programs" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {usdaLoanPrograms.map((program) => (
+              {fhaLoanPrograms.map((program) => (
                 <Card
                   key={program.name}
-                  className="bg-gradient-to-br from-purple-900/50 to-pink-900/30 backdrop-blur-sm border-purple-500/20 hover:border-purple-400/40 transition-all duration-300"
+                  className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20 hover:border-blue-400/40 transition-all duration-300"
                 >
                   <CardHeader>
                     <CardTitle className="text-white flex items-center justify-between">
                       {program.name}
                       <Badge className="bg-green-500/20 text-green-400 border-green-500/30">{program.rate}</Badge>
                     </CardTitle>
-                    <CardDescription className="text-purple-200">{program.description}</CardDescription>
+                    <CardDescription className="text-blue-200">{program.description}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-purple-300">Down Payment:</span>
+                      <span className="text-blue-300">Down Payment:</span>
                       <span className="text-white font-medium">{program.downPayment}</span>
                     </div>
 
                     <div className="space-y-2">
-                      <h4 className="font-medium text-white">USDA Benefits:</h4>
+                      <h4 className="font-medium text-white">FHA Benefits:</h4>
                       <ul className="space-y-1">
                         {program.features.map((feature, index) => (
-                          <li key={index} className="text-sm text-purple-200 flex items-center gap-2">
+                          <li key={index} className="text-sm text-blue-200 flex items-center gap-2">
                             <CheckCircle className="h-3 w-3 text-green-400" />
                             {feature}
                           </li>
@@ -610,90 +571,90 @@ export default function USDALoanPage() {
                       </ul>
                     </div>
 
-                    <Button className={`w-full bg-gradient-to-r ${program.color}`}>Select USDA Program</Button>
+                    <Button className={`w-full bg-gradient-to-r ${program.color}`}>Select FHA Program</Button>
                   </CardContent>
                 </Card>
               ))}
             </div>
           </TabsContent>
 
-          <TabsContent value="eligibility" className="space-y-6">
+          <TabsContent value="requirements" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="bg-gradient-to-br from-purple-900/50 to-pink-900/30 backdrop-blur-sm border-purple-500/20">
+              <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
-                    <MapPin className="h-5 w-5 text-purple-400" />
-                    Geographic Eligibility
+                    <FileText className="h-5 w-5 text-blue-400" />
+                    FHA Requirements
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <h4 className="font-medium text-white mb-2">Eligible Areas</h4>
-                    <ul className="space-y-1 text-sm text-purple-200">
-                      <li>• Rural areas with population under 35,000</li>
-                      <li>• Some suburban areas qualify</li>
-                      <li>• Check USDA eligibility map</li>
-                      <li>• Most areas outside major cities</li>
+                    <h4 className="font-medium text-white mb-2">Credit Requirements</h4>
+                    <ul className="space-y-1 text-sm text-blue-200">
+                      <li>• Minimum credit score: 580 (3.5% down)</li>
+                      <li>• Credit score 500-579 (10% down)</li>
+                      <li>• 2-year bankruptcy waiting period</li>
+                      <li>• 3-year foreclosure waiting period</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium text-white mb-2">Income & Employment</h4>
+                    <ul className="space-y-1 text-sm text-blue-200">
+                      <li>• 2-year employment history</li>
+                      <li>• Debt-to-income ratio max 57%</li>
+                      <li>• Steady income verification</li>
+                      <li>• All income sources documented</li>
                     </ul>
                   </div>
 
                   <div>
                     <h4 className="font-medium text-white mb-2">Property Requirements</h4>
-                    <ul className="space-y-1 text-sm text-purple-200">
+                    <ul className="space-y-1 text-sm text-blue-200">
                       <li>• Primary residence only</li>
-                      <li>• Modest home size and cost</li>
-                      <li>• Safe, sanitary, and structurally sound</li>
-                      <li>• Cannot have in-ground swimming pool</li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-medium text-white mb-2">Occupancy</h4>
-                    <ul className="space-y-1 text-sm text-purple-200">
-                      <li>• Must be primary residence</li>
-                      <li>• Cannot be investment property</li>
-                      <li>• Cannot be vacation home</li>
-                      <li>• Must occupy within 60 days</li>
+                      <li>• FHA appraisal required</li>
+                      <li>• Property must meet FHA standards</li>
+                      <li>• Loan limits by county</li>
                     </ul>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-br from-purple-900/50 to-pink-900/30 backdrop-blur-sm border-purple-500/20">
+              <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
-                    <DollarSign className="h-5 w-5 text-purple-400" />
-                    Income & Credit Requirements
+                    <Shield className="h-5 w-5 text-green-400" />
+                    FHA Advantages
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <h4 className="font-medium text-white mb-2">Income Limits</h4>
-                    <ul className="space-y-1 text-sm text-purple-200">
-                      <li>• Cannot exceed 115% of median income</li>
-                      <li>• Based on household size and location</li>
-                      <li>• All household income counted</li>
-                      <li>• Adjusted for family size</li>
+                    <h4 className="font-medium text-white mb-2">Government Backing</h4>
+                    <ul className="space-y-1 text-sm text-blue-200">
+                      <li>• Federal Housing Administration insured</li>
+                      <li>• Lender protection against default</li>
+                      <li>• Standardized underwriting guidelines</li>
+                      <li>• Consumer protections included</li>
                     </ul>
                   </div>
 
                   <div>
-                    <h4 className="font-medium text-white mb-2">Credit Requirements</h4>
-                    <ul className="space-y-1 text-sm text-purple-200">
-                      <li>• Minimum 640 credit score preferred</li>
-                      <li>• Lower scores may qualify with compensating factors</li>
-                      <li>• 12-month payment history required</li>
-                      <li>• Debt-to-income ratio limits apply</li>
+                    <h4 className="font-medium text-white mb-2">Flexible Terms</h4>
+                    <ul className="space-y-1 text-sm text-blue-200">
+                      <li>• Gift funds allowed for down payment</li>
+                      <li>• Assumable loan feature</li>
+                      <li>• Streamline refinance options</li>
+                      <li>• No prepayment penalties</li>
                     </ul>
                   </div>
 
                   <div>
-                    <h4 className="font-medium text-white mb-2">Employment</h4>
-                    <ul className="space-y-1 text-sm text-purple-200">
-                      <li>• Stable employment history</li>
-                      <li>• 2-year employment verification</li>
-                      <li>• Self-employed income acceptable</li>
-                      <li>• Retirement income counts</li>
+                    <h4 className="font-medium text-white mb-2">Special Programs</h4>
+                    <ul className="space-y-1 text-sm text-blue-200">
+                      <li>• 203(k) renovation loans</li>
+                      <li>• Energy efficient mortgages</li>
+                      <li>• Manufactured home loans</li>
+                      <li>• Condominium approvals</li>
                     </ul>
                   </div>
                 </CardContent>

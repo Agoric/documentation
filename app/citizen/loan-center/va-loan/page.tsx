@@ -375,6 +375,146 @@ export default function VALoanPage() {
                       </div>
                     )}
 
+                    {currentStep === 3 && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label className="text-white">Employer</Label>
+                          <Input
+                            value={formData.employer}
+                            onChange={(e) => handleInputChange("employer", e.target.value)}
+                            className="bg-green-800/30 border-green-500/30 text-white"
+                            placeholder="Enter your employer"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-white">Job Title</Label>
+                          <Input
+                            value={formData.jobTitle}
+                            onChange={(e) => handleInputChange("jobTitle", e.target.value)}
+                            className="bg-green-800/30 border-green-500/30 text-white"
+                            placeholder="Enter your job title"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-white">Employment Length</Label>
+                          <Input
+                            value={formData.employmentLength}
+                            onChange={(e) => handleInputChange("employmentLength", e.target.value)}
+                            className="bg-green-800/30 border-green-500/30 text-white"
+                            placeholder="e.g., 2 years"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-white">Annual Income</Label>
+                          <Input
+                            type="number"
+                            value={formData.annualIncome}
+                            onChange={(e) => handleInputChange("annualIncome", e.target.value)}
+                            className="bg-green-800/30 border-green-500/30 text-white"
+                            placeholder="Enter your annual income"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {currentStep === 4 && (
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label className="text-white">Property Address</Label>
+                          <Input
+                            value={formData.propertyAddress}
+                            onChange={(e) => handleInputChange("propertyAddress", e.target.value)}
+                            className="bg-green-800/30 border-green-500/30 text-white"
+                            placeholder="Enter the property address"
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label className="text-white">Property Type</Label>
+                            <select
+                              value={formData.propertyType}
+                              onChange={(e) => handleInputChange("propertyType", e.target.value)}
+                              className="w-full p-2 bg-green-800/30 border border-green-500/30 rounded-md text-white"
+                            >
+                              <option value="single-family">Single Family Home</option>
+                              <option value="condo">Condominium</option>
+                              <option value="townhouse">Townhouse</option>
+                              <option value="multi-family">Multi-Family (up to 4 units)</option>
+                            </select>
+                          </div>
+                          <div className="space-y-2">
+                            <Label className="text-white">Purchase Price</Label>
+                            <Input
+                              type="number"
+                              value={formData.purchasePrice}
+                              onChange={(e) => handleInputChange("purchasePrice", e.target.value)}
+                              className="bg-green-800/30 border-green-500/30 text-white"
+                              placeholder="Enter purchase price"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-white">Loan Amount</Label>
+                          <Input
+                            type="number"
+                            value={formData.loanAmount}
+                            onChange={(e) => handleInputChange("loanAmount", e.target.value)}
+                            className="bg-green-800/30 border-green-500/30 text-white"
+                            placeholder="Enter loan amount"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {currentStep === 5 && (
+                      <div className="space-y-6">
+                        <h3 className="text-xl font-semibold text-white">Review Your VA Application</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-4">
+                            <div>
+                              <h4 className="font-medium text-green-300">Personal Information</h4>
+                              <p className="text-white">
+                                {formData.firstName} {formData.lastName}
+                              </p>
+                              <p className="text-green-200">{formData.email}</p>
+                              <p className="text-green-200">{formData.phone}</p>
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-green-300">Military Service</h4>
+                              <p className="text-white">
+                                {formData.serviceStatus} - {formData.branchOfService}
+                              </p>
+                              <p className="text-green-200">Discharge: {formData.dischargeType}</p>
+                              {formData.vaDisability && (
+                                <p className="text-green-200">VA Disability: {formData.vaDisability}%</p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="space-y-4">
+                            <div>
+                              <h4 className="font-medium text-green-300">Employment</h4>
+                              <p className="text-white">
+                                {formData.jobTitle} at {formData.employer}
+                              </p>
+                              <p className="text-green-200">
+                                Annual Income: ${Number(formData.annualIncome).toLocaleString()}
+                              </p>
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-green-300">Property & Loan</h4>
+                              <p className="text-white">{formData.propertyAddress}</p>
+                              <p className="text-green-200">
+                                Purchase Price: ${Number(formData.purchasePrice).toLocaleString()}
+                              </p>
+                              <p className="text-green-200">
+                                VA Loan Amount: ${Number(formData.loanAmount).toLocaleString()}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="flex justify-between pt-6">
                       <Button
                         variant="outline"

@@ -19,7 +19,6 @@ import {
   CheckCircle,
   Shield,
   Briefcase,
-  Target,
 } from "lucide-react"
 
 export default function SBALoanPage() {
@@ -377,234 +376,87 @@ export default function SBALoanPage() {
                             />
                           </div>
                         </div>
+                        <div className="space-y-2">
+                          <Label className="text-white">Business Address</Label>
+                          <Input
+                            value={formData.businessAddress}
+                            onChange={(e) => handleInputChange("businessAddress", e.target.value)}
+                            className="bg-orange-800/30 border-orange-500/30 text-white"
+                            placeholder="Enter business address"
+                          />
+                        </div>
                       </div>
                     )}
 
-                    <div className="flex justify-between pt-6">
-                      <Button
-                        variant="outline"
-                        onClick={handlePrevStep}
-                        disabled={currentStep === 1}
-                        className="border-orange-500/30 text-orange-300 bg-transparent"
-                      >
-                        Previous
-                      </Button>
-                      {currentStep < loanSteps.length ? (
-                        <Button onClick={handleNextStep} className="bg-gradient-to-r from-orange-500 to-red-600">
-                          Next Step
-                        </Button>
-                      ) : (
-                        <Button
-                          onClick={handleSubmitApplication}
-                          className="bg-gradient-to-r from-green-500 to-emerald-600"
-                        >
-                          Submit SBA Application
-                        </Button>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Loan Summary */}
-              <div className="space-y-6">
-                <Card className="bg-gradient-to-br from-orange-900/50 to-red-900/30 backdrop-blur-sm border-orange-500/20">
-                  <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
-                      <Calculator className="h-5 w-5 text-orange-400" />
-                      SBA Loan Summary
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-white mb-2">
-                        ${monthlyPayment.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                    {currentStep === 3 && (
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label className="text-white">Loan Amount</Label>
+                            <Input
+                              type="number"
+                              value={formData.loanAmount}
+                              onChange={(e) => handleInputChange("loanAmount", e.target.value)}
+                              className="bg-orange-800/30 border-orange-500/30 text-white"
+                              placeholder="Enter loan amount"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label className="text-white">Loan Purpose</Label>
+                            <select
+                              value={formData.loanPurpose}
+                              onChange={(e) => handleInputChange("loanPurpose", e.target.value)}
+                              className="w-full p-2 bg-orange-800/30 border border-orange-500/30 rounded-md text-white"
+                            >
+                              <option value="working-capital">Working Capital</option>
+                              <option value="equipment">Equipment Purchase</option>
+                              <option value="real-estate">Real Estate</option>
+                              <option value="expansion">Business Expansion</option>
+                              <option value="refinancing">Debt Refinancing</option>
+                              <option value="inventory">Inventory</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-white">Use of Funds (detailed description)</Label>
+                          <textarea
+                            value={formData.useOfFunds}
+                            onChange={(e) => handleInputChange("useOfFunds", e.target.value)}
+                            className="w-full p-2 bg-orange-800/30 border border-orange-500/30 rounded-md text-white h-24"
+                            placeholder="Describe how you will use the loan funds..."
+                          />
+                        </div>
                       </div>
-                      <div className="text-orange-200">Monthly Payment</div>
-                    </div>
+                    )}
 
-                    <div className="space-y-3">
-                      <div className="flex justify-between">
-                        <span className="text-orange-300">Loan Amount:</span>
-                        <span className="text-white">${Number(formData.loanAmount || 250000).toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-orange-300">SBA Rate:</span>
-                        <span className="text-white">8.25%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-orange-300">Term:</span>
-                        <span className="text-white">10 years</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-orange-300">SBA Guarantee:</span>
-                        <span className="text-white">85%</span>
-                      </div>
-                    </div>
-
-                    <div className="bg-green-800/30 p-3 rounded-lg border border-green-500/20">
-                      <p className="text-sm text-green-200">
-                        <Shield className="h-4 w-4 inline mr-1" />
-                        SBA Government Guarantee
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-gradient-to-br from-orange-900/50 to-red-900/30 backdrop-blur-sm border-orange-500/20">
-                  <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
-                      <Target className="h-5 w-5 text-orange-400" />
-                      SBA Benefits
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-400" />
-                      <span className="text-orange-200">Government guarantee</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-400" />
-                      <span className="text-orange-200">Lower down payments</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-400" />
-                      <span className="text-orange-200">Competitive rates</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-400" />
-                      <span className="text-orange-200">Flexible terms</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="programs" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {sbaLoanPrograms.map((program) => (
-                <Card
-                  key={program.name}
-                  className="bg-gradient-to-br from-orange-900/50 to-red-900/30 backdrop-blur-sm border-orange-500/20 hover:border-orange-400/40 transition-all duration-300"
-                >
-                  <CardHeader>
-                    <CardTitle className="text-white flex items-center justify-between">
-                      {program.name}
-                      <Badge className="bg-green-500/20 text-green-400 border-green-500/30">{program.rate}</Badge>
-                    </CardTitle>
-                    <CardDescription className="text-orange-200">{program.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-orange-300">Max Amount:</span>
-                      <span className="text-white font-medium">{program.amount}</span>
-                    </div>
-
-                    <div className="space-y-2">
-                      <h4 className="font-medium text-white">SBA Benefits:</h4>
-                      <ul className="space-y-1">
-                        {program.features.map((feature, index) => (
-                          <li key={index} className="text-sm text-orange-200 flex items-center gap-2">
-                            <CheckCircle className="h-3 w-3 text-green-400" />
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <Button className={`w-full bg-gradient-to-r ${program.color}`}>Select SBA Program</Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="requirements" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="bg-gradient-to-br from-orange-900/50 to-red-900/30 backdrop-blur-sm border-orange-500/20">
-                <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
-                    <Building2 className="h-5 w-5 text-orange-400" />
-                    Business Requirements
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <h4 className="font-medium text-white mb-2">Size Standards</h4>
-                    <ul className="space-y-1 text-sm text-orange-200">
-                      <li>• Must qualify as small business</li>
-                      <li>• Based on industry size standards</li>
-                      <li>• Employee count or revenue limits</li>
-                      <li>• SBA size tool available</li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-medium text-white mb-2">Business Operations</h4>
-                    <ul className="space-y-1 text-sm text-orange-200">
-                      <li>• For-profit business</li>
-                      <li>• Operating in the US</li>
-                      <li>• Owner invested equity</li>
-                      <li>• Exhausted other financing</li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-medium text-white mb-2">Prohibited Uses</h4>
-                    <ul className="space-y-1 text-sm text-orange-200">
-                      <li>• Speculation or investment</li>
-                      <li>• Lending or real estate investment</li>
-                      <li>• Pyramid sales plans</li>
-                      <li>• Gambling enterprises</li>
-                    </ul>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-orange-900/50 to-red-900/30 backdrop-blur-sm border-orange-500/20">
-                <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-orange-400" />
-                    Financial Requirements
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <h4 className="font-medium text-white mb-2">Credit Requirements</h4>
-                    <ul className="space-y-1 text-sm text-orange-200">
-                      <li>• Good personal credit history</li>
-                      <li>• Business credit if established</li>
-                      <li>• No recent bankruptcies</li>
-                      <li>• Demonstrate repayment ability</li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-medium text-white mb-2">Financial Documentation</h4>
-                    <ul className="space-y-1 text-sm text-orange-200">
-                      <li>• 3 years tax returns</li>
-                      <li>• Financial statements</li>
-                      <li>• Cash flow projections</li>
-                      <li>• Business plan required</li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-medium text-white mb-2">Collateral & Equity</h4>
-                    <ul className="space-y-1 text-sm text-orange-200">
-                      <li>• Collateral for loans over $25K</li>
-                      <li>• Personal guarantees required</li>
-                      <li>• Owner equity injection</li>
-                      <li>• Down payment may be required</li>
-                    </ul>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </div>
-  )
-}
+                    {currentStep === 4 && (
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label className="text-white">Personal Annual Income</Label>
+                            <Input
+                              type="number"
+                              value={formData.personalIncome}
+                              onChange={(e) => handleInputChange("personalIncome", e.target.value)}
+                              className="bg-orange-800/30 border-orange-500/30 text-white"
+                              placeholder="Your personal income"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label className="text-white">Business Cash Flow</Label>
+                            <Input
+                              type="number"
+                              value={formData.businessCashFlow}
+                              onChange={(e) => handleInputChange("businessCashFlow", e.target.value)}
+                              className="bg-orange-800/30 border-orange-500/30 text-white"
+                              placeholder="Monthly business cash flow"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-white">Available Collateral</Label>
+                          <textarea
+                            value={formData.collateral}
+                            onChange={(e) => handleInputChange("collateral", e.target.value)}
+                            className="w-full p-2 bg-orange-800/30 border border-orange-500/30 rounded-md text-white h-24"
+                            placeholder="Describe available collateral (real estate, equipment, etc.)..."\
