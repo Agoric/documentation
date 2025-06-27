@@ -1,27 +1,30 @@
 "use client"
 
-import type * as React from "react"
+import type React from "react"
+
+import { useMemo } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
-  Target,
-  TrendingUp,
-  PiggyBank,
-  Home,
-  GraduationCap,
-  Plane,
-  Edit,
-  Trash2,
-  RefreshCw,
   AlertTriangle,
   CheckCircle,
-  XCircle,
+  Edit,
+  Home,
+  PiggyBank,
+  Plane,
+  RefreshCw,
+  Target,
+  Trash2,
+  TrendingUp,
   Zap,
+  GraduationCap,
 } from "lucide-react"
 import { useGoalPrioritizingOrb } from "@/hooks/use-goal-prioritizing-orb"
+
+type Priority = "high" | "medium" | "low"
 
 interface Goal {
   id: string
@@ -31,71 +34,75 @@ interface Goal {
   current: number
   progress: number
   deadline: string
-  priority: "high" | "medium" | "low"
+  priority: Priority
   icon: React.ElementType
-  color: string
+  color: string // Tailwind bg- class e.g. bg-green-500
   monthlyContribution: number
 }
 
+/* ------------------------------------------------------------------ */
+/* The presentation-ready goal data lives locally. Keep the hook just
+   for AI recommendations & future logic.                              */
+/* ------------------------------------------------------------------ */
 const goals: Goal[] = [
   {
     id: "emergency",
     title: "Emergency Fund",
-    description: "6 months of expenses",
-    target: 100000,
-    current: 85000,
+    description: "Six months of expenses",
+    target: 100_000,
+    current: 85_000,
     progress: 85,
     deadline: "2024-12-31",
     priority: "high",
     icon: PiggyBank,
     color: "bg-green-500",
-    monthlyContribution: 2500,
+    monthlyContribution: 2_500,
   },
   {
     id: "retirement",
     title: "Retirement Savings",
     description: "Comfortable retirement by 65",
-    target: 1000000,
-    current: 450000,
+    target: 1_000_000,
+    current: 450_000,
     progress: 45,
     deadline: "2045-01-01",
     priority: "high",
     icon: TrendingUp,
     color: "bg-blue-500",
-    monthlyContribution: 3000,
+    monthlyContribution: 3_000,
   },
   {
     id: "house",
     title: "Dream Home",
-    description: "Down payment for house",
-    target: 200000,
-    current: 75000,
+    description: "Down payment for dream home",
+    target: 200_000,
+    current: 75_000,
     progress: 37.5,
     deadline: "2026-06-01",
     priority: "medium",
     icon: Home,
     color: "bg-purple-500",
-    monthlyContribution: 4000,
+    monthlyContribution: 4_000,
   },
   {
     id: "education",
     title: "Education Fund",
-    description: "Children's college fund",
-    target: 150000,
-    current: 25000,
+    description: "Children’s college fund",
+    target: 150_000,
+    current: 25_000,
     progress: 16.7,
     deadline: "2035-09-01",
     priority: "medium",
     icon: GraduationCap,
     color: "bg-orange-500",
-    monthlyContribution: 1200,
+    monthlyContribution: 1_200,
   },
   {
     id: "vacation",
     title: "Dream Vacation",
     description: "European tour",
-    target: 15000,
-    current: 8500,
+    target: 15_000,
+    current: 8_500,
     progress: 56.7,
     deadline: "2024-07-01",
     priority: "low",
@@ -106,107 +113,69 @@ const goals: Goal[] = [
 ]
 
 export default function GoalPrioritizingOrb() {
-  const { prioritizedGoals, updateGoalPriority, getGoalRecommendations } = useGoalPrioritizingOrb(goals)
+  const { getGoalRecommendations } = useGoalPrioritizingOrb()
 
-  // Calculate months to reach goal
-  const calculateMonthsToGoal = (goal: Goal) => {
-    const remaining = goal.target - goal.current
+  /* ---------- helpers ------------------------------------------------ */
+
+  const monthsToGoal = (g: Goal) => {
+    const remaining = g.target - g.current
     if (remaining <= 0) return 0
-    if (goal.monthlyContribution <= 0) return Number.POSITIVE_INFINITY
-    return Math.ceil(remaining / goal.monthlyContribution)
+    if (!g.monthlyContribution) return Number.POSITIVE_INFINITY
+    return Math.ceil(remaining / g.monthlyContribution)
   }
 
-  // Calculate goal status based on deadline vs projected completion
-  const getGoalStatus = (goal: Goal) => {
-    const monthsToGoal = calculateMonthsToGoal(goal)
-    const deadlineDate = new Date(goal.deadline)
-    const currentDate = new Date()
-    const monthsToDeadline = Math.ceil((deadlineDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24 * 30))
+  const monthsDisplay = (m: number) =>
+    m === 0
+      ? "Goal Reached!"
+      : m === Number.POSITIVE_INFINITY
+        ? "No contributions"
+        : m < 12
+          ? `${m} months`
+          : `${Math.floor(m / 12)}y ${m % 12}m`
 
-    if (monthsToGoal === 0) return "completed"
-    if (monthsToGoal === Number.POSITIVE_INFINITY) return "stalled"
-    if (monthsToGoal <= monthsToDeadline * 0.8) return "on-track"
-    if (monthsToGoal <= monthsToDeadline * 1.2) return "at-risk"
+  const goalStatus = (g: Goal) => {
+    const mGoal = monthsToGoal(g)
+    if (mGoal === 0) return "completed"
+    const mDeadline = (new Date(g.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24 * 30)
+    if (mGoal === Number.POSITIVE_INFINITY) return "stalled"
+    if (mGoal <= mDeadline * 0.8) return "on-track"
+    if (mGoal <= mDeadline * 1.2) return "at-risk"
     return "behind"
   }
 
-  // Get progress bar color based on status
-  const getProgressBarColor = (status: string) => {
-    switch (status) {
-      case "completed":
-        return "bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 shadow-emerald-500/50 shadow-lg"
-      case "on-track":
-        return "bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 shadow-emerald-500/50 shadow-lg"
-      case "at-risk":
-        return "bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 shadow-yellow-500/50 shadow-lg"
-      case "behind":
-        return "bg-gradient-to-r from-red-400 via-red-500 to-red-600 shadow-red-500/50 shadow-lg"
-      case "stalled":
-        return "bg-gradient-to-r from-gray-400 via-gray-500 to-gray-600 shadow-gray-500/50 shadow-lg"
-      default:
-        return "bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 shadow-blue-500/50 shadow-lg"
-    }
-  }
+  const progressBarColor = (status: string) =>
+    ({
+      completed: "from-emerald-400 via-emerald-500 to-emerald-600",
+      "on-track": "from-emerald-400 via-emerald-500 to-emerald-600",
+      "at-risk": "from-yellow-400 via-yellow-500 to-yellow-600",
+      behind: "from-red-400 via-red-500 to-red-600",
+      stalled: "from-gray-400 via-gray-500 to-gray-600",
+    })[status] ?? "from-blue-400 via-blue-500 to-blue-600"
 
-  // Format months display
-  const formatMonthsDisplay = (months: number) => {
-    if (months === 0) return "Goal Reached!"
-    if (months === Number.POSITIVE_INFINITY) return "No contributions"
-    if (months <= 12) return `${months} months`
+  const statusMeta = (status: string) =>
+    ({
+      completed: { color: "text-emerald-500", Icon: CheckCircle },
+      "on-track": { color: "text-emerald-500", Icon: CheckCircle },
+      "at-risk": { color: "text-yellow-500", Icon: AlertTriangle },
+      behind: { color: "text-red-500", Icon: AlertTriangle },
+      stalled: { color: "text-gray-500", Icon: AlertTriangle },
+    })[status] ?? { color: "text-blue-500", Icon: Target }
 
-    const years = Math.floor(months / 12)
-    const remainingMonths = months % 12
+  /* ---------- memoised counts for Analytics tab --------------------- */
+  const analytics = useMemo(() => {
+    const onTrack = goals.filter((g) => ["completed", "on-track"].includes(goalStatus(g))).length
+    const needAttention = goals.filter((g) => ["at-risk", "behind"].includes(goalStatus(g))).length
+    return { total: goals.length, onTrack, needAttention }
+  }, [])
 
-    if (remainingMonths === 0) {
-      return years === 1 ? "1 year" : `${years} years`
-    } else {
-      return `${years}y ${remainingMonths}m`
-    }
-  }
-
-  // Get status color based on months
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "completed":
-        return "text-emerald-500"
-      case "on-track":
-        return "text-emerald-500"
-      case "at-risk":
-        return "text-yellow-500"
-      case "behind":
-        return "text-red-500"
-      case "stalled":
-        return "text-gray-500"
-      default:
-        return "text-blue-500"
-    }
-  }
-
-  // Get status icon
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "completed":
-        return CheckCircle
-      case "on-track":
-        return CheckCircle
-      case "at-risk":
-        return AlertTriangle
-      case "behind":
-        return XCircle
-      case "stalled":
-        return XCircle
-      default:
-        return Target
-    }
-  }
-
+  /* ---------- render ------------------------------------------------- */
   return (
     <div className="space-y-6">
       <div className="text-center">
         <h2 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
           Goal Prioritizing Orb
         </h2>
-        <p className="text-muted-foreground mt-2">AI-powered financial goal optimization and prioritization</p>
+        <p className="text-muted-foreground mt-2">AI-powered financial goal optimisation</p>
       </div>
 
       <Tabs defaultValue="goals" className="space-y-6">
@@ -216,99 +185,93 @@ export default function GoalPrioritizingOrb() {
           <TabsTrigger value="analytics">Goal Analytics</TabsTrigger>
         </TabsList>
 
+        {/* ------------------- GOAL CARDS ------------------------------ */}
         <TabsContent value="goals" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {prioritizedGoals.map((goal) => {
-              const monthsToGoal = calculateMonthsToGoal(goal)
-              const monthsDisplay = formatMonthsDisplay(monthsToGoal)
-              const goalStatus = getGoalStatus(goal)
-              const statusColor = getStatusColor(goalStatus)
-              const progressBarColor = getProgressBarColor(goalStatus)
-              const StatusIcon = getStatusIcon(goalStatus)
-
+            {goals.map((g) => {
+              const status = goalStatus(g)
+              const { color: statusColor, Icon: StatusIcon } = statusMeta(status)
               return (
                 <Card
-                  key={goal.id}
+                  key={g.id}
                   className="bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-sm border-white/20 hover:border-white/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
                 >
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg bg-gradient-to-br ${goal.color}/20 to-transparent`}>
-                          <goal.icon className={`h-5 w-5 ${goal.color.replace("bg-", "text-")}`} />
+                        <div className={`p-2 rounded-lg ${g.color}/20`}>
+                          <g.icon className={`h-5 w-5 ${g.color.replace("bg-", "text-")}`} />
                         </div>
                         <div>
-                          <CardTitle className="text-lg">{goal.title}</CardTitle>
-                          <CardDescription className="text-sm">{goal.description}</CardDescription>
+                          <CardTitle className="text-lg">{g.title}</CardTitle>
+                          <CardDescription className="text-sm">{g.description}</CardDescription>
                         </div>
                       </div>
                       <div className="flex flex-col items-end gap-1">
                         <Badge
                           variant={
-                            goal.priority === "high"
-                              ? "destructive"
-                              : goal.priority === "medium"
-                                ? "default"
-                                : "secondary"
+                            g.priority === "high" ? "destructive" : g.priority === "medium" ? "default" : "secondary"
                           }
-                          className="text-xs"
+                          className="text-xs capitalize"
                         >
-                          {goal.priority}
+                          {g.priority}
                         </Badge>
                         <div className="flex items-center gap-1">
                           <StatusIcon className={`h-3 w-3 ${statusColor}`} />
-                          <span className={`text-xs ${statusColor}`}>{goalStatus.replace("-", " ").toUpperCase()}</span>
+                          <span className={`text-xs ${statusColor}`}>{status.replace("-", " ").toUpperCase()}</span>
                         </div>
                       </div>
                     </div>
                   </CardHeader>
 
                   <CardContent className="space-y-4">
-                    {/* Progress Section */}
+                    {/* Progress */}
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span>Progress</span>
                         <span className="font-medium">
-                          ${goal.current.toLocaleString()} / ${goal.target.toLocaleString()}
+                          ${g.current.toLocaleString()} / ${g.target.toLocaleString()}
                         </span>
                       </div>
                       <div className="relative">
-                        <Progress value={goal.progress} className="h-2 bg-white/10" />
+                        <Progress value={g.progress} className="h-2 bg-white/10" />
                         <div
-                          className={`absolute top-0 left-0 h-2 rounded-full transition-all duration-500 ${progressBarColor}`}
-                          style={{ width: `${goal.progress}%` }}
+                          className={`absolute top-0 left-0 h-2 rounded-full bg-gradient-to-r ${progressBarColor(
+                            status,
+                          )} transition-all`}
+                          style={{ width: `${g.progress}%` }}
                         />
                       </div>
                       <div className="flex justify-between text-xs text-muted-foreground">
-                        <span>{goal.progress}% complete</span>
-                        <span>Target: {new Date(goal.deadline).toLocaleDateString()}</span>
+                        <span>{g.progress}% complete</span>
+                        <span>Target: {new Date(g.deadline).toLocaleDateString()}</span>
                       </div>
                     </div>
 
-                    {/* Time to Goal Section */}
+                    {/* Time to goal */}
                     <div className="p-3 rounded-lg bg-gradient-to-br from-white/5 to-white/10 border border-white/10">
                       <div className="flex items-center justify-between mb-2">
                         <div>
                           <p className="text-xs text-muted-foreground">Time to Goal</p>
-                          <p className={`text-sm font-medium ${statusColor}`}>{monthsDisplay}</p>
+                          <p className={`text-sm font-medium ${statusColor}`}>{monthsDisplay(monthsToGoal(g))}</p>
                         </div>
                         <div className="text-right">
                           <p className="text-xs text-muted-foreground">Remaining</p>
-                          <p className="text-sm font-medium">${(goal.target - goal.current).toLocaleString()}</p>
+                          <p className="text-sm font-medium">${(g.target - g.current).toLocaleString()}</p>
                         </div>
                       </div>
-                      {monthsToGoal > 0 && monthsToGoal !== Number.POSITIVE_INFINITY && (
+                      {monthsToGoal(g) > 0 && monthsToGoal(g) !== Number.POSITIVE_INFINITY && (
                         <div className="text-xs text-muted-foreground">
-                          At ${goal.monthlyContribution.toLocaleString()}/month
+                          @ ${g.monthlyContribution.toLocaleString()}/month
                         </div>
                       )}
                     </div>
 
-                    {/* Monthly Contribution */}
+                    {/* Controls */}
                     <div className="flex items-center justify-between pt-2 border-t border-white/10">
                       <div>
                         <p className="text-xs text-muted-foreground">Monthly Contribution</p>
-                        <p className="text-sm font-medium">${goal.monthlyContribution.toLocaleString()}</p>
+                        <p className="text-sm font-medium">${g.monthlyContribution.toLocaleString()}</p>
                       </div>
                       <div className="flex gap-1">
                         <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
@@ -329,69 +292,41 @@ export default function GoalPrioritizingOrb() {
           </div>
         </TabsContent>
 
+        {/* ---------------- RECOMMENDATIONS ---------------------------- */}
         <TabsContent value="recommendations" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-sm border-white/20">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Zap className="h-5 w-5 text-yellow-500" />
-                  AI Recommendations
-                </CardTitle>
-                <CardDescription>Optimize your goal strategy with AI insights</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {getGoalRecommendations().map((recommendation, index) => (
-                  <div
-                    key={index}
-                    className="p-3 rounded-lg bg-gradient-to-br from-white/5 to-white/10 border border-white/10"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="p-1 rounded bg-yellow-500/20">
-                        <Zap className="h-3 w-3 text-yellow-500" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-medium text-sm">{recommendation.title}</h4>
-                        <p className="text-xs text-muted-foreground mt-1">{recommendation.description}</p>
-                        <Badge variant="outline" className="mt-2 text-xs">
-                          {recommendation.impact}
-                        </Badge>
-                      </div>
+          <Card className="bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-sm border-white/20">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Zap className="h-5 w-5 text-yellow-500" />
+                AI Recommendations
+              </CardTitle>
+              <CardDescription>Optimise your strategy with AI insights</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {getGoalRecommendations().map((r) => (
+                <div
+                  key={r.id}
+                  className="p-3 rounded-lg bg-gradient-to-br from-white/5 to-white/10 border border-white/10"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="p-1 rounded bg-yellow-500/20">
+                      <Zap className="h-3 w-3 text-yellow-500" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-medium text-sm">{r.title}</h4>
+                      <p className="text-xs text-muted-foreground mt-1">{r.description}</p>
+                      <Badge variant="outline" className="mt-2 text-xs capitalize">
+                        {r.impact}
+                      </Badge>
                     </div>
                   </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-sm border-white/20">
-              <CardHeader>
-                <CardTitle>Goal Priority Matrix</CardTitle>
-                <CardDescription>Visual representation of goal priorities</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {prioritizedGoals.slice(0, 3).map((goal, index) => (
-                    <div key={goal.id} className="flex items-center gap-3">
-                      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-medium">
-                        {index + 1}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <goal.icon className={`h-4 w-4 ${goal.color.replace("bg-", "text-")}`} />
-                          <span className="font-medium text-sm">{goal.title}</span>
-                        </div>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Progress value={goal.progress} className="flex-1 h-1" />
-                          <span className="text-xs text-muted-foreground">{goal.progress}%</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              ))}
+            </CardContent>
+          </Card>
         </TabsContent>
 
+        {/* ---------------- ANALYTICS ------------------------------- */}
         <TabsContent value="analytics" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-sm border-white/20">
@@ -399,7 +334,7 @@ export default function GoalPrioritizingOrb() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-muted-foreground">Total Goals</p>
-                    <p className="text-2xl font-bold">{goals.length}</p>
+                    <p className="text-2xl font-bold">{analytics.total}</p>
                     <p className="text-sm text-blue-500">Active goals</p>
                   </div>
                   <Target className="h-8 w-8 text-blue-500" />
@@ -412,10 +347,8 @@ export default function GoalPrioritizingOrb() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-muted-foreground">On Track</p>
-                    <p className="text-2xl font-bold">
-                      {goals.filter((goal) => getGoalStatus(goal) === "on-track").length}
-                    </p>
-                    <p className="text-sm text-green-500">Goals progressing well</p>
+                    <p className="text-2xl font-bold">{analytics.onTrack}</p>
+                    <p className="text-sm text-green-500">Progressing well</p>
                   </div>
                   <CheckCircle className="h-8 w-8 text-green-500" />
                 </div>
@@ -427,10 +360,8 @@ export default function GoalPrioritizingOrb() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-muted-foreground">Need Attention</p>
-                    <p className="text-2xl font-bold">
-                      {goals.filter((goal) => ["at-risk", "behind"].includes(getGoalStatus(goal))).length}
-                    </p>
-                    <p className="text-sm text-orange-500">Require optimization</p>
+                    <p className="text-2xl font-bold">{analytics.needAttention}</p>
+                    <p className="text-sm text-orange-500">Requires action</p>
                   </div>
                   <AlertTriangle className="h-8 w-8 text-orange-500" />
                 </div>
@@ -443,5 +374,4 @@ export default function GoalPrioritizingOrb() {
   )
 }
 
-// Named export for compatibility
 export { GoalPrioritizingOrb }
