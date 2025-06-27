@@ -14,6 +14,7 @@ import {
   Scale,
   UserCheck,
   Monitor,
+  Star,
 } from "lucide-react"
 
 export interface BreadcrumbItem {
@@ -131,6 +132,10 @@ function getSegmentInfo(segment: string, fullPath: string, allSegments: string[]
 
   if (segment === "system") {
     return { label: "System Monitoring", icon: Monitor }
+  }
+
+  if (segment === "citizen-success-path") {
+    return { label: "Citizen Success Path", icon: Star }
   }
 
   // Generic fallback - capitalize and replace hyphens

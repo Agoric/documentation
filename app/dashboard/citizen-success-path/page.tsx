@@ -15,7 +15,6 @@ import {
   TrendingUp,
   Calculator,
   PieChart,
-  Shield,
   Sparkles,
   Rocket,
   Crown,
@@ -25,11 +24,15 @@ import {
   LineChart,
   ArrowRight,
   CheckCircle,
-  AlertTriangle,
   Clock,
+  Star,
+  Trophy,
+  Award,
+  Users,
+  Globe,
 } from "lucide-react"
 
-export default function FinancialPlanningPage() {
+export default function CitizenSuccessPathPage() {
   const { isPremiumUnlocked, unlockPremium } = usePremiumUnlock()
   const router = useRouter()
   const [selectedGoal, setSelectedGoal] = React.useState<string | null>(null)
@@ -42,116 +45,132 @@ export default function FinancialPlanningPage() {
     }
   }, [isPremiumUnlocked, unlockPremium])
 
-  const overviewData = [
+  const successMetrics = [
     {
-      title: "AI Portfolio Health",
-      value: "94%",
-      change: "+12%",
-      icon: Brain,
+      title: "Citizen Score",
+      value: "947",
+      change: "+127",
+      icon: Star,
       variant: "neural" as const,
-      description: "Neural analysis complete",
-      action: () => router.push("/dashboard/financial-planning/portfolio-health"),
+      description: "Elite citizen status",
+      action: () => router.push("/citizen/dashboard"),
     },
     {
-      title: "Quantum Goals",
-      value: "7 Active",
-      change: "3 Priority",
-      icon: Target,
+      title: "Success Milestones",
+      value: "12 of 15",
+      change: "3 Remaining",
+      icon: Trophy,
       variant: "quantum" as const,
-      description: "AI-optimized targets",
-      action: () => router.push("/dashboard/financial-planning/goals"),
+      description: "Path to mastery",
+      action: () => router.push("/dashboard/citizen-success-path/milestones"),
     },
     {
-      title: "Holographic Wealth",
-      value: "$487K",
-      change: "+23%",
+      title: "Wealth Trajectory",
+      value: "$847K",
+      change: "+34%",
       icon: TrendingUp,
       variant: "holographic" as const,
-      description: "Multi-dimensional tracking",
-      action: () => router.push("/dashboard/financial-planning/wealth-tracker"),
+      description: "Exponential growth",
+      action: () => router.push("/dashboard/citizen-success-path/wealth-tracker"),
     },
     {
-      title: "Neural Credit Score",
-      value: "847",
-      change: "+45 pts",
-      icon: Shield,
+      title: "Network Power",
+      value: "2,847",
+      change: "+156",
+      icon: Users,
       variant: "cyber" as const,
-      description: "AI-enhanced monitoring",
-      action: () => router.push("/credit"),
+      description: "Connected citizens",
+      action: () => router.push("/citizen/network"),
     },
   ]
 
-  const aiTools = [
+  const successTools = [
     {
-      name: "Quantum Budget Calculator",
-      description: "AI-powered expense optimization with 97% accuracy",
+      name: "Quantum Wealth Builder",
+      description: "AI-powered wealth acceleration with 99.7% success rate",
       icon: Calculator,
-      confidence: 97,
-      color: "from-blue-500 to-cyan-500",
-      path: "/dashboard/financial-planning/budget-calculator",
-    },
-    {
-      name: "Neural Investment Planner",
-      description: "Machine learning portfolio recommendations",
-      icon: PieChart,
-      confidence: 94,
-      color: "from-purple-500 to-pink-500",
-      path: "/dashboard/financial-planning/investment-planner",
-    },
-    {
-      name: "Holographic Debt Manager",
-      description: "3D visualization of debt elimination strategies",
-      icon: Sparkles,
-      confidence: 91,
-      color: "from-green-500 to-emerald-500",
-      path: "/dashboard/financial-planning/debt-manager",
-    },
-    {
-      name: "AI Retirement Simulator",
-      description: "Quantum modeling of retirement scenarios",
-      icon: Rocket,
       confidence: 99,
+      color: "from-blue-500 to-cyan-500",
+      path: "/dashboard/citizen-success-path/wealth-builder",
+    },
+    {
+      name: "Neural Success Planner",
+      description: "Machine learning life optimization system",
+      icon: Brain,
+      confidence: 97,
+      color: "from-purple-500 to-pink-500",
+      path: "/dashboard/citizen-success-path/success-planner",
+    },
+    {
+      name: "Holographic Goal Tracker",
+      description: "3D visualization of your success journey",
+      icon: Target,
+      confidence: 95,
+      color: "from-green-500 to-emerald-500",
+      path: "/dashboard/citizen-success-path/goal-tracker",
+    },
+    {
+      name: "Elite Network Connector",
+      description: "Connect with high-value citizens and opportunities",
+      icon: Globe,
+      confidence: 98,
       color: "from-orange-500 to-red-500",
-      path: "/dashboard/financial-planning/retirement-simulator",
+      path: "/dashboard/citizen-success-path/network-connector",
     },
   ]
 
-  const goals = [
+  const successMilestones = [
     {
-      id: "emergency",
-      name: "Emergency Fund",
-      progress: 75,
-      target: "$30,000",
-      current: "$22,500",
-      status: "on-track",
-      color: "from-green-500 to-emerald-500",
-      icon: Shield,
-      deadline: "Dec 2024",
-      monthsToGoal: 3,
-    },
-    {
-      id: "house",
-      name: "House Down Payment",
-      progress: 45,
-      target: "$100,000",
-      current: "$45,000",
-      status: "at-risk",
-      color: "from-yellow-500 to-orange-500",
-      icon: Target,
-      deadline: "Jun 2025",
-      monthsToGoal: 8,
-    },
-    {
-      id: "retirement",
-      name: "Retirement Savings",
+      id: "financial-freedom",
+      name: "Financial Freedom",
       progress: 85,
       target: "$1,000,000",
-      current: "$850,000",
+      current: "$847,000",
       status: "on-track",
+      color: "from-green-500 to-emerald-500",
+      icon: DollarSign,
+      deadline: "Q2 2025",
+      monthsToGoal: 8,
+      reward: "Elite Status Unlock",
+    },
+    {
+      id: "network-mastery",
+      name: "Network Mastery",
+      progress: 75,
+      target: "5,000 Connections",
+      current: "2,847 Connections",
+      status: "accelerating",
+      color: "from-blue-500 to-cyan-500",
+      icon: Users,
+      deadline: "Q4 2024",
+      monthsToGoal: 6,
+      reward: "Ambassador Badge",
+    },
+    {
+      id: "knowledge-expert",
+      name: "Knowledge Expert",
+      progress: 60,
+      target: "Master Certification",
+      current: "Advanced Level",
+      status: "in-progress",
       color: "from-purple-500 to-pink-500",
-      icon: Rocket,
-      deadline: "2055",
-      monthsToGoal: 360,
+      icon: Brain,
+      deadline: "Q1 2025",
+      monthsToGoal: 4,
+      reward: "Mentor Access",
+    },
+    {
+      id: "impact-leader",
+      name: "Impact Leader",
+      progress: 40,
+      target: "Community Leader",
+      current: "Rising Contributor",
+      status: "building",
+      color: "from-orange-500 to-red-500",
+      icon: Award,
+      deadline: "Q3 2025",
+      monthsToGoal: 12,
+      reward: "Leadership Council",
     },
   ]
 
@@ -163,28 +182,29 @@ export default function FinancialPlanningPage() {
     }, 1500)
   }
 
-  const handleGoalOptimize = (goalId: string) => {
-    setSelectedGoal(goalId)
-    router.push(`/dashboard/financial-planning/goal-optimizer?goal=${goalId}`)
+  const handleMilestoneOptimize = (milestoneId: string) => {
+    setSelectedGoal(milestoneId)
+    router.push(`/dashboard/citizen-success-path/milestone-optimizer?milestone=${milestoneId}`)
   }
 
-  const handleGetPreApproved = () => {
-    router.push("/real-estate?action=pre-approval")
+  const handleJoinEliteProgram = () => {
+    router.push("/citizen/elite-program")
   }
 
-  const handleExportPortfolio = () => {
-    // Simulate export functionality
-    const portfolioData = {
-      totalValue: "$487,000",
-      goals: goals.length,
-      onTrackGoals: goals.filter((g) => g.status === "on-track").length,
+  const handleExportSuccessPath = () => {
+    const successData = {
+      citizenScore: "947",
+      milestones: successMilestones.length,
+      completedMilestones: successMilestones.filter((m) => m.progress >= 100).length,
+      wealthTrajectory: "$847,000",
+      networkSize: "2,847",
       exportDate: new Date().toISOString(),
     }
 
-    const dataStr = JSON.stringify(portfolioData, null, 2)
+    const dataStr = JSON.stringify(successData, null, 2)
     const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr)
 
-    const exportFileDefaultName = `portfolio-export-${new Date().toISOString().split("T")[0]}.json`
+    const exportFileDefaultName = `citizen-success-path-${new Date().toISOString().split("T")[0]}.json`
 
     const linkElement = document.createElement("a")
     linkElement.setAttribute("href", dataUri)
@@ -199,21 +219,23 @@ export default function FinancialPlanningPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-              AI Financial Planning
+              Citizen Success Path
             </h1>
-            <p className="text-muted-foreground mt-2">Quantum-powered financial intelligence at your fingertips</p>
+            <p className="text-muted-foreground mt-2">
+              Your quantum-powered journey to elite citizenship and wealth mastery
+            </p>
           </div>
           {isPremiumUnlocked && (
             <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white">
               <Crown className="w-4 h-4 mr-1" />
-              All Premium Features Unlocked
+              Elite Citizen Access
             </Badge>
           )}
         </div>
 
-        {/* Overview Cards */}
+        {/* Success Metrics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {overviewData.map((item) => (
+          {successMetrics.map((item) => (
             <FuturisticCard
               key={item.title}
               variant={item.variant}
@@ -240,72 +262,73 @@ export default function FinancialPlanningPage() {
         </div>
 
         {/* Main Content Tabs */}
-        <Tabs defaultValue="planning" className="w-full">
+        <Tabs defaultValue="success-path" className="w-full">
           <TabsList className="grid w-full grid-cols-4 bg-background/50 backdrop-blur-sm border border-white/10">
             <TabsTrigger
-              value="planning"
+              value="success-path"
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-500 data-[state=active]:to-blue-600 data-[state=active]:text-white"
             >
-              <Brain className="w-4 h-4 mr-2" />
-              AI Planning
+              <Star className="w-4 h-4 mr-2" />
+              Success Path
             </TabsTrigger>
             <TabsTrigger
-              value="goals"
+              value="milestones"
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-pink-600 data-[state=active]:text-white"
             >
-              <Target className="w-4 h-4 mr-2" />
-              Quantum Goals
+              <Trophy className="w-4 h-4 mr-2" />
+              Milestones
             </TabsTrigger>
             <TabsTrigger
               value="analytics"
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-emerald-600 data-[state=active]:text-white"
             >
               <BarChart3 className="w-4 h-4 mr-2" />
-              Holo Analytics
+              Analytics
             </TabsTrigger>
             <TabsTrigger
               value="tools"
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-600 data-[state=active]:text-white"
             >
-              <Calculator className="w-4 h-4 mr-2" />
-              Neural Tools
+              <Brain className="w-4 h-4 mr-2" />
+              AI Tools
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="planning" className="space-y-6">
+          <TabsContent value="success-path" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <FuturisticCard variant="neural" className="col-span-1 lg:col-span-2">
                 <CardHeader>
                   <CardTitle className="flex items-center text-cyan-400">
-                    <Brain className="w-5 h-5 mr-2" />
-                    AI Financial Assistant
+                    <Star className="w-5 h-5 mr-2" />
+                    Elite Citizen Success Assistant
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="bg-gradient-to-r from-cyan-500/20 to-blue-500/20 p-4 rounded-lg border border-cyan-500/30">
                     <p className="text-sm text-cyan-300 mb-2">
                       <Sparkles className="w-4 h-4 inline mr-1" />
-                      AI Recommendation
+                      AI Success Recommendation
                     </p>
                     <p className="text-white mb-4">
-                      Based on your financial profile, consider our revolutionary 50-year loan program. It can reduce
-                      your monthly payments by 40% while building generational wealth.
+                      Congratulations! You're in the top 5% of citizens. Our AI recommends accelerating your wealth
+                      building with our exclusive 50-year generational wealth program. This could multiply your net
+                      worth by 10x.
                     </p>
                     <div className="flex gap-3">
                       <Button
                         className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
-                        onClick={handleGetPreApproved}
+                        onClick={handleJoinEliteProgram}
                       >
-                        <Zap className="w-4 h-4 mr-2" />
-                        Get Pre-Approved
+                        <Crown className="w-4 h-4 mr-2" />
+                        Join Elite Program
                       </Button>
                       <Button
                         variant="outline"
                         className="border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 bg-transparent"
-                        onClick={() => router.push("/real-estate?section=calculator")}
+                        onClick={() => router.push("/dashboard/citizen-success-path/wealth-calculator")}
                       >
                         <Calculator className="w-4 h-4 mr-2" />
-                        Calculate Savings
+                        Calculate Potential
                       </Button>
                     </div>
                   </div>
@@ -315,18 +338,18 @@ export default function FinancialPlanningPage() {
                     <Button
                       variant="outline"
                       className="justify-start border-white/20 hover:bg-white/5 bg-transparent"
-                      onClick={() => router.push("/dashboard/financial-planning/cash-flow")}
+                      onClick={() => router.push("/dashboard/citizen-success-path/success-analysis")}
                     >
-                      <DollarSign className="w-4 h-4 mr-2" />
-                      Analyze Cash Flow
+                      <BarChart3 className="w-4 h-4 mr-2" />
+                      Success Analysis
                     </Button>
                     <Button
                       variant="outline"
                       className="justify-start border-white/20 hover:bg-white/5 bg-transparent"
-                      onClick={() => router.push("/dashboard/financial-planning/risk-assessment")}
+                      onClick={() => router.push("/dashboard/citizen-success-path/network-growth")}
                     >
-                      <Shield className="w-4 h-4 mr-2" />
-                      Risk Assessment
+                      <Users className="w-4 h-4 mr-2" />
+                      Network Growth
                     </Button>
                   </div>
                 </CardContent>
@@ -334,86 +357,100 @@ export default function FinancialPlanningPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value="goals" className="space-y-6">
+          <TabsContent value="milestones" className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold text-white">Financial Goals</h2>
+              <h2 className="text-2xl font-semibold text-white">Success Milestones</h2>
               <div className="flex gap-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => router.push("/dashboard/financial-planning/goal-creator")}
+                  onClick={() => router.push("/dashboard/citizen-success-path/milestone-creator")}
                 >
                   <Target className="w-4 h-4 mr-2" />
-                  Create Goal
+                  Create Milestone
                 </Button>
-                <Button variant="outline" size="sm" onClick={handleExportPortfolio}>
+                <Button variant="outline" size="sm" onClick={handleExportSuccessPath}>
                   <BarChart3 className="w-4 h-4 mr-2" />
-                  Export Goals
+                  Export Path
                 </Button>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {goals.map((goal) => (
-                <FuturisticCard key={goal.id} variant="quantum" className="hover:scale-105 transition-all duration-300">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {successMilestones.map((milestone) => (
+                <FuturisticCard
+                  key={milestone.id}
+                  variant="quantum"
+                  className="hover:scale-105 transition-all duration-300"
+                >
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-lg text-white flex items-center">
-                        <goal.icon className="w-5 h-5 mr-2 text-cyan-400" />
-                        {goal.name}
+                        <milestone.icon className="w-5 h-5 mr-2 text-cyan-400" />
+                        {milestone.name}
                       </CardTitle>
                       <Badge
                         className={
-                          goal.status === "on-track"
+                          milestone.status === "on-track"
                             ? "bg-green-500/20 text-green-400 border-green-500/30"
-                            : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+                            : milestone.status === "accelerating"
+                              ? "bg-blue-500/20 text-blue-400 border-blue-500/30"
+                              : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
                         }
                       >
-                        {goal.status === "on-track" ? (
+                        {milestone.status === "on-track" ? (
                           <CheckCircle className="w-3 h-3 mr-1" />
+                        ) : milestone.status === "accelerating" ? (
+                          <Rocket className="w-3 h-3 mr-1" />
                         ) : (
-                          <AlertTriangle className="w-3 h-3 mr-1" />
+                          <Clock className="w-3 h-3 mr-1" />
                         )}
-                        {goal.status}
+                        {milestone.status}
                       </Badge>
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Current</span>
-                      <span className="text-white font-medium">{goal.current}</span>
+                      <span className="text-white font-medium">{milestone.current}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Target</span>
-                      <span className="text-white font-medium">{goal.target}</span>
+                      <span className="text-white font-medium">{milestone.target}</span>
                     </div>
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">Progress</span>
-                        <span className="text-white font-medium">{goal.progress}%</span>
+                        <span className="text-white font-medium">{milestone.progress}%</span>
                       </div>
                       <div className="w-full bg-gray-700 rounded-full h-2.5">
                         <div
-                          className={`h-2.5 rounded-full bg-gradient-to-r ${goal.color} transition-all duration-500`}
-                          style={{ width: `${goal.progress}%` }}
+                          className={`h-2.5 rounded-full bg-gradient-to-r ${milestone.color} transition-all duration-500`}
+                          style={{ width: `${milestone.progress}%` }}
                         ></div>
                       </div>
                     </div>
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center text-muted-foreground">
                         <Clock className="w-3 h-3 mr-1" />
-                        {goal.monthsToGoal < 12
-                          ? `${goal.monthsToGoal} months`
-                          : `${Math.floor(goal.monthsToGoal / 12)} years`}
+                        {milestone.monthsToGoal < 12
+                          ? `${milestone.monthsToGoal} months`
+                          : `${Math.floor(milestone.monthsToGoal / 12)} years`}
                       </div>
-                      <span className="text-muted-foreground">{goal.deadline}</span>
+                      <span className="text-muted-foreground">{milestone.deadline}</span>
+                    </div>
+                    <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-2 rounded border border-purple-500/30">
+                      <p className="text-xs text-purple-300">
+                        <Award className="w-3 h-3 inline mr-1" />
+                        Reward: {milestone.reward}
+                      </p>
                     </div>
                     <Button
                       className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
-                      onClick={() => handleGoalOptimize(goal.id)}
+                      onClick={() => handleMilestoneOptimize(milestone.id)}
                     >
-                      <DollarSign className="w-4 h-4 mr-2" />
-                      Optimize Goal
+                      <Zap className="w-4 h-4 mr-2" />
+                      Accelerate Progress
                     </Button>
                   </CardContent>
                 </FuturisticCard>
@@ -427,18 +464,18 @@ export default function FinancialPlanningPage() {
                 <CardHeader>
                   <CardTitle className="text-cyan-400 flex items-center">
                     <LineChart className="w-5 h-5 mr-2" />
-                    Wealth Trajectory
+                    Success Trajectory
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="h-64 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-lg flex items-center justify-center border border-cyan-500/20">
                     <div className="text-center">
                       <TrendingUp className="w-12 h-12 text-cyan-400 mx-auto mb-2" />
-                      <p className="text-white font-medium">Holographic Chart</p>
-                      <p className="text-sm text-muted-foreground">3D wealth visualization</p>
+                      <p className="text-white font-medium">Holographic Success Chart</p>
+                      <p className="text-sm text-muted-foreground">3D success visualization</p>
                       <Button
                         className="mt-4 bg-gradient-to-r from-cyan-500 to-blue-600"
-                        onClick={() => router.push("/dashboard/financial-planning/wealth-visualization")}
+                        onClick={() => router.push("/dashboard/citizen-success-path/success-visualization")}
                       >
                         Launch 3D View
                       </Button>
@@ -450,40 +487,45 @@ export default function FinancialPlanningPage() {
               <FuturisticCard variant="cyber">
                 <CardHeader>
                   <CardTitle className="text-cyan-400 flex items-center">
-                    <BarChart3 className="w-5 h-5 mr-2" />
-                    Asset Allocation
+                    <PieChart className="w-5 h-5 mr-2" />
+                    Success Distribution
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {[
-                      { name: "Stocks", percentage: 60, color: "from-green-500 to-emerald-500", value: "$292K" },
-                      { name: "Bonds", percentage: 25, color: "from-blue-500 to-cyan-500", value: "$122K" },
-                      { name: "Real Estate", percentage: 10, color: "from-purple-500 to-pink-500", value: "$49K" },
-                      { name: "Crypto", percentage: 5, color: "from-orange-500 to-red-500", value: "$24K" },
-                    ].map((asset) => (
-                      <div key={asset.name} className="space-y-2">
+                      {
+                        name: "Wealth Building",
+                        percentage: 40,
+                        color: "from-green-500 to-emerald-500",
+                        value: "Elite",
+                      },
+                      { name: "Network Growth", percentage: 30, color: "from-blue-500 to-cyan-500", value: "Advanced" },
+                      { name: "Knowledge", percentage: 20, color: "from-purple-500 to-pink-500", value: "Expert" },
+                      { name: "Impact", percentage: 10, color: "from-orange-500 to-red-500", value: "Rising" },
+                    ].map((area) => (
+                      <div key={area.name} className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span className="text-white">{asset.name}</span>
+                          <span className="text-white">{area.name}</span>
                           <div className="text-right">
-                            <span className="text-cyan-400">{asset.percentage}%</span>
-                            <span className="text-muted-foreground ml-2">{asset.value}</span>
+                            <span className="text-cyan-400">{area.percentage}%</span>
+                            <span className="text-muted-foreground ml-2">{area.value}</span>
                           </div>
                         </div>
                         <div className="w-full bg-gray-700 rounded-full h-2">
                           <div
-                            className={`h-2 rounded-full bg-gradient-to-r ${asset.color}`}
-                            style={{ width: `${asset.percentage}%` }}
+                            className={`h-2 rounded-full bg-gradient-to-r ${area.color}`}
+                            style={{ width: `${area.percentage}%` }}
                           ></div>
                         </div>
                       </div>
                     ))}
                     <Button
                       className="w-full mt-4 bg-gradient-to-r from-purple-500 to-pink-600"
-                      onClick={() => router.push("/dashboard/financial-planning/rebalance")}
+                      onClick={() => router.push("/dashboard/citizen-success-path/rebalance-focus")}
                     >
-                      <PieChart className="w-4 h-4 mr-2" />
-                      Rebalance Portfolio
+                      <Target className="w-4 h-4 mr-2" />
+                      Optimize Focus Areas
                     </Button>
                   </div>
                 </CardContent>
@@ -493,7 +535,7 @@ export default function FinancialPlanningPage() {
 
           <TabsContent value="tools" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {aiTools.map((tool) => (
+              {successTools.map((tool) => (
                 <FuturisticCard
                   key={tool.name}
                   variant="neural"
