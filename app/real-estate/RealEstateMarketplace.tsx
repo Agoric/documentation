@@ -1,230 +1,182 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Slider } from "@/components/ui/slider"
 import {
-  Search,
   MapPin,
+  Building2,
+  TrendingUp,
   Bed,
   Bath,
   Square,
-  DollarSign,
-  TrendingUp,
   Heart,
+  Share,
   Eye,
-  Sparkles,
-  Target,
   Calculator,
-  FileText,
+  Coins,
+  Search,
+  Zap,
+  BarChart3,
 } from "lucide-react"
 
 interface Property {
   id: string
   title: string
+  location: string
   price: number
-  address: string
-  city: string
-  state: string
+  type: "house" | "condo" | "townhouse" | "land"
   bedrooms: number
   bathrooms: number
   sqft: number
-  lotSize: string
   yearBuilt: number
-  propertyType: string
-  listingType: string
   images: string[]
-  description: string
   features: string[]
   roi: number
-  capRate: number
-  cashFlow: number
   appreciation: number
-  neighborhood: {
-    walkScore: number
-    schools: string
-    crime: string
-    amenities: string[]
-  }
-  financing: {
-    downPayment: number
-    monthlyPayment: number
-    interestRate: number
-    loanTerm: number
-  }
+  rentEstimate: number
+  snapDaxIntegration: boolean
+  tokenized: boolean
+  virtualTour: boolean
+  status: "available" | "pending" | "sold"
 }
 
-const SAMPLE_PROPERTIES: Property[] = [
-  {
-    id: "1",
-    title: "Luxury Modern Estate",
-    price: 2850000,
-    address: "1234 Beverly Hills Dr",
-    city: "Beverly Hills",
-    state: "CA",
-    bedrooms: 6,
-    bathrooms: 7,
-    sqft: 8500,
-    lotSize: "1.2 acres",
-    yearBuilt: 2019,
-    propertyType: "single-family",
-    listingType: "sale",
-    images: ["/properties/luxury-modern-home.jpg"],
-    description:
-      "Stunning contemporary estate with panoramic city views, infinity pool, and smart home technology throughout.",
-    features: ["Infinity Pool", "Smart Home", "Wine Cellar", "Home Theater", "Gym", "Guest House"],
-    roi: 18.5,
-    capRate: 4.2,
-    cashFlow: 8500,
-    appreciation: 12.3,
-    neighborhood: {
-      walkScore: 85,
-      schools: "A+ Rated",
-      crime: "Very Low",
-      amenities: ["Shopping", "Restaurants", "Parks", "Golf"],
-    },
-    financing: {
-      downPayment: 570000,
-      monthlyPayment: 12450,
-      interestRate: 3.25,
-      loanTerm: 30,
-    },
-  },
-  {
-    id: "2",
-    title: "Oceanfront Investment Property",
-    price: 1950000,
-    address: "567 Pacific Coast Hwy",
-    city: "Malibu",
-    state: "CA",
-    bedrooms: 4,
-    bathrooms: 5,
-    sqft: 4200,
-    lotSize: "0.8 acres",
-    yearBuilt: 2015,
-    propertyType: "single-family",
-    listingType: "sale",
-    images: ["/properties/oceanfront-estate.jpg"],
-    description: "Direct oceanfront property with private beach access, perfect for vacation rental investment.",
-    features: ["Ocean View", "Private Beach", "Deck", "Fireplace", "Gourmet Kitchen"],
-    roi: 22.1,
-    capRate: 5.8,
-    cashFlow: 12200,
-    appreciation: 15.7,
-    neighborhood: {
-      walkScore: 72,
-      schools: "A Rated",
-      crime: "Low",
-      amenities: ["Beach", "Restaurants", "Shopping"],
-    },
-    financing: {
-      downPayment: 390000,
-      monthlyPayment: 8950,
-      interestRate: 3.5,
-      loanTerm: 30,
-    },
-  },
-  {
-    id: "3",
-    title: "Downtown Investment Loft",
-    price: 850000,
-    address: "890 Main St",
-    city: "Los Angeles",
-    state: "CA",
-    bedrooms: 2,
-    bathrooms: 2,
-    sqft: 1800,
-    lotSize: "N/A",
-    yearBuilt: 2020,
-    propertyType: "condo",
-    listingType: "sale",
-    images: ["/properties/downtown-loft.jpg"],
-    description: "Modern loft in the heart of downtown with high rental demand and excellent appreciation potential.",
-    features: ["City Views", "Rooftop Access", "Concierge", "Gym", "Pool"],
-    roi: 25.3,
-    capRate: 6.2,
-    cashFlow: 3200,
-    appreciation: 18.9,
-    neighborhood: {
-      walkScore: 95,
-      schools: "B+ Rated",
-      crime: "Medium",
-      amenities: ["Transit", "Restaurants", "Entertainment", "Shopping"],
-    },
-    financing: {
-      downPayment: 170000,
-      monthlyPayment: 4250,
-      interestRate: 3.75,
-      loanTerm: 30,
-    },
-  },
-]
-
 export default function RealEstateMarketplace() {
-  const [properties, setProperties] = React.useState<Property[]>(SAMPLE_PROPERTIES)
-  const [filteredProperties, setFilteredProperties] = React.useState<Property[]>(SAMPLE_PROPERTIES)
-  const [searchTerm, setSearchTerm] = React.useState("")
-  const [propertyTypeFilter, setPropertyTypeFilter] = React.useState("all")
-  const [bedroomFilter, setBedroomFilter] = React.useState("all")
-  const [priceRange, setPriceRange] = React.useState({ min: "", max: "" })
+  const [searchQuery, setSearchQuery] = React.useState("")
+  const [priceRange, setPriceRange] = React.useState([100000, 2000000])
+  const [propertyType, setPropertyType] = React.useState("all")
   const [sortBy, setSortBy] = React.useState("price-low")
-  const [hoveredProperty, setHoveredProperty] = React.useState<string | null>(null)
+  const [viewMode, setViewMode] = React.useState("grid")
+  const [selectedProperty, setSelectedProperty] = React.useState<Property | null>(null)
 
-  // Filter and sort properties
-  React.useEffect(() => {
-    let filtered = [...properties]
-
-    // Search filter
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (property) =>
-          property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          property.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          property.address.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
-    }
-
-    // Property type filter
-    if (propertyTypeFilter !== "all") {
-      filtered = filtered.filter((property) => property.propertyType === propertyTypeFilter)
-    }
-
-    // Bedroom filter
-    if (bedroomFilter !== "all") {
-      const bedrooms = Number.parseInt(bedroomFilter)
-      filtered = filtered.filter((property) => property.bedrooms >= bedrooms)
-    }
-
-    // Price range filter
-    if (priceRange.min) {
-      filtered = filtered.filter((property) => property.price >= Number.parseInt(priceRange.min))
-    }
-    if (priceRange.max) {
-      filtered = filtered.filter((property) => property.price <= Number.parseInt(priceRange.max))
-    }
-
-    // Sort
-    switch (sortBy) {
-      case "price-low":
-        filtered.sort((a, b) => a.price - b.price)
-        break
-      case "price-high":
-        filtered.sort((a, b) => b.price - a.price)
-        break
-      case "roi-high":
-        filtered.sort((a, b) => b.roi - a.roi)
-        break
-      case "sqft-high":
-        filtered.sort((a, b) => b.sqft - a.sqft)
-        break
-    }
-
-    setFilteredProperties(filtered)
-  }, [properties, searchTerm, propertyTypeFilter, bedroomFilter, priceRange, sortBy])
+  const properties: Property[] = [
+    {
+      id: "1",
+      title: "Luxury Modern Estate",
+      location: "Beverly Hills, CA",
+      price: 2850000,
+      type: "house",
+      bedrooms: 5,
+      bathrooms: 4,
+      sqft: 4200,
+      yearBuilt: 2019,
+      images: ["/properties/luxury-modern-home.jpg"],
+      features: ["Pool", "Smart Home", "Gourmet Kitchen", "Wine Cellar", "Home Theater"],
+      roi: 12.4,
+      appreciation: 8.7,
+      rentEstimate: 15000,
+      snapDaxIntegration: true,
+      tokenized: true,
+      virtualTour: true,
+      status: "available",
+    },
+    {
+      id: "2",
+      title: "Oceanfront Villa",
+      location: "Malibu, CA",
+      price: 4200000,
+      type: "house",
+      bedrooms: 6,
+      bathrooms: 5,
+      sqft: 5800,
+      yearBuilt: 2021,
+      images: ["/properties/oceanfront-estate.jpg"],
+      features: ["Ocean View", "Private Beach", "Infinity Pool", "Guest House", "Elevator"],
+      roi: 15.2,
+      appreciation: 11.3,
+      rentEstimate: 25000,
+      snapDaxIntegration: true,
+      tokenized: true,
+      virtualTour: true,
+      status: "available",
+    },
+    {
+      id: "3",
+      title: "Downtown Luxury Loft",
+      location: "Los Angeles, CA",
+      price: 1250000,
+      type: "condo",
+      bedrooms: 2,
+      bathrooms: 2,
+      sqft: 1800,
+      yearBuilt: 2020,
+      images: ["/properties/downtown-loft.jpg"],
+      features: ["City View", "Rooftop Deck", "Concierge", "Gym", "Parking"],
+      roi: 9.8,
+      appreciation: 6.5,
+      rentEstimate: 6500,
+      snapDaxIntegration: true,
+      tokenized: false,
+      virtualTour: true,
+      status: "available",
+    },
+    {
+      id: "4",
+      title: "Family Suburban Home",
+      location: "Pasadena, CA",
+      price: 875000,
+      type: "house",
+      bedrooms: 4,
+      bathrooms: 3,
+      sqft: 2800,
+      yearBuilt: 2015,
+      images: ["/properties/suburban-family-home.jpg"],
+      features: ["Large Yard", "Updated Kitchen", "Hardwood Floors", "Garage", "School District"],
+      roi: 7.2,
+      appreciation: 5.8,
+      rentEstimate: 4200,
+      snapDaxIntegration: false,
+      tokenized: false,
+      virtualTour: false,
+      status: "available",
+    },
+    {
+      id: "5",
+      title: "Hollywood Hills Contemporary",
+      location: "Hollywood Hills, CA",
+      price: 1850000,
+      type: "house",
+      bedrooms: 3,
+      bathrooms: 3,
+      sqft: 3200,
+      yearBuilt: 2018,
+      images: ["/properties/hollywood-hills-contemporary.jpg"],
+      features: ["City Views", "Modern Design", "Pool", "Home Office", "Security System"],
+      roi: 10.5,
+      appreciation: 9.2,
+      rentEstimate: 8500,
+      snapDaxIntegration: true,
+      tokenized: true,
+      virtualTour: true,
+      status: "pending",
+    },
+    {
+      id: "6",
+      title: "Santa Monica Beachfront",
+      location: "Santa Monica, CA",
+      price: 3200000,
+      type: "condo",
+      bedrooms: 3,
+      bathrooms: 3,
+      sqft: 2400,
+      yearBuilt: 2022,
+      images: ["/properties/santa-monica-beachfront.jpg"],
+      features: ["Beach Access", "Balcony", "Luxury Finishes", "Spa", "Valet Parking"],
+      roi: 13.8,
+      appreciation: 10.1,
+      rentEstimate: 18000,
+      snapDaxIntegration: true,
+      tokenized: true,
+      virtualTour: true,
+      status: "available",
+    },
+  ]
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -235,339 +187,473 @@ export default function RealEstateMarketplace() {
     }).format(amount)
   }
 
-  const formatNumber = (num: number) => {
-    return new Intl.NumberFormat("en-US").format(num)
-  }
+  const filteredProperties = properties.filter((property) => {
+    const matchesSearch =
+      property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      property.location.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesPrice = property.price >= priceRange[0] && property.price <= priceRange[1]
+    const matchesType = propertyType === "all" || property.type === propertyType
+
+    return matchesSearch && matchesPrice && matchesType
+  })
+
+  const sortedProperties = [...filteredProperties].sort((a, b) => {
+    switch (sortBy) {
+      case "price-low":
+        return a.price - b.price
+      case "price-high":
+        return b.price - a.price
+      case "roi":
+        return b.roi - a.roi
+      case "sqft":
+        return b.sqft - a.sqft
+      default:
+        return 0
+    }
+  })
+
+  const PropertyCard = ({ property }: { property: Property }) => (
+    <Card className="group bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border-slate-700/50 hover:border-blue-500/30 transition-all duration-300 hover:scale-105">
+      <div className="relative overflow-hidden rounded-t-lg">
+        <img
+          src={property.images[0] || "/placeholder.svg"}
+          alt={property.title}
+          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+        />
+        <div className="absolute top-3 left-3 flex gap-2">
+          {property.snapDaxIntegration && (
+            <Badge className="bg-orange-500/90 text-white">
+              <Coins className="h-3 w-3 mr-1" />
+              SNAP-DAX
+            </Badge>
+          )}
+          {property.tokenized && (
+            <Badge className="bg-blue-500/90 text-white">
+              <Zap className="h-3 w-3 mr-1" />
+              Tokenized
+            </Badge>
+          )}
+          {property.virtualTour && (
+            <Badge className="bg-purple-500/90 text-white">
+              <Eye className="h-3 w-3 mr-1" />
+              Virtual Tour
+            </Badge>
+          )}
+        </div>
+        <div className="absolute top-3 right-3 flex gap-2">
+          <Button size="sm" variant="ghost" className="bg-white/20 backdrop-blur-sm hover:bg-white/30">
+            <Heart className="h-4 w-4" />
+          </Button>
+          <Button size="sm" variant="ghost" className="bg-white/20 backdrop-blur-sm hover:bg-white/30">
+            <Share className="h-4 w-4" />
+          </Button>
+        </div>
+        <div className="absolute bottom-3 right-3">
+          <Badge
+            className={`${property.status === "available" ? "bg-green-500/90" : property.status === "pending" ? "bg-yellow-500/90" : "bg-red-500/90"} text-white`}
+          >
+            {property.status}
+          </Badge>
+        </div>
+      </div>
+
+      <CardContent className="p-4">
+        <div className="space-y-3">
+          <div>
+            <h3 className="font-semibold text-white text-lg group-hover:text-blue-400 transition-colors">
+              {property.title}
+            </h3>
+            <div className="flex items-center gap-1 text-slate-400">
+              <MapPin className="h-4 w-4" />
+              <span className="text-sm">{property.location}</span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-bold text-white">{formatCurrency(property.price)}</div>
+            <div className="flex items-center gap-1 text-green-400">
+              <TrendingUp className="h-4 w-4" />
+              <span className="text-sm">+{property.roi}% ROI</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 text-sm text-slate-400">
+            <div className="flex items-center gap-1">
+              <Bed className="h-4 w-4" />
+              <span>{property.bedrooms}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Bath className="h-4 w-4" />
+              <span>{property.bathrooms}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Square className="h-4 w-4" />
+              <span>{property.sqft.toLocaleString()} sqft</span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between text-sm">
+            <div>
+              <span className="text-slate-400">Rent Est:</span>
+              <span className="text-white font-medium ml-1">{formatCurrency(property.rentEstimate)}/mo</span>
+            </div>
+            <div>
+              <span className="text-slate-400">Appreciation:</span>
+              <span className="text-green-400 font-medium ml-1">+{property.appreciation}%</span>
+            </div>
+          </div>
+
+          <div className="flex gap-2 pt-2">
+            <Button className="flex-1 bg-blue-600 hover:bg-blue-700">
+              <Eye className="h-4 w-4 mr-2" />
+              View Details
+            </Button>
+            {property.snapDaxIntegration && (
+              <Button
+                variant="outline"
+                className="bg-orange-600/20 border-orange-500/30 text-orange-400 hover:bg-orange-600/30"
+              >
+                <Coins className="h-4 w-4 mr-2" />
+                Invest
+              </Button>
+            )}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-emerald-900 to-slate-900 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center space-y-4">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent">
-            Real Estate Marketplace
-          </h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-            Discover high-yield investment properties with AI-powered analysis and instant financing options
-          </p>
-          <div className="flex justify-center gap-4">
-            <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
-              <TrendingUp className="w-4 h-4 mr-2" />
-              High ROI Properties
-            </Badge>
-            <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">
-              <Calculator className="w-4 h-4 mr-2" />
-              Investment Analysis
-            </Badge>
-            <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30">
-              <FileText className="w-4 h-4 mr-2" />
-              Instant Financing
-            </Badge>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
+              Real Estate Marketplace
+            </h1>
+            <p className="text-xl text-blue-200 mt-2">Powered by SNAP-DAX Integration & Tokenized Investments</p>
           </div>
-        </motion.div>
+          <div className="flex items-center gap-4">
+            <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+              <Building2 className="h-4 w-4 mr-2" />
+              {properties.length} Properties
+            </Badge>
+            <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30">
+              <Coins className="h-4 w-4 mr-2" />
+              SNAP-DAX Enabled
+            </Badge>
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              <Calculator className="h-4 w-4 mr-2" />
+              Investment Calculator
+            </Button>
+          </div>
+        </div>
 
         {/* Search and Filters */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border-slate-700/50">
-            <CardContent className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
-                {/* Search */}
-                <div className="lg:col-span-2 relative">
+        <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border-slate-700/50">
+          <CardContent className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="space-y-2">
+                <Label className="text-white">Search Properties</Label>
+                <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
                   <Input
-                    placeholder="Search by location, property type..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-9 bg-slate-800/50 border-slate-600 text-white placeholder:text-slate-400"
+                    placeholder="Location, property type..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10 bg-slate-800/50 border-slate-600 text-white"
                   />
                 </div>
+              </div>
 
-                {/* Property Type */}
-                <Select value={propertyTypeFilter} onValueChange={setPropertyTypeFilter}>
+              <div className="space-y-2">
+                <Label className="text-white">Property Type</Label>
+                <Select value={propertyType} onValueChange={setPropertyType}>
                   <SelectTrigger className="bg-slate-800/50 border-slate-600 text-white">
-                    <SelectValue placeholder="Property Type" />
+                    <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="single-family">Single Family</SelectItem>
+                    <SelectItem value="house">House</SelectItem>
                     <SelectItem value="condo">Condo</SelectItem>
                     <SelectItem value="townhouse">Townhouse</SelectItem>
-                    <SelectItem value="multi-family">Multi-Family</SelectItem>
+                    <SelectItem value="land">Land</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
 
-                {/* Bedrooms */}
-                <Select value={bedroomFilter} onValueChange={setBedroomFilter}>
-                  <SelectTrigger className="bg-slate-800/50 border-slate-600 text-white">
-                    <SelectValue placeholder="Bedrooms" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Any Bedrooms</SelectItem>
-                    <SelectItem value="1">1+ Bedrooms</SelectItem>
-                    <SelectItem value="2">2+ Bedrooms</SelectItem>
-                    <SelectItem value="3">3+ Bedrooms</SelectItem>
-                    <SelectItem value="4">4+ Bedrooms</SelectItem>
-                    <SelectItem value="5">5+ Bedrooms</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                {/* Price Range */}
-                <Input
-                  placeholder="Min Price"
-                  value={priceRange.min}
-                  onChange={(e) => setPriceRange((prev) => ({ ...prev, min: e.target.value }))}
-                  className="bg-slate-800/50 border-slate-600 text-white placeholder:text-slate-400"
-                />
-
-                {/* Sort By */}
+              <div className="space-y-2">
+                <Label className="text-white">Sort By</Label>
                 <Select value={sortBy} onValueChange={setSortBy}>
                   <SelectTrigger className="bg-slate-800/50 border-slate-600 text-white">
-                    <SelectValue placeholder="Sort By" />
+                    <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="price-low">Price: Low to High</SelectItem>
                     <SelectItem value="price-high">Price: High to Low</SelectItem>
-                    <SelectItem value="roi-high">ROI: High to Low</SelectItem>
-                    <SelectItem value="sqft-high">Size: Largest First</SelectItem>
+                    <SelectItem value="roi">Highest ROI</SelectItem>
+                    <SelectItem value="sqft">Largest First</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-            </CardContent>
-          </Card>
-        </motion.div>
 
-        {/* Properties Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8"
-        >
-          {filteredProperties.map((property, index) => (
-            <motion.div
-              key={property.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 + index * 0.1 }}
-              onMouseEnter={() => setHoveredProperty(property.id)}
-              onMouseLeave={() => setHoveredProperty(null)}
-              className="group"
-            >
-              <Card
-                className={`h-full bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border-slate-700/50 hover:border-emerald-500/50 transition-all duration-500 relative overflow-hidden ${
-                  hoveredProperty === property.id ? "scale-[1.02] shadow-2xl" : ""
-                }`}
-              >
-                {/* Holographic border effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500" />
-
-                {/* Floating particles effect */}
-                {hoveredProperty === property.id && (
-                  <div className="absolute inset-0 pointer-events-none">
-                    {[...Array(8)].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        className="absolute w-1 h-1 bg-emerald-400 rounded-full"
-                        style={{
-                          left: `${Math.random() * 100}%`,
-                          top: `${Math.random() * 100}%`,
-                        }}
-                        animate={{
-                          y: [0, -30, 0],
-                          opacity: [0, 1, 0],
-                          scale: [0, 1, 0],
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Number.POSITIVE_INFINITY,
-                          delay: i * 0.3,
-                        }}
-                      />
-                    ))}
-                  </div>
-                )}
-
-                {/* Property Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={property.images[0] || "/placeholder.svg?height=200&width=400"}
-                    alt={property.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              <div className="space-y-2">
+                <Label className="text-white">Price Range</Label>
+                <div className="px-2">
+                  <Slider
+                    value={priceRange}
+                    onValueChange={setPriceRange}
+                    max={5000000}
+                    min={100000}
+                    step={50000}
+                    className="mt-2"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-
-                  {/* ROI Badge */}
-                  <Badge className="absolute top-3 left-3 bg-emerald-500/90 text-white">
-                    <TrendingUp className="w-3 h-3 mr-1" />
-                    {property.roi}% ROI
-                  </Badge>
-
-                  {/* Action Buttons */}
-                  <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Button size="sm" variant="secondary" className="bg-white/20 backdrop-blur-sm border-white/30">
-                      <Heart className="w-4 h-4" />
-                    </Button>
-                    <Button size="sm" variant="secondary" className="bg-white/20 backdrop-blur-sm border-white/30">
-                      <Eye className="w-4 h-4" />
-                    </Button>
-                  </div>
-
-                  {/* Price */}
-                  <div className="absolute bottom-3 left-3">
-                    <div className="text-2xl font-bold text-white">{formatCurrency(property.price)}</div>
-                    <div className="text-sm text-emerald-400">+{formatCurrency(property.cashFlow)}/mo cash flow</div>
+                  <div className="flex justify-between text-sm text-slate-400 mt-1">
+                    <span>{formatCurrency(priceRange[0])}</span>
+                    <span>{formatCurrency(priceRange[1])}</span>
                   </div>
                 </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-                <CardContent className="p-6 space-y-4">
-                  {/* Property Info */}
-                  <div>
-                    <h3 className="text-xl font-bold text-white group-hover:text-emerald-400 transition-colors duration-300">
-                      {property.title}
-                    </h3>
-                    <div className="flex items-center text-slate-400 text-sm mt-1">
-                      <MapPin className="w-4 h-4 mr-1" />
-                      {property.address}, {property.city}, {property.state}
-                    </div>
+        <Tabs defaultValue="properties" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4 bg-slate-800/50 backdrop-blur-sm">
+            <TabsTrigger value="properties">All Properties</TabsTrigger>
+            <TabsTrigger value="snap-dax">SNAP-DAX Enabled</TabsTrigger>
+            <TabsTrigger value="tokenized">Tokenized</TabsTrigger>
+            <TabsTrigger value="analytics">Market Analytics</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="properties" className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div className="text-white">
+                <span className="text-lg font-medium">{sortedProperties.length} properties found</span>
+                <span className="text-slate-400 ml-2">• Sorted by {sortBy.replace("-", " ")}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant={viewMode === "grid" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setViewMode("grid")}
+                  className="bg-slate-700 border-slate-600"
+                >
+                  Grid
+                </Button>
+                <Button
+                  variant={viewMode === "list" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setViewMode("list")}
+                  className="bg-slate-700 border-slate-600"
+                >
+                  List
+                </Button>
+              </div>
+            </div>
+
+            <div
+              className={`grid gap-6 ${viewMode === "grid" ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}
+            >
+              {sortedProperties.map((property) => (
+                <PropertyCard key={property.id} property={property} />
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="snap-dax" className="space-y-6">
+            <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {sortedProperties
+                .filter((p) => p.snapDaxIntegration)
+                .map((property) => (
+                  <PropertyCard key={property.id} property={property} />
+                ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="tokenized" className="space-y-6">
+            <Card className="bg-gradient-to-br from-blue-900/50 to-purple-900/30 backdrop-blur-sm border-blue-500/20 mb-6">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-white">
+                  <Zap className="h-5 w-5" />
+                  Tokenized Real Estate Investment
+                </CardTitle>
+                <CardDescription className="text-blue-200">
+                  Invest in fractional ownership of premium properties with SNAP-DAX integration
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-white">$50</div>
+                    <div className="text-blue-200 text-sm">Minimum Investment</div>
                   </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-white">12.4%</div>
+                    <div className="text-blue-200 text-sm">Average ROI</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-white">24/7</div>
+                    <div className="text-blue-200 text-sm">Liquidity Trading</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-                  {/* Property Details */}
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center text-slate-300">
-                        <Bed className="w-4 h-4 mr-1" />
-                        {property.bedrooms}
+            <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {sortedProperties
+                .filter((p) => p.tokenized)
+                .map((property) => (
+                  <PropertyCard key={property.id} property={property} />
+                ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="analytics" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+              <Card className="bg-gradient-to-br from-green-900/50 to-emerald-900/30 backdrop-blur-sm border-green-500/20">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-green-200">Average ROI</p>
+                      <p className="text-2xl font-bold text-white">11.2%</p>
+                      <div className="flex items-center gap-1 mt-1">
+                        <TrendingUp className="h-4 w-4 text-green-400" />
+                        <span className="text-green-400">+2.3% vs last year</span>
                       </div>
-                      <div className="flex items-center text-slate-300">
-                        <Bath className="w-4 h-4 mr-1" />
-                        {property.bathrooms}
+                    </div>
+                    <TrendingUp className="h-8 w-8 text-green-400" />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-blue-200">Market Growth</p>
+                      <p className="text-2xl font-bold text-white">8.7%</p>
+                      <p className="text-sm text-blue-400">Year over year</p>
+                    </div>
+                    <BarChart3 className="h-8 w-8 text-blue-400" />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-orange-900/50 to-red-900/30 backdrop-blur-sm border-orange-500/20">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-orange-200">SNAP-DAX Volume</p>
+                      <p className="text-2xl font-bold text-white">$2.4M</p>
+                      <p className="text-sm text-orange-400">Monthly trading</p>
+                    </div>
+                    <Coins className="h-8 w-8 text-orange-400" />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-purple-900/50 to-pink-900/30 backdrop-blur-sm border-purple-500/20">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-purple-200">Tokenized Assets</p>
+                      <p className="text-2xl font-bold text-white">$18.5M</p>
+                      <p className="text-sm text-purple-400">Total value</p>
+                    </div>
+                    <Zap className="h-8 w-8 text-purple-400" />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border-slate-700/50">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-white">
+                    <BarChart3 className="h-5 w-5" />
+                    Market Trends
+                  </CardTitle>
+                  <CardDescription className="text-slate-300">Real estate market performance by region</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-slate-800/30">
+                      <div>
+                        <div className="font-medium text-white">Beverly Hills</div>
+                        <div className="text-sm text-slate-400">Luxury Market</div>
                       </div>
-                      <div className="flex items-center text-slate-300">
-                        <Square className="w-4 h-4 mr-1" />
-                        {formatNumber(property.sqft)} sqft
+                      <div className="text-right">
+                        <div className="font-medium text-green-400">+15.2%</div>
+                        <div className="text-sm text-slate-400">YoY Growth</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-slate-800/30">
+                      <div>
+                        <div className="font-medium text-white">Santa Monica</div>
+                        <div className="text-sm text-slate-400">Beachfront</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-medium text-green-400">+12.8%</div>
+                        <div className="text-sm text-slate-400">YoY Growth</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-slate-800/30">
+                      <div>
+                        <div className="font-medium text-white">Hollywood Hills</div>
+                        <div className="text-sm text-slate-400">Celebrity Homes</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-medium text-green-400">+9.4%</div>
+                        <div className="text-sm text-slate-400">YoY Growth</div>
                       </div>
                     </div>
                   </div>
+                </CardContent>
+              </Card>
 
-                  {/* Investment Metrics */}
-                  <div className="grid grid-cols-2 gap-4 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-emerald-400">{property.capRate}%</div>
-                      <div className="text-xs text-slate-400">Cap Rate</div>
+              <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border-slate-700/50">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-white">
+                    <Calculator className="h-5 w-5" />
+                    Investment Calculator
+                  </CardTitle>
+                  <CardDescription className="text-slate-300">
+                    Calculate potential returns with SNAP-DAX integration
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div>
+                      <Label className="text-white">Investment Amount</Label>
+                      <Input
+                        type="number"
+                        placeholder="$10,000"
+                        className="bg-slate-800/50 border-slate-600 text-white"
+                      />
                     </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-emerald-400">+{property.appreciation}%</div>
-                      <div className="text-xs text-slate-400">Appreciation</div>
+                    <div>
+                      <Label className="text-white">Investment Period (years)</Label>
+                      <Slider defaultValue={[5]} max={30} min={1} step={1} className="mt-2" />
                     </div>
-                  </div>
-
-                  {/* Key Features */}
-                  <div>
-                    <div className="flex flex-wrap gap-1">
-                      {property.features.slice(0, 3).map((feature, idx) => (
-                        <Badge key={idx} variant="outline" className="text-xs border-slate-600 text-slate-300">
-                          {feature}
-                        </Badge>
-                      ))}
-                      {property.features.length > 3 && (
-                        <Badge variant="outline" className="text-xs border-slate-600 text-slate-300">
-                          +{property.features.length - 3} more
-                        </Badge>
-                      )}
+                    <div className="bg-slate-800/30 p-4 rounded-lg">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-green-400">$18,450</div>
+                        <div className="text-sm text-slate-400">Projected Value (5 years)</div>
+                        <div className="text-xs text-slate-500 mt-1">Based on 11.2% average ROI</div>
+                      </div>
                     </div>
-                  </div>
-
-                  {/* Financing Info */}
-                  <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-slate-300">Monthly Payment:</span>
-                      <span className="font-medium text-white">
-                        {formatCurrency(property.financing.monthlyPayment)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center text-sm mt-1">
-                      <span className="text-slate-300">Down Payment:</span>
-                      <span className="font-medium text-white">{formatCurrency(property.financing.downPayment)}</span>
-                    </div>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-2">
-                    <Button className="flex-1 bg-emerald-600 hover:bg-emerald-700 group-hover:scale-105 transition-all duration-300">
-                      <Calculator className="w-4 h-4 mr-2" />
-                      Analyze
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="flex-1 border-slate-600 text-slate-300 hover:bg-slate-700 group-hover:scale-105 transition-all duration-300 bg-transparent"
-                    >
-                      <FileText className="w-4 h-4 mr-2" />
-                      Finance
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                      <Calculator className="h-4 w-4 mr-2" />
+                      Get Detailed Analysis
                     </Button>
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Market Insights */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
-          <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border-slate-700/50">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-white">
-                <Target className="h-6 w-6 text-emerald-400" />
-                Market Insights & Investment Opportunities
-              </CardTitle>
-              <CardDescription className="text-slate-300">
-                AI-powered market analysis and investment recommendations
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                  <div className="flex items-center gap-3 mb-3">
-                    <TrendingUp className="h-6 w-6 text-emerald-400" />
-                    <div>
-                      <div className="font-medium text-white">High Growth Markets</div>
-                      <div className="text-sm text-emerald-400">+15.7% avg appreciation</div>
-                    </div>
-                  </div>
-                  <p className="text-sm text-slate-300">
-                    Beverly Hills and Malibu showing strong appreciation trends with institutional investor interest.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                  <div className="flex items-center gap-3 mb-3">
-                    <DollarSign className="h-6 w-6 text-blue-400" />
-                    <div>
-                      <div className="font-medium text-white">Cash Flow Leaders</div>
-                      <div className="text-sm text-blue-400">$8,500+ monthly</div>
-                    </div>
-                  </div>
-                  <p className="text-sm text-slate-300">
-                    Multi-family properties in downtown areas generating exceptional rental yields.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-lg bg-purple-500/10 border border-purple-500/20">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Sparkles className="h-6 w-6 text-purple-400" />
-                    <div>
-                      <div className="font-medium text-white">Emerging Opportunities</div>
-                      <div className="text-sm text-purple-400">25%+ ROI potential</div>
-                    </div>
-                  </div>
-                  <p className="text-sm text-slate-300">
-                    Pre-construction and off-market deals with exceptional return potential.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   )
