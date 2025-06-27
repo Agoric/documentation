@@ -247,6 +247,45 @@ export default function LoanCenterPage() {
     return traditional30Payment - bondPayment
   }
 
+  const handleBondStructureAnalyzer = () => {
+    router.push("/citizen/loan-center/bond-analyzer")
+  }
+
+  const handleDAXMonitor = () => {
+    router.push("/citizen/loan-center/dax-monitor")
+  }
+
+  const handleBondTool = (toolType: string) => {
+    switch (toolType) {
+      case "calculator":
+        router.push("/citizen/loan-center/calculator")
+        break
+      case "comparison":
+        router.push("/citizen/loan-center/comparison")
+        break
+      case "dax-monitor":
+        router.push("/citizen/loan-center/dax-monitor")
+        break
+      case "guarantee-calculator":
+        router.push("/citizen/loan-center/guarantee-calculator")
+        break
+    }
+  }
+
+  const handleSupport = (supportType: string) => {
+    switch (supportType) {
+      case "phone":
+        window.open("tel:+1-800-BOND-HELP")
+        break
+      case "email":
+        window.open("mailto:bonds@snapifi.com")
+        break
+      case "chat":
+        router.push("/citizen/loan-center/support-chat")
+        break
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-950 via-cyan-950 to-blue-950 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
@@ -543,7 +582,12 @@ export default function LoanCenterPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button className="w-full bg-gradient-to-r from-blue-500 to-cyan-600">Analyze Bond Structures</Button>
+                  <Button
+                    className="w-full bg-gradient-to-r from-blue-500 to-cyan-600"
+                    onClick={handleBondStructureAnalyzer}
+                  >
+                    Analyze Bond Structures
+                  </Button>
                 </CardContent>
               </Card>
 
@@ -558,7 +602,9 @@ export default function LoanCenterPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button className="w-full bg-gradient-to-r from-green-500 to-emerald-600">View DAX Conditions</Button>
+                  <Button className="w-full bg-gradient-to-r from-green-500 to-emerald-600" onClick={handleDAXMonitor}>
+                    View DAX Conditions
+                  </Button>
                 </CardContent>
               </Card>
             </div>
@@ -632,7 +678,12 @@ export default function LoanCenterPage() {
                     <FileText className="h-16 w-16 text-blue-400 mx-auto mb-4" />
                     <h3 className="text-xl font-semibold text-white mb-2">No Bond Applications Yet</h3>
                     <p className="text-blue-200 mb-6">Start your 50-year government bond application journey today</p>
-                    <Button className="bg-gradient-to-r from-blue-500 to-cyan-600">Apply for 50-Year Bond</Button>
+                    <Button
+                      className="bg-gradient-to-r from-blue-500 to-cyan-600"
+                      onClick={() => router.push("/citizen/loan-center/application")}
+                    >
+                      Apply for 50-Year Bond
+                    </Button>
                   </CardContent>
                 </Card>
               )}
@@ -675,24 +726,28 @@ export default function LoanCenterPage() {
                   <Button
                     variant="outline"
                     className="w-full justify-start border-blue-500/30 text-blue-300 bg-transparent"
+                    onClick={() => handleBondTool("calculator")}
                   >
                     50-Year Payment Calculator
                   </Button>
                   <Button
                     variant="outline"
                     className="w-full justify-start border-blue-500/30 text-blue-300 bg-transparent"
+                    onClick={() => handleBondTool("comparison")}
                   >
                     Bond vs Traditional Comparison
                   </Button>
                   <Button
                     variant="outline"
                     className="w-full justify-start border-blue-500/30 text-blue-300 bg-transparent"
+                    onClick={() => handleBondTool("dax-monitor")}
                   >
                     DAX Rate Monitor
                   </Button>
                   <Button
                     variant="outline"
                     className="w-full justify-start border-blue-500/30 text-blue-300 bg-transparent"
+                    onClick={() => handleBondTool("guarantee-calculator")}
                   >
                     Government Guarantee Calculator
                   </Button>
@@ -707,13 +762,17 @@ export default function LoanCenterPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Button className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 justify-start">
+                  <Button
+                    className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 justify-start"
+                    onClick={() => handleSupport("phone")}
+                  >
                     <Phone className="h-4 w-4 mr-2" />
                     Call Bond Specialists
                   </Button>
                   <Button
                     variant="outline"
                     className="w-full justify-start border-blue-500/30 text-blue-300 bg-transparent"
+                    onClick={() => handleSupport("email")}
                   >
                     <Mail className="h-4 w-4 mr-2" />
                     Email Bond Support
@@ -721,6 +780,7 @@ export default function LoanCenterPage() {
                   <Button
                     variant="outline"
                     className="w-full justify-start border-blue-500/30 text-blue-300 bg-transparent"
+                    onClick={() => handleSupport("chat")}
                   >
                     <MessageCircle className="h-4 w-4 mr-2" />
                     Live Bond Chat
