@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { User, ChevronUp, Settings, Bell, Wifi, Battery, Shield, Crown, Zap, Check, RefreshCw } from "lucide-react"
+import { User, ChevronUp, Settings, Bell, Wifi, Battery, Shield, Crown, Check, RefreshCw } from "lucide-react"
 
 interface UserInfo {
   name: string
@@ -100,7 +100,7 @@ export function QuantumProfileCard({ userInfo, overallProgress }: QuantumProfile
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
                 <User className="h-4 w-4 text-primary" />
               </div>
-              {/* Quantum Online Indicator */}
+              {/* Profile Online Indicator */}
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full animate-pulse border-2 border-background" />
             </div>
           ) : (
@@ -112,7 +112,7 @@ export function QuantumProfileCard({ userInfo, overallProgress }: QuantumProfile
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
                       <roleInfo.icon className={`h-6 w-6 ${roleInfo.color.split(" ")[0]}`} />
                     </div>
-                    {/* Quantum Online Indicator */}
+                    {/* Profile Online Indicator */}
                     <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full animate-pulse border-2 border-background flex items-center justify-center">
                       <div className="w-2 h-2 bg-white rounded-full animate-ping" />
                     </div>
@@ -124,8 +124,8 @@ export function QuantumProfileCard({ userInfo, overallProgress }: QuantumProfile
                         {roleInfo.label}
                       </Badge>
                       <Badge variant="outline" className="text-xs text-emerald-500 bg-emerald-500/20 animate-pulse">
-                        <Zap className="h-3 w-3 mr-1" />
-                        Quantum: Online
+                        <User className="h-3 w-3 mr-1" />
+                        Profile: Online
                       </Badge>
                     </div>
                   </div>
