@@ -9,7 +9,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { useRouter } from "next/navigation"
-import { Home, ArrowLeft, Calculator, FileText, User, CheckCircle, TrendingUp, Shield, Star } from "lucide-react"
+import {
+  Shield,
+  ArrowLeft,
+  Calculator,
+  FileText,
+  DollarSign,
+  User,
+  CheckCircle,
+  TrendingUp,
+  Award,
+  Star,
+} from "lucide-react"
 
 export default function VALoanPage() {
   const router = useRouter()
@@ -31,17 +42,10 @@ export default function VALoanPage() {
     dischargeType: "",
     vaDisability: "",
 
-    // Employment Information
-    employer: "",
-    jobTitle: "",
-    employmentLength: "",
-    annualIncome: "",
-
     // Property Information
     propertyAddress: "",
     propertyType: "single-family",
     purchasePrice: "",
-    downPayment: "0",
 
     // Loan Information
     loanAmount: "",
@@ -52,8 +56,8 @@ export default function VALoanPage() {
   const loanSteps = [
     { id: 1, title: "Personal Info", icon: User, completed: false },
     { id: 2, title: "Military Service", icon: Shield, completed: false },
-    { id: 3, title: "Employment", icon: FileText, completed: false },
-    { id: 4, title: "Property", icon: Home, completed: false },
+    { id: 3, title: "Property", icon: FileText, completed: false },
+    { id: 4, title: "Loan Details", icon: DollarSign, completed: false },
     { id: 5, title: "Review", icon: CheckCircle, completed: false },
   ]
 
@@ -62,32 +66,32 @@ export default function VALoanPage() {
       name: "VA Purchase Loan",
       rate: "6.00%",
       downPayment: "0%",
-      description: "Buy a home with no down payment required",
-      features: ["No down payment", "No PMI required", "Competitive rates"],
+      description: "No down payment home purchase for veterans",
+      features: ["0% down payment", "No PMI required", "Competitive rates"],
       color: "from-green-500 to-emerald-500",
     },
     {
       name: "VA Cash-Out Refinance",
       rate: "6.25%",
-      downPayment: "N/A",
-      description: "Refinance and take cash out for any purpose",
-      features: ["Access home equity", "No PMI", "Flexible use of funds"],
+      downPayment: "No cash required",
+      description: "Access your home's equity with cash out",
+      features: ["Cash for any purpose", "Lower rates", "No PMI"],
       color: "from-blue-500 to-cyan-500",
     },
     {
       name: "VA IRRRL (Streamline)",
       rate: "5.75%",
-      downPayment: "N/A",
+      downPayment: "No cash required",
       description: "Interest Rate Reduction Refinance Loan",
-      features: ["Lower interest rate", "Minimal documentation", "No appraisal needed"],
+      features: ["No appraisal required", "Minimal documentation", "Lower payments"],
       color: "from-purple-500 to-pink-500",
     },
     {
       name: "VA Native American Direct Loan",
-      rate: "5.50%",
+      rate: "6.50%",
       downPayment: "0%",
       description: "Direct loans for Native American veterans",
-      features: ["Direct VA funding", "Tribal land eligible", "Special program"],
+      features: ["Tribal land eligible", "Direct VA funding", "Special provisions"],
       color: "from-orange-500 to-red-500",
     },
   ]
@@ -120,7 +124,6 @@ export default function VALoanPage() {
 
     if (rate === 0) return principal / payments
 
-    // VA loans have no PMI, so just calculate principal and interest
     return (principal * rate * Math.pow(1 + rate, payments)) / (Math.pow(1 + rate, payments) - 1)
   }
 
@@ -144,40 +147,16 @@ export default function VALoanPage() {
               <h1 className="text-4xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-green-400 bg-clip-text text-transparent">
                 VA Home Loan Application
               </h1>
-              <p className="text-xl text-green-200 mt-2">Exclusive benefit for military veterans and service members</p>
-              <Badge className="bg-green-500/20 text-green-400 border-green-500/30 mt-2">
-                <Shield className="h-4 w-4 mr-1" />
-                VA Government Guaranteed
-              </Badge>
+              <p className="text-xl text-green-200 mt-2">Exclusive benefit for military veterans - 0% down payment</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <Button
-              variant="outline"
-              onClick={() => router.push("/citizen/loan-center/calculator")}
-              className="border-green-500/30 text-green-300 hover:bg-green-500/20 bg-transparent"
-            >
-              <Calculator className="h-4 w-4 mr-2" />
-              VA Calculator
-            </Button>
+            <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+              <Award className="h-4 w-4 mr-1" />
+              Veterans Only
+            </Badge>
           </div>
         </div>
-
-        {/* VA Benefits Banner */}
-        <Card className="bg-gradient-to-r from-green-500/10 to-blue-500/10 border-green-500/20">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <Star className="h-12 w-12 text-green-400" />
-              <div>
-                <h3 className="text-xl font-semibold text-green-400">VA Loan Benefits</h3>
-                <p className="text-green-200">
-                  • No down payment required • No private mortgage insurance (PMI) • Competitive interest rates • No
-                  prepayment penalties • Assumable loans
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Progress Steps */}
         <Card className="bg-gradient-to-br from-green-900/50 to-emerald-900/30 backdrop-blur-sm border-green-500/20">
@@ -213,7 +192,7 @@ export default function VALoanPage() {
           <TabsList className="grid w-full grid-cols-3 bg-green-900/30 backdrop-blur-sm">
             <TabsTrigger value="application">Application</TabsTrigger>
             <TabsTrigger value="programs">VA Programs</TabsTrigger>
-            <TabsTrigger value="eligibility">VA Eligibility</TabsTrigger>
+            <TabsTrigger value="requirements">Requirements</TabsTrigger>
           </TabsList>
 
           <TabsContent value="application" className="space-y-6">
@@ -226,7 +205,7 @@ export default function VALoanPage() {
                       Step {currentStep}: {loanSteps[currentStep - 1]?.title}
                     </CardTitle>
                     <CardDescription className="text-green-200">
-                      Thank you for your service. Let's help you secure your home.
+                      Please provide the required information to continue
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
@@ -368,8 +347,130 @@ export default function VALoanPage() {
                               value={formData.vaDisability}
                               onChange={(e) => handleInputChange("vaDisability", e.target.value)}
                               className="bg-green-800/30 border-green-500/30 text-white"
-                              placeholder="0-100"
+                              placeholder="0-100 (if applicable)"
                             />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {currentStep === 3 && (
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label className="text-white">Property Address</Label>
+                          <Input
+                            value={formData.propertyAddress}
+                            onChange={(e) => handleInputChange("propertyAddress", e.target.value)}
+                            className="bg-green-800/30 border-green-500/30 text-white"
+                            placeholder="Enter the property address"
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label className="text-white">Property Type</Label>
+                            <select
+                              value={formData.propertyType}
+                              onChange={(e) => handleInputChange("propertyType", e.target.value)}
+                              className="w-full p-2 bg-green-800/30 border border-green-500/30 rounded-md text-white"
+                            >
+                              <option value="single-family">Single Family Home</option>
+                              <option value="condo">Condominium</option>
+                              <option value="townhouse">Townhouse</option>
+                              <option value="manufactured">Manufactured Home</option>
+                            </select>
+                          </div>
+                          <div className="space-y-2">
+                            <Label className="text-white">Purchase Price</Label>
+                            <Input
+                              type="number"
+                              value={formData.purchasePrice}
+                              onChange={(e) => handleInputChange("purchasePrice", e.target.value)}
+                              className="bg-green-800/30 border-green-500/30 text-white"
+                              placeholder="Enter purchase price"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {currentStep === 4 && (
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label className="text-white">Loan Amount</Label>
+                            <Input
+                              type="number"
+                              value={formData.loanAmount}
+                              onChange={(e) => handleInputChange("loanAmount", e.target.value)}
+                              className="bg-green-800/30 border-green-500/30 text-white"
+                              placeholder="Enter loan amount"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label className="text-white">Loan Purpose</Label>
+                            <select
+                              value={formData.loanPurpose}
+                              onChange={(e) => handleInputChange("loanPurpose", e.target.value)}
+                              className="w-full p-2 bg-green-800/30 border border-green-500/30 rounded-md text-white"
+                            >
+                              <option value="purchase">Purchase</option>
+                              <option value="refinance">Cash-Out Refinance</option>
+                              <option value="irrrl">IRRRL (Streamline)</option>
+                              <option value="construction">Construction</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-white">Occupancy</Label>
+                          <select
+                            value={formData.occupancy}
+                            onChange={(e) => handleInputChange("occupancy", e.target.value)}
+                            className="w-full p-2 bg-green-800/30 border border-green-500/30 rounded-md text-white"
+                          >
+                            <option value="primary">Primary Residence</option>
+                          </select>
+                        </div>
+                      </div>
+                    )}
+
+                    {currentStep === 5 && (
+                      <div className="space-y-6">
+                        <h3 className="text-xl font-semibold text-white">Review Your VA Loan Application</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-4">
+                            <div>
+                              <h4 className="font-medium text-green-300">Personal Information</h4>
+                              <p className="text-white">
+                                {formData.firstName} {formData.lastName}
+                              </p>
+                              <p className="text-green-200">{formData.email}</p>
+                              <p className="text-green-200">{formData.phone}</p>
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-green-300">Military Service</h4>
+                              <p className="text-white">
+                                {formData.serviceStatus} - {formData.branchOfService}
+                              </p>
+                              <p className="text-green-200">Discharge: {formData.dischargeType}</p>
+                              {formData.vaDisability && (
+                                <p className="text-green-200">VA Disability: {formData.vaDisability}%</p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="space-y-4">
+                            <div>
+                              <h4 className="font-medium text-green-300">Property</h4>
+                              <p className="text-white">{formData.propertyAddress}</p>
+                              <p className="text-green-200">
+                                Purchase Price: ${Number(formData.purchasePrice).toLocaleString()}
+                              </p>
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-green-300">VA Loan Details</h4>
+                              <p className="text-white">Loan Amount: ${Number(formData.loanAmount).toLocaleString()}</p>
+                              <p className="text-green-200">Purpose: {formData.loanPurpose}</p>
+                              <p className="text-green-200">Down Payment: $0 (VA Benefit)</p>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -415,7 +516,7 @@ export default function VALoanPage() {
                       <div className="text-3xl font-bold text-white mb-2">
                         ${monthlyPayment.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                       </div>
-                      <div className="text-green-200">Monthly Payment (No PMI!)</div>
+                      <div className="text-green-200">Monthly Payment (No PMI)</div>
                     </div>
 
                     <div className="space-y-3">
@@ -424,23 +525,27 @@ export default function VALoanPage() {
                         <span className="text-white">${Number(formData.loanAmount || 450000).toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-green-300">VA Rate:</span>
+                        <span className="text-green-300">Interest Rate:</span>
                         <span className="text-white">6.00%</span>
                       </div>
                       <div className="flex justify-between">
+                        <span className="text-green-300">Loan Term:</span>
+                        <span className="text-white">30 years</span>
+                      </div>
+                      <div className="flex justify-between">
                         <span className="text-green-300">Down Payment:</span>
-                        <span className="text-white">$0 (0%)</span>
+                        <span className="text-white">$0 (VA Benefit)</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-green-300">PMI:</span>
-                        <span className="text-white">$0 (None Required)</span>
+                        <span className="text-white">None Required</span>
                       </div>
                     </div>
 
                     <div className="bg-green-800/30 p-3 rounded-lg border border-green-500/20">
                       <p className="text-sm text-green-200">
-                        <Shield className="h-4 w-4 inline mr-1" />
-                        VA Government Guarantee
+                        <Award className="h-4 w-4 inline mr-1" />
+                        VA Loan Guarantee Protection
                       </p>
                     </div>
                   </CardContent>
@@ -450,13 +555,13 @@ export default function VALoanPage() {
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
                       <Star className="h-5 w-5 text-green-400" />
-                      VA Benefits
+                      VA Loan Benefits
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="flex items-center gap-3">
                       <CheckCircle className="h-5 w-5 text-green-400" />
-                      <span className="text-green-200">No down payment required</span>
+                      <span className="text-green-200">0% down payment required</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <CheckCircle className="h-5 w-5 text-green-400" />
@@ -464,7 +569,7 @@ export default function VALoanPage() {
                     </div>
                     <div className="flex items-center gap-3">
                       <CheckCircle className="h-5 w-5 text-green-400" />
-                      <span className="text-green-200">No prepayment penalties</span>
+                      <span className="text-green-200">No prepayment penalty</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <CheckCircle className="h-5 w-5 text-green-400" />
@@ -515,12 +620,52 @@ export default function VALoanPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value="eligibility" className="space-y-6">
+          <TabsContent value="requirements" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card className="bg-gradient-to-br from-green-900/50 to-emerald-900/30 backdrop-blur-sm border-green-500/20">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
-                    <Shield className="h-5 w-5 text-green-400" />
+                    <FileText className="h-5 w-5 text-green-400" />
+                    VA Required Documents
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-medium text-white mb-2">Military Documentation</h4>
+                    <ul className="space-y-1 text-sm text-green-200">
+                      <li>• Certificate of Eligibility (COE)</li>
+                      <li>• DD Form 214 (discharge papers)</li>
+                      <li>• Statement of Service (if active duty)</li>
+                      <li>• VA disability award letter (if applicable)</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium text-white mb-2">Income Verification</h4>
+                    <ul className="space-y-1 text-sm text-green-200">
+                      <li>• Pay stubs (last 30 days)</li>
+                      <li>• Tax returns (last 2 years)</li>
+                      <li>• W-2 forms (last 2 years)</li>
+                      <li>• Employment verification letter</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium text-white mb-2">Asset Documentation</h4>
+                    <ul className="space-y-1 text-sm text-green-200">
+                      <li>• Bank statements (last 2 months)</li>
+                      <li>• Investment account statements</li>
+                      <li>• Asset verification for closing costs</li>
+                      <li>• Gift letter (if applicable)</li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-green-900/50 to-emerald-900/30 backdrop-blur-sm border-green-500/20">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <TrendingUp className="h-5 w-5 text-green-400" />
                     VA Eligibility Requirements
                   </CardTitle>
                 </CardHeader>
@@ -531,67 +676,27 @@ export default function VALoanPage() {
                       <li>• 90+ days active duty during wartime</li>
                       <li>• 181+ days active duty during peacetime</li>
                       <li>• 6+ years National Guard/Reserves</li>
-                      <li>• Spouse of service member who died in service</li>
+                      <li>• Surviving spouse of eligible veteran</li>
                     </ul>
                   </div>
 
                   <div>
-                    <h4 className="font-medium text-white mb-2">Discharge Requirements</h4>
+                    <h4 className="font-medium text-white mb-2">Credit & Income</h4>
                     <ul className="space-y-1 text-sm text-green-200">
-                      <li>• Honorable discharge</li>
-                      <li>• General discharge under honorable conditions</li>
-                      <li>• Some other discharge types may qualify</li>
-                      <li>• Character of service determination</li>
+                      <li>• No minimum credit score requirement</li>
+                      <li>• Sufficient income to support payments</li>
+                      <li>• Satisfactory credit history</li>
+                      <li>• Debt-to-income ratio typically under 41%</li>
                     </ul>
                   </div>
 
                   <div>
-                    <h4 className="font-medium text-white mb-2">Certificate of Eligibility</h4>
+                    <h4 className="font-medium text-white mb-2">Property Requirements</h4>
                     <ul className="space-y-1 text-sm text-green-200">
-                      <li>• Required for VA loan approval</li>
-                      <li>• Obtained through VA or lender</li>
-                      <li>• Shows entitlement amount</li>
-                      <li>• Can be reused if restored</li>
-                    </ul>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-green-900/50 to-emerald-900/30 backdrop-blur-sm border-green-500/20">
-                <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-green-400" />
-                    VA Loan Limits & Benefits
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <h4 className="font-medium text-white mb-2">Loan Limits</h4>
-                    <ul className="space-y-1 text-sm text-green-200">
-                      <li>• No maximum loan amount</li>
-                      <li>• Based on county conforming limits</li>
-                      <li>• Full entitlement: No down payment</li>
-                      <li>• Partial entitlement: May require down payment</li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-medium text-white mb-2">Property Types</h4>
-                    <ul className="space-y-1 text-sm text-green-200">
-                      <li>• Single-family homes</li>
-                      <li>• Condominiums (VA approved)</li>
-                      <li>• Manufactured homes</li>
-                      <li>• Multi-unit properties (up to 4 units)</li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-medium text-white mb-2">Special Benefits</h4>
-                    <ul className="space-y-1 text-sm text-green-200">
-                      <li>• Assumable by qualified buyers</li>
-                      <li>• Streamline refinance (IRRRL)</li>
-                      <li>• Cash-out refinance available</li>
-                      <li>• Energy efficient improvements</li>
+                      <li>• Primary residence only</li>
+                      <li>• VA appraisal required</li>
+                      <li>• Property must meet VA standards</li>
+                      <li>• No loan limits in most areas</li>
                     </ul>
                   </div>
                 </CardContent>
