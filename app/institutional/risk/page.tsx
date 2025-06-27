@@ -2,624 +2,619 @@
 
 import * as React from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import {
-  Shield,
   AlertTriangle,
-  TrendingUp,
+  Shield,
   TrendingDown,
+  TrendingUp,
   BarChart3,
   PieChart,
   Activity,
   Target,
   Zap,
-  Eye,
   RefreshCw,
   Download,
-  Settings,
-  CheckCircle,
+  Eye,
+  Calculator,
+  Building2,
   DollarSign,
 } from "lucide-react"
 
+interface RiskMetric {
+  name: string
+  value: number
+  threshold: number
+  status: "low" | "medium" | "high" | "critical"
+  trend: "up" | "down" | "stable"
+  description: string
+}
+
+interface PortfolioRisk {
+  totalValue: number
+  governmentGuaranteed: number
+  defaultProbability: number
+  concentrationRisk: number
+  liquidityRisk: number
+  interestRateRisk: number
+  creditRisk: number
+  marketRisk: number
+}
+
 export default function InstitutionalRiskPage() {
-  const [selectedTimeframe, setSelectedTimeframe] = React.useState("1M")
-  const [isRefreshing, setIsRefreshing] = React.useState(false)
+  const [activeTab, setActiveTab] = React.useState("overview")
+  const [isAnalyzing, setIsAnalyzing] = React.useState(false)
 
-  const riskMetrics = {
-    portfolioVaR: 45200000, // $45.2M Value at Risk (95%)
-    beta: 1.12,
-    volatility: 14.8,
-    maxDrawdown: 8.3,
-    sharpeRatio: 2.34,
-    sortinRatio: 3.12,
-    informationRatio: 1.87,
-    trackingError: 4.2,
+  const portfolioRisk: PortfolioRisk = {
+    totalValue: 2847392000, // $2.8B
+    governmentGuaranteed: 1847392000, // $1.8B (64.9%)
+    defaultProbability: 1.8, // <2%
+    concentrationRisk: 15.2, // Low concentration
+    liquidityRisk: 8.5, // Low liquidity risk
+    interestRateRisk: 12.3, // Moderate interest rate risk
+    creditRisk: 5.7, // Low credit risk due to government guarantees
+    marketRisk: 9.8, // Low market risk
   }
 
-  const governmentBondRisk = [
+  const riskMetrics: RiskMetric[] = [
     {
-      bondType: "FHA",
-      allocation: 35,
-      riskScore: 2.1, // Low risk due to 100% government guarantee
-      var95: 8500000,
-      expectedReturn: 20.3,
-      volatility: 3.2,
-      guarantee: 100,
+      name: "Default Probability",
+      value: portfolioRisk.defaultProbability,
+      threshold: 2.0,
+      status: "low",
+      trend: "stable",
+      description: "Probability of loan defaults in government-guaranteed mortgage portfolio",
     },
     {
-      bondType: "VA",
-      allocation: 30,
-      riskScore: 2.0, // Lowest risk due to 100% guarantee + veteran backing
-      var95: 7200000,
-      expectedReturn: 20.1,
-      volatility: 2.8,
-      guarantee: 100,
+      name: "Credit Risk Score",
+      value: portfolioRisk.creditRisk,
+      threshold: 15.0,
+      status: "low",
+      trend: "down",
+      description: "Overall credit risk assessment based on borrower profiles and guarantees",
     },
     {
-      bondType: "USDA",
-      allocation: 20,
-      riskScore: 2.8, // Slightly higher due to 90% guarantee
-      var95: 5800000,
-      expectedReturn: 19.8,
-      volatility: 4.1,
-      guarantee: 90,
+      name: "Concentration Risk",
+      value: portfolioRisk.concentrationRisk,
+      threshold: 25.0,
+      status: "low",
+      trend: "stable",
+      description: "Risk from over-concentration in specific loan types or geographic areas",
     },
     {
-      bondType: "SBA",
-      allocation: 15,
-      riskScore: 3.2, // Higher due to 85% guarantee + business risk
-      var95: 4900000,
-      expectedReturn: 20.5,
-      volatility: 5.5,
-      guarantee: 85,
+      name: "Liquidity Risk",
+      value: portfolioRisk.liquidityRisk,
+      threshold: 20.0,
+      status: "low",
+      trend: "down",
+      description: "Risk of inability to meet short-term obligations or liquidate positions",
+    },
+    {
+      name: "Interest Rate Risk",
+      value: portfolioRisk.interestRateRisk,
+      threshold: 30.0,
+      status: "low",
+      trend: "up",
+      description: "Sensitivity to changes in interest rates affecting portfolio value",
+    },
+    {
+      name: "Market Risk",
+      value: portfolioRisk.marketRisk,
+      threshold: 25.0,
+      status: "low",
+      trend: "stable",
+      description: "Risk from overall market conditions and economic factors",
     },
   ]
 
-  const stressTestScenarios = [
+  const riskScenarios = [
     {
-      scenario: "Interest Rate Shock (+300 bps)",
-      impact: -12.5,
-      portfolioValue: 2492187500,
-      timeToRecover: "18 months",
-      probability: 5,
+      name: "Base Case",
+      probability: 70,
+      expectedROI: 22.4,
+      portfolioValue: 2847392000,
+      description: "Current market conditions continue",
     },
     {
-      scenario: "Economic Recession",
-      impact: -8.7,
-      portfolioValue: 2600000000,
-      timeToRecover: "12 months",
-      probability: 15,
+      name: "Economic Downturn",
+      probability: 20,
+      expectedROI: 18.2,
+      portfolioValue: 2563452800,
+      description: "Moderate economic recession scenario",
     },
     {
-      scenario: "Government Policy Change",
-      impact: -5.2,
-      portfolioValue: 2700000000,
-      timeToRecover: "8 months",
-      probability: 10,
+      name: "Interest Rate Shock",
+      probability: 8,
+      expectedROI: 15.7,
+      portfolioValue: 2278513600,
+      description: "Rapid interest rate increases",
     },
     {
-      scenario: "Credit Market Disruption",
-      impact: -15.8,
-      portfolioValue: 2400000000,
-      timeToRecover: "24 months",
-      probability: 3,
-    },
-  ]
-
-  const riskAlerts = [
-    {
-      id: "RISK-001",
-      severity: "medium",
-      type: "Concentration Risk",
-      message: "FHA bond allocation exceeds 35% threshold",
-      recommendation: "Consider rebalancing to USDA or SBA bonds",
-      impact: "Medium",
-    },
-    {
-      id: "RISK-002",
-      severity: "low",
-      type: "Volatility Increase",
-      message: "SBA portfolio volatility increased to 5.5%",
-      recommendation: "Monitor business loan performance closely",
-      impact: "Low",
-    },
-    {
-      id: "RISK-003",
-      severity: "high",
-      type: "Correlation Risk",
-      message: "High correlation detected between FHA and VA portfolios",
-      recommendation: "Diversify geographic exposure",
-      impact: "High",
+      name: "Severe Crisis",
+      probability: 2,
+      expectedROI: 12.1,
+      portfolioValue: 1993574400,
+      description: "Major financial crisis scenario",
     },
   ]
 
-  const formatCurrency = (amount: number) => {
-    if (amount >= 1000000000) {
-      return `$${(amount / 1000000000).toFixed(2)}B`
-    } else if (amount >= 1000000) {
-      return `$${(amount / 1000000).toFixed(1)}M`
-    }
-    return `$${amount.toLocaleString()}`
+  const handleRiskAnalysis = async () => {
+    setIsAnalyzing(true)
+    // Simulate risk analysis
+    setTimeout(() => {
+      setIsAnalyzing(false)
+    }, 3000)
   }
 
-  const getRiskColor = (score: number) => {
-    if (score <= 2.5) return "text-green-600"
-    if (score <= 4.0) return "text-yellow-600"
-    return "text-red-600"
-  }
-
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case "high":
-        return "bg-red-500 text-white"
-      case "medium":
-        return "bg-yellow-500 text-black"
+  const getRiskColor = (status: string) => {
+    switch (status) {
       case "low":
-        return "bg-green-500 text-white"
+        return "text-green-500"
+      case "medium":
+        return "text-yellow-500"
+      case "high":
+        return "text-orange-500"
+      case "critical":
+        return "text-red-500"
       default:
-        return "bg-gray-500 text-white"
+        return "text-gray-500"
     }
   }
 
-  const handleRefresh = async () => {
-    setIsRefreshing(true)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setIsRefreshing(false)
+  const getRiskBadgeColor = (status: string) => {
+    switch (status) {
+      case "low":
+        return "bg-green-500/20 text-green-400 border-green-500/30"
+      case "medium":
+        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+      case "high":
+        return "bg-orange-500/20 text-orange-400 border-orange-500/30"
+      case "critical":
+        return "bg-red-500/20 text-red-400 border-red-500/30"
+      default:
+        return "bg-gray-500/20 text-gray-400 border-gray-500/30"
+    }
   }
+
+  const getTrendIcon = (trend: string) => {
+    switch (trend) {
+      case "up":
+        return <TrendingUp className="h-4 w-4 text-red-400" />
+      case "down":
+        return <TrendingDown className="h-4 w-4 text-green-400" />
+      case "stable":
+        return <Activity className="h-4 w-4 text-blue-400" />
+      default:
+        return <Activity className="h-4 w-4 text-gray-400" />
+    }
+  }
+
+  const overallRiskScore = Math.round(riskMetrics.reduce((sum, metric) => sum + metric.value, 0) / riskMetrics.length)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/90 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-red-900 to-slate-900 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-red-600 via-orange-600 to-red-800 bg-clip-text text-transparent">
-              Institutional Risk Management
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-red-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">
+              Risk Management Center
             </h1>
-            <p className="text-xl text-muted-foreground mt-2">
-              Government Guaranteed Bond Portfolio Risk Analysis • $100M+ Institutional Grade
+            <p className="text-slate-300 text-xl mt-2">
+              Advanced risk assessment for institutional mortgage portfolios
             </p>
           </div>
-          <div className="flex items-center gap-4">
-            <Badge className="bg-green-500 text-white">
-              <Shield className="h-4 w-4 mr-2" />
-              Low Risk Profile
-            </Badge>
-            <Badge className="bg-blue-500 text-white">
-              <Target className="h-4 w-4 mr-2" />
-              20.3% Target ROI
-            </Badge>
-            <Button onClick={handleRefresh} disabled={isRefreshing} variant="outline">
-              {isRefreshing ? (
-                <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-              ) : (
-                <RefreshCw className="h-4 w-4 mr-2" />
-              )}
-              Refresh Data
+          <div className="flex items-center gap-3">
+            <Button onClick={handleRiskAnalysis} disabled={isAnalyzing} className="bg-red-600 hover:bg-red-700">
+              <Calculator className="h-4 w-4 mr-2" />
+              {isAnalyzing ? "Analyzing..." : "Run Analysis"}
+            </Button>
+            <Button variant="outline" className="border-slate-600 bg-transparent">
+              <Download className="h-4 w-4 mr-2" />
+              Risk Report
             </Button>
           </div>
         </div>
 
-        {/* Risk Metrics Overview */}
+        {/* Risk Alert */}
+        <Alert className="bg-gradient-to-r from-green-900/30 to-emerald-900/30 border-green-500/30">
+          <Shield className="h-4 w-4" />
+          <AlertDescription className="text-green-200">
+            <strong>Low Risk Portfolio:</strong> Government-guaranteed mortgages provide exceptional risk mitigation
+            with &lt;2% default probability and 64.9% government backing. Current risk score: {overallRiskScore}/100
+            (Excellent).
+          </AlertDescription>
+        </Alert>
+
+        {/* Key Risk Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="bg-gradient-to-br from-red-50 to-orange-50 border-red-200">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-red-700 flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4" />
-                Value at Risk (95%)
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-red-900">{formatCurrency(riskMetrics.portfolioVaR)}</div>
-              <div className="flex items-center text-sm text-red-600 mt-1">
-                <Shield className="h-4 w-4 mr-1" />
-                Government Backed
+          <Card className="bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-green-500/20">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-green-300 text-sm font-medium">Overall Risk Score</p>
+                  <p className="text-3xl font-bold text-white">{overallRiskScore}/100</p>
+                  <p className="text-green-400 text-sm">Excellent</p>
+                </div>
+                <Shield className="h-10 w-10 text-green-400" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-blue-700 flex items-center gap-2">
-                <Activity className="h-4 w-4" />
-                Portfolio Beta
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-blue-900">{riskMetrics.beta}</div>
-              <div className="flex items-center text-sm text-blue-600 mt-1">
-                <TrendingUp className="h-4 w-4 mr-1" />
-                Market Correlation
+          <Card className="bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-blue-500/20">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-blue-300 text-sm font-medium">Default Probability</p>
+                  <p className="text-3xl font-bold text-white">{portfolioRisk.defaultProbability}%</p>
+                  <p className="text-blue-400 text-sm">Well Below 2% Threshold</p>
+                </div>
+                <AlertTriangle className="h-10 w-10 text-blue-400" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-green-700 flex items-center gap-2">
-                <Target className="h-4 w-4" />
-                Sharpe Ratio
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-900">{riskMetrics.sharpeRatio}</div>
-              <div className="flex items-center text-sm text-green-600 mt-1">
-                <CheckCircle className="h-4 w-4 mr-1" />
-                Risk-Adjusted Return
+          <Card className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 border-purple-500/20">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-purple-300 text-sm font-medium">Gov. Guarantee</p>
+                  <p className="text-3xl font-bold text-white">
+                    {((portfolioRisk.governmentGuaranteed / portfolioRisk.totalValue) * 100).toFixed(1)}%
+                  </p>
+                  <p className="text-purple-400 text-sm">Portfolio Protected</p>
+                </div>
+                <Building2 className="h-10 w-10 text-purple-400" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-purple-700 flex items-center gap-2">
-                <BarChart3 className="h-4 w-4" />
-                Max Drawdown
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-purple-900">{riskMetrics.maxDrawdown}%</div>
-              <div className="flex items-center text-sm text-purple-600 mt-1">
-                <TrendingDown className="h-4 w-4 mr-1" />
-                Historical Peak Loss
+          <Card className="bg-gradient-to-br from-orange-900/40 to-red-900/40 border-orange-500/20">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-orange-300 text-sm font-medium">Value at Risk</p>
+                  <p className="text-3xl font-bold text-white">$142M</p>
+                  <p className="text-orange-400 text-sm">95% Confidence</p>
+                </div>
+                <DollarSign className="h-10 w-10 text-orange-400" />
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Main Risk Analysis Tabs */}
-        <Tabs defaultValue="portfolio" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="portfolio">Portfolio Risk</TabsTrigger>
-            <TabsTrigger value="bonds">Bond Analysis</TabsTrigger>
-            <TabsTrigger value="stress">Stress Testing</TabsTrigger>
-            <TabsTrigger value="alerts">Risk Alerts</TabsTrigger>
-            <TabsTrigger value="monitoring">Live Monitoring</TabsTrigger>
+        {/* Risk Analysis Progress */}
+        {isAnalyzing && (
+          <Card className="bg-slate-800/50 border-slate-700">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-white font-medium">Risk Analysis in Progress</span>
+                <span className="text-slate-300">Analyzing portfolio risk factors...</span>
+              </div>
+              <Progress value={66} className="h-2" />
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Main Risk Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="bg-slate-800/50 border-slate-700 grid w-full grid-cols-5">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-red-600">
+              <Shield className="w-4 h-4 mr-2" />
+              Overview
+            </TabsTrigger>
+            <TabsTrigger value="metrics" className="data-[state=active]:bg-orange-600">
+              <BarChart3 className="w-4 h-4 mr-2" />
+              Metrics
+            </TabsTrigger>
+            <TabsTrigger value="scenarios" className="data-[state=active]:bg-yellow-600">
+              <Target className="w-4 h-4 mr-2" />
+              Scenarios
+            </TabsTrigger>
+            <TabsTrigger value="monitoring" className="data-[state=active]:bg-green-600">
+              <Activity className="w-4 h-4 mr-2" />
+              Monitoring
+            </TabsTrigger>
+            <TabsTrigger value="mitigation" className="data-[state=active]:bg-blue-600">
+              <Zap className="w-4 h-4 mr-2" />
+              Mitigation
+            </TabsTrigger>
           </TabsList>
 
-          {/* Portfolio Risk Tab */}
-          <TabsContent value="portfolio" className="space-y-6">
+          <TabsContent value="overview" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Risk Decomposition */}
-              <Card>
+              <Card className="bg-slate-800/50 border-slate-700">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <PieChart className="h-5 w-5" />
-                    Risk Decomposition
-                  </CardTitle>
-                  <CardDescription>Portfolio risk breakdown by government bond type</CardDescription>
+                  <CardTitle className="text-white">Risk Distribution</CardTitle>
+                  <CardDescription>Portfolio risk breakdown by category</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  {governmentBondRisk.map((bond, index) => (
-                    <div key={index} className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">{bond.bondType} Bonds</span>
-                          <Badge variant="outline" className="text-xs">
-                            {bond.guarantee}% Guarantee
-                          </Badge>
-                        </div>
-                        <div className="text-right">
-                          <span className="text-sm font-medium">{bond.allocation}%</span>
-                          <span className={`text-xs ml-2 ${getRiskColor(bond.riskScore)}`}>Risk: {bond.riskScore}</span>
-                        </div>
-                      </div>
-                      <Progress value={bond.allocation} className="h-2" />
-                      <div className="grid grid-cols-3 gap-2 text-xs text-muted-foreground">
-                        <span>VaR: {formatCurrency(bond.var95)}</span>
-                        <span>Return: {bond.expectedReturn}%</span>
-                        <span>Vol: {bond.volatility}%</span>
-                      </div>
+                <CardContent>
+                  <div className="h-64 flex items-center justify-center bg-gradient-to-br from-red-500/10 to-orange-500/10 rounded-lg">
+                    <div className="text-center">
+                      <PieChart className="h-12 w-12 mx-auto mb-4 text-red-400" />
+                      <p className="text-muted-foreground">Risk Distribution Chart</p>
                     </div>
-                  ))}
+                  </div>
                 </CardContent>
               </Card>
 
-              {/* Risk Metrics Detail */}
-              <Card>
+              <Card className="bg-slate-800/50 border-slate-700">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5" />
-                    Advanced Risk Metrics
-                  </CardTitle>
-                  <CardDescription>Comprehensive risk measurement for institutional portfolios</CardDescription>
+                  <CardTitle className="text-white">Risk Trend Analysis</CardTitle>
+                  <CardDescription>Historical risk metrics over time</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm">Volatility</span>
-                        <span className="font-medium">{riskMetrics.volatility}%</span>
-                      </div>
-                      <Progress value={riskMetrics.volatility} className="h-2" />
+                <CardContent>
+                  <div className="h-64 flex items-center justify-center bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg">
+                    <div className="text-center">
+                      <BarChart3 className="h-12 w-12 mx-auto mb-4 text-blue-400" />
+                      <p className="text-muted-foreground">Risk Trend Chart</p>
                     </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm">Tracking Error</span>
-                        <span className="font-medium">{riskMetrics.trackingError}%</span>
-                      </div>
-                      <Progress value={riskMetrics.trackingError * 10} className="h-2" />
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Sortino Ratio</span>
-                      <span className="font-medium text-green-600">{riskMetrics.sortinRatio}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Information Ratio</span>
-                      <span className="font-medium text-blue-600">{riskMetrics.informationRatio}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Government Guarantee Coverage</span>
-                      <span className="font-medium text-green-600">93.75%</span>
-                    </div>
-                  </div>
-
-                  <div className="p-3 bg-green-50 rounded-lg border border-green-200">
-                    <div className="flex items-center gap-2 mb-2">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      <span className="text-sm font-medium text-green-800">Risk Assessment</span>
-                    </div>
-                    <p className="text-xs text-green-700">
-                      Portfolio maintains low risk profile due to government guarantees. All metrics within
-                      institutional acceptable ranges.
-                    </p>
                   </div>
                 </CardContent>
               </Card>
             </div>
-          </TabsContent>
 
-          {/* Bond Analysis Tab */}
-          <TabsContent value="bonds" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {governmentBondRisk.map((bond, index) => (
-                <Card key={index}>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Shield className="h-5 w-5" />
-                      {bond.bondType} Government Bonds
-                    </CardTitle>
-                    <CardDescription>
-                      {bond.guarantee}% Government Guarantee • {bond.allocation}% Portfolio Allocation
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Expected Return</p>
-                        <p className="text-2xl font-bold text-green-600">{bond.expectedReturn}%</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Risk Score</p>
-                        <p className={`text-2xl font-bold ${getRiskColor(bond.riskScore)}`}>{bond.riskScore}</p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm">Value at Risk</span>
-                        <span className="font-medium">{formatCurrency(bond.var95)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm">Volatility</span>
-                        <span className="font-medium">{bond.volatility}%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm">Government Backing</span>
-                        <span className="font-medium text-green-600">{bond.guarantee}%</span>
-                      </div>
-                    </div>
-
-                    <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                      <p className="text-xs text-blue-700">
-                        {bond.bondType === "FHA" &&
-                          "30-year fixed-rate mortgages with 100% government guarantee. Lowest default risk."}
-                        {bond.bondType === "VA" &&
-                          "50-year veteran-backed mortgages with full government guarantee. Premium stability."}
-                        {bond.bondType === "USDA" &&
-                          "35-year rural development loans with 90% guarantee. Geographic diversification."}
-                        {bond.bondType === "SBA" &&
-                          "25-year business loans with 85% guarantee. Higher yield potential with business growth."}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          {/* Stress Testing Tab */}
-          <TabsContent value="stress" className="space-y-6">
-            <Card>
+            <Card className="bg-slate-800/50 border-slate-700">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Zap className="h-5 w-5" />
-                  Stress Test Scenarios
-                </CardTitle>
-                <CardDescription>
-                  Portfolio resilience under adverse market conditions with government guarantee protection
-                </CardDescription>
+                <CardTitle className="text-white">Government Guarantee Protection</CardTitle>
+                <CardDescription>Risk mitigation through federal backing</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {stressTestScenarios.map((scenario, index) => (
-                    <div key={index} className="p-4 border rounded-lg">
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <h3 className="font-semibold">{scenario.scenario}</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Probability: {scenario.probability}% • Recovery: {scenario.timeToRecover}
-                          </p>
-                        </div>
-                        <Badge
-                          className={
-                            Math.abs(scenario.impact) > 10
-                              ? "bg-red-500 text-white"
-                              : Math.abs(scenario.impact) > 5
-                                ? "bg-yellow-500 text-black"
-                                : "bg-green-500 text-white"
-                          }
-                        >
-                          {scenario.impact > 0 ? "+" : ""}
-                          {scenario.impact}%
-                        </Badge>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                          <span className="text-muted-foreground">Portfolio Value Impact:</span>
-                          <p className="font-medium">{formatCurrency(scenario.portfolioValue)}</p>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Government Protection:</span>
-                          <p className="font-medium text-green-600">93.75% Guaranteed</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Shield className="h-5 w-5 text-green-600" />
-                    <span className="font-medium text-green-800">Government Guarantee Protection</span>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-4 bg-green-900/20 rounded-lg border border-green-500/30">
+                    <h4 className="text-green-300 font-medium mb-2">FHA Loans</h4>
+                    <div className="text-2xl font-bold text-white mb-1">34%</div>
+                    <div className="text-green-400 text-sm">$967M Protected</div>
                   </div>
-                  <p className="text-sm text-green-700">
-                    Government guarantees provide significant downside protection across all stress scenarios. Maximum
-                    unprotected exposure limited to 6.25% of portfolio value.
-                  </p>
+                  <div className="p-4 bg-blue-900/20 rounded-lg border border-blue-500/30">
+                    <h4 className="text-blue-300 font-medium mb-2">VA Loans</h4>
+                    <div className="text-2xl font-bold text-white mb-1">28%</div>
+                    <div className="text-blue-400 text-sm">$797M Protected</div>
+                  </div>
+                  <div className="p-4 bg-purple-900/20 rounded-lg border border-purple-500/30">
+                    <h4 className="text-purple-300 font-medium mb-2">USDA Loans</h4>
+                    <div className="text-2xl font-bold text-white mb-1">18%</div>
+                    <div className="text-purple-400 text-sm">$513M Protected</div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
-          {/* Risk Alerts Tab */}
-          <TabsContent value="alerts" className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold">Active Risk Alerts</h2>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm">
-                  <Settings className="h-4 w-4 mr-2" />
-                  Configure Alerts
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Download className="h-4 w-4 mr-2" />
-                  Export Report
-                </Button>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              {riskAlerts.map((alert) => (
-                <Card key={alert.id} className="border-l-4 border-l-orange-500">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-3">
-                          <Badge className={getSeverityColor(alert.severity)}>{alert.severity}</Badge>
-                          <span className="font-medium">{alert.type}</span>
-                          <Badge variant="outline">Impact: {alert.impact}</Badge>
+          <TabsContent value="metrics" className="space-y-6">
+            <Card className="bg-slate-800/50 border-slate-700">
+              <CardHeader>
+                <CardTitle className="text-white">Detailed Risk Metrics</CardTitle>
+                <CardDescription>Comprehensive risk assessment across all categories</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {riskMetrics.map((metric, index) => (
+                    <div
+                      key={index}
+                      className="p-4 rounded-lg bg-slate-900/30 border border-slate-700 hover:border-slate-600 transition-colors"
+                    >
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center space-x-3">
+                          <div className="flex items-center space-x-2">
+                            {getTrendIcon(metric.trend)}
+                            <h4 className="text-white font-medium">{metric.name}</h4>
+                          </div>
                         </div>
-                        <p className="text-muted-foreground">{alert.message}</p>
-                        <div className="p-3 bg-blue-50 rounded border border-blue-200">
-                          <p className="text-sm text-blue-700">
-                            <strong>Recommendation:</strong> {alert.recommendation}
-                          </p>
+                        <div className="flex items-center space-x-3">
+                          <span className="text-white font-bold">{metric.value}%</span>
+                          <Badge className={getRiskBadgeColor(metric.status)}>{metric.status}</Badge>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm">
-                          <Eye className="h-4 w-4 mr-2" />
-                          Details
-                        </Button>
-                        <Button size="sm">Acknowledge</Button>
+                      <div className="mb-3">
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="text-slate-400">Current: {metric.value}%</span>
+                          <span className="text-slate-400">Threshold: {metric.threshold}%</span>
+                        </div>
+                        <Progress value={(metric.value / metric.threshold) * 100} className="h-2" />
                       </div>
+                      <p className="text-slate-400 text-sm">{metric.description}</p>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
-          {/* Live Monitoring Tab */}
-          <TabsContent value="monitoring" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Activity className="h-5 w-5" />
-                    Real-time Risk Monitoring
-                  </CardTitle>
-                  <CardDescription>Live portfolio risk metrics and government guarantee status</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Portfolio VaR (Real-time)</span>
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">{formatCurrency(riskMetrics.portfolioVaR)}</span>
-                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Government Guarantee Status</span>
-                      <div className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        <span className="font-medium text-green-600">Active</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Risk Limit Utilization</span>
-                      <div className="flex items-center gap-2">
-                        <Progress value={67} className="w-20 h-2" />
-                        <span className="font-medium">67%</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Correlation Monitor</span>
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">0.72</span>
-                        <Badge variant="outline" className="text-xs">
-                          Normal
+          <TabsContent value="scenarios" className="space-y-6">
+            <Card className="bg-slate-800/50 border-slate-700">
+              <CardHeader>
+                <CardTitle className="text-white">Stress Test Scenarios</CardTitle>
+                <CardDescription>Portfolio performance under various market conditions</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {riskScenarios.map((scenario, index) => (
+                    <div
+                      key={index}
+                      className="p-4 rounded-lg bg-slate-900/30 border border-slate-700 hover:border-slate-600 transition-colors"
+                    >
+                      <div className="flex items-center justify-between mb-3">
+                        <div>
+                          <h4 className="text-white font-medium">{scenario.name}</h4>
+                          <p className="text-slate-400 text-sm">{scenario.description}</p>
+                        </div>
+                        <Badge
+                          className={
+                            scenario.probability >= 50
+                              ? "bg-green-500/20 text-green-400"
+                              : scenario.probability >= 20
+                                ? "bg-yellow-500/20 text-yellow-400"
+                                : "bg-red-500/20 text-red-400"
+                          }
+                        >
+                          {scenario.probability}% Probability
                         </Badge>
                       </div>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="text-center p-3 bg-slate-800/50 rounded-lg">
+                          <div className="text-lg font-bold text-white">{scenario.expectedROI}%</div>
+                          <div className="text-slate-400 text-sm">Expected ROI</div>
+                        </div>
+                        <div className="text-center p-3 bg-slate-800/50 rounded-lg">
+                          <div className="text-lg font-bold text-white">
+                            ${(scenario.portfolioValue / 1000000000).toFixed(2)}B
+                          </div>
+                          <div className="text-slate-400 text-sm">Portfolio Value</div>
+                        </div>
+                        <div className="text-center p-3 bg-slate-800/50 rounded-lg">
+                          <div
+                            className={`text-lg font-bold ${
+                              scenario.portfolioValue >= portfolioRisk.totalValue ? "text-green-400" : "text-red-400"
+                            }`}
+                          >
+                            {scenario.portfolioValue >= portfolioRisk.totalValue ? "+" : ""}
+                            {(
+                              ((scenario.portfolioValue - portfolioRisk.totalValue) / portfolioRisk.totalValue) *
+                              100
+                            ).toFixed(1)}
+                            %
+                          </div>
+                          <div className="text-slate-400 text-sm">Change</div>
+                        </div>
+                      </div>
                     </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="monitoring" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardHeader>
+                  <CardTitle className="text-white">Real-time Risk Monitoring</CardTitle>
+                  <CardDescription>Continuous risk assessment and alerts</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between p-3 bg-green-900/20 rounded-lg">
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 bg-green-400 rounded-full mr-3 animate-pulse" />
+                      <span className="text-white">Credit Risk Monitor</span>
+                    </div>
+                    <Badge className="bg-green-500/20 text-green-400">Active</Badge>
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-blue-900/20 rounded-lg">
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 bg-blue-400 rounded-full mr-3 animate-pulse" />
+                      <span className="text-white">Market Risk Tracker</span>
+                    </div>
+                    <Badge className="bg-blue-500/20 text-blue-400">Active</Badge>
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-purple-900/20 rounded-lg">
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 bg-purple-400 rounded-full mr-3 animate-pulse" />
+                      <span className="text-white">Liquidity Monitor</span>
+                    </div>
+                    <Badge className="bg-purple-500/20 text-purple-400">Active</Badge>
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-orange-900/20 rounded-lg">
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 bg-orange-400 rounded-full mr-3 animate-pulse" />
+                      <span className="text-white">Interest Rate Monitor</span>
+                    </div>
+                    <Badge className="bg-orange-500/20 text-orange-400">Active</Badge>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="bg-slate-800/50 border-slate-700">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <DollarSign className="h-5 w-5" />
-                    ROI vs Risk Analysis
-                  </CardTitle>
-                  <CardDescription>Risk-adjusted return performance with 20% target ROI</CardDescription>
+                  <CardTitle className="text-white">Risk Alerts</CardTitle>
+                  <CardDescription>Current risk notifications and warnings</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="text-center">
-                    <p className="text-3xl font-bold text-green-600">20.3%</p>
-                    <p className="text-sm text-muted-foreground">Current ROI (Target: 20%)</p>
+                  <div className="p-3 bg-green-900/20 rounded-lg border border-green-500/30">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-green-300 font-medium">Portfolio Health</span>
+                      <Badge className="bg-green-500/20 text-green-400">Excellent</Badge>
+                    </div>
+                    <p className="text-green-400 text-sm">All risk metrics within acceptable ranges</p>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-sm">Risk-Adjusted Return</span>
-                      <span className="font-medium">18.4%</span>
+
+                  <div className="p-3 bg-blue-900/20 rounded-lg border border-blue-500/30">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-blue-300 font-medium">Government Backing</span>
+                      <Badge className="bg-blue-500/20 text-blue-400">64.9%</Badge>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm">Government Guarantee Benefit</span>
-                      <span className="font-medium text-green-600">+2.8%</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm">Institutional Premium</span>
-                      <span className="font-medium text-blue-600">+1.1%</span>
-                    </div>
+                    <p className="text-blue-400 text-sm">Strong government guarantee coverage</p>
                   </div>
+
+                  <div className="p-3 bg-slate-900/30 rounded-lg border border-slate-600">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-slate-300 font-medium">No Active Alerts</span>
+                      <Badge className="bg-slate-500/20 text-slate-400">0</Badge>
+                    </div>
+                    <p className="text-slate-400 text-sm">No risk alerts requiring immediate attention</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="mitigation" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardHeader>
+                  <CardTitle className="text-white">Risk Mitigation Strategies</CardTitle>
+                  <CardDescription>Active risk reduction measures</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="p-4 bg-green-900/20 rounded-lg border border-green-500/30">
+                    <h4 className="text-green-300 font-medium mb-2">Government Guarantees</h4>
+                    <p className="text-green-400 text-sm mb-2">64.9% of portfolio backed by federal guarantees</p>
+                    <div className="text-2xl font-bold text-white">$1.8B Protected</div>
+                  </div>
+
+                  <div className="p-4 bg-blue-900/20 rounded-lg border border-blue-500/30">
+                    <h4 className="text-blue-300 font-medium mb-2">Diversification</h4>
+                    <p className="text-blue-400 text-sm mb-2">Spread across multiple loan types and regions</p>
+                    <div className="text-2xl font-bold text-white">15.2% Risk</div>
+                  </div>
+
+                  <div className="p-4 bg-purple-900/20 rounded-lg border border-purple-500/30">
+                    <h4 className="text-purple-300 font-medium mb-2">Credit Screening</h4>
+                    <p className="text-purple-400 text-sm mb-2">Rigorous borrower qualification standards</p>
+                    <div className="text-2xl font-bold text-white">&lt;2% Default</div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardHeader>
+                  <CardTitle className="text-white">Recommended Actions</CardTitle>
+                  <CardDescription>AI-powered risk optimization suggestions</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Button className="w-full justify-start bg-transparent" variant="outline">
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Rebalance Portfolio Allocation
+                  </Button>
+                  <Button className="w-full justify-start bg-transparent" variant="outline">
+                    <Eye className="h-4 w-4 mr-2" />
+                    Increase Government Guarantee Ratio
+                  </Button>
+                  <Button className="w-full justify-start bg-transparent" variant="outline">
+                    <Target className="h-4 w-4 mr-2" />
+                    Optimize Geographic Distribution
+                  </Button>
+                  <Button className="w-full justify-start bg-transparent" variant="outline">
+                    <Shield className="h-4 w-4 mr-2" />
+                    Enhance Credit Screening
+                  </Button>
                 </CardContent>
               </Card>
             </div>

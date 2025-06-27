@@ -6,485 +6,391 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import {
   Shield,
   AlertTriangle,
   CheckCircle,
-  XCircle,
   Clock,
-  TrendingUp,
-  BarChart3,
+  FileText,
   Scan,
-  RefreshCw,
-  Download,
-  Bell,
+  Bot,
+  TrendingUp,
   DollarSign,
   Building2,
-  Target,
-  Activity,
-  Zap,
-  Award,
-  Lock,
+  Download,
   Eye,
-  AlertCircle,
 } from "lucide-react"
 
-interface ComplianceAlert {
+interface ComplianceCheck {
   id: string
-  severity: "critical" | "high" | "medium" | "low"
-  type: string
-  message: string
-  loanId: string
-  timestamp: Date
-  status: "active" | "resolved" | "investigating"
-  bondType: "FHA" | "VA" | "USDA" | "SBA"
-  investmentAmount: number
-  expectedROI: number
+  category: string
+  description: string
+  status: "passed" | "failed" | "warning" | "pending"
+  severity: "low" | "medium" | "high" | "critical"
+  lastChecked: string
+  details: string
 }
 
-interface ComplianceMetrics {
-  overallScore: number
-  totalLoansScanned: number
-  complianceRate: number
-  governmentBondCompliance: number
-  institutionalROI: number
-  minimumInvestmentMet: number
-  averageProcessingTime: number
-  monthlyRevenue: number
-  compoundedInterestRevenue: number
-}
-
-interface GovernmentBondStructure {
-  type: "FHA" | "VA" | "USDA" | "SBA"
-  term: number
-  guaranteeRate: number
+interface InstitutionalMetrics {
   minimumInvestment: number
-  expectedROI: number
-  complianceRequirements: string[]
+  currentInvestments: number
+  targetROI: number
+  actualROI: number
+  governmentGuaranteedMortgages: number
+  complianceScore: number
 }
 
 export function LoanComplianceBot() {
   const [isScanning, setIsScanning] = React.useState(false)
-  const [selectedLoanId, setSelectedLoanId] = React.useState("")
-  const [activeTab, setActiveTab] = React.useState("dashboard")
-  const [scanResults, setScanResults] = React.useState<any>(null)
+  const [scanProgress, setScanProgress] = React.useState(0)
+  const [activeTab, setActiveTab] = React.useState("overview")
 
-  // Government Bond Structures with $100M minimum investment and 20% ROI
-  const bondStructures: GovernmentBondStructure[] = [
-    {
-      type: "FHA",
-      term: 30,
-      guaranteeRate: 100,
-      minimumInvestment: 100000000, // $100M minimum
-      expectedROI: 20.0,
-      complianceRequirements: [
-        "Owner-occupied primary residence",
-        "Debt-to-income ratio ≤ 43%",
-        "Credit score ≥ 580 (3.5% down) or ≥ 500 (10% down)",
-        "Property appraisal and inspection",
-        "Mortgage insurance premium",
-        "Institutional investment ≥ $100M",
-        "Government guarantee validation",
-      ],
-    },
-    {
-      type: "VA",
-      term: 50,
-      guaranteeRate: 100,
-      minimumInvestment: 100000000, // $100M minimum
-      expectedROI: 20.0,
-      complianceRequirements: [
-        "Eligible veteran or service member",
-        "Certificate of Eligibility (COE)",
-        "Primary residence requirement",
-        "No down payment required",
-        "No private mortgage insurance",
-        "Institutional investment ≥ $100M",
-        "VA funding fee compliance",
-      ],
-    },
-    {
-      type: "USDA",
-      term: 35,
-      guaranteeRate: 90,
-      minimumInvestment: 100000000, // $100M minimum
-      expectedROI: 20.0,
-      complianceRequirements: [
-        "Rural area eligibility",
-        "Income limits (115% of median area income)",
-        "Primary residence requirement",
-        "No down payment option",
-        "Property eligibility verification",
-        "Institutional investment ≥ $100M",
-        "USDA guarantee fee compliance",
-      ],
-    },
-    {
-      type: "SBA",
-      term: 25,
-      guaranteeRate: 85,
-      minimumInvestment: 100000000, // $100M minimum
-      expectedROI: 20.0,
-      complianceRequirements: [
-        "Small business eligibility",
-        "Owner-occupied commercial property",
-        "Business cash flow analysis",
-        "Personal guarantee requirements",
-        "SBA 504 program compliance",
-        "Institutional investment ≥ $100M",
-        "Third-party lender participation",
-      ],
-    },
-  ]
-
-  const complianceMetrics: ComplianceMetrics = {
-    overallScore: 96.2,
-    totalLoansScanned: 15847,
-    complianceRate: 94.8,
-    governmentBondCompliance: 98.1,
-    institutionalROI: 20.3, // 20.3% ROI on government guaranteed mortgages
-    minimumInvestmentMet: 100.0, // 100% of portfolios meet $100M minimum
-    averageProcessingTime: 2.3,
-    monthlyRevenue: 167500000, // $167.5M monthly revenue
-    compoundedInterestRevenue: 2010000000, // $2.01B compounded interest revenue
+  const institutionalMetrics: InstitutionalMetrics = {
+    minimumInvestment: 100000000, // $100M
+    currentInvestments: 2847392000, // $2.8B
+    targetROI: 20,
+    actualROI: 22.4,
+    governmentGuaranteedMortgages: 1847392000, // $1.8B
+    complianceScore: 98.7,
   }
 
-  const recentAlerts: ComplianceAlert[] = [
+  const complianceChecks: ComplianceCheck[] = [
     {
-      id: "ALERT-001",
+      id: "kyc-001",
+      category: "KYC/AML",
+      description: "Customer identity verification and anti-money laundering checks",
+      status: "passed",
       severity: "high",
-      type: "Investment Threshold",
-      message: "Portfolio approaching $100M minimum investment requirement",
-      loanId: "LOAN-FHA-2024-001",
-      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-      status: "active",
-      bondType: "FHA",
-      investmentAmount: 98500000,
-      expectedROI: 19.8,
+      lastChecked: "2024-01-15 14:30:00",
+      details: "All customer identities verified with government-issued documents",
     },
     {
-      id: "ALERT-002",
-      severity: "medium",
-      type: "ROI Optimization",
-      message: "VA loan portfolio exceeding 20% ROI target - optimization opportunity",
-      loanId: "LOAN-VA-2024-002",
-      timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000),
-      status: "investigating",
-      bondType: "VA",
-      investmentAmount: 125000000,
-      expectedROI: 21.2,
-    },
-    {
-      id: "ALERT-003",
+      id: "reg-002",
+      category: "Regulatory",
+      description: "Federal lending regulations compliance (TILA, RESPA, CFPB)",
+      status: "passed",
       severity: "critical",
-      type: "Government Guarantee",
-      message: "USDA guarantee validation pending - immediate action required",
-      loanId: "LOAN-USDA-2024-003",
-      timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000),
-      status: "active",
-      bondType: "USDA",
-      investmentAmount: 110000000,
-      expectedROI: 20.1,
+      lastChecked: "2024-01-15 14:25:00",
+      details: "Full compliance with Truth in Lending Act and Real Estate Settlement Procedures Act",
     },
     {
-      id: "ALERT-004",
-      severity: "low",
-      type: "Documentation",
-      message: "SBA 504 documentation complete - ready for institutional investment",
-      loanId: "LOAN-SBA-2024-004",
-      timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000),
-      status: "resolved",
-      bondType: "SBA",
-      investmentAmount: 150000000,
-      expectedROI: 20.5,
+      id: "cap-003",
+      category: "Capital Requirements",
+      description: "Minimum institutional investment threshold verification",
+      status: "passed",
+      severity: "critical",
+      lastChecked: "2024-01-15 14:20:00",
+      details: `Current investments: $${(institutionalMetrics.currentInvestments / 1000000).toFixed(0)}M (Min: $${(institutionalMetrics.minimumInvestment / 1000000).toFixed(0)}M)`,
+    },
+    {
+      id: "roi-004",
+      category: "ROI Compliance",
+      description: "Government guaranteed mortgage ROI verification",
+      status: "passed",
+      severity: "high",
+      lastChecked: "2024-01-15 14:15:00",
+      details: `Actual ROI: ${institutionalMetrics.actualROI}% (Target: ${institutionalMetrics.targetROI}%)`,
+    },
+    {
+      id: "doc-005",
+      category: "Documentation",
+      description: "Loan documentation and record keeping standards",
+      status: "warning",
+      severity: "medium",
+      lastChecked: "2024-01-15 14:10:00",
+      details: "3 documents pending digital signature completion",
+    },
+    {
+      id: "risk-006",
+      category: "Risk Assessment",
+      description: "Credit risk and default probability analysis",
+      status: "passed",
+      severity: "high",
+      lastChecked: "2024-01-15 14:05:00",
+      details: "All loans meet government guarantee criteria with <2% default risk",
     },
   ]
 
-  const handleComplianceScan = async () => {
+  const handleScan = async () => {
     setIsScanning(true)
-    try {
-      const response = await fetch("/api/compliance/scan", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          loanId: selectedLoanId,
-          scanType: "full",
-          institutionalMinimum: 100000000,
-          targetROI: 20.0,
-        }),
-      })
-      const results = await response.json()
-      setScanResults(results)
-    } catch (error) {
-      console.error("Compliance scan failed:", error)
-    } finally {
-      setIsScanning(false)
-    }
-  }
+    setScanProgress(0)
 
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case "critical":
-        return "bg-red-500 text-white"
-      case "high":
-        return "bg-orange-500 text-white"
-      case "medium":
-        return "bg-yellow-500 text-black"
-      case "low":
-        return "bg-green-500 text-white"
-      default:
-        return "bg-gray-500 text-white"
-    }
+    // Simulate scanning process
+    const interval = setInterval(() => {
+      setScanProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval)
+          setIsScanning(false)
+          return 100
+        }
+        return prev + 10
+      })
+    }, 200)
   }
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case "active":
-        return <AlertTriangle className="h-4 w-4 text-red-500" />
-      case "resolved":
+      case "passed":
         return <CheckCircle className="h-4 w-4 text-green-500" />
-      case "investigating":
-        return <Clock className="h-4 w-4 text-yellow-500" />
+      case "failed":
+        return <AlertTriangle className="h-4 w-4 text-red-500" />
+      case "warning":
+        return <AlertTriangle className="h-4 w-4 text-yellow-500" />
+      case "pending":
+        return <Clock className="h-4 w-4 text-blue-500" />
       default:
-        return <AlertCircle className="h-4 w-4 text-gray-500" />
+        return <Clock className="h-4 w-4 text-gray-500" />
     }
   }
 
-  const formatCurrency = (amount: number) => {
-    if (amount >= 1000000000) {
-      return `$${(amount / 1000000000).toFixed(2)}B`
-    } else if (amount >= 1000000) {
-      return `$${(amount / 1000000).toFixed(1)}M`
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "passed":
+        return "bg-green-500/10 text-green-500 border-green-500/20"
+      case "failed":
+        return "bg-red-500/10 text-red-500 border-red-500/20"
+      case "warning":
+        return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20"
+      case "pending":
+        return "bg-blue-500/10 text-blue-500 border-blue-500/20"
+      default:
+        return "bg-gray-500/10 text-gray-500 border-gray-500/20"
     }
-    return `$${amount.toLocaleString()}`
   }
+
+  const passedChecks = complianceChecks.filter((check) => check.status === "passed").length
+  const totalChecks = complianceChecks.length
+  const compliancePercentage = Math.round((passedChecks / totalChecks) * 100)
 
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-6">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent">
-            Institutional Loan Compliance Bot
-          </h1>
-          <p className="text-muted-foreground mt-2">
-            Government Guaranteed Mortgages • $100M Minimum Investment • 20% Compounded ROI
-          </p>
+          <h2 className="text-3xl font-bold text-white flex items-center">
+            <Bot className="h-8 w-8 mr-3 text-blue-400" />
+            Compliance Bot
+          </h2>
+          <p className="text-slate-300 mt-2">AI-powered regulatory compliance monitoring and verification</p>
         </div>
-        <div className="flex items-center gap-4">
-          <Badge className="bg-green-500 text-white">
-            <Shield className="h-4 w-4 mr-2" />
-            {complianceMetrics.overallScore}% Compliant
-          </Badge>
-          <Badge className="bg-blue-500 text-white">
-            <DollarSign className="h-4 w-4 mr-2" />
-            {complianceMetrics.institutionalROI}% ROI
-          </Badge>
+        <div className="flex items-center gap-3">
+          <Button onClick={handleScan} disabled={isScanning} className="bg-blue-600 hover:bg-blue-700">
+            <Scan className="h-4 w-4 mr-2" />
+            {isScanning ? "Scanning..." : "Run Scan"}
+          </Button>
+          <Button variant="outline" className="border-slate-600 bg-transparent">
+            <Download className="h-4 w-4 mr-2" />
+            Export Report
+          </Button>
         </div>
       </div>
 
-      {/* Key Metrics Dashboard */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-green-700 flex items-center gap-2">
-              <Target className="h-4 w-4" />
-              Compounded Revenue
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-900">
-              {formatCurrency(complianceMetrics.compoundedInterestRevenue)}
+      {/* Institutional Investment Alert */}
+      <Alert className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border-blue-500/30">
+        <Building2 className="h-4 w-4" />
+        <AlertDescription className="text-blue-200">
+          <strong>Institutional Investment Requirements:</strong> Minimum investment of $100M required for
+          government-guaranteed mortgage portfolio access. Current portfolio: $
+          {(institutionalMetrics.currentInvestments / 1000000).toFixed(0)}M with {institutionalMetrics.actualROI}%
+          compounded ROI.
+        </AlertDescription>
+      </Alert>
+
+      {/* Scanning Progress */}
+      {isScanning && (
+        <Card className="bg-slate-800/50 border-slate-700">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-white font-medium">Compliance Scan in Progress</span>
+              <span className="text-slate-300">{scanProgress}%</span>
             </div>
-            <div className="flex items-center text-sm text-green-600 mt-1">
-              <TrendingUp className="h-4 w-4 mr-1" />
-              20% Annual Compound
+            <Progress value={scanProgress} className="h-2" />
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Key Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <Card className="bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-green-500/20">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-green-300 text-sm font-medium">Compliance Score</p>
+                <p className="text-2xl font-bold text-white">{institutionalMetrics.complianceScore}%</p>
+                <p className="text-green-400 text-sm">Excellent</p>
+              </div>
+              <Shield className="h-8 w-8 text-green-400" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-blue-700 flex items-center gap-2">
-              <Building2 className="h-4 w-4" />
-              Investment Compliance
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-900">{complianceMetrics.minimumInvestmentMet}%</div>
-            <div className="flex items-center text-sm text-blue-600 mt-1">
-              <CheckCircle className="h-4 w-4 mr-1" />
-              $100M+ Portfolios
+        <Card className="bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-blue-500/20">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-blue-300 text-sm font-medium">Portfolio Value</p>
+                <p className="text-2xl font-bold text-white">
+                  ${(institutionalMetrics.currentInvestments / 1000000000).toFixed(1)}B
+                </p>
+                <p className="text-blue-400 text-sm">Active Investments</p>
+              </div>
+              <DollarSign className="h-8 w-8 text-blue-400" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-purple-700 flex items-center gap-2">
-              <Award className="h-4 w-4" />
-              Government Bonds
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-purple-900">{complianceMetrics.governmentBondCompliance}%</div>
-            <div className="flex items-center text-sm text-purple-600 mt-1">
-              <Lock className="h-4 w-4 mr-1" />
-              Guarantee Validated
+        <Card className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 border-purple-500/20">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-purple-300 text-sm font-medium">ROI Performance</p>
+                <p className="text-2xl font-bold text-white">{institutionalMetrics.actualROI}%</p>
+                <p className="text-purple-400 text-sm">Above Target</p>
+              </div>
+              <TrendingUp className="h-8 w-8 text-purple-400" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-orange-50 to-red-50 border-orange-200">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-orange-700 flex items-center gap-2">
-              <Activity className="h-4 w-4" />
-              Monthly Revenue
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-orange-900">{formatCurrency(complianceMetrics.monthlyRevenue)}</div>
-            <div className="flex items-center text-sm text-orange-600 mt-1">
-              <Zap className="h-4 w-4 mr-1" />
-              Gov. Guaranteed
+        <Card className="bg-gradient-to-br from-orange-900/40 to-red-900/40 border-orange-500/20">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-orange-300 text-sm font-medium">Gov. Mortgages</p>
+                <p className="text-2xl font-bold text-white">
+                  ${(institutionalMetrics.governmentGuaranteedMortgages / 1000000000).toFixed(1)}B
+                </p>
+                <p className="text-orange-400 text-sm">Guaranteed</p>
+              </div>
+              <Building2 className="h-8 w-8 text-orange-400" />
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Main Interface */}
+      {/* Main Content */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-          <TabsTrigger value="scan">Compliance Scan</TabsTrigger>
-          <TabsTrigger value="alerts">Active Alerts</TabsTrigger>
-          <TabsTrigger value="bonds">Bond Structures</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        <TabsList className="bg-slate-800/50 border-slate-700">
+          <TabsTrigger value="overview" className="data-[state=active]:bg-blue-600">
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="checks" className="data-[state=active]:bg-purple-600">
+            Compliance Checks
+          </TabsTrigger>
+          <TabsTrigger value="institutional" className="data-[state=active]:bg-green-600">
+            Institutional
+          </TabsTrigger>
+          <TabsTrigger value="reports" className="data-[state=active]:bg-orange-600">
+            Reports
+          </TabsTrigger>
         </TabsList>
 
-        {/* Dashboard Tab */}
-        <TabsContent value="dashboard" className="space-y-6">
+        <TabsContent value="overview" className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Real-time Monitoring */}
-            <Card>
+            <Card className="bg-slate-800/50 border-slate-700">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Activity className="h-5 w-5" />
-                  Real-time Monitoring
-                </CardTitle>
-                <CardDescription>Live compliance status across all institutional portfolios</CardDescription>
+                <CardTitle className="text-white">Compliance Status Overview</CardTitle>
+                <CardDescription>Current compliance status across all categories</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
+              <CardContent>
+                <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm">FHA 30-Year Bonds</span>
-                    <div className="flex items-center gap-2">
-                      <Progress value={98} className="w-20 h-2" />
-                      <Badge className="bg-green-500 text-white text-xs">98%</Badge>
-                    </div>
+                    <span className="text-slate-300">Overall Compliance</span>
+                    <Badge className={getStatusColor("passed")}>{compliancePercentage}%</Badge>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">VA 50-Year Bonds</span>
-                    <div className="flex items-center gap-2">
-                      <Progress value={96} className="w-20 h-2" />
-                      <Badge className="bg-green-500 text-white text-xs">96%</Badge>
+                  <Progress value={compliancePercentage} className="h-2" />
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-400">{passedChecks}</div>
+                      <div className="text-slate-400">Passed</div>
                     </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">USDA 35-Year Bonds</span>
-                    <div className="flex items-center gap-2">
-                      <Progress value={94} className="w-20 h-2" />
-                      <Badge className="bg-yellow-500 text-black text-xs">94%</Badge>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">SBA 25-Year Bonds</span>
-                    <div className="flex items-center gap-2">
-                      <Progress value={99} className="w-20 h-2" />
-                      <Badge className="bg-green-500 text-white text-xs">99%</Badge>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-yellow-400">
+                        {complianceChecks.filter((c) => c.status === "warning").length}
+                      </div>
+                      <div className="text-slate-400">Warnings</div>
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* ROI Performance */}
-            <Card>
+            <Card className="bg-slate-800/50 border-slate-700">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5" />
-                  ROI Performance
-                </CardTitle>
-                <CardDescription>20% compounded interest revenue tracking</CardDescription>
+                <CardTitle className="text-white">Recent Activity</CardTitle>
+                <CardDescription>Latest compliance checks and updates</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Target ROI (20%)</span>
-                    <div className="flex items-center gap-2">
-                      <Progress value={100} className="w-20 h-2" />
-                      <Badge className="bg-blue-500 text-white text-xs">20.3%</Badge>
-                    </div>
+              <CardContent>
+                <ScrollArea className="h-64">
+                  <div className="space-y-3">
+                    {complianceChecks.slice(0, 5).map((check) => (
+                      <div key={check.id} className="flex items-center space-x-3 p-2 rounded-lg bg-slate-900/30">
+                        {getStatusIcon(check.status)}
+                        <div className="flex-1">
+                          <div className="text-white text-sm font-medium">{check.category}</div>
+                          <div className="text-slate-400 text-xs">{check.lastChecked}</div>
+                        </div>
+                        <Badge className={getStatusColor(check.status)} variant="outline">
+                          {check.status}
+                        </Badge>
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Compound Growth</span>
-                    <div className="flex items-center gap-2">
-                      <Progress value={85} className="w-20 h-2" />
-                      <Badge className="bg-green-500 text-white text-xs">+15.2%</Badge>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Risk-Adjusted Return</span>
-                    <div className="flex items-center gap-2">
-                      <Progress value={92} className="w-20 h-2" />
-                      <Badge className="bg-purple-500 text-white text-xs">18.4%</Badge>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Government Guarantee</span>
-                    <div className="flex items-center gap-2">
-                      <Progress value={100} className="w-20 h-2" />
-                      <Badge className="bg-green-500 text-white text-xs">100%</Badge>
-                    </div>
-                  </div>
-                </div>
+                </ScrollArea>
               </CardContent>
             </Card>
           </div>
+        </TabsContent>
 
-          {/* Recent Activity */}
-          <Card>
+        <TabsContent value="checks" className="space-y-6">
+          <Card className="bg-slate-800/50 border-slate-700">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Clock className="h-5 w-5" />
-                Recent Compliance Activity
-              </CardTitle>
+              <CardTitle className="text-white">Detailed Compliance Checks</CardTitle>
+              <CardDescription>Comprehensive compliance verification results</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                {recentAlerts.slice(0, 4).map((alert) => (
-                  <div key={alert.id} className="flex items-center justify-between p-3 rounded-lg border">
-                    <div className="flex items-center gap-3">
-                      {getStatusIcon(alert.status)}
-                      <div>
-                        <p className="font-medium">{alert.type}</p>
-                        <p className="text-sm text-muted-foreground">{alert.message}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Badge variant="outline" className="text-xs">
-                            {alert.bondType}
-                          </Badge>
-                          <span className="text-xs text-muted-foreground">
-                            {formatCurrency(alert.investmentAmount)} • {alert.expectedROI}% ROI
-                          </span>
+              <div className="space-y-4">
+                {complianceChecks.map((check) => (
+                  <div
+                    key={check.id}
+                    className="p-4 rounded-lg bg-slate-900/30 border border-slate-700 hover:border-slate-600 transition-colors"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center space-x-3">
+                        {getStatusIcon(check.status)}
+                        <div>
+                          <h4 className="text-white font-medium">{check.category}</h4>
+                          <p className="text-slate-300 text-sm">{check.description}</p>
                         </div>
                       </div>
+                      <div className="flex items-center space-x-2">
+                        <Badge className={getStatusColor(check.status)} variant="outline">
+                          {check.status}
+                        </Badge>
+                        <Badge
+                          variant="outline"
+                          className={
+                            check.severity === "critical"
+                              ? "border-red-500/30 text-red-400"
+                              : check.severity === "high"
+                                ? "border-orange-500/30 text-orange-400"
+                                : "border-yellow-500/30 text-yellow-400"
+                          }
+                        >
+                          {check.severity}
+                        </Badge>
+                      </div>
                     </div>
-                    <Badge className={getSeverityColor(alert.severity)}>{alert.severity}</Badge>
+                    <div className="text-slate-400 text-sm mb-2">{check.details}</div>
+                    <div className="flex items-center justify-between text-xs text-slate-500">
+                      <span>Last checked: {check.lastChecked}</span>
+                      <Button size="sm" variant="ghost" className="h-6 text-xs">
+                        <Eye className="h-3 w-3 mr-1" />
+                        View Details
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -492,275 +398,102 @@ export function LoanComplianceBot() {
           </Card>
         </TabsContent>
 
-        {/* Compliance Scan Tab */}
-        <TabsContent value="scan" className="space-y-6">
-          <Card>
+        <TabsContent value="institutional" className="space-y-6">
+          <Card className="bg-slate-800/50 border-slate-700">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Scan className="h-5 w-5" />
-                Institutional Compliance Scanner
-              </CardTitle>
-              <CardDescription>
-                Validate $100M+ portfolios against government bond structures and 20% ROI requirements
-              </CardDescription>
+              <CardTitle className="text-white">Institutional Investment Requirements</CardTitle>
+              <CardDescription>Government-guaranteed mortgage portfolio compliance</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="loanId">Loan Portfolio ID</Label>
-                  <Input
-                    id="loanId"
-                    placeholder="Enter portfolio ID (e.g., INST-2024-001)"
-                    value={selectedLoanId}
-                    onChange={(e) => setSelectedLoanId(e.target.value)}
-                  />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="p-4 bg-blue-900/20 rounded-lg border border-blue-500/30">
+                    <h4 className="text-blue-300 font-medium mb-2">Minimum Investment Threshold</h4>
+                    <div className="text-2xl font-bold text-white mb-1">
+                      ${(institutionalMetrics.minimumInvestment / 1000000).toFixed(0)}M
+                    </div>
+                    <p className="text-blue-400 text-sm">Required for institutional access</p>
+                  </div>
+                  <div className="p-4 bg-green-900/20 rounded-lg border border-green-500/30">
+                    <h4 className="text-green-300 font-medium mb-2">Current Portfolio Value</h4>
+                    <div className="text-2xl font-bold text-white mb-1">
+                      ${(institutionalMetrics.currentInvestments / 1000000000).toFixed(2)}B
+                    </div>
+                    <p className="text-green-400 text-sm">
+                      {(
+                        (institutionalMetrics.currentInvestments / institutionalMetrics.minimumInvestment) *
+                        100
+                      ).toFixed(0)}
+                      % above minimum
+                    </p>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="scanType">Scan Type</Label>
-                  <Select defaultValue="institutional">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="institutional">Institutional ($100M+)</SelectItem>
-                      <SelectItem value="government">Government Bond Validation</SelectItem>
-                      <SelectItem value="roi">ROI Compliance (20%)</SelectItem>
-                      <SelectItem value="full">Full Compliance Audit</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <div className="space-y-4">
+                  <div className="p-4 bg-purple-900/20 rounded-lg border border-purple-500/30">
+                    <h4 className="text-purple-300 font-medium mb-2">Target ROI</h4>
+                    <div className="text-2xl font-bold text-white mb-1">{institutionalMetrics.targetROI}%</div>
+                    <p className="text-purple-400 text-sm">Compounded annual return</p>
+                  </div>
+                  <div className="p-4 bg-orange-900/20 rounded-lg border border-orange-500/30">
+                    <h4 className="text-orange-300 font-medium mb-2">Actual ROI</h4>
+                    <div className="text-2xl font-bold text-white mb-1">{institutionalMetrics.actualROI}%</div>
+                    <p className="text-orange-400 text-sm">
+                      +{(institutionalMetrics.actualROI - institutionalMetrics.targetROI).toFixed(1)}% above target
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <Button
-                onClick={handleComplianceScan}
-                disabled={isScanning || !selectedLoanId}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600"
-              >
-                {isScanning ? (
-                  <>
-                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                    Scanning Institutional Portfolio...
-                  </>
-                ) : (
-                  <>
-                    <Scan className="h-4 w-4 mr-2" />
-                    Start Compliance Scan
-                  </>
-                )}
-              </Button>
-
-              {scanResults && (
-                <Card className="bg-muted/50">
-                  <CardHeader>
-                    <CardTitle className="text-lg">Scan Results</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-sm text-muted-foreground">Overall Score</p>
-                          <p className="text-2xl font-bold text-green-600">{scanResults.overallScore}%</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground">Investment Amount</p>
-                          <p className="text-2xl font-bold">{formatCurrency(scanResults.investmentAmount)}</p>
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <p className="font-medium">Compliance Status:</p>
-                        <div className="space-y-1">
-                          {scanResults.checks?.map((check: any, index: number) => (
-                            <div key={index} className="flex items-center gap-2">
-                              {check.passed ? (
-                                <CheckCircle className="h-4 w-4 text-green-500" />
-                              ) : (
-                                <XCircle className="h-4 w-4 text-red-500" />
-                              )}
-                              <span className="text-sm">{check.description}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
+              <div className="p-4 bg-slate-900/30 rounded-lg border border-slate-600">
+                <h4 className="text-white font-medium mb-3">Government Guaranteed Mortgages</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                  <div className="text-center">
+                    <div className="text-xl font-bold text-green-400">
+                      ${(institutionalMetrics.governmentGuaranteedMortgages / 1000000000).toFixed(1)}B
                     </div>
-                  </CardContent>
-                </Card>
-              )}
+                    <div className="text-slate-400">Total Value</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xl font-bold text-blue-400">100%</div>
+                    <div className="text-slate-400">Government Backed</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xl font-bold text-purple-400">&lt;2%</div>
+                    <div className="text-slate-400">Default Risk</div>
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Alerts Tab */}
-        <TabsContent value="alerts" className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-semibold">Active Compliance Alerts</h2>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm">
-                <Bell className="h-4 w-4 mr-2" />
-                Configure Alerts
-              </Button>
-              <Button variant="outline" size="sm">
-                <Download className="h-4 w-4 mr-2" />
-                Export Report
-              </Button>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            {recentAlerts.map((alert) => (
-              <Card key={alert.id} className="border-l-4 border-l-red-500">
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-3">
-                        <Badge className={getSeverityColor(alert.severity)}>{alert.severity}</Badge>
-                        <Badge variant="outline">{alert.bondType}</Badge>
-                        {getStatusIcon(alert.status)}
-                        <span className="text-sm text-muted-foreground">{alert.status}</span>
-                      </div>
-                      <h3 className="text-lg font-semibold">{alert.type}</h3>
-                      <p className="text-muted-foreground">{alert.message}</p>
-                      <div className="flex items-center gap-4 text-sm">
-                        <span>
-                          <strong>Loan ID:</strong> {alert.loanId}
-                        </span>
-                        <span>
-                          <strong>Investment:</strong> {formatCurrency(alert.investmentAmount)}
-                        </span>
-                        <span>
-                          <strong>Expected ROI:</strong> {alert.expectedROI}%
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Button variant="outline" size="sm">
-                        <Eye className="h-4 w-4 mr-2" />
-                        View Details
-                      </Button>
-                      <Button size="sm">Resolve</Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        {/* Bond Structures Tab */}
-        <TabsContent value="bonds" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {bondStructures.map((bond) => (
-              <Card key={bond.type} className="border-2">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Lock className="h-5 w-5" />
-                    {bond.type} {bond.term}-Year Government Bond
-                  </CardTitle>
-                  <CardDescription>
-                    {bond.guaranteeRate}% Government Guarantee • {bond.expectedROI}% Expected ROI
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Minimum Investment</p>
-                      <p className="text-lg font-bold">{formatCurrency(bond.minimumInvestment)}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Expected ROI</p>
-                      <p className="text-lg font-bold text-green-600">{bond.expectedROI}%</p>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-medium mb-2">Compliance Requirements:</p>
-                    <div className="space-y-1">
-                      {bond.complianceRequirements.map((req, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500 flex-shrink-0" />
-                          <span className="text-sm">{req}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <Button className="w-full bg-transparent" variant="outline">
-                    View {bond.type} Portfolio Details
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        {/* Analytics Tab */}
-        <TabsContent value="analytics" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5" />
-                  Revenue Analytics
-                </CardTitle>
-                <CardDescription>Compounded interest revenue performance</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <p className="text-3xl font-bold text-green-600">
-                      {formatCurrency(complianceMetrics.compoundedInterestRevenue)}
-                    </p>
-                    <p className="text-sm text-muted-foreground">Total Compounded Revenue</p>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-sm">Monthly Revenue</span>
-                      <span className="font-medium">{formatCurrency(complianceMetrics.monthlyRevenue)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm">Annual ROI</span>
-                      <span className="font-medium text-green-600">{complianceMetrics.institutionalROI}%</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm">Compound Rate</span>
-                      <span className="font-medium">20% Annual</span>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Target className="h-5 w-5" />
-                  Investment Distribution
-                </CardTitle>
-                <CardDescription>$100M+ institutional portfolio allocation</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {bondStructures.map((bond, index) => (
-                    <div key={index} className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">{bond.type} Bonds</span>
-                        <span className="text-sm">
-                          {bond.type === "FHA"
-                            ? "35%"
-                            : bond.type === "VA"
-                              ? "30%"
-                              : bond.type === "USDA"
-                                ? "20%"
-                                : "15%"}
-                        </span>
-                      </div>
-                      <Progress
-                        value={bond.type === "FHA" ? 35 : bond.type === "VA" ? 30 : bond.type === "USDA" ? 20 : 15}
-                        className="h-2"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+        <TabsContent value="reports" className="space-y-6">
+          <Card className="bg-slate-800/50 border-slate-700">
+            <CardHeader>
+              <CardTitle className="text-white">Compliance Reports</CardTitle>
+              <CardDescription>Generate and download compliance documentation</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Button className="h-20 flex flex-col gap-2 bg-blue-600 hover:bg-blue-700">
+                  <FileText className="h-6 w-6" />
+                  <span>Full Compliance Report</span>
+                </Button>
+                <Button className="h-20 flex flex-col gap-2 bg-green-600 hover:bg-green-700">
+                  <Building2 className="h-6 w-6" />
+                  <span>Institutional Summary</span>
+                </Button>
+                <Button className="h-20 flex flex-col gap-2 bg-purple-600 hover:bg-purple-700">
+                  <TrendingUp className="h-6 w-6" />
+                  <span>ROI Performance Report</span>
+                </Button>
+                <Button className="h-20 flex flex-col gap-2 bg-orange-600 hover:bg-orange-700">
+                  <Shield className="h-6 w-6" />
+                  <span>Risk Assessment</span>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>

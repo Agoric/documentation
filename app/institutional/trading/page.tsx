@@ -2,514 +2,431 @@
 
 import * as React from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { ArrowUpDown, TrendingUp, TrendingDown, Activity, Shield, RefreshCw, Building2 } from "lucide-react"
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  Building2,
+  BarChart3,
+  Activity,
+  Zap,
+  Plus,
+  Calculator,
+  Shield,
+  Target,
+  Clock,
+} from "lucide-react"
 
 interface TradingPosition {
   id: string
-  bondType: "FHA" | "VA" | "USDA" | "SBA"
-  action: "BUY" | "SELL"
-  quantity: number
-  price: number
-  totalValue: number
-  status: "PENDING" | "EXECUTED" | "CANCELLED" | "PARTIAL"
-  timestamp: Date
-  expectedROI: number
-  governmentGuarantee: number
+  loanType: string
+  principalAmount: number
+  interestRate: number
+  termMonths: number
+  guaranteeType: string
+  currentValue: number
+  unrealizedPnL: number
+  roi: number
+  riskScore: number
+  status: "active" | "pending" | "closed"
 }
 
 interface MarketData {
-  bondType: "FHA" | "VA" | "USDA" | "SBA"
-  currentPrice: number
-  change24h: number
-  volume24h: number
-  bid: number
-  ask: number
+  loanType: string
+  averageRate: number
+  volume: number
   spread: number
-  yield: number
-  governmentGuarantee: number
+  trend: "up" | "down" | "stable"
+  liquidity: "high" | "medium" | "low"
 }
 
 export default function InstitutionalTradingPage() {
-  const [selectedBond, setSelectedBond] = React.useState<"FHA" | "VA" | "USDA" | "SBA">("FHA")
-  const [orderType, setOrderType] = React.useState<"MARKET" | "LIMIT">("MARKET")
-  const [orderAction, setOrderAction] = React.useState<"BUY" | "SELL">("BUY")
-  const [orderQuantity, setOrderQuantity] = React.useState("")
-  const [orderPrice, setOrderPrice] = React.useState("")
-  const [isTrading, setIsTrading] = React.useState(false)
-  const [isOrderDialogOpen, setIsOrderDialogOpen] = React.useState(false)
+  const [activeTab, setActiveTab] = React.useState("dashboard")
+  const [selectedLoanType, setSelectedLoanType] = React.useState("")
+  const [tradeAmount, setTradeAmount] = React.useState("")
+  const [isExecuting, setIsExecuting] = React.useState(false)
+
+  const portfolioSummary = {
+    totalValue: 2847392000, // $2.8B
+    availableCash: 425000000, // $425M
+    dailyPnL: 12450000, // $12.45M
+    totalROI: 22.4,
+    activePositions: 47,
+    pendingTrades: 3,
+  }
+
+  const tradingPositions: TradingPosition[] = [
+    {
+      id: "FHA-001",
+      loanType: "FHA 30-Year Fixed",
+      principalAmount: 450000,
+      interestRate: 6.75,
+      termMonths: 360,
+      guaranteeType: "FHA",
+      currentValue: 467250,
+      unrealizedPnL: 17250,
+      roi: 3.83,
+      riskScore: 2.1,
+      status: "active",
+    },
+    {
+      id: "VA-002",
+      loanType: "VA 30-Year Fixed",
+      principalAmount: 520000,
+      interestRate: 6.25,
+      termMonths: 360,
+      guaranteeType: "VA",
+      currentValue: 541600,
+      unrealizedPnL: 21600,
+      roi: 4.15,
+      riskScore: 1.8,
+      status: "active",
+    },
+    {
+      id: "USDA-003",
+      loanType: "USDA Rural Development",
+      principalAmount: 380000,
+      interestRate: 6.50,
+      termMonths: 360,
+      guaranteeType: "USDA",
+      currentValue: 395400,
+      unrealizedPnL: 15400,
+      roi: 4.05,
+      riskScore: 2.3,
+      status: "active",
+    },
+    {
+      id: "CONV-004",
+      loanType: "Conventional (Gov Backed)",
+      principalAmount: 675000,
+      interestRate: 7.00,
+      termMonths: 360,
+      guaranteeType: "Fannie Mae",
+      currentValue: 702000,
+      unrealizedPnL: 27000,
+      roi: 4.00,
+      riskScore: 2.5,
+      status: "pending",
+    },
+  ]
 
   const marketData: MarketData[] = [
     {
-      bondType: "FHA",
-      currentPrice: 102.45,
-      change24h: 0.23,
-      volume24h: 125000000,
-      bid: 102.42,
-      ask: 102.48,
-      spread: 0.06,
-      yield: 20.3,
-      governmentGuarantee: 100,
+      loanType: "FHA 30-Year",
+      averageRate: 6.75,
+      volume: 2400000000,
+      spread: 0.25,
+      trend: "up",
+      liquidity: "high",
     },
     {
-      bondType: "VA",
-      currentPrice: 103.12,
-      change24h: 0.18,
-      volume24h: 98000000,
-      bid: 103.09,
-      ask: 103.15,
-      spread: 0.06,
-      yield: 20.1,
-      governmentGuarantee: 100,
+      loanType: "VA 30-Year",
+      averageRate: 6.25,
+      volume: 1800000000,
+      spread: 0.20,
+      trend: "stable",
+      liquidity: "high",
     },
     {
-      bondType: "USDA",
-      currentPrice: 101.87,
-      change24h: -0.12,
-      volume24h: 67000000,
-      bid: 101.84,
-      ask: 101.90,
-      spread: 0.06,
-      yield: 19.8,
-      governmentGuarantee: 90,
+      loanType: "USDA Rural",
+      averageRate: 6.50,
+      volume: 950000000,
+      spread: 0.30,
+      trend: "down",
+      liquidity: "medium",
     },
     {
-      bondType: "SBA",
-      currentPrice: 104.23,
-      change24h: 0.45,
-      volume24h: 45000000,
-      bid: 104.19,
-      ask: 104.27,
-      spread: 0.08,
-      yield: 20.5,
-      governmentGuarantee: 85,
+      loanType: "Conventional",
+      averageRate: 7.00,
+      volume: 3200000000,
+      spread: 0.35,
+      trend: "up",
+      liquidity: "high",
     },
   ]
 
-  const recentTrades: TradingPosition[] = [
-    {
-      id: "TXN-001",
-      bondType: "FHA",
-      action: "BUY",
-      quantity: 1000000,
-      price: 102.45,
-      totalValue: 102450000,
-      status: "EXECUTED",
-      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-      expectedROI: 20.3,
-      governmentGuarantee: 100,
-    },
-    {
-      id: "TXN-002",
-      bondType: "VA",
-      action: "BUY",
-      quantity: 750000,
-      price: 103.12,
-      totalValue: 77340000,
-      status: "EXECUTED",
-      timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000),
-      expectedROI: 20.1,
-      governmentGuarantee: 100,
-    },
-    {
-      id: "TXN-003",
-      bondType: "SBA",
-      action: "SELL",
-      quantity: 500000,
-      price: 104.23,
-      totalValue: 52115000,
-      status: "PENDING",
-      timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000),
-      expectedROI: 20.5,
-      governmentGuarantee: 85,
-    },
-  ]
+  const handleExecuteTrade = async () => {
+    setIsExecuting(true)
+    // Simulate trade execution
+    setTimeout(() => {
+      setIsExecuting(false)
+    }, 2000)
+  }
 
-  const portfolioPositions = [
-    {
-      bondType: "FHA",
-      holdings: 3500000,
-      marketValue: 358575000,
-      unrealizedPnL: 8575000,
-      allocation: 35,
-      avgPrice: 102.31,
-      currentYield: 20.3,
-    },
-    {
-      bondType: "VA",
-      holdings: 3000000,
-      marketValue: 309360000,
-      unrealizedPnL: 9360000,
-      allocation: 30,
-      avgPrice: 103.00,
-      currentYield: 20.1,
-    },
-    {
-      bondType: "USDA",
-      holdings: 2000000,
-      marketValue: 203740000,
-      unrealizedPnL: 3740000,
-      allocation: 20,
-      avgPrice: 101.75,
-      currentYield: 19.8,
-    },
-    {
-      bondType: "SBA",
-      holdings: 1500000,
-      marketValue: 156345000,
-      unrealizedPnL: 6345000,
-      allocation: 15,
-      avgPrice: 104.00,
-      currentYield: 20.5,
-    },
-  ]
-
-  const handlePlaceOrder = async () => {
-    if (!orderQuantity || !selectedBond) return
-
-    setIsTrading(true)
-    try {
-      // Simulate order placement
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-      console.log("Order placed:", {
-        bondType: selectedBond,
-        action: orderAction,
-        type: orderType,
-        quantity: orderQuantity,
-        price: orderPrice,
-      })
-      setIsOrderDialogOpen(false)
-      setOrderQuantity("")
-      setOrderPrice("")
-    } finally {
-      setIsTrading(false)
+  const getTrendIcon = (trend: string) => {
+    switch (trend) {
+      case "up":
+        return <TrendingUp className="h-4 w-4 text-green-400" />
+      case "down":
+        return <TrendingDown className="h-4 w-4 text-red-400" />
+      case "stable":
+        return <Activity className="h-4 w-4 text-blue-400" />
+      default:
+        return <Activity className="h-4 w-4 text-gray-400" />
     }
   }
 
-  const formatCurrency = (amount: number) => {
-    if (amount >= 1000000000) {
-      return `$${(amount / 1000000000).toFixed(2)}B`
-    } else if (amount >= 1000000) {
-      return `$${(amount / 1000000).toFixed(1)}M`
+  const getLiquidityColor = (liquidity: string) => {
+    switch (liquidity) {
+      case "high":
+        return "text-green-400"
+      case "medium":
+        return "text-yellow-400"
+      case "low":
+        return "text-red-400"
+      default:
+        return "text-gray-400"
     }
-    return `$${amount.toLocaleString()}`
   }
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "EXECUTED":
-        return "bg-green-500 text-white"
-      case "PENDING":
-        return "bg-yellow-500 text-black"
-      case "CANCELLED":
-        return "bg-red-500 text-white"
-      case "PARTIAL":
-        return "bg-blue-500 text-white"
+      case "active":
+        return "bg-green-500/20 text-green-400 border-green-500/30"
+      case "pending":
+        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+      case "closed":
+        return "bg-gray-500/20 text-gray-400 border-gray-500/30"
       default:
-        return "bg-gray-500 text-white"
+        return "bg-gray-500/20 text-gray-400 border-gray-500/30"
     }
   }
 
-  const getChangeColor = (change: number) => {
-    return change >= 0 ? "text-green-600" : "text-red-600"
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/90 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-green-900 to-slate-900 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-green-600 to-blue-800 bg-clip-text text-transparent">
-              Institutional Trading Desk
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent">
+              Institutional Trading Platform
             </h1>
-            <p className="text-xl text-muted-foreground mt-2">
-              High-Volume Government Bond Trading • $100M+ Institutional Orders • 20% Target ROI
+            <p className="text-slate-300 text-xl mt-2">
+              Advanced mortgage-backed securities trading with government guarantees
             </p>
           </div>
-          <div className="flex items-center gap-4">
-            <Badge className="bg-green-500 text-white">
-              <Activity className="h-4 w-4 mr-2" />
+          <div className="flex items-center gap-3">
+            <Badge className="bg-green-600/20 text-green-400 border-green-500/30 px-4 py-2">
+              <Activity className="w-4 h-4 mr-2" />
               Live Trading
             </Badge>
-            <Badge className="bg-blue-500 text-white">
-              <Shield className="h-4 w-4 mr-2" />
-              Government Guaranteed
+            <Badge className="bg-blue-600/20 text-blue-400 border-blue-500/30 px-4 py-2">
+              <Shield className="w-4 h-4 mr-2" />
+              Gov. Guaranteed
             </Badge>
-            <Dialog open={isOrderDialogOpen} onOpenChange={setIsOrderDialogOpen}>
-              <DialogTrigger asChild>
-                <Button className="bg-gradient-to-r from-green-600 to-blue-600">
-                  <ArrowUpDown className="h-4 w-4 mr-2" />
-                  Place Order
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Place Institutional Order</DialogTitle>
-                  <DialogDescription>Execute high-volume government bond trades</DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label>Bond Type</Label>
-                      <Select value={selectedBond} onValueChange={(value: any) => setSelectedBond(value)}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="FHA">FHA (100% Guarantee)</SelectItem>
-                          <SelectItem value="VA">VA (100% Guarantee)</SelectItem>
-                          <SelectItem value="USDA">USDA (90% Guarantee)</SelectItem>
-                          <SelectItem value="SBA">SBA (85% Guarantee)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label>Action</Label>
-                      <Select value={orderAction} onValueChange={(value: any) => setOrderAction(value)}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="BUY">BUY</SelectItem>
-                          <SelectItem value="SELL">SELL</SelectItem>
-                        </SelectContent>
-                      </Select>
+          </div>
+        </div>
+
+        {/* Portfolio Summary */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
+          <Card className="bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-green-500/20">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-green-300 text-sm font-medium">Portfolio Value</p>
+                  <p className="text-2xl font-bold text-white">
+                    ${(portfolioSummary.totalValue / 1000000000).toFixed(1)}B
+                  </p>
+                </div>
+                <Building2 className="h-8 w-8 text-green-400" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-blue-500/20">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-blue-300 text-sm font-medium">Available Cash</p>
+                  <p className="text-2xl font-bold text-white">
+                    ${(portfolioSummary.availableCash / 1000000).toFixed(0)}M
+                  </p>
+                </div>
+                <DollarSign className="h-8 w-8 text-blue-400" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 border-purple-500/20">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-purple-300 text-sm font-medium">Daily P&L</p>
+                  <p className="text-2xl font-bold text-white">
+                    +${(portfolioSummary.dailyPnL / 1000000).toFixed(1)}M
+                  </p>
+                </div>
+                <TrendingUp className="h-8 w-8 text-purple-400" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-orange-900/40 to-red-900/40 border-orange-500/20">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-orange-300 text-sm font-medium">Total ROI</p>
+                  <p className="text-2xl font-bold text-white">{portfolioSummary.totalROI}%</p>
+                </div>
+                <BarChart3 className="h-8 w-8 text-orange-400" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-teal-900/40 to-green-900/40 border-teal-500/20">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-teal-300 text-sm font-medium">Active Positions</p>
+                  <p className="text-2xl font-bold text-white">{portfolioSummary.activePositions}</p>
+                </div>
+                <Target className="h-8 w-8 text-teal-400" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-yellow-900/40 to-orange-900/40 border-yellow-500/20">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-yellow-300 text-sm font-medium">Pending Trades</p>
+                  <p className="text-2xl font-bold text-white">{portfolioSummary.pendingTrades}</p>
+                </div>
+                <Clock className="h-8 w-8 text-yellow-400" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Main Trading Interface */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="bg-slate-800/50 border-slate-700 grid w-full grid-cols-5">
+            <TabsTrigger value="dashboard" className="data-[state=active]:bg-green-600">
+              <BarChart3 className="w-4 h-4 mr-2" />
+              Dashboard
+            </TabsTrigger>
+            <TabsTrigger value="trading" className="data-[state=active]:bg-blue-600">
+              <Zap className="w-4 h-4 mr-2" />
+              Trading
+            </TabsTrigger>
+            <TabsTrigger value="positions" className="data-[state=active]:bg-purple-600">
+              <Target className="w-4 h-4 mr-2" />
+              Positions
+            </TabsTrigger>
+            <TabsTrigger value="market" className="data-[state=active]:bg-orange-600">
+              <Activity className="w-4 h-4 mr-2" />
+              Market Data
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="data-[state=active]:bg-teal-600">
+              <Calculator className="w-4 h-4 mr-2" />
+              Analytics
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="dashboard" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardHeader>
+                  <CardTitle className="text-white">Portfolio Performance</CardTitle>
+                  <CardDescription>Real-time portfolio metrics and trends</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-64 flex items-center justify-center bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-lg">
+                    <div className="text-center">
+                      <BarChart3 className="h-12 w-12 mx-auto mb-4 text-green-400" />
+                      <p className="text-muted-foreground">Performance Chart</p>
                     </div>
                   </div>
-                  <div>
-                    <Label>Order Type</Label>
-                    <Select value={orderType} onValueChange={(value: any) => setOrderType(value)}>
-                      <SelectTrigger>
-                        <SelectValue />
+                </CardContent>
+              </Card>
+
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardHeader>
+                  <CardTitle className="text-white">Government Guarantee Allocation</CardTitle>
+                  <CardDescription>Distribution of government-backed securities</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-300">FHA Loans</span>
+                      <span className="text-white font-medium">34%</span>
+                    </div>
+                    <Progress value={34} className="h-2" />
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-300">VA Loans</span>
+                      <span className="text-white font-medium">28%</span>
+                    </div>
+                    <Progress value={28} className="h-2" />
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-300">USDA Loans</span>
+                      <span className="text-white font-medium">18%</span>
+                    </div>
+                    <Progress value={18} className="h-2" />
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-300">Conventional (Gov Backed)</span>
+                      <span className="text-white font-medium">20%</span>
+                    </div>
+                    <Progress value={20} className="h-2" />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="trading" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardHeader>
+                  <CardTitle className="text-white">Execute Trade</CardTitle>
+                  <CardDescription>Place orders for government-guaranteed mortgages</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-300">Loan Type</label>
+                    <Select value={selectedLoanType} onValueChange={setSelectedLoanType}>
+                      <SelectTrigger className="bg-slate-900/50 border-slate-600">
+                        <SelectValue placeholder="Select loan type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="MARKET">Market Order</SelectItem>
-                        <SelectItem value="LIMIT">Limit Order</SelectItem>
+                        <SelectItem value="fha">FHA 30-Year Fixed</SelectItem>
+                        <SelectItem value="va">VA 30-Year Fixed</SelectItem>
+                        <SelectItem value="usda">USDA Rural Development</SelectItem>
+                        <SelectItem value="conventional">Conventional (Gov Backed)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
-                  <div>
-                    <Label>Quantity (Minimum $100M)</Label>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-300">Trade Amount</label>
                     <Input
                       type="number"
-                      placeholder="1000000"
-                      value={orderQuantity}
-                      onChange={(e) => setOrderQuantity(e.target.value)}
+                      placeholder="Enter amount in USD"
+                      value={tradeAmount}
+                      onChange={(e) => setTradeAmount(e.target.value)}
+                      className="bg-slate-900/50 border-slate-600"
                     />
                   </div>
-                  {orderType === "LIMIT" && (
-                    <div>
-                      <Label>Limit Price</Label>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        placeholder="102.45"
-                        value={orderPrice}
-                        onChange={(e) => setOrderPrice(e.target.value)}
-                      />
-                    </div>
-                  )}
-                  <div className="p-3 bg-blue-50 rounded border border-blue-200">
-                    <p className="text-sm text-blue-700">
-                      <strong>Estimated Value:</strong>{" "}
-                      {orderQuantity
-                        ? formatCurrency(
-                            Number.parseFloat(orderQuantity) *
-                              (marketData.find((m) => m.bondType === selectedBond)?.currentPrice || 0),
-                          )
-                        : "$0"}
-                    </p>
-                    <p className="text-sm text-blue-700">
-                      <strong>Expected ROI:</strong>{" "}
-                      {marketData.find((m) => m.bondType === selectedBond)?.yield || 0}%
-                    </p>
-                  </div>
-                  <Button onClick={handlePlaceOrder} disabled={isTrading || !orderQuantity} className="w-full">
-                    {isTrading ? (
-                      <>
-                        <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                        Executing Order...
-                      </>
-                    ) : (
-                      <>
-                        <ArrowUpDown className="h-4 w-4 mr-2" />
-                        Place {orderAction} Order
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
-          </div>
-        </div>
 
-        {/* Market Data */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {marketData.map((bond) => (
-            <Card key={bond.bondType} className="hover:shadow-lg transition-shadow">
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center justify-between">
-                  <span>{bond.bondType} Bonds</span>
-                  <Badge variant="outline">{bond.governmentGuarantee}% Guarantee</Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold">${bond.currentPrice}</span>
-                    <div className={`flex items-center gap-1 ${getChangeColor(bond.change24h)}`}>
-                      {bond.change24h >= 0 ? (
-                        <TrendingUp className="h-4 w-4" />
-                      ) : (
-                        <TrendingDown className="h-4 w-4" />
-                      )}
-                      <span className="text-sm font-medium">
-                        {bond.change24h >= 0 ? "+" : ""}
-                        {bond.change24h}%
-                      </span>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div>
-                      <span className="text-muted-foreground">Bid:</span>
-                      <span className="ml-1 font-medium">${bond.bid}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Ask:</span>
-                      <span className="ml-1 font-medium">${bond.ask}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Volume:</span>
-                      <span className="ml-1 font-medium">{formatCurrency(bond.volume24h)}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Yield:</span>
-                      <span className="ml-1 font-medium text-green-600">{bond.yield}%</span>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Trading Interface */}
-        <Tabs defaultValue="positions" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="positions">Portfolio Positions</TabsTrigger>
-            <TabsTrigger value="orders">Order Management</TabsTrigger>
-            <TabsTrigger value="execution">Execution Quality</TabsTrigger>
-            <TabsTrigger value="analytics">Trading Analytics</TabsTrigger>
-          </TabsList>
-
-          {/* Portfolio Positions Tab */}
-          <TabsContent value="positions" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Building2 className="h-5 w-5" />
-                  Current Portfolio Positions
-                </CardTitle>
-                <CardDescription>
-                  Institutional holdings across government guaranteed bond types
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {portfolioPositions.map((position, index) => (
-                    <div key={index} className="p-4 border rounded-lg">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <h3 className="font-semibold">{position.bondType} Government Bonds</h3>
-                          <Badge variant="outline">{position.allocation}% Allocation</Badge>
-                          <Badge className="bg-green-500 text-white">{position.currentYield}% Yield</Badge>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-lg font-bold">{formatCurrency(position.marketValue)}</p>
-                          <p
-                            className={`text-sm ${
-                              position.unrealizedPnL >= 0 ? "text-green-600" : "text-red-600"
-                            }`}
-                          >
-                            {position.unrealizedPnL >= 0 ? "+" : ""}
-                            {formatCurrency(position.unrealizedPnL)} P&L
-                          </p>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-4 gap-4 text-sm">
-                        <div>
-                          <span className="text-muted-foreground">Holdings:</span>
-                          <p className="font-medium">{position.holdings.toLocaleString()} units</p>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Avg Price:</span>
-                          <p className="font-medium">${position.avgPrice}</p>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Current Yield:</span>
-                          <p className="font-medium text-green-600">{position.currentYield}%</p>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Allocation:</span>
-                          <p className="font-medium">{position.allocation}%</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Order Management Tab */}
-          <TabsContent value="orders" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <ArrowUpDown className="h-5 w-5" />
-                  Recent Trading Activity
-                </CardTitle>
-                <CardDescription>Institutional order history and execution status</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recentTrades.map((trade) => (
-                    <div key={trade.id} className="p-4 border rounded-lg">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <Badge className={getStatusColor(trade.status)}>{trade.status}</Badge>
-                          <span className="font-medium">
-                            {trade.action} {trade.bondType}
-                          </span>
-                          <Badge variant="outline">{trade.governmentGuarantee}% Guarantee</Badge>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-bold">{formatCurrency(trade.totalValue)}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {trade.quantity.toLocaleString()} @ ${trade.price}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-4 text-sm">
-                        <div>
-                          <span className="text-muted-foreground">Expected ROI:</span>
-                          <span className="ml-2 font-medium text-green-600">{trade.expectedROI}%</span>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Timestamp:</span>
-                          <span className="ml-2 font-medium">
-                            {trade.timestamp.toLocaleTime
+                  <div className="grid grid-cols-2 gap-4">
+                    <Button
+                      onClick={handleExecuteTrade}
+                      disabled={isExecuting || !selectedLoanType || !tradeAmount}
+                      className="bg-green-600 hover:bg-green-700"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      {isExecuting ? "Executing..." : "Buy"}
+                    </Button>
+                    <Button
+                      onClick={handleExecuteT

@@ -1,357 +1,285 @@
-import { NextResponse } from "next/server"
-import { neon } from "@neondatabase/serverless"
+import { type NextRequest, NextResponse } from "next/server"
 
-const sql = neon(process.env.NEON_NEON_DATABASE_URL!)
-
-interface ComplianceScanRequest {
-  loanId: string
-  scanType: "institutional" | "government" | "roi" | "full"
-  institutionalMinimum: number
-  targetROI: number
-}
-
-interface ComplianceCheck {
+interface ComplianceRule {
   id: string
+  category: string
   description: string
-  passed: boolean
-  severity: "critical" | "high" | "medium" | "low"
-  details?: string
-  bondType?: "FHA" | "VA" | "USDA" | "SBA"
+  severity: "low" | "medium" | "high" | "critical"
+  checkFunction: () => Promise<{
+    status: "passed" | "failed" | "warning" | "pending"
+    details: string
+    recommendations?: string[]
+  }>
 }
 
-interface GovernmentBondValidation {
-  bondType: "FHA" | "VA" | "USDA" | "SBA"
-  term: number
-  guaranteeRate: number
+interface InstitutionalRequirements {
   minimumInvestment: number
-  expectedROI: number
-  complianceScore: number
-  validationChecks: ComplianceCheck[]
+  targetROI: number
+  governmentGuaranteedRequired: boolean
 }
 
-export async function POST(req: Request) {
+const INSTITUTIONAL_REQUIREMENTS: InstitutionalRequirements = {
+  minimumInvestment: 100000000, // $100M
+  targetROI: 20, // 20%
+  governmentGuaranteedRequired: true,
+}
+
+const complianceRules: ComplianceRule[] = [
+  {
+    id: "kyc-001",
+    category: "KYC/AML",
+    description: "Customer identity verification and anti-money laundering compliance",
+    severity: "critical",
+    checkFunction: async () => {
+      // Simulate KYC/AML check
+      const kycCompliance = Math.random() > 0.1 // 90% pass rate
+      return {
+        status: kycCompliance ? "passed" : "failed",
+        details: kycCompliance
+          ? "All customer identities verified with government-issued documents"
+          : "Some customers require additional identity verification",
+        recommendations: kycCompliance ? [] : ["Request additional documentation", "Perform enhanced due diligence"],
+      }
+    },
+  },
+  {
+    id: "reg-002",
+    category: "Regulatory",
+    description: "Federal lending regulations compliance (TILA, RESPA, CFPB)",
+    severity: "critical",
+    checkFunction: async () => {
+      // Simulate regulatory compliance check
+      const regCompliance = Math.random() > 0.05 // 95% pass rate
+      return {
+        status: regCompliance ? "passed" : "warning",
+        details: regCompliance
+          ? "Full compliance with Truth in Lending Act and Real Estate Settlement Procedures Act"
+          : "Minor documentation updates required for full compliance",
+        recommendations: regCompliance ? [] : ["Update disclosure forms", "Review settlement procedures"],
+      }
+    },
+  },
+  {
+    id: "cap-003",
+    category: "Capital Requirements",
+    description: "Minimum institutional investment threshold verification",
+    severity: "critical",
+    checkFunction: async () => {
+      // Simulate capital requirements check
+      const currentInvestment = 2847392000 // $2.8B (from mock data)
+      const meetsRequirement = currentInvestment >= INSTITUTIONAL_REQUIREMENTS.minimumInvestment
+
+      return {
+        status: meetsRequirement ? "passed" : "failed",
+        details: `Current investments: $${(currentInvestment / 1000000).toFixed(0)}M (Min: $${(INSTITUTIONAL_REQUIREMENTS.minimumInvestment / 1000000).toFixed(0)}M)`,
+        recommendations: meetsRequirement
+          ? []
+          : [
+              "Increase institutional investment to meet minimum threshold",
+              "Seek additional qualified institutional investors",
+            ],
+      }
+    },
+  },
+  {
+    id: "roi-004",
+    category: "ROI Compliance",
+    description: "Government guaranteed mortgage ROI verification",
+    severity: "high",
+    checkFunction: async () => {
+      // Simulate ROI compliance check
+      const actualROI = 22.4 // From mock data
+      const meetsTarget = actualROI >= INSTITUTIONAL_REQUIREMENTS.targetROI
+
+      return {
+        status: meetsTarget ? "passed" : "warning",
+        details: `Actual ROI: ${actualROI}% (Target: ${INSTITUTIONAL_REQUIREMENTS.targetROI}%)`,
+        recommendations: meetsTarget
+          ? ["Continue current investment strategy"]
+          : ["Review portfolio allocation", "Optimize government-guaranteed mortgage selection"],
+      }
+    },
+  },
+  {
+    id: "doc-005",
+    category: "Documentation",
+    description: "Loan documentation and record keeping standards",
+    severity: "medium",
+    checkFunction: async () => {
+      // Simulate documentation check
+      const pendingDocs = Math.floor(Math.random() * 5) // 0-4 pending docs
+      const status = pendingDocs === 0 ? "passed" : pendingDocs <= 2 ? "warning" : "failed"
+
+      return {
+        status,
+        details:
+          pendingDocs === 0
+            ? "All loan documentation complete and properly filed"
+            : `${pendingDocs} documents pending completion`,
+        recommendations:
+          pendingDocs === 0 ? [] : ["Complete pending documentation", "Implement automated document tracking"],
+      }
+    },
+  },
+  {
+    id: "risk-006",
+    category: "Risk Assessment",
+    description: "Credit risk and default probability analysis",
+    severity: "high",
+    checkFunction: async () => {
+      // Simulate risk assessment
+      const defaultRisk = 1.8 // <2% as specified
+      const acceptable = defaultRisk < 2.0
+
+      return {
+        status: acceptable ? "passed" : "warning",
+        details: `Current default risk: ${defaultRisk}% (Threshold: <2.0%)`,
+        recommendations: acceptable
+          ? ["Maintain current risk management practices"]
+          : ["Review credit scoring models", "Tighten lending criteria"],
+      }
+    },
+  },
+  {
+    id: "gov-007",
+    category: "Government Guarantees",
+    description: "Government-backed mortgage verification and compliance",
+    severity: "critical",
+    checkFunction: async () => {
+      // Simulate government guarantee verification
+      const governmentBacked = 1847392000 // $1.8B from mock data
+      const totalPortfolio = 2847392000 // $2.8B
+      const percentage = (governmentBacked / totalPortfolio) * 100
+
+      return {
+        status: percentage >= 60 ? "passed" : "warning",
+        details: `Government-guaranteed mortgages: $${(governmentBacked / 1000000000).toFixed(1)}B (${percentage.toFixed(1)}% of portfolio)`,
+        recommendations:
+          percentage >= 60
+            ? ["Maintain government guarantee ratio"]
+            : ["Increase government-guaranteed mortgage allocation"],
+      }
+    },
+  },
+]
+
+export async function POST(request: NextRequest) {
   try {
-    const scanRequest: ComplianceScanRequest = await req.json()
+    const body = await request.json()
+    const { scanType = "full", categories = [] } = body
 
-    // Validate institutional minimum investment ($100M)
-    const institutionalChecks = await validateInstitutionalRequirements(scanRequest)
+    // Filter rules based on scan type and categories
+    let rulesToCheck = complianceRules
+    if (scanType === "quick") {
+      rulesToCheck = complianceRules.filter((rule) => rule.severity === "critical")
+    }
+    if (categories.length > 0) {
+      rulesToCheck = rulesToCheck.filter((rule) => categories.includes(rule.category))
+    }
 
-    // Validate government bond structures
-    const bondValidation = await validateGovernmentBonds(scanRequest)
-
-    // Validate ROI requirements (20% compounded)
-    const roiValidation = await validateROICompliance(scanRequest)
+    // Execute compliance checks
+    const results = await Promise.all(
+      rulesToCheck.map(async (rule) => {
+        const result = await rule.checkFunction()
+        return {
+          id: rule.id,
+          category: rule.category,
+          description: rule.description,
+          severity: rule.severity,
+          ...result,
+          lastChecked: new Date().toISOString(),
+        }
+      }),
+    )
 
     // Calculate overall compliance score
-    const overallScore = calculateOverallScore([...institutionalChecks, ...bondValidation, ...roiValidation])
+    const passedChecks = results.filter((r) => r.status === "passed").length
+    const totalChecks = results.length
+    const complianceScore = Math.round((passedChecks / totalChecks) * 100)
 
-    // Store scan results in database
-    await storeScanResults(scanRequest.loanId, {
-      overallScore,
-      institutionalChecks,
-      bondValidation,
-      roiValidation,
-      scanType: scanRequest.scanType,
-      timestamp: new Date(),
-    })
+    // Generate summary
+    const summary = {
+      totalChecks,
+      passedChecks,
+      failedChecks: results.filter((r) => r.status === "failed").length,
+      warningChecks: results.filter((r) => r.status === "warning").length,
+      pendingChecks: results.filter((r) => r.status === "pending").length,
+      complianceScore,
+      scanType,
+      timestamp: new Date().toISOString(),
+    }
+
+    // Check institutional requirements
+    const institutionalCompliance = {
+      minimumInvestmentMet: true, // Based on mock data
+      roiTargetMet: true, // 22.4% > 20%
+      governmentGuaranteeRatio: 64.9, // $1.8B / $2.8B
+      qualifiesForInstitutional: true,
+    }
 
     return NextResponse.json({
       success: true,
-      loanId: scanRequest.loanId,
-      overallScore,
-      investmentAmount: getInvestmentAmount(scanRequest.loanId),
-      checks: [...institutionalChecks, ...bondValidation, ...roiValidation],
-      bondStructures: await getGovernmentBondStructures(),
-      recommendations: generateRecommendations(overallScore, [
-        ...institutionalChecks,
-        ...bondValidation,
-        ...roiValidation,
-      ]),
+      summary,
+      results,
+      institutionalCompliance,
+      recommendations: results
+        .filter((r) => r.recommendations && r.recommendations.length > 0)
+        .map((r) => ({
+          category: r.category,
+          recommendations: r.recommendations,
+        })),
     })
   } catch (error) {
     console.error("Compliance scan error:", error)
-    return NextResponse.json({ success: false, error: "Failed to perform compliance scan" }, { status: 500 })
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Failed to perform compliance scan",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 },
+    )
   }
 }
 
-async function validateInstitutionalRequirements(request: ComplianceScanRequest): Promise<ComplianceCheck[]> {
-  const checks: ComplianceCheck[] = []
-
-  // Check minimum investment requirement ($100M)
-  const investmentAmount = getInvestmentAmount(request.loanId)
-  checks.push({
-    id: "INST-001",
-    description: "Minimum institutional investment of $100M",
-    passed: investmentAmount >= request.institutionalMinimum,
-    severity: investmentAmount >= request.institutionalMinimum ? "low" : "critical",
-    details: `Current investment: $${(investmentAmount / 1000000).toFixed(1)}M`,
-  })
-
-  // Check institutional investor accreditation
-  checks.push({
-    id: "INST-002",
-    description: "Institutional investor accreditation verified",
-    passed: true, // Mock validation
-    severity: "low",
-    details: "Accreditation status: Verified",
-  })
-
-  // Check portfolio diversification requirements
-  checks.push({
-    id: "INST-003",
-    description: "Portfolio diversification across government bond types",
-    passed: true, // Mock validation
-    severity: "medium",
-    details: "Diversification score: 92%",
-  })
-
-  // Check regulatory compliance
-  checks.push({
-    id: "INST-004",
-    description: "SEC and banking regulatory compliance",
-    passed: true, // Mock validation
-    severity: "high",
-    details: "All regulatory requirements met",
-  })
-
-  return checks
-}
-
-async function validateGovernmentBonds(request: ComplianceScanRequest): Promise<ComplianceCheck[]> {
-  const checks: ComplianceCheck[] = []
-
-  // FHA 30-Year Bond Validation
-  checks.push({
-    id: "FHA-001",
-    description: "FHA 30-year government guarantee validation",
-    passed: true,
-    severity: "low",
-    bondType: "FHA",
-    details: "100% government guarantee confirmed",
-  })
-
-  checks.push({
-    id: "FHA-002",
-    description: "FHA borrower eligibility and documentation",
-    passed: true,
-    severity: "medium",
-    bondType: "FHA",
-    details: "All FHA requirements met",
-  })
-
-  // VA 50-Year Bond Validation
-  checks.push({
-    id: "VA-001",
-    description: "VA 50-year government guarantee validation",
-    passed: true,
-    severity: "low",
-    bondType: "VA",
-    details: "100% government guarantee confirmed",
-  })
-
-  checks.push({
-    id: "VA-002",
-    description: "VA eligibility and certificate validation",
-    passed: true,
-    severity: "medium",
-    bondType: "VA",
-    details: "Veteran eligibility verified",
-  })
-
-  // USDA 35-Year Bond Validation
-  checks.push({
-    id: "USDA-001",
-    description: "USDA 35-year government guarantee validation",
-    passed: true,
-    severity: "low",
-    bondType: "USDA",
-    details: "90% government guarantee confirmed",
-  })
-
-  checks.push({
-    id: "USDA-002",
-    description: "USDA rural area and income eligibility",
-    passed: true,
-    severity: "medium",
-    bondType: "USDA",
-    details: "Rural eligibility confirmed",
-  })
-
-  // SBA 25-Year Bond Validation
-  checks.push({
-    id: "SBA-001",
-    description: "SBA 25-year government guarantee validation",
-    passed: true,
-    severity: "low",
-    bondType: "SBA",
-    details: "85% government guarantee confirmed",
-  })
-
-  checks.push({
-    id: "SBA-002",
-    description: "SBA 504 program compliance",
-    passed: true,
-    severity: "medium",
-    bondType: "SBA",
-    details: "SBA 504 requirements met",
-  })
-
-  return checks
-}
-
-async function validateROICompliance(request: ComplianceScanRequest): Promise<ComplianceCheck[]> {
-  const checks: ComplianceCheck[] = []
-
-  // Check target ROI achievement (20%)
-  const currentROI = calculateCurrentROI(request.loanId)
-  checks.push({
-    id: "ROI-001",
-    description: "Target ROI of 20% compounded annually",
-    passed: currentROI >= request.targetROI,
-    severity: currentROI >= request.targetROI ? "low" : "high",
-    details: `Current ROI: ${currentROI.toFixed(1)}%`,
-  })
-
-  // Check compounded interest calculation
-  checks.push({
-    id: "ROI-002",
-    description: "Compounded interest revenue calculation accuracy",
-    passed: true,
-    severity: "low",
-    details: "Compound interest calculations verified",
-  })
-
-  // Check risk-adjusted returns
-  const riskAdjustedROI = currentROI * 0.9 // Mock risk adjustment
-  checks.push({
-    id: "ROI-003",
-    description: "Risk-adjusted returns meet institutional standards",
-    passed: riskAdjustedROI >= 15.0,
-    severity: riskAdjustedROI >= 15.0 ? "low" : "medium",
-    details: `Risk-adjusted ROI: ${riskAdjustedROI.toFixed(1)}%`,
-  })
-
-  // Check government guarantee impact on returns
-  checks.push({
-    id: "ROI-004",
-    description: "Government guarantee enhances return stability",
-    passed: true,
-    severity: "low",
-    details: "Government backing reduces risk profile",
-  })
-
-  return checks
-}
-
-function calculateOverallScore(checks: ComplianceCheck[]): number {
-  const totalChecks = checks.length
-  const passedChecks = checks.filter((check) => check.passed).length
-  const weightedScore = checks.reduce((score, check) => {
-    const weight = check.severity === "critical" ? 3 : check.severity === "high" ? 2 : 1
-    return score + (check.passed ? weight : 0)
-  }, 0)
-  const maxWeight = checks.reduce((weight, check) => {
-    return weight + (check.severity === "critical" ? 3 : check.severity === "high" ? 2 : 1)
-  }, 0)
-
-  return Math.round((weightedScore / maxWeight) * 100)
-}
-
-function getInvestmentAmount(loanId: string): number {
-  // Mock function - in real implementation, would query database
-  const mockAmounts: { [key: string]: number } = {
-    "INST-2024-001": 125000000, // $125M
-    "INST-2024-002": 98500000, // $98.5M
-    "INST-2024-003": 150000000, // $150M
-    default: 110000000, // $110M
-  }
-  return mockAmounts[loanId] || mockAmounts.default
-}
-
-function calculateCurrentROI(loanId: string): number {
-  // Mock function - in real implementation, would calculate actual ROI
-  const mockROIs: { [key: string]: number } = {
-    "INST-2024-001": 20.3,
-    "INST-2024-002": 19.8,
-    "INST-2024-003": 21.2,
-    default: 20.1,
-  }
-  return mockROIs[loanId] || mockROIs.default
-}
-
-async function getGovernmentBondStructures(): Promise<GovernmentBondValidation[]> {
-  return [
-    {
-      bondType: "FHA",
-      term: 30,
-      guaranteeRate: 100,
-      minimumInvestment: 100000000,
-      expectedROI: 20.0,
-      complianceScore: 98,
-      validationChecks: [],
-    },
-    {
-      bondType: "VA",
-      term: 50,
-      guaranteeRate: 100,
-      minimumInvestment: 100000000,
-      expectedROI: 20.0,
-      complianceScore: 96,
-      validationChecks: [],
-    },
-    {
-      bondType: "USDA",
-      term: 35,
-      guaranteeRate: 90,
-      minimumInvestment: 100000000,
-      expectedROI: 20.0,
-      complianceScore: 94,
-      validationChecks: [],
-    },
-    {
-      bondType: "SBA",
-      term: 25,
-      guaranteeRate: 85,
-      minimumInvestment: 100000000,
-      expectedROI: 20.0,
-      complianceScore: 99,
-      validationChecks: [],
-    },
-  ]
-}
-
-function generateRecommendations(score: number, checks: ComplianceCheck[]): string[] {
-  const recommendations: string[] = []
-
-  if (score < 90) {
-    recommendations.push("Consider increasing portfolio diversification across government bond types")
-  }
-
-  const failedChecks = checks.filter((check) => !check.passed)
-  if (failedChecks.length > 0) {
-    recommendations.push("Address failed compliance checks to improve overall score")
-  }
-
-  if (score >= 95) {
-    recommendations.push("Excellent compliance score - consider expanding institutional investment")
-  }
-
-  recommendations.push("Maintain regular compliance monitoring for optimal 20% ROI performance")
-
-  return recommendations
-}
-
-async function storeScanResults(loanId: string, results: any): Promise<void> {
+export async function GET(request: NextRequest) {
   try {
-    await sql`
-      INSERT INTO compliance_scans (
-        loan_id, overall_score, scan_type, results, created_at
-      ) VALUES (
-        ${loanId}, ${results.overallScore}, ${results.scanType}, 
-        ${JSON.stringify(results)}, NOW()
-      )
-    `
+    const { searchParams } = new URL(request.url)
+    const category = searchParams.get("category")
+    const severity = searchParams.get("severity")
+
+    // Return available compliance categories and rules
+    const categories = [...new Set(complianceRules.map((rule) => rule.category))]
+    const severityLevels = ["low", "medium", "high", "critical"]
+
+    let filteredRules = complianceRules
+    if (category) {
+      filteredRules = filteredRules.filter((rule) => rule.category === category)
+    }
+    if (severity) {
+      filteredRules = filteredRules.filter((rule) => rule.severity === severity)
+    }
+
+    return NextResponse.json({
+      success: true,
+      categories,
+      severityLevels,
+      rules: filteredRules.map((rule) => ({
+        id: rule.id,
+        category: rule.category,
+        description: rule.description,
+        severity: rule.severity,
+      })),
+      institutionalRequirements: INSTITUTIONAL_REQUIREMENTS,
+    })
   } catch (error) {
-    console.error("Failed to store scan results:", error)
+    console.error("Compliance rules fetch error:", error)
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Failed to fetch compliance rules",
+      },
+      { status: 500 },
+    )
   }
 }
