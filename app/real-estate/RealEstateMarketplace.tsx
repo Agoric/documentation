@@ -1,165 +1,193 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { useMemo, useState } from "react"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import type { Property } from "@/types"
+import { Button } from "@/components/ui/button"
+import { PaginatedPropertyGrid } from "@/components/real-estate/paginated-property-grid"
+import { cn } from "@/lib/utils"
 
-const MOCK_PROPERTIES: Property[] = [
+type Property = {
+  id: string
+  address: string
+  price: number
+  bedrooms: number
+  bathrooms: number
+  sqft: number
+  propertyType: "house" | "condo" | "townhome"
+  image: string
+}
+
+/* -------------------------------------------------------------------------- */
+/*                               SAMPLE DATA                                  */
+/* -------------------------------------------------------------------------- */
+// In production you’ll fetch this from your API.
+const SAMPLE_PROPERTIES: Property[] = [
   {
     id: "1",
-    name: "Luxury Apartment in Downtown",
-    address: "123 Main St, Anytown",
-    price: 1500000,
-    bedrooms: 2,
-    bathrooms: 2,
-    squareFeet: 1200,
-    description: "Stunning apartment with city views.",
-    imageUrl: "/images/apartment1.jpg",
-    isAuction: false,
+    address: "123 Oceanview Dr, Malibu, CA",
+    price: 6200000,
+    bedrooms: 4,
+    bathrooms: 3,
+    sqft: 3800,
+    propertyType: "house",
+    image: "/properties/oceanfront-estate.jpg",
   },
   {
     id: "2",
-    name: "Charming House with Garden",
-    address: "456 Oak Ave, Anytown",
-    price: 800000,
-    bedrooms: 3,
+    address: "900 Market St, San Francisco, CA",
+    price: 1450000,
+    bedrooms: 2,
     bathrooms: 2,
-    squareFeet: 1800,
-    description: "Cozy house with a beautiful garden.",
-    imageUrl: "/images/house1.jpg",
-    isAuction: true,
+    sqft: 1200,
+    propertyType: "condo",
+    image: "/properties/downtown-loft.jpg",
   },
   {
     id: "3",
-    name: "Modern Loft in Arts District",
-    address: "789 Pine Ln, Anytown",
-    price: 950000,
-    bedrooms: 1,
-    bathrooms: 1,
-    squareFeet: 900,
-    description: "Stylish loft in a vibrant neighborhood.",
-    imageUrl: "/images/loft1.jpg",
-    isAuction: false,
+    address: "45 Sunset Blvd, Los Angeles, CA",
+    price: 2800000,
+    bedrooms: 3,
+    bathrooms: 2,
+    sqft: 2600,
+    propertyType: "house",
+    image: "/properties/hollywood-hills-contemporary.jpg",
+  },
+  {
+    id: "4",
+    address: "789 Oak Ln, Austin, TX",
+    price: 875000,
+    bedrooms: 4,
+    bathrooms: 3,
+    sqft: 3000,
+    propertyType: "townhome",
+    image: "/properties/suburban-family-home.jpg",
   },
 ]
 
-const RealEstateMarketplace = () => {
-  const [properties, setProperties] = useState<Property[]>(MOCK_PROPERTIES)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [filterBedrooms, setFilterBedrooms] = useState("")
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
-  const router = useRouter()
+/* -------------------------------------------------------------------------- */
+/*                             HELPER FUNCTIONS                               */
+/* -------------------------------------------------------------------------- */
 
-  useEffect(() => {
-    // In a real application, you would fetch properties from an API here
-    // For now, we're using mock data
-  }, [])
-
-  const filteredProperties = properties.filter((property) => {
-    const searchMatch =
-      property.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      property.address.toLowerCase().includes(searchQuery.toLowerCase())
-
-    const bedroomMatch = filterBedrooms === "" || property.bedrooms === Number.parseInt(filterBedrooms)
-
-    return searchMatch && bedroomMatch
-  })
-
+function renderPropertyCard(property: Property) {
+  // Placeholder renderer – replace with HolographicPropertyCard when ready
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Real Estate Marketplace</h1>
-
-      <div className="flex gap-4 mb-4">
-        <Input
-          type="text"
-          placeholder="Search by name or address"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-
-        <Select onValueChange={setFilterBedrooms}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Filter by Bedrooms" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="">All Bedrooms</SelectItem>
-            <SelectItem value="1">1 Bedroom</SelectItem>
-            <SelectItem value="2">2 Bedrooms</SelectItem>
-            <SelectItem value="3">3 Bedrooms</SelectItem>
-            <SelectItem value="4">4+ Bedrooms</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredProperties.map((property) => (
-          <Card key={property.id}>
-            <CardHeader>
-              <CardTitle>{property.name}</CardTitle>
-              <CardDescription>{property.address}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <img
-                src={property.imageUrl || "/placeholder.svg"}
-                alt={property.name}
-                className="w-full h-48 object-cover mb-4 rounded-md"
-              />
-              <p>Price: ${property.price.toLocaleString()}</p>
-              <p>Bedrooms: {property.bedrooms}</p>
-              <p>Bathrooms: {property.bathrooms}</p>
-              <p>Square Feet: {property.squareFeet}</p>
-              <p>{property.description}</p>
-
-              <div className="flex gap-2 mt-4">
-                <Button className="flex-1" onClick={() => router.push(`/real-estate/property/${property.id}`)}>
-                  View Details
-                </Button>
-                <Button variant="outline" onClick={() => router.push(`/real-estate/property/${property.id}/tour`)}>
-                  Virtual Tour
-                </Button>
-                <Button variant="outline" onClick={() => setSelectedProperty(property)}>
-                  Compare
-                </Button>
-              </div>
-
-              {property.isAuction && (
-                <Button
-                  className="w-full mt-2"
-                  variant="destructive"
-                  onClick={() => router.push(`/real-estate/property/${property.id}/bid`)}
-                >
-                  Place Bid
-                </Button>
-              )}
-
-              <Button
-                className="w-full mt-2 bg-transparent"
-                variant="outline"
-                onClick={() => router.push(`/citizen/loan-center/home-loan?propertyId=${property.id}`)}
-              >
-                Get Financing
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* Modal for property comparison (example) */}
-      {selectedProperty && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-4 rounded-md">
-            <h2 className="text-lg font-bold mb-2">Compare Properties</h2>
-            <p>Comparing: {selectedProperty.name}</p>
-            <Button onClick={() => setSelectedProperty(null)}>Close</Button>
-          </div>
-        </div>
+    <div
+      key={property.id}
+      className={cn(
+        "rounded-xl overflow-hidden bg-white/5 backdrop-blur-lg p-4 border border-white/10",
+        "hover:border-cyan-400 transition",
       )}
+    >
+      <img
+        src={property.image || "/placeholder.svg"}
+        alt={property.address}
+        className="h-40 w-full object-cover rounded-md mb-4"
+      />
+      <h3 className="text-lg font-semibold text-white">{property.address}</h3>
+      <p className="text-sm text-white/70">
+        {property.bedrooms} bd &bull; {property.bathrooms} ba &bull; {property.sqft.toLocaleString()} sq ft
+      </p>
+      <p className="mt-2 text-cyan-400 text-xl font-bold">${property.price.toLocaleString()}</p>
     </div>
   )
 }
 
-export default RealEstateMarketplace
+/* -------------------------------------------------------------------------- */
+/*                            MAIN COMPONENT                                  */
+/* -------------------------------------------------------------------------- */
+
+export default function RealEstateMarketplace() {
+  const [propertyType, setPropertyType] = useState<string>("all")
+  const [bedrooms, setBedrooms] = useState<string>("all")
+  const [minPrice, setMinPrice] = useState<string>("")
+  const [maxPrice, setMaxPrice] = useState<string>("")
+
+  const filtered = useMemo(() => {
+    return SAMPLE_PROPERTIES.filter((p) => {
+      const matchesType = propertyType === "all" || p.propertyType === propertyType
+      const matchesBedrooms = bedrooms === "all" || p.bedrooms === Number(bedrooms)
+      const matchesMin = !minPrice || p.price >= Number(minPrice)
+      const matchesMax = !maxPrice || p.price <= Number(maxPrice)
+
+      return matchesType && matchesBedrooms && matchesMin && matchesMax
+    })
+  }, [propertyType, bedrooms, minPrice, maxPrice])
+
+  return (
+    <main className="container py-10 space-y-8">
+      {/* Filter Bar */}
+      <section className="grid gap-4 md:grid-cols-4">
+        {/* Property Type */}
+        <div>
+          <label className="block mb-1 text-sm text-white/80">Type</label>
+          <Select value={propertyType} onValueChange={setPropertyType}>
+            <SelectTrigger>
+              <SelectValue placeholder="All types" />
+            </SelectTrigger>
+            <SelectContent>
+              {/* 👇 EVERY ITEM NOW HAS A NON-EMPTY VALUE 👇 */}
+              <SelectItem value="all">All types</SelectItem>
+              <SelectItem value="house">House</SelectItem>
+              <SelectItem value="condo">Condo</SelectItem>
+              <SelectItem value="townhome">Townhome</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Bedrooms */}
+        <div>
+          <label className="block mb-1 text-sm text-white/80">Bedrooms</label>
+          <Select value={bedrooms} onValueChange={setBedrooms}>
+            <SelectTrigger>
+              <SelectValue placeholder="Any" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Any</SelectItem>
+              <SelectItem value="1">1+</SelectItem>
+              <SelectItem value="2">2+</SelectItem>
+              <SelectItem value="3">3+</SelectItem>
+              <SelectItem value="4">4+</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Min Price */}
+        <div>
+          <label className="block mb-1 text-sm text-white/80">Min Price</label>
+          <Input type="number" placeholder="0" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
+        </div>
+
+        {/* Max Price */}
+        <div>
+          <label className="block mb-1 text-sm text-white/80">Max Price</label>
+          <Input type="number" placeholder="∞" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
+        </div>
+      </section>
+
+      {/* Results */}
+      <PaginatedPropertyGrid
+        properties={filtered}
+        itemsPerPage={4}
+        viewMode="grid"
+        renderProperty={renderPropertyCard}
+      />
+
+      {/* Clear filters button */}
+      <div className="flex justify-center">
+        <Button
+          variant="outline"
+          onClick={() => {
+            setPropertyType("all")
+            setBedrooms("all")
+            setMinPrice("")
+            setMaxPrice("")
+          }}
+          className="border-white/20 text-white hover:bg-white/10"
+        >
+          Clear Filters
+        </Button>
+      </div>
+    </main>
+  )
+}
