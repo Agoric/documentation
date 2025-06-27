@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { usePathname, useRouter } from "next/navigation"
+import { usePortal } from "@/contexts/portal-context"
 import {
   ChevronLeft,
   ChevronRight,
@@ -13,231 +14,283 @@ import {
   Gamepad2,
   Server,
   Scale,
-  Monitor,
   ShieldCheck,
-  Briefcase,
-  Beaker,
-  Download,
   ShoppingCart,
-  Sparkles,
-  Zap,
   Crown,
   Lightbulb,
   TrendingUp,
   Rocket,
+  Database,
+  Shield,
+  Activity,
+  FileText,
+  Package,
+  Store,
+  Handshake,
+  Globe,
+  CreditCard,
+  PieChart,
+  Target,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { PortalSwitcher } from "./portal-switcher"
 
 interface Environment {
   id: string
   name: string
   icon: any
   path: string
-  category: "core" | "commerce" | "premium" | "admin" | "legal"
+  category: string
   description: string
   color: string
+  portals: ("imperial" | "citizen" | "vendor")[]
 }
 
 const environments: Environment[] = [
-  // Core Environments
+  // Imperial Portal - Backend & Administration
   {
-    id: "home",
-    name: "Dashboard",
-    icon: Home,
-    path: "/dashboard/home",
-    category: "core",
-    description: "Main dashboard overview",
-    color: "text-blue-400",
+    id: "imperial-command",
+    name: "Command Center",
+    icon: Crown,
+    path: "/imperial/command",
+    category: "Imperial Core",
+    description: "Central command and control",
+    color: "text-red-400",
+    portals: ["imperial"],
   },
   {
-    id: "analytics",
-    name: "Analytics",
-    icon: BarChart3,
-    path: "/dashboard/analytics",
-    category: "core",
-    description: "Data analytics and insights",
-    color: "text-green-400",
+    id: "system-admin",
+    name: "System Administration",
+    icon: Server,
+    path: "/imperial/system",
+    category: "Imperial Core",
+    description: "System configuration and monitoring",
+    color: "text-orange-400",
+    portals: ["imperial"],
   },
   {
-    id: "portfolio",
-    name: "Portfolio",
-    icon: Briefcase,
-    path: "/dashboard/portfolio",
-    category: "core",
-    description: "Investment portfolio management",
+    id: "database-management",
+    name: "Database Management",
+    icon: Database,
+    path: "/imperial/database",
+    category: "Imperial Core",
+    description: "Database administration and backup",
+    color: "text-yellow-400",
+    portals: ["imperial"],
+  },
+  {
+    id: "security-center",
+    name: "Security Center",
+    icon: Shield,
+    path: "/imperial/security",
+    category: "Imperial Core",
+    description: "Security monitoring and threat detection",
+    color: "text-red-500",
+    portals: ["imperial"],
+  },
+  {
+    id: "user-management",
+    name: "User Management",
+    icon: Users,
+    path: "/imperial/users",
+    category: "Imperial Core",
+    description: "User accounts and permissions",
     color: "text-purple-400",
+    portals: ["imperial"],
+  },
+  {
+    id: "system-logs",
+    name: "System Logs",
+    icon: FileText,
+    path: "/imperial/logs",
+    category: "Imperial Core",
+    description: "System logs and audit trails",
+    color: "text-gray-400",
+    portals: ["imperial"],
+  },
+
+  // Citizen Portal - User Services
+  {
+    id: "citizen-dashboard",
+    name: "Personal Dashboard",
+    icon: Home,
+    path: "/citizen/dashboard",
+    category: "Citizen Services",
+    description: "Personal financial overview",
+    color: "text-blue-400",
+    portals: ["citizen"],
   },
   {
     id: "financial-planning",
     name: "Financial Planning",
     icon: TrendingUp,
-    path: "/dashboard/financial-planning",
-    category: "core",
+    path: "/citizen/financial-planning",
+    category: "Citizen Services",
     description: "AI-powered financial planning",
     color: "text-cyan-400",
+    portals: ["citizen"],
   },
-
-  // Commerce Environments
-  {
-    id: "marketplace",
-    name: "Marketplace",
-    icon: ShoppingCart,
-    path: "/commerce/marketplace",
-    category: "commerce",
-    description: "E-commerce marketplace",
-    color: "text-orange-400",
-  },
-  {
-    id: "holographic-products",
-    name: "Holographic Products",
-    icon: Sparkles,
-    path: "/dashboard/ecommerex/holographic-products",
-    category: "commerce",
-    description: "Holographic product showcase",
-    color: "text-pink-400",
-  },
-  {
-    id: "snap-dax",
-    name: "SNAP-DAX Trading",
-    icon: Zap,
-    path: "/snap-dax/digital-asset-exchange",
-    category: "commerce",
-    description: "Digital asset exchange",
-    color: "text-yellow-400",
-  },
-  {
-    id: "real-estate",
-    name: "Real Estate",
-    icon: Building2,
-    path: "/real-estate",
-    category: "commerce",
-    description: "Property marketplace",
-    color: "text-emerald-400",
-  },
-
-  // Premium Environments
   {
     id: "credit-suite",
     name: "Credit Suite",
     icon: ShieldCheck,
-    path: "/credit-suite",
-    category: "premium",
-    description: "Credit management tools",
-    color: "text-red-400",
+    path: "/citizen/credit-suite",
+    category: "Citizen Services",
+    description: "Credit monitoring and optimization",
+    color: "text-green-400",
+    portals: ["citizen"],
   },
   {
-    id: "business-suite",
-    name: "Business Suite",
-    icon: Briefcase,
-    path: "/business-suite",
-    category: "premium",
-    description: "Business management tools",
+    id: "investment-portfolio",
+    name: "Investment Portfolio",
+    icon: PieChart,
+    path: "/citizen/portfolio",
+    category: "Citizen Services",
+    description: "Investment tracking and analysis",
     color: "text-indigo-400",
+    portals: ["citizen"],
+  },
+  {
+    id: "loan-center",
+    name: "Loan Center",
+    icon: CreditCard,
+    path: "/citizen/loans",
+    category: "Citizen Services",
+    description: "Loan applications and management",
+    color: "text-emerald-400",
+    portals: ["citizen"],
+  },
+  {
+    id: "marketplace",
+    name: "Marketplace",
+    icon: ShoppingCart,
+    path: "/citizen/marketplace",
+    category: "Citizen Services",
+    description: "Product and service marketplace",
+    color: "text-pink-400",
+    portals: ["citizen"],
   },
   {
     id: "gamification",
-    name: "Gamification",
+    name: "Rewards Hub",
     icon: Gamepad2,
-    path: "/dashboard/gamification",
-    category: "premium",
-    description: "Gamified experiences",
+    path: "/citizen/rewards",
+    category: "Citizen Services",
+    description: "Gamified rewards and achievements",
     color: "text-violet-400",
+    portals: ["citizen"],
   },
   {
-    id: "investors",
-    name: "Investor Portal",
-    icon: Crown,
-    path: "/investors/portal",
-    category: "premium",
-    description: "Exclusive investor access",
-    color: "text-amber-400",
-  },
-
-  // Admin Environments
-  {
-    id: "admin-dashboard",
-    name: "Admin Dashboard",
-    icon: Server,
-    path: "/admin/dashboard",
-    category: "admin",
-    description: "Administrative controls",
-    color: "text-slate-400",
-  },
-  {
-    id: "admin-users",
-    name: "User Management",
-    icon: Users,
-    path: "/admin/users",
-    category: "admin",
-    description: "User administration",
-    color: "text-slate-400",
-  },
-  {
-    id: "admin-system",
-    name: "System Monitor",
-    icon: Monitor,
-    path: "/admin/system",
-    category: "admin",
-    description: "System monitoring",
-    color: "text-slate-400",
-  },
-
-  // Legal Environments
-  {
-    id: "legal",
-    name: "Legal Center",
-    icon: Scale,
-    path: "/legal",
-    category: "legal",
-    description: "Legal documentation",
-    color: "text-stone-400",
-  },
-
-  // Special Environments
-  {
-    id: "beta-lab",
-    name: "Beta Lab",
-    icon: Beaker,
-    path: "/beta-lab",
-    category: "premium",
-    description: "Experimental features",
-    color: "text-lime-400",
-  },
-  {
-    id: "suggestions",
-    name: "Suggestions Hub",
+    id: "support-center",
+    name: "Support Center",
     icon: Lightbulb,
-    path: "/suggestions-hub",
-    category: "core",
-    description: "Feature suggestions",
+    path: "/citizen/support",
+    category: "Citizen Services",
+    description: "Help and customer support",
     color: "text-teal-400",
+    portals: ["citizen"],
+  },
+
+  // Vendor Portal - Business Partners
+  {
+    id: "vendor-dashboard",
+    name: "Business Dashboard",
+    icon: Building2,
+    path: "/vendor/dashboard",
+    category: "Vendor Hub",
+    description: "Business performance overview",
+    color: "text-green-400",
+    portals: ["vendor"],
   },
   {
-    id: "download",
-    name: "Download Center",
-    icon: Download,
-    path: "/download",
-    category: "core",
-    description: "Download platform",
-    color: "text-sky-400",
+    id: "product-management",
+    name: "Product Management",
+    icon: Package,
+    path: "/vendor/products",
+    category: "Vendor Hub",
+    description: "Manage products and services",
+    color: "text-emerald-400",
+    portals: ["vendor"],
   },
+  {
+    id: "vendor-store",
+    name: "Vendor Store",
+    icon: Store,
+    path: "/vendor/store",
+    category: "Vendor Hub",
+    description: "Online storefront management",
+    color: "text-lime-400",
+    portals: ["vendor"],
+  },
+  {
+    id: "partner-network",
+    name: "Partner Network",
+    icon: Handshake,
+    path: "/vendor/partners",
+    category: "Vendor Hub",
+    description: "Business partnerships and collaborations",
+    color: "text-teal-400",
+    portals: ["vendor"],
+  },
+  {
+    id: "analytics-center",
+    name: "Analytics Center",
+    icon: BarChart3,
+    path: "/vendor/analytics",
+    category: "Vendor Hub",
+    description: "Business analytics and insights",
+    color: "text-blue-400",
+    portals: ["vendor"],
+  },
+  {
+    id: "integration-hub",
+    name: "Integration Hub",
+    icon: Globe,
+    path: "/vendor/integrations",
+    category: "Vendor Hub",
+    description: "Third-party service integrations",
+    color: "text-purple-400",
+    portals: ["vendor"],
+  },
+  {
+    id: "vendor-support",
+    name: "Vendor Support",
+    icon: Target,
+    path: "/vendor/support",
+    category: "Vendor Hub",
+    description: "Business support and resources",
+    color: "text-orange-400",
+    portals: ["vendor"],
+  },
+
+  // Shared Environments
   {
     id: "settings",
     name: "Settings",
     icon: Settings,
     path: "/settings",
-    category: "core",
-    description: "Platform settings",
+    category: "System",
+    description: "Account and system settings",
     color: "text-gray-400",
+    portals: ["imperial", "citizen", "vendor"],
+  },
+  {
+    id: "legal-center",
+    name: "Legal Center",
+    icon: Scale,
+    path: "/legal",
+    category: "System",
+    description: "Legal documents and compliance",
+    color: "text-stone-400",
+    portals: ["imperial", "citizen", "vendor"],
   },
 ]
 
 const categoryLabels = {
-  core: "Core",
-  commerce: "Commerce",
-  premium: "Premium",
-  admin: "Admin",
-  legal: "Legal",
+  "Imperial Core": "Imperial Core",
+  "Citizen Services": "Citizen Services",
+  "Vendor Hub": "Vendor Hub",
+  System: "System",
 }
 
 export function EnvironmentSidebar() {
@@ -245,6 +298,7 @@ export function EnvironmentSidebar() {
   const [mouseNearSidebar, setMouseNearSidebar] = React.useState(false)
   const pathname = usePathname()
   const router = useRouter()
+  const { currentPortal } = usePortal()
 
   // Auto-expand when mouse is near the sidebar
   React.useEffect(() => {
@@ -270,7 +324,10 @@ export function EnvironmentSidebar() {
     return () => clearTimeout(timeout)
   }, [mouseNearSidebar])
 
-  const groupedEnvironments = environments.reduce(
+  // Filter environments based on current portal
+  const filteredEnvironments = environments.filter((env) => env.portals.includes(currentPortal))
+
+  const groupedEnvironments = filteredEnvironments.reduce(
     (acc, env) => {
       if (!acc[env.category]) acc[env.category] = []
       acc[env.category].push(env)
@@ -320,6 +377,13 @@ export function EnvironmentSidebar() {
             </button>
           </div>
         </div>
+
+        {/* Portal Switcher */}
+        {isExpanded && (
+          <div className="p-4 border-b border-white/10">
+            <PortalSwitcher />
+          </div>
+        )}
 
         {/* Navigation */}
         <div className="flex-1 overflow-y-auto py-4">
@@ -377,11 +441,11 @@ export function EnvironmentSidebar() {
             )}
           >
             <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-600 rounded-full flex items-center justify-center">
-              <Crown className="w-4 h-4 text-white" />
+              <Activity className="w-4 h-4 text-white" />
             </div>
             <div className="flex-1">
-              <div className="text-xs font-medium text-white">Imperial</div>
-              <div className="text-xs text-gray-400">Command Center</div>
+              <div className="text-xs font-medium text-white">System Status</div>
+              <div className="text-xs text-gray-400">All Systems Operational</div>
             </div>
           </div>
         </div>
