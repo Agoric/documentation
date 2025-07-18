@@ -437,6 +437,11 @@ export default defineConfig({
               ariaLabel: 'End-to-End Testing',
               link: '/e2e-testing',
             },
+            {
+              text: 'Multichain Testing',
+              ariaLabel: 'Multichain Testing',
+              link: '/multichain-testing',
+            },
           ],
         },
         {
