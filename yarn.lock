@@ -226,16 +226,16 @@ __metadata:
     "@agoric/vats": "npm:community-dev"
     "@agoric/zoe": "npm:community-dev"
     "@agoric/zone": "npm:community-dev"
-    "@endo/bundle-source": "npm:^4.0.0"
-    "@endo/errors": "npm:^1.2.10"
-    "@endo/eventual-send": "npm:^1.3.1"
-    "@endo/far": "npm:^1.1.11"
-    "@endo/init": "npm:^1.1.9"
-    "@endo/marshal": "npm:^1.6.4"
-    "@endo/pass-style": "npm:^1.5.0"
-    "@endo/patterns": "npm:^1.5.0"
-    "@endo/promise-kit": "npm:^1.1.10"
-    "@endo/ses-ava": "npm:^1.2.10"
+    "@endo/bundle-source": "npm:^4.1.2"
+    "@endo/errors": "npm:^1.2.13"
+    "@endo/eventual-send": "npm:^1.3.4"
+    "@endo/far": "npm:^1.1.14"
+    "@endo/init": "npm:^1.1.12"
+    "@endo/marshal": "npm:^1.8.0"
+    "@endo/pass-style": "npm:^1.6.3"
+    "@endo/patterns": "npm:^1.7.0"
+    "@endo/promise-kit": "npm:^1.1.13"
+    "@endo/ses-ava": "npm:^1.3.2"
     "@typescript-eslint/parser": "npm:^4.33.0"
     ava: "npm:^4.3.3"
     eslint: "npm:^7.32.0"
@@ -248,7 +248,7 @@ __metadata:
     glob: "npm:7.1.7"
     import-meta-resolve: "npm:^4.1.0"
     prettier: "npm:^3.3.3"
-    ses: "npm:^1.12.0"
+    ses: "npm:^1.14.0"
     stylus: "npm:^0.62.0"
     typescript: "npm:^4.9.5"
     vitepress: "npm:1.3.4"
@@ -1497,7 +1497,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@endo/bundle-source@npm:^4.0.0":
+"@endo/bundle-source@npm:^4.1.2":
   version: 4.1.2
   resolution: "@endo/bundle-source@npm:4.1.2"
   dependencies:
@@ -1585,7 +1585,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@endo/errors@npm:^1.2.10, @endo/errors@npm:^1.2.13, @endo/errors@npm:^1.2.5":
+"@endo/errors@npm:^1.2.13, @endo/errors@npm:^1.2.5":
   version: 1.2.13
   resolution: "@endo/errors@npm:1.2.13"
   dependencies:
@@ -1616,7 +1616,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@endo/eventual-send@npm:^1.2.5, @endo/eventual-send@npm:^1.3.1, @endo/eventual-send@npm:^1.3.4":
+"@endo/eventual-send@npm:^1.2.5, @endo/eventual-send@npm:^1.3.4":
   version: 1.3.4
   resolution: "@endo/eventual-send@npm:1.3.4"
   dependencies:
@@ -1640,7 +1640,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@endo/far@npm:^1.0.0, @endo/far@npm:^1.1.11, @endo/far@npm:^1.1.14, @endo/far@npm:^1.1.5":
+"@endo/far@npm:^1.0.0, @endo/far@npm:^1.1.14, @endo/far@npm:^1.1.5":
   version: 1.1.14
   resolution: "@endo/far@npm:1.1.14"
   dependencies:
@@ -1671,7 +1671,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@endo/init@npm:^1.1.12, @endo/init@npm:^1.1.4, @endo/init@npm:^1.1.8, @endo/init@npm:^1.1.9":
+"@endo/init@npm:^1.1.12, @endo/init@npm:^1.1.4, @endo/init@npm:^1.1.8":
   version: 1.1.12
   resolution: "@endo/init@npm:1.1.12"
   dependencies:
@@ -1692,7 +1692,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@endo/marshal@npm:^1.5.3, @endo/marshal@npm:^1.6.4, @endo/marshal@npm:^1.8.0":
+"@endo/marshal@npm:^1.5.3, @endo/marshal@npm:^1.8.0":
   version: 1.8.0
   resolution: "@endo/marshal@npm:1.8.0"
   dependencies:
@@ -1739,7 +1739,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@endo/pass-style@npm:^1.4.3, @endo/pass-style@npm:^1.5.0, @endo/pass-style@npm:^1.6.3":
+"@endo/pass-style@npm:^1.4.3, @endo/pass-style@npm:^1.6.3":
   version: 1.6.3
   resolution: "@endo/pass-style@npm:1.6.3"
   dependencies:
@@ -1759,7 +1759,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@endo/patterns@npm:^1.4.3, @endo/patterns@npm:^1.5.0, @endo/patterns@npm:^1.7.0":
+"@endo/patterns@npm:^1.4.3, @endo/patterns@npm:^1.7.0":
   version: 1.7.0
   resolution: "@endo/patterns@npm:1.7.0"
   dependencies:
@@ -1773,7 +1773,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@endo/promise-kit@npm:^1.1.10, @endo/promise-kit@npm:^1.1.13, @endo/promise-kit@npm:^1.1.5, @endo/promise-kit@npm:^1.1.9":
+"@endo/promise-kit@npm:^1.1.13, @endo/promise-kit@npm:^1.1.5, @endo/promise-kit@npm:^1.1.9":
   version: 1.1.13
   resolution: "@endo/promise-kit@npm:1.1.13"
   dependencies:
@@ -1782,7 +1782,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@endo/ses-ava@npm:^1.2.10, @endo/ses-ava@npm:^1.2.5":
+"@endo/ses-ava@npm:^1.2.5, @endo/ses-ava@npm:^1.3.2":
   version: 1.3.2
   resolution: "@endo/ses-ava@npm:1.3.2"
   dependencies:
@@ -7670,7 +7670,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ses@npm:^1.12.0, ses@npm:^1.14.0":
+"ses@npm:^1.14.0":
   version: 1.14.0
   resolution: "ses@npm:1.14.0"
   dependencies:
