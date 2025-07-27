@@ -13,6 +13,12 @@ classDiagram
   }
   ertp --> IssuerKit : makeIssuerKit
 
+  class IssuerKit {
+    mint: Mint
+    issuer: Issuer
+    brand: Brand
+  }
+
    class Mint {
      getIssuer()
    }
