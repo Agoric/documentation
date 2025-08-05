@@ -2,18 +2,31 @@ import { defineConfig } from 'vitepress';
 import { nav } from './themeConfig/nav.js';
 import { rewrites } from './themeConfig/rewrites.js';
 
+const SITE_TITLE = 'Agoric Documentation';
+const SITE_DESCRIPTION =
+  'The blockchain framework tailored for JavaScript developers.';
+
 export default defineConfig({
   /* --- FOR DEPLOYMENT TO GITHUB PAGES--- */
   base: '/', // The base URL the site will be deployed at.
   outDir: '../dist',
   /* --- HOME PAGE --- */
-  title: 'Agoric Documentation', // title for the site. prefix for all page titles and displayed in the navbar
-  description: 'Build, deploy and operate dApps and DeFi markets.', // desc for the site; rendered as a <meta> tag in the page HTML
+  title: SITE_TITLE, // title for the site. prefix for all page titles and displayed in the navbar
+  description: SITE_DESCRIPTION, // desc for the site; rendered as a <meta> tag in the page HTML
   // Extra tags to inject into the page HTML <head>. You can specify each tag in the form of [tagName, { attrName: attrValue }, innerHTML?].
   head: [
     [
       'meta',
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { property: 'viewport', content: 'width=device-width, initial-scale=1' },
+    ],
+    ['meta', { property: 'og:image', content: '/agoric-og.png' }],
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:title', content: SITE_TITLE }],
+    ['meta', { property: 'og:site_name', content: SITE_TITLE }],
+    ['meta', { property: 'og:url', content: 'https://docs.agoric.com' }],
+    [
+      'meta',
+      { property: 'twitter:summary_large_image', content: '/agoric-og.png' },
     ],
     ['link', { rel: 'icon', href: '/favicon-full.ico' }],
     [
