@@ -14,13 +14,11 @@ A short form of [agoric-3-proposals](https://github.com/Agoric/agoric-3-proposal
 
 A command line interface for initializing, deploying, and starting Agoric projects, as well as installing dependencies. See the [Agoric CLI documentation](/guides/agoric-cli/) for more information.
 
-## AllegedName
+## Alleged
 
-Human-readable name of a type of assets. The alleged name should
-not be trusted as an accurate depiction, since it is provided by
-the maker of the mint and could be deceptive, but is useful for debugging and double-checking.
+<a name="allegedname" />
 
-The AllegedName must be a string.
+See [DebugName](#debugname).
 
 ## Allocation
 
@@ -209,6 +207,20 @@ For more information, see the
 An [invitation](#invitation) optionally returned by [`E(zoe).startInstance(...)`](/reference/zoe-api/zoe#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs) that the contract instance
 creator can use. It is usually used in contracts where the creator immediately
 sells something (auctions, swaps, etc.).
+
+## DebugName
+
+A label for debugging / diagnostic purposes. aka Alleged name.
+Since debug names may be misleading,
+**no code should rely on an Alleged / DebugName for correctness.**
+
+See:
+
+- [Exo tags](/guides/zoe/contract-details#tag-naming-kinds-of-objects),
+  which are used as debug names.
+- [ERTP](/guides/ertp/) where Brand objects, not string names,
+  are used to reliably identify digital assets.
+- [Remotable in @endo/pass-style](https://endojs.github.io/endo/functions/_endo_pass_style.Remotable.html), where labels are bound to objects.
 
 ## Deposit Facet
 
