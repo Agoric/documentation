@@ -85,10 +85,23 @@ Ensure your Docker Desktop or Kubernetes environment is configured with sufficie
 
 ### 1. Initial Setup
 
-First, clone the agoric-sdk repository and navigate to the multichain-testing directory:
+First, clone the agoric-sdk repository and navigate to the agoric-sdk directory:
 
 ```bash
 git clone https://github.com/Agoric/agoric-sdk.git
+cd agoric-sdk
+```
+
+Install dependencies and build:
+
+```bash
+yarn install && yarn build
+```
+
+
+Then, navigate to the multichain-testing directory:
+
+```bash
 cd agoric-sdk/multichain-testing
 ```
 
