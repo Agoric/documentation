@@ -1,1 +1,1 @@
-see [Price Authority Guide](/guides/zoe/price-authority), [PriceAuthority API](../zoe-api/price-authority)
+see [Price Authority Guide](../../guides/zoe/price-authority.md), [PriceAuthority API](../zoe-api/price-authority.md)
