@@ -15,19 +15,23 @@ the sections below.
 </ClientOnly>
 :::
 
-## Vats: the Unit of Synchrony
+## Workers: the Unit of Synchrony
 
 The Agoric framework uses the same [event loop concurrency model](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop) as web browsers and Node.js.
 Each event loop has a message queue, a call stack of frames, and a heap of objects:
 
 ![heap, stack, and queue](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_Loop/the_javascript_runtime_environment_example.svg)
 
-We refer to this combination of an event loop with a message queue, a stack, and a heap as a _vat_.
+::: tip Historical Note
+The term "worker" in Agoric replaces the historical term "vat", which was inspired by the philosophical thought experiment "Brain in a Vat" - where a brain is sustained in isolation and connected to simulated inputs, similar to how our workers maintain strict isolation boundaries.
+:::
 
-Vats are the unit of synchrony. We can only use ordinary synchronous
-function calls within the same vat. But we can use asynchronous function calls
-(with [eventual send](./eventual-send)) either within the same vat or between vats.
-Vats may be on remote machines, including massively replicated machines such as blockchains.
+We refer to this combination of an event loop with a message queue, a stack, and a heap as a _worker_.
+
+Workers are the unit of synchrony. We can only use ordinary synchronous
+function calls within the same worker. But we can use asynchronous function calls
+(with [eventual send](./eventual-send)) either within the same worker or between workers.
+Workers may be on remote machines, including massively replicated machines such as blockchains.
 
 ## Parts of the Framework
 
