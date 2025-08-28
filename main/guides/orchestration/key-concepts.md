@@ -5,12 +5,12 @@ focusing on Orchestrator Interface, Orchestration Accounts, and ChainHub.
 
 ## Orchestrator Interface
 
-The [`Orchestrator`](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator) interface provides a
+The `Orchestrator` interface provides a
 set of high-level methods to manage and interact with local and remote chains. Below are the primary methods:
 
 ### Access Chain Object
 
-- `getChain` retrieves a chain object for the given `chainName` to get access to chain-specific methods. See [getChain](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#getChain).
+- `getChain` retrieves a chain object for the given `chainName` to get access to chain-specific methods.
 
 ```js
 const chain = await orchestrator.getChain('chainName');
@@ -19,13 +19,13 @@ const chain = await orchestrator.getChain('chainName');
 ### Brand Utility Functions
 
 - `getBrandInfo` returns information about a `denom`, including the equivalent local Brand, the chain where the denom is
-  held, and the chain that issues the corresponding asset. See [getBrandInfo](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#getBrandInfo).
+  held, and the chain that issues the corresponding asset.
 
 ```js
 const brandInfo = orchestrator.getBrandInfo('denom');
 ```
 
-- `asAmount` converts a denom amount to an `Amount` with a brand. See [asAmount](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#asAmount).
+- `asAmount` converts a denom amount to an `Amount` with a brand.
 
 ```js
 const amount = orchestrator.asAmount({ denom: 'uatom', value: 1000n });
@@ -33,7 +33,7 @@ const amount = orchestrator.asAmount({ denom: 'uatom', value: 1000n });
 
 ## Orchestration Account
 
-Orchestration accounts are a key concept in the Agoric Orchestration API, represented by the [`OrchestrationAccount`](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountCommon)
+Orchestration accounts are a key concept in the Agoric Orchestration API, represented by the `OrchestrationAccount`
 interface. These accounts provide high-level operations for managing accounts on remote chains, allowing seamless
 interaction and management of interchain accounts. The Orchestration accounts abstract the complexity of interchain
 interactions, providing a unified and simplified interface for developers.
