@@ -8,5 +8,3 @@ Take a look at our detailed [tutorial on how the UI for making offers](/guides/g
 
 Here is how the UI looks after completion:
 ![The UI look after completing the UI tutorial](./assets/dapp-offer-up-run.gif)
-
-
