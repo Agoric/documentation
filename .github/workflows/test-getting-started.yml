@@ -18,6 +18,9 @@ jobs:
       - name: Creating Your Dapp From a Template
         run: yarn create @agoric/dapp offer-up
       - name: Install dependencies
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: '1'
+          CYPRESS_INSTALL_BINARY: '0'
         run: |
           cd offer-up
           corepack enable
