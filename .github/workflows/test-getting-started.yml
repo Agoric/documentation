@@ -14,7 +14,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 'lts/jod'
       - name: Creating Your Dapp From a Template
         run: yarn create @agoric/dapp offer-up
       - name: Install dependencies
