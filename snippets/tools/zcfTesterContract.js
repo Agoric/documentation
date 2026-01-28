@@ -1,6 +1,8 @@
 // @ts-check
 
-import '@agoric/zoe/exported.js';
+/**
+ * @typedef {import('@agoric/zoe/src/types-index.js').ContractStartFn} ContractStartFn
+ */
 
 /**
  * Tests ZCF
