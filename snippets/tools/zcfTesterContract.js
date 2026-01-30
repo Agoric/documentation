@@ -1,7 +1,7 @@
 // @ts-check
 
 /**
- * @typedef {import('@agoric/zoe/src/types-index.js').ContractStartFn} ContractStartFn
+ * @import { ContractStartFn } from '@agoric/zoe/src/types-index.js';
  */
 
 /**

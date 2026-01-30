@@ -64,7 +64,7 @@
     "eslint-config-jessie": "^0.0.6",
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-import": "^2.30.0",
-    "eslint-plugin-jsdoc": "^35.5.1",
+    "eslint-plugin-jsdoc": "^62.5.0",
     "eslint-plugin-prettier": "^5.2.1",
     "glob": "7.1.7",
     "import-meta-resolve": "^4.1.0",
@@ -127,6 +127,7 @@
       "jsdoc/require-param-description": "off",
       "jsdoc/require-returns": "off",
       "jsdoc/require-returns-description": "off",
+      "@jsdoc/tag-lines": "off",
       "import/extensions": [
         "error",
         "always"

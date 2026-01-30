@@ -7,9 +7,8 @@ import { M, getCopyBagEntries } from '@endo/patterns';
 import { AssetKind } from '@agoric/ertp/src/amountMath.js';
 import { atomicRearrange } from '@agoric/zoe/src/contractSupport/atomicTransfer.js';
 /**
- * @typedef {import('@agoric/ertp/src/types.js').Amount} Amount
- * @typedef {import('@agoric/zoe/src/contractFacet/types.js').OfferHandler} OfferHandler
- * @typedef {import('@agoric/zoe/src/contractFacet/types.js').ZCF} ZCF
+ * @import { Amount } from '@agoric/ertp/src/types.js';
+ * @import { OfferHandler, ZCF } from '@agoric/zoe/src/contractFacet/types.js';
  */
 
 const { Fail, quote: q } = assert;
