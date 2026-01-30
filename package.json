@@ -146,5 +146,8 @@
     "trailingComma": "all",
     "arrowParens": "avoid",
     "singleQuote": true
+  },
+  "resolutions": {
+    "better-sqlite3": "^10.0.1"
   }
 }
