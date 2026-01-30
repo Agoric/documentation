@@ -8,20 +8,33 @@ on:
     branches: [main]
   pull_request:
 
+env:
+  NODE_NEW_VERSION: 'lts/jod'
+
 jobs:
   lint-markdown:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ['lts/jod']
+        # node-new keeps required job names stable; resolved to NODE_NEW_VERSION.
+        node-version: ['node-new']
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Resolve Node.js version
+        id: resolve-node-version
+        run: |
+          if [ "${{ matrix.node-version }}" = "node-new" ]; then
+            echo "node-version=${{ env.NODE_NEW_VERSION }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "node-version=${{ matrix.node-version }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Use Node.js ${{ steps.resolve-node-version.outputs.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ steps.resolve-node-version.outputs.node-version }}
       - name: Lint
         run: |
           corepack enable
