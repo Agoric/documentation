@@ -4,7 +4,7 @@
 
 // Add imports here
 /**
- * @import { ContractStartFn } from '@agoric/zoe/src/types-index.js';
+ * @import { ContractStartFn } from '@agoric/zoe';
  */
 
 // Optional: you may wish to use the Zoe helpers in

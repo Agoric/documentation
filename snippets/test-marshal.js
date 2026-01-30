@@ -174,7 +174,7 @@ test.serial(
 );
 
 /**
- * @import { Remotable } from '@endo/pass-style';
+ * @import { Remotable } from '@agoric/internal';
  */
 /** @typedef {Remotable} Brand */
 

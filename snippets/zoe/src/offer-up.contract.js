@@ -6,8 +6,8 @@ import { Far } from '@endo/far';
 import { M, getCopyBagEntries } from '@endo/patterns';
 import { AssetKind } from '@agoric/ertp/src/amountMath.js';
 /**
- * @import { Amount } from '@agoric/ertp/src/types.js';
- * @import { OfferHandler, ZCF } from '@agoric/zoe/src/contractFacet/types.js';
+ * @import { Amount } from '@agoric/ertp';
+ * @import { OfferHandler, ZCF } from '@agoric/zoe';
  */
 
 const { Fail, quote: q } = assert;
