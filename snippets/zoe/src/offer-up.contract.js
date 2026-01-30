@@ -5,7 +5,6 @@
 import { Far } from '@endo/far';
 import { M, getCopyBagEntries } from '@endo/patterns';
 import { AssetKind } from '@agoric/ertp/src/amountMath.js';
-import { atomicRearrange } from '@agoric/zoe/src/contractSupport/atomicTransfer.js';
 /**
  * @import { Amount } from '@agoric/ertp/src/types.js';
  * @import { OfferHandler, ZCF } from '@agoric/zoe/src/contractFacet/types.js';
@@ -59,8 +58,7 @@ export const start = async zcf => {
       Fail`max ${q(maxItems)} items allowed: ${q(want.Items)}`;
 
     const newItems = itemMint.mintGains(want);
-    atomicRearrange(
-      zcf,
+    zcf.atomicRearrange(
       harden([
         // price from buyer to proceeds
         [buyerSeat, proceeds, { Price: tradePrice }],
