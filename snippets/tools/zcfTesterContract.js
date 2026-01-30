@@ -1,6 +1,8 @@
 // @ts-check
 
-import '@agoric/zoe/exported.js';
+/**
+ * @import { ContractStartFn } from '@agoric/zoe';
+ */
 
 /**
  * Tests ZCF

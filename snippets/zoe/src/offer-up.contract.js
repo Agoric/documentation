@@ -5,8 +5,11 @@
 import { Far } from '@endo/far';
 import { M, getCopyBagEntries } from '@endo/patterns';
 import { AssetKind } from '@agoric/ertp/src/amountMath.js';
-import { atomicRearrange } from '@agoric/zoe/src/contractSupport/atomicTransfer.js';
-import '@agoric/zoe/exported.js';
+
+/**
+ * @import { AnyAmount } from '@agoric/ertp';
+ * @import { OfferHandler, ZCF } from '@agoric/zoe';
+ */
 
 const { Fail, quote: q } = assert;
 
@@ -30,7 +33,7 @@ const bagCounts = bag => {
  * optionally, a maximum number of items sold for that price (default: 3).
  *
  * @typedef {{
- *   tradePrice: Amount;
+ *   tradePrice: AnyAmount;
  *   maxItems?: bigint;
  * }} OfferUpTerms
  */
@@ -56,8 +59,7 @@ export const start = async zcf => {
       Fail`max ${q(maxItems)} items allowed: ${q(want.Items)}`;
 
     const newItems = itemMint.mintGains(want);
-    atomicRearrange(
-      zcf,
+    zcf.atomicRearrange(
       harden([
         // price from buyer to proceeds
         [buyerSeat, proceeds, { Price: tradePrice }],

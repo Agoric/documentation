@@ -8,8 +8,11 @@
 // @agoric/zoe/src/contractSupport/index.js
 import { swap as _ } from '@agoric/zoe/src/contractSupport/index.js';
 
-// Import the Zoe types
-import '@agoric/zoe/exported.js';
+/**
+ * Import types from Zoe
+ *
+ * @import { ContractStartFn, ZCFSeat } from '@agoric/zoe';
+ */
 
 /**
  * [Contract Description Here]
@@ -26,8 +29,11 @@ const start = (zcf, _privateArgs) => {
   // Add contract logic here, including the
   // handling of offers and the making of invitations.
 
-  // Example: This is an example of an offerHandler
-  // which just gives a refund payout automatically.
+  /**
+   * Example: This is an example of an offerHandler
+   * which just gives a refund payout automatically.
+   * @param {ZCFSeat} zcfSeat
+   */
   const myOfferHandler = zcfSeat => {
     zcfSeat.exit();
     const offerResult = 'success';
