@@ -34,7 +34,6 @@ Vats may be on remote machines, including massively replicated machines such as 
 The framework includes:
 
 - **[Hardened JavaScript](./hardened-js)**
-
   - Hardened JavaScript provides a platform for
     making objects that can interact with code you don't completely trust,
     without being vulnerable to bugs or bad intentions.
@@ -42,7 +41,6 @@ The framework includes:
     to apply the [principle of least authority](./hardened-js#the-principle-of-least-authority-pola).
 
 - **[`E()` for Eventual Send to Remote Presences](./eventual-send)**
-
   - The `E()` wrapper function lets
     you invoke methods within or between vats.
     Given a local representative (a _presence_) for a remote object,
@@ -50,7 +48,6 @@ The framework includes:
     `E(obj).myMethod(...args)` is an asynchronous form of `obj.myMethod(...args)`.
 
 - **[`Far()`, Remoteable Objects, and Marshaling](./far)**
-
   - Objects used across vats are called _remotables_.
     To mark an object for exporting from a vat, use the `Far()` function.
 

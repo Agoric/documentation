@@ -5,7 +5,6 @@ import url from 'url';
 import { resolve as importMetaResolve } from 'import-meta-resolve';
 import bundleSource from '@endo/bundle-source';
 import { E } from '@endo/eventual-send';
-import '@agoric/zoe/exported.js';
 import buildManualTimer from '@agoric/zoe/tools/manualTimer.js';
 import { AmountMath } from '@agoric/ertp';
 

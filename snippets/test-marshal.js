@@ -173,7 +173,10 @@ test.serial(
   },
 );
 
-/** @typedef {import('@endo/pass-style').Remotable} Brand */
+/**
+ * @import { Remotable } from '@agoric/internal';
+ */
+/** @typedef {Remotable} Brand */
 
 /**
  * The Agoric Board is a well-known name service that issues

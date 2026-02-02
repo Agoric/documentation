@@ -7,17 +7,37 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+
+env:
+  NODE_NEW_VERSION: 'lts/jod'
+
 jobs:
   getting_started:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # node-new keeps required job names stable; resolved to NODE_NEW_VERSION.
+        node-version: ['node-new']
     steps:
-      - name: Use Node.js
+      - name: Resolve Node.js version
+        id: resolve-node-version
+        run: |
+          if [ "${{ matrix.node-version }}" = "node-new" ]; then
+            echo "node-version=${{ env.NODE_NEW_VERSION }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "node-version=${{ matrix.node-version }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Use Node.js ${{ steps.resolve-node-version.outputs.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ steps.resolve-node-version.outputs.node-version }}
       - name: Creating Your Dapp From a Template
         run: yarn create @agoric/dapp offer-up
       - name: Install dependencies
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: '1'
+          CYPRESS_INSTALL_BINARY: '0'
         run: |
           cd offer-up
           corepack enable

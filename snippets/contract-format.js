@@ -3,13 +3,15 @@
 // Checks the types as defined in JSDoc comments
 
 // Add imports here
+/**
+ * @import { ContractStartFn } from '@agoric/zoe';
+ */
 
 // Optional: you may wish to use the Zoe helpers in
 // @agoric/zoe/src/contractSupport/index.js
 import { swap as _ } from '@agoric/zoe/src/contractSupport/index.js';
 
 // Import the Zoe types
-import '@agoric/zoe/exported.js';
 
 /**
  * [Contract Description Here]
