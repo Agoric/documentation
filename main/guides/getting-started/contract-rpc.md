@@ -157,31 +157,27 @@ Supposing `spec` is an `InvitationSpec`, its `.source` is one of:
 - `contract` - the smart wallet makes an invitation by calling a method on the public facet of a specified instance: `E(E(zoe).getPublicFacet(spec.instance)[spec.publicInvitationMaker](...spec.invitationArgs)`
 
 - `agoricContract` - for example, from [dapp-inter](https://github.com/Agoric/dapp-inter):
-
-```js
-{
-   source: 'agoricContract',
-   instancePath: ['VaultFactory'],
-   callPipe: [
-     ['getCollateralManager', [toLock.brand]],
-     ['makeVaultInvitation'],
-   ],
- }
-```
-
-The smart wallet finds the instance using `E(agoricNames).lookup('instance', ...spec.instancePath)` and makes a chain of calls specified by `spec.callPipe`. Each entry in the callPipe is a `[methodName, args?]` pair used to execute a call on the preceding result. The end of the pipe is expected to return an Invitation.
+  ```js
+  {
+    source: 'agoricContract',
+    instancePath: ['VaultFactory'],
+    callPipe: [
+      ['getCollateralManager', [toLock.brand]],
+      ['makeVaultInvitation'],
+    ],
+  }
+  ```
+  The smart wallet finds the instance using `E(agoricNames).lookup('instance', ...spec.instancePath)` and makes a chain of calls specified by `spec.callPipe`. Each entry in the callPipe is a `[methodName, args?]` pair used to execute a call on the preceding result. The end of the pipe is expected to return an Invitation.
 
 - <a name="source-continuing"></a>`continuing` - For example, `dapp-inter` uses the following `InvitationSpec` to adjust a vault:
-
-```js
-{
-  source: 'continuing',
-  previousOffer: vaultOfferId,
-  invitationMakerName: 'AdjustBalances',
-}
-```
-
-In this continuing offer, the smart wallet uses the `spec.previousOffer` id to look up the `.invitationMakers` property of the result of the previous offer. It uses `E(invitationMakers)[spec.invitationMakerName](...spec.invitationArgs)` to make an invitation.
+  ```js
+  {
+    source: 'continuing',
+    previousOffer: vaultOfferId,
+    invitationMakerName: 'AdjustBalances',
+  }
+  ```
+  In this continuing offer, the smart wallet uses the `spec.previousOffer` id to look up the `.invitationMakers` property of the result of the previous offer. It uses `E(invitationMakers)[spec.invitationMakerName](...spec.invitationArgs)` to make an invitation.
 
 :::
 
