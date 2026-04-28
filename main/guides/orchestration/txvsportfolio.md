@@ -142,7 +142,7 @@ export const makeAccounts = async (orch, { makeStakingTap, makePortfolioHolder, 
 In this snippet, we create multiple accounts (one for Agoric, one for the remote chain).
 Then, the contract uses `makePortfolioHolder` to maintain these in a persistent store.
 Users can perform multiple future actions without losing state. Learn more about the
-`makePortfolioHolder` function in the [`makePortfolioHolder` Orchestration API reference](https://agoric-sdk.pages.dev/funcs/_agoric_orchestration.preparePortfolioHolder).
+`makePortfolioHolder` function in the Orchestration API reference.
 
 ## Choosing Between Transactional and Portfolio
 
