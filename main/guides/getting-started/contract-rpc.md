@@ -150,38 +150,36 @@ public facet.
 
 ::: tip InvitationSpec Usage
 
-Supposing `spec` is an `InvitationSpec`, its `.source` is one of:
+`InvitationSpec` is a
+[discriminated union](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions:~:text=discriminated%20union)
+whose `source` property indicates a specific type defining how to get the
+invitation. Supposing `spec` is an `InvitationSpec`, its `.source` is one of:
 
-- `purse` - to make an offer with an invitation that is already in the Invitation purse of the smart wallet and agrees with `spec` on `.instance` and `.description` properties. For example, in [dapp-econ-gov](https://github.com/Agoric/dapp-econ-gov), committee members use invitations sent to them when the committee was created.
+- `purse` - to use an invitation that is already in the Invitation purse of the smart wallet. `spec` includes properties `.instance` and `.description` properties that must correspond with the same properties of that matching Invitation. For example, in [dapp-econ-gov](https://github.com/Agoric/dapp-econ-gov), committee members use invitations sent to them when the committee was created.
 
-- `contract` - the smart wallet makes an invitation by calling a method on the public facet of a specified instance: `E(E(zoe).getPublicFacet(spec.instance)[spec.publicInvitationMaker](...spec.invitationArgs)`
+- `contract` - to have the smart wallet make an invitation using the public facet of a contract referenced by property `.instance`. Property `.publicInvitationMaker` specifies the method name, and optional property `.invitationArgs` specifies arguments for the invocation: `E(E(zoe).getPublicFacet(spec.instance)[spec.publicInvitationMaker](...spec.invitationArgs)`
 
-- `agoricContract` - for example, from [dapp-inter](https://github.com/Agoric/dapp-inter):
+- `agoricContract` - to have the smart wallet make an invitation using a chain of calls starting from an instance in [agoricNames](/guides/integration/name-services.html#agoricnames-agoricnamesadmin-well-known-names). Property `.instancePath` is an array of strings used to look up the starting point, and property `.callPipe` is an array of `[methodName: string, args?: unknown[]]` entries, each specifying a method call to invoke on the preceding result. The end of the pipe is expected to return an Invitation. For example, this `InvitationSpec` from [dapp-inter](https://github.com/Agoric/dapp-inter) corresponds with something like `E(E(E(agoricNames).lookup('instance', 'VaultFactory')).getCollateralManager(toLock.brand)).makeVaultInvitation()`:
 
-```js
-{
-   source: 'agoricContract',
-   instancePath: ['VaultFactory'],
-   callPipe: [
-     ['getCollateralManager', [toLock.brand]],
-     ['makeVaultInvitation'],
-   ],
- }
-```
+  ```js
+  {
+    source: 'agoricContract',
+    instancePath: ['VaultFactory'],
+    callPipe: [
+      ['getCollateralManager', [toLock.brand]],
+      ['makeVaultInvitation'],
+    ],
+  }
+  ```
 
-The smart wallet finds the instance using `E(agoricNames).lookup('instance', ...spec.instancePath)` and makes a chain of calls specified by `spec.callPipe`. Each entry in the callPipe is a `[methodName, args?]` pair used to execute a call on the preceding result. The end of the pipe is expected to return an Invitation.
-
-- <a name="source-continuing"></a>`continuing` - For example, `dapp-inter` uses the following `InvitationSpec` to adjust a vault:
-
-```js
-{
-  source: 'continuing',
-  previousOffer: vaultOfferId,
-  invitationMakerName: 'AdjustBalances',
-}
-```
-
-In this continuing offer, the smart wallet uses the `spec.previousOffer` id to look up the `.invitationMakers` property of the result of the previous offer. It uses `E(invitationMakers)[spec.invitationMakerName](...spec.invitationArgs)` to make an invitation.
+- <a name="source-continuing"></a>`continuing` - to have the smart wallet make an invitation by invoking a method on the result of a previous `executeOffer` action. Property `.previousOffer` specifies the `id` associated with that past action, property `.invitationMakerName` specifies the method name, and optional property `.invitationArgs` specifies arguments for the invocation. For example, this `InvitationSpec` from [dapp-inter](https://github.com/Agoric/dapp-inter) for adjusting a vault corresponds with something like `E(offerResults.get(vaultOfferId)).AdjustBalances()`:
+  ```js
+  {
+    source: 'continuing',
+    previousOffer: vaultOfferId,
+    invitationMakerName: 'AdjustBalances',
+  }
+  ```
 
 :::
 
