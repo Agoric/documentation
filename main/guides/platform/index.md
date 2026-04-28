@@ -14,16 +14,16 @@ it's very important to ensure that one user cannot prevent another
 user's code from executing and that the way in which code is
 interleaved doesn't open up hazards such as reentrancy. SwingSet
 solves that problem by dividing up the execution environment into
-_vats_. A [vat](../js-programming/#vats-the-unit-of-synchrony) is a _unit
-of synchrony_. This means that within a JavaScript vat, objects and
+_workers_. A [worker](../js-programming/#workers-the-unit-of-synchrony) is a _unit
+of synchrony_. This means that within a JavaScript worker, objects and
 functions can communicate with one another synchronously. Between
-vats, objects and functions communicate asynchronously, by design.
+workers, objects and functions communicate asynchronously, by design.
 
-A physical machine can run one or several vats. A blockchain can run
-one or several communicating vats.
+A physical machine can run one or several workers. A blockchain can run
+one or several communicating workers.
 
-The internal state of a vat can be stored in a persistent memory so
-that the vat can be turned off and later turned back on (on the same
+The internal state of a worker can be stored in a persistent memory so
+that the worker can be turned off and later turned back on (on the same
 or a different physical machine) by loading the stored state.
 
 A SwingSet instance also handles communication between the vats it
