@@ -1,6 +1,6 @@
 queue_rules:
   - name: main
-    conditions:
+    merge_conditions:
       - base=main
       # Require integration tests before merging only
       - check-success=Cloudflare Pages
