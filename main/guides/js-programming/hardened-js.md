@@ -1,5 +1,7 @@
 # Hardened JavaScript
 
+[![Subsetting JavaScript](https://raw.githubusercontent.com/endojs/Jessie/HEAD/docs/jessie.png)](https://github.com/endojs/Jessie#subsetting-ecmascript)
+
 ::: tip Watch: Object-capability Programming in Secure Javascript (August 2019)
 
 _The first 15 minutes cover much of the material below.
