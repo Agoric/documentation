@@ -5,8 +5,10 @@ smart contracts in JavaScript. The platform’s asynchronous,
 multi-block architecture uniquely enables developers to orchestrate
 liquidity and services across the growing multi-chain universe, making
 Agoric ideal for building software with seamless user experiences. The
-native token BLD is used for staking and governance. The
-over-collateralized IST stable token is used to pay network fees.
+native token BLD is used for staking, governance, and network fees:
+Agoric’s SwingSet fee unit is currently priced in BLD. IST, the
+over-collateralized stable token, is no longer the protocol’s primary
+fee asset.
 
 The Agoric blockchain is built on the CometBFT consensus system with
 native Inter-Blockchain Communication Protocol (IBC) support. Smart
