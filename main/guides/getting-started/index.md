@@ -40,10 +40,10 @@ In this section you'll be installing prerequisite components into your environme
 
 ### Installing Node.js
 
+This tutorial requires [Node.js](https://nodejs.org/) 20. The Offer Up template does not yet install on Node.js 22 (see [dapp-offer-up#121](https://github.com/Agoric/dapp-offer-up/issues/121)), so use Node.js 20 for this tutorial even though it reached end of life in April 2026.
+
 <details>
 <summary>Installing Node.js</summary>
-
-This tutorial requires a specific version of [Node.js](https://nodejs.org/).
 
 The [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager) utility makes it easy to select the right version.
 
@@ -89,10 +89,10 @@ source $(brew --prefix nvm)/nvm.sh
 Then, install Node.js.
 
 ```sh
-nvm install v18.18.0
+nvm install 20
 ```
 
-Finally, verify the Node.js version.
+Finally, verify the Node.js version. Expect `v20.9.0` or later.
 
 ```sh
 node --version
@@ -100,20 +100,16 @@ node --version
 
 </details>
 
-### Installing Yarn
+### Setting up Yarn
 
-This will install yarn, and verify it is installed correctly. Install yarn by either running `npm install --global yarn`, or visit https://classic.yarnpkg.com/en/docs/install for more information. See below, `corepack enable` will add the Corepack shims to the install directories, and `yarn --version` will verify yarn is installed correctly.
+The Offer Up project pins its own Yarn version (`yarn@4.7.0`) in the `packageManager` field of its `package.json`. Node.js 20 ships with [Corepack](https://nodejs.org/api/corepack.html), which reads that field and runs the pinned Yarn for you, so you do not need to install Yarn separately. Enable Corepack once, then verify that `yarn` is on your path.
 
 ```sh
 corepack enable
 yarn --version # for verification
 ```
 
-This app uses Yarn 1, so running the above command will show a version in the format `1.x.x`. If you are using a different version of `yarn`, you can use `yarn set version <version>` to switch like in the example below.
-
-```sh
-yarn set version 1.22.5
-```
+Corepack asks for confirmation before it downloads a Yarn version it has not cached yet; answer yes. Outside a project directory this reports Corepack's default Yarn, currently `1.22.22`. Inside the `demo` directory you create below, it reports `4.7.0`.
 
 ### Installing Docker
 
@@ -256,6 +252,8 @@ yarn install
 
 If you run into errors during `yarn install`, check that you are on a [supported platform](#platform-requirements) and not native Windows.
 
+If the errors come from building `better-sqlite3`, check `node --version`. The template does not install on Node.js 22 or later; use Node.js 20 as described in [Installing Node.js](#installing-node-js).
+
 Then make sure you have the relevant developer tools installed. For example, on Debian or Ubuntu Linux, run `sudo apt get install build-essential`.
 On macOS, be sure to install [Xcode](https://apps.apple.com/us/app/xcode/id497799835).
 
@@ -308,13 +306,11 @@ yarn start:contract
 <summary>Behind the Scenes</summary>
 This `start:contract` script will do a number of things that we will cover in more detail later <small>(_[transaction commands](../agoric-cli/agd-query-tx#transaction-commands), [permissioned deployment](../coreeval/)_)</small>:
 
-1. Bundle the contract with `agoric run ...`
-2. Collect some ATOM with `agd tx bank send ...`. _ATOM refers to the native cryptocurrency of the Cosmos Network._
-3. Use the ATOM to open a vault to mint enough IST to pay to install the bundles on chain with `agops vaults open ...`.
-4. Install the bundles on chain with `agd tx swingset install-bundle ...`.
-5. Collect enough BLD to pay for a governance deposit with `agd tx bank send ...`
-6. Make a governance proposal to start the contract with `agd tx gov submit-proposal swingset-core-eval ...`.
-7. Vote for the proposal; wait for it to pass.
+1. Bundle the contract with `agoric run ...`.
+2. Install the bundles on chain with `agd tx swingset install-bundle ...`. Installation fees are charged in BLD on the local chain.
+3. Collect enough BLD to pay for a governance deposit with `agd tx bank send ...`.
+4. Make a governance proposal to start the contract with `agd tx gov submit-proposal swingset-core-eval ...`.
+5. Vote for the proposal; wait for it to pass.
 </details>
 
 ## Setting up a Keplr Wallet Demo Account
