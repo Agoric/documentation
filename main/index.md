@@ -68,7 +68,7 @@ features:
     link: https://github.com/Agoric/agoric-sdk/wiki/Office-Hours
 
   - icon: 🐦
-    title: Twitter
+    title: X (Twitter)
     details: Catch up on all things Agoric product, events, and more.
-    link: https://twitter.com/agoric
+    link: https://x.com/agoric
 ---

@@ -1,5 +1,14 @@
 # Timer Services
 
+::: warning
+This page lives under `reference/repl/` alongside documentation for the
+retired `ag-solo` REPL, but `chainTimerService` and `@agoric/time` are not
+deprecated; they are the current timer API and remain in active use
+(including by the [Orchestration API](/guides/orchestration/)). Only the
+REPL-specific pages in this section (`scratch`, `networking`, and the REPL
+itself) document retired workflows.
+:::
+
 ## chainTimerService
 
 The `chainTimerService` is based on block times with units of 1 second.

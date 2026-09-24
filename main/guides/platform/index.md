@@ -34,14 +34,20 @@ machine.
 
 SwingSet provides [orthogonal persistence](<https://en.wikipedia.org/wiki/Persistence_(computer_science)#Orthogonal_or_transparent_persistence>).
 
+SwingSet also supports **vat upgrade**: a running vat can be pointed at a new
+code bundle without losing its durable state, so contracts and platform
+services can be fixed or extended in place instead of being redeployed from
+scratch. See the [Orchestration guide](../orchestration/) for how the
+platform builds on this to let a contract hold and move assets across
+chains from a single durable, upgradable vat.
+
 ## Cosmos SDK
 
-Our testnet has a single SwingSet instance with multiple vats running
-on top of Cosmos SDK. SwingSet and most of our code is written in
-JavaScript, so we currently have a complicated process that starts up
-the JavaScript environment, starts a SwingSet instance, and then
-connects through Go to the Cosmos SDK modules, the consensus algorithm
-in Tendermint, and back again.
+The Agoric chain runs a single SwingSet instance with multiple vats on top
+of Cosmos SDK. SwingSet and most of our code is written in JavaScript, so we
+have a process that starts up the JavaScript environment, starts a SwingSet
+instance, and then connects through Go to the Cosmos SDK modules, the
+consensus engine (CometBFT), and back again.
 
 ## Dynamic IBC
 
@@ -50,18 +56,21 @@ Communication](https://cosmos.network/ibc/). IBC enables messages to
 be sent from one blockchain to another with the use of intermediary
 relayers.
 
-Dynamic IBC (dIBC) is a solution to the problem of rolling out a new
-protocol without needing a platform upgrade or chain governance vote.
+Dynamic IBC (dIBC) solves the problem of rolling out a new protocol on top of
+IBC without needing a platform upgrade or chain governance vote: a smart
+contract or VM platform can deploy new contracts that support new protocols,
+all on an existing chain. This is no longer just a proposal; it's the
+mechanism the [Orchestration API](../orchestration/) uses today to let a
+contract open and manage ICA (Interchain Accounts) and IBC connections to
+other chains, and it's what the [Fast USDC](https://github.com/Agoric/agoric-sdk/tree/master/packages/fast-usdc#readme)
+contract uses to move funds between Noble and Agoric.
 
-In essence, dIBC is the idea of using a smart contract or VM platform
-to deploy new contracts that support new protocols, all on an existing
-chain without having to wait for chain upgrades.
-
-For more information, check out [a recent article on
+For background, see [a recent article on
 dIBC](https://medium.com/agoric/the-road-to-dynamic-ibc-4a43bc964bca).
 
-## Tendermint
+## CometBFT
 
-Tendermint is a consensus engine, defining how blocks are agreed upon
-and created. Effectively, Tendermint is the lowest level layer that
-defines the blockchain itself.
+CometBFT is the consensus engine, defining how blocks are agreed upon
+and created. Effectively, CometBFT is the lowest level layer that
+defines the blockchain itself. (CometBFT is the actively maintained
+continuation of the project formerly known as Tendermint Core.)
