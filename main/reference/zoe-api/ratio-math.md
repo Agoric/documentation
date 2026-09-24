@@ -397,6 +397,21 @@ Creates and returns a new **Ratio** that's equivalent to the _ratio_ argument, b
 
 Creates a **Ratio** from the _numeric_ argument, and returns that **Ratio**.
 
+## ratioToNumber(ratio)
+
+- **ratio**: **[Ratio](./zoe-data-types#ratio)**
+- Returns: **Number**
+
+Converts a **Ratio** to a JavaScript **number** by dividing its numerator's value by its
+denominator's value. Since **numbers** don't have the precision of **BigInts**, only use this for
+approximations, such as for display purposes; don't use it for further exact computation.
+
+```js
+const halfRatio = makeRatio(1n, quatloosBrand, 2n);
+// 0.5
+const half = ratioToNumber(halfRatio);
+```
+
 ## assertParsableNumber(specimen)
 
 - **specimen**: **Object**

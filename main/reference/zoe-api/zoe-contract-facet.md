@@ -34,11 +34,12 @@ transfers that only include one seat, you can use the helper functions
 **[toOnly()](./zoe-helpers#toonly-toseat-toamounts)** to create
 **TransferParts** that only use a subset of the fields.
 
-## zcf.makeZCFMint(keyword, assetKind?, displayInfo?)
+## zcf.makeZCFMint(keyword, assetKind?, displayInfo?, options?)
 
 - **keyword**: **[Keyword](./zoe-data-types#keyword)**
 - **assetKind**: **[AssetKind](/reference/ertp-api/ertp-data-types#assetkind)** - Optional, defaults to **AssetKind.NAT**.
 - **displayInfo**: **[DisplayInfo](/reference/ertp-api/ertp-data-types#displayinfo)** - Optional, defaults to **undefined**.
+- **options**: **IssuerOptionsRecord** - Optional, defaults to **undefined**.
 - Returns: **Promise&lt;[ZCFMint](./zcfmint)>**
 
 Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
@@ -46,6 +47,10 @@ instead of relying on an asynchronous ERTP **[Mint](/reference/ertp-api/mint)**.
 The optional _displayInfo_ parameter takes values
 like **decimalPlaces: 16** that tell the UI how to display values associated with the created mint's
 brand. It defaults to undefined.
+
+The optional _options_ parameter is an **IssuerOptionsRecord**. Its only currently supported field is
+**elementShape**, which constrains the shape of each element when _assetKind_ is one of the set-like
+kinds (**AssetKind.SET**, **AssetKind.COPY_SET**, **AssetKind.COPY_BAG**).
 
 **Important**: **ZCFMints** do **not** have the same methods as an ERTP **Mint**. Do not try to use
 ERTP methods on a **ZCFMint** or vice versa.
@@ -63,6 +68,40 @@ calls to the resulting **ZCFMint** are synchronous.
 const mySynchronousMint = await zcf.makeZCFMint('MyToken', AssetKind.COPY_SET);
 const { brand, issuer } = mySynchronousMint.getIssuerRecord();
 mySynchronousMint.mintGains({ myKeyword: amount }, seat);
+```
+
+## zcf.registerFeeMint(keyword, feeMintAccess)
+
+- **keyword**: **[Keyword](./zoe-data-types#keyword)**
+- **feeMintAccess**: **FeeMintAccess**
+- Returns: **Promise&lt;[ZCFMint](./zcfmint)>**
+
+Registers the contract's synchronous access to the fee mint, allowing the contract to mint and
+reallocate assets of the fee **[Brand](/reference/ertp-api/brand)** (currently **IST**) synchronously,
+the same way **[zcf.makeZCFMint()](#zcf-makezcfmint-keyword-assetkind-displayinfo-options)** does for
+a mint the contract creates itself. Unlike **makeZCFMint()**, this reuses the existing fee issuer
+instead of minting a new asset kind.
+
+_feeMintAccess_ is a credential only obtainable by contracts explicitly granted permission to mint fees;
+most contracts never receive one, and calling this method without a valid _feeMintAccess_ fails.
+
+```js
+const feeZCFMint = await zcf.registerFeeMint('Fee', feeMintAccess);
+```
+
+## zcf.setTestJig(testFn?)
+
+- **testFn**: **() => Object** - Optional.
+- Returns: None.
+
+Provides a jig object for testing purposes only. The supplied _testFn_ callback is only ever called
+in a testing context (specifically, only if a **testJigSetter** was supplied when the contract's vat
+was set up), never in production. If no _testFn_ is supplied, an empty jig is used. Whatever object
+_testFn_ returns has a **zcf** property appended, set to the contract's current **ZCF**, overriding
+any **zcf** property _testFn_ may have provided.
+
+```js
+zcf.setTestJig(() => ({ someState }));
 ```
 
 ## zcf.getInvitationIssuer()
@@ -208,15 +247,19 @@ interface PatternMatchers {
 }
 ```
 
-## zcf.makeEmptySeatKit()
+## zcf.makeEmptySeatKit(exit?)
 
-- Returns: **[ZCFSeat](./zcfseat), Promise&lt;[UserSeat](./user-seat)>**
+- **exit**: **[ExitRule](./zoe-data-types#exitrule)** - Optional.
+- Returns: **{ zcfSeat: [ZCFSeat](./zcfseat), userSeat: Promise&lt;[UserSeat](./user-seat)> }**
 
-Returns an empty **ZCFSeat** and a **Promise** for a **UserSeat**
+Returns an empty **ZCFSeat** and a **Promise** for a **UserSeat**.
 
 Zoe uses **seats** to represent offers, and has two seat facets (a
 particular view or API of an object;
 there may be multiple such facets per object) a **ZCFSeat** and a **UserSeat**.
+
+The optional _exit_ argument is an **ExitRule**, the same shape used in a **Proposal**'s **exit**
+clause; it defaults to **{ onDemand: null }**.
 
 ```js
 const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
