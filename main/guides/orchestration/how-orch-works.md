@@ -119,7 +119,8 @@ Below is an example of an ICQ invocation to get balance of a remote account on
 const remoteChainBalance = await remoteAccount.getBalance('uosmo');
 ```
 
-While ICA is a cross-chain write, ICQ is a cross-chain read.
+While ICA is a cross-chain write, ICQ is a cross-chain read. Not every chain supports it: `getBalance` and
+`getBalances` throw unless the chain's registered `CosmosChainInfo` has `icqEnabled: true`.
 
 ### Why Agoric's Approach Stands Out
 

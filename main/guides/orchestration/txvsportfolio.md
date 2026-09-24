@@ -46,22 +46,24 @@ of the transactional flow:
 ```js
 export const sendIt = async (
   orch,
-  { sharedLocalAccountP, log, zoeTools },
+  { chainHub, sharedLocalAccountP, log, zoeTools: { localTransfer } },
   seat,
   { chainName, destAddr }
 ) => {
-  // 1. Extract the single token amount from the proposal.
+  // 1. Extract the single token amount from the proposal, and resolve its denom.
   const { give } = seat.getProposal();
-  const { In: amount } = give;
+  const [[_kw, amt]] = Object.entries(give);
+  const denom = await denomForBrand(orch, amt.brand);
 
   // 2. Transfer the tokens into a local account that can initiate the IBC transfer.
-  await zoeTools.localTransfer(seat, sharedLocalAccountP, give);
+  const sharedLocalAccount = await sharedLocalAccountP;
+  await localTransfer(seat, sharedLocalAccount, give);
 
-  // 3. Execute the cross-chain transfer.
-  const { chainId } = await orch.getChain(chainName);
-  await sharedLocalAccountP.transfer(
-    { value: destAddr, chainId },
-    { denom, value: amount.value }
+  // 3. Execute the cross-chain transfer. `transfer` takes the destination first.
+  const { chainId } = await chainHub.getChainInfo(chainName);
+  await sharedLocalAccount.transfer(
+    { value: destAddr, encoding: 'bech32', chainId },
+    { denom, value: amt.value }
   );
 
   // 4. Finish. No persistent state is stored for this user.
@@ -71,10 +73,14 @@ export const sendIt = async (
 
 In this snippet, we perform the following steps:
 
-1. **Extract token Details**: The user's seat provides the tokens details (_amount_, i.e., _brand_ and _value_) in a single `give`.
+1. **Extract token Details**: The user's seat provides the tokens details (_amount_, that is, _brand_ and _value_) in a single `give`, and we resolve the local `denom` for that brand.
 2. **Send via localAccount**: An account on the local Agoric chain is used only as a helper to transfer funds from `seat` to an ICA account.
 3. **IBC transfer**: Tokens are transferred cross-chain in a single step via [`transfer` API](/guides/orchestration/key-concepts#funds-transfer).
 4. **No ongoing portfolio**: Once done, the seat concludes—there is no stored user state.
+
+This is simplified for illustration; the real `sendIt` also handles a non-Cosmos, CCTP-via-Noble destination and
+recovers the assets to the seat on failure. See the full
+[`send-anywhere` walkthrough](/guides/orchestration/contract-walkthroughs/send-anywhere) for the complete flow.
 
 This is a typical example of a transactional contract. It performs a single
 action (sending tokens) and does not maintain any ongoing user state. The user interacts once, and

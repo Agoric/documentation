@@ -64,14 +64,14 @@ const stride = await orch.getChain('stride');
 // Create account
 const strideAccount = await stride.makeAccount();
 
-// Get address
+// Get address (getAddress is synchronous, so no await)
 const strideAddr = strideAccount.getAddress();
 ```
 
 ### 2. Cross-Chain Asset Transfers and Staking
 
 This example demonstrates a complete flow of transferring and staking assets across
-multiple chains:
+multiple chains. `transfer` takes the destination first (`transfer(destination, amount)`):
 
 ```js
 // Transfer funds from Osmosis to Agoric
@@ -80,25 +80,30 @@ const osmoToAgoricTransfer = await osmoAccount.transfer(agoricAddr, amount);
 // Forward funds from Agoric to Stride
 const agoricToStrideTransfer = await agoricAccount.transfer(strideAddr, amount);
 
-// Create liquid stake message for Stride
-const liquidStakeMsg = Any.toJSON(
-  MsgLiquidStake.toProtoMsg({
-    creator: strideAccount.value,
-    amount: amount.toString(),
-    denom: 'uosmo'
-  })
-);
-
-// Execute staking transaction on Stride
-await strideAccount.executeEncodedTx([liquidStakeMsg]);
+// Delegate to a validator on Stride using the typed `delegate` method
+const strideValidator = {
+  chainId: 'stride-1',
+  value: 'stridevaloper1...',
+  encoding: 'bech32'
+};
+await strideAccount.delegate(strideValidator, amount);
 
 // Transfer staked tokens back to user's Osmosis address
 const finalTransfer = await strideAccount.transfer(userOsmoAddress, amount);
 ```
+
+`delegate` (and its counterparts `undelegate`, `redelegate`, `withdrawReward(s)`) is one of the typed
+`StakingAccountActions` available on any Cosmos account; prefer them over the lower-level
+`executeEncodedTx(msgs)` escape hatch, which submits raw encoded protobuf messages and should only be needed for
+message types that do not yet have a typed method.
 
 These examples demonstrate how Orchestration enables seamless cross-chain
 operations while abstracting away the underlying complexity. Developers can focus
 on building their applications' logic while the Orchestration API handles the
 intricate details of cross-chain communication. For more details, check out the code
 of [several working examples](https://github.com/Agoric/agoric-sdk/tree/master/packages/orchestration/src/examples), and their [unit tests](https://github.com/Agoric/agoric-sdk/tree/master/packages/orchestration/test/examples). We will walkthrough the code of a couple
-of these examples [here](./contract-walkthroughs/).
+of these examples [here](./contract-walkthroughs/). Beyond the two contracts walked through there, the same
+package includes more recent examples worth reading directly from source: `swap-anything` (a generalized swap
+across chains), `axelar-gmp` (calling EVM contracts via Axelar's General Message Passing), and the flagship
+products built on Orchestration, [Fast USDC](https://github.com/Agoric/agoric-sdk/tree/master/packages/fast-usdc)
+and the [YMax portfolio contract](https://github.com/Agoric/agoric-sdk/tree/master/packages/portfolio-contract).

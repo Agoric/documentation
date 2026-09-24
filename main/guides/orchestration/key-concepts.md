@@ -16,27 +16,35 @@ set of high-level methods to manage and interact with local and remote chains. B
 const chain = await orchestrator.getChain('chainName');
 ```
 
-### Brand Utility Functions
+### Denom Utility Functions
 
-- `getBrandInfo` returns information about a `denom`, including the equivalent local Brand, the chain where the denom is
-  held, and the chain that issues the corresponding asset. See [getBrandInfo](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#getBrandInfo).
-
-```js
-const brandInfo = orchestrator.getBrandInfo('denom');
-```
-
-- `asAmount` converts a denom amount to an `Amount` with a brand. See [asAmount](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#asAmount).
+- `getDenomInfo` returns information about a `denom`: the equivalent local `Brand` (if any), the `Chain` where the
+  denom is currently held, and the `Chain` that issues the underlying asset. It is synchronous and returns the
+  `DenomInfo` record directly (not a promise). It requires that `getChain` has already been called (and resolved)
+  for both the holding chain and the issuing chain earlier in the flow; otherwise it throws. See
+  [getDenomInfo](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#getDenomInfo).
 
 ```js
-const amount = orchestrator.asAmount({ denom: 'uatom', value: 1000n });
+// getChain must be awaited first so the Orchestrator has resolved the chains
+// that back this denom.
+await orch.getChain(srcChainName);
+await orch.getChain(issuingChainName);
+
+const denomInfo = orch.getDenomInfo(denom, srcChainName);
+// => { brand, chain, base, baseDenom }
 ```
+
+- `asAmount` is declared to convert a `DenomAmount` to a local, structured `Amount`, but as of this writing it is not
+  yet implemented in `@agoric/orchestration` (it throws `not yet implemented`). Do not rely on it; look up the
+  `Brand` via `getDenomInfo` or a chain's `getVBankAssetInfo()` and construct the `Amount` with `AmountMath` instead.
 
 ## Orchestration Account
 
-Orchestration accounts are a key concept in the Agoric Orchestration API, represented by the [`OrchestrationAccount`](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountCommon)
-interface. These accounts provide high-level operations for managing accounts on remote chains, allowing seamless
-interaction and management of interchain accounts. The Orchestration accounts abstract the complexity of interchain
-interactions, providing a unified and simplified interface for developers.
+Orchestration accounts are a key concept in the Agoric Orchestration API, represented by the [`OrchestrationAccountCommon`](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountCommon)
+interface, which every account (local or remote) implements. These accounts provide high-level operations for
+managing accounts on remote chains, allowing seamless interaction and management of interchain accounts. The
+Orchestration accounts abstract the complexity of interchain interactions, providing a unified and simplified
+interface for developers.
 
 ### Account Creation
 
@@ -55,16 +63,19 @@ const [localAccount, remoteAccount] = await Promise.all([
 
 ### Address Management
 
-- `getAddress` retrieves the address of the account on the remote chain.
+- `getAddress` retrieves the address of the account on the remote chain. It is synchronous; do not `await` it.
 
 ```js
-const address = await orchestrationAccount.getAddress();
+const address = orchestrationAccount.getAddress();
 ```
 
 ### Balance Management
 
 - `getBalances` returns an array of amounts for every balance in the account.
 - `getBalance` retrieves the balance of a specific denom for the account.
+
+Both throw if the chain does not have ICQ enabled (`icqEnabled` in its `CosmosChainInfo`); see
+[how-orch-works](./how-orch-works.md).
 
 ```js
 const balances = await orchestrationAccount.getBalances();
@@ -73,57 +84,97 @@ const balance = await orchestrationAccount.getBalance('uatom');
 
 ### Funds Transfer
 
-- `send` transfers an amount to another account on the same chain.
-- `transfer` transfers an amount to another account, typically on another chain.
-- `transferSteps` transfers an amount in multiple steps, handling complex transfer paths.
-- `deposit` deposits payment from Zoe to the account. For remote accounts, an IBC Transfer will be executed to transfer
-  funds there.
+- `send` transfers an amount to another account on the same chain: `send(toAccount, amount, opts?)`.
+- `sendAll` transfers multiple amounts to another account on the same chain in one transaction:
+  `sendAll(toAccount, amounts, opts?)`.
+- `transfer` transfers an amount to another account, typically on another chain. The destination comes first:
+  `transfer(destination, amount, opts?)`.
+- `transferSteps` transfers an amount across a multi-hop path, handling complex transfer paths. Here the amount
+  comes first: `transferSteps(amount, transferMsg)`.
+- `makeProgressTracker` returns a `ProgressTracker` that can be passed as `{ progressTracker }` in the options of a
+  transfer-like call to receive incremental updates as a multi-step transfer progresses.
+- `getPublicTopics` returns the account's published vstorage topics (used together with `asContinuingOffer` to
+  expose account state to a smart-wallet client).
 
 ```js
 await orchestrationAccount.send(receiverAddress, amount);
-await orchestrationAccount.transfer(amount, destinationAddress);
+await orchestrationAccount.sendAll(receiverAddress, [amount1, amount2]);
+await orchestrationAccount.transfer(destinationAddress, amount);
 await orchestrationAccount.transferSteps(amount, transferMsg);
-await orchestrationAccount.deposit(payment);
 ```
+
+`deposit` (move a Zoe `Payment` into the account) is **not** part of `OrchestrationAccountCommon`. It is only
+available on the local (Agoric) account facet, via `LocalAccountMethods`:
+
+```js
+// only on the local Agoric chain account, for example agoricAccount from agoric.makeAccount()
+const depositedAmount = await agoricAccount.deposit(payment);
+```
+
+Cosmos accounts do not have `deposit`; move funds onto a cosmos account with `transfer` instead. A Noble account has
+its own `depositForBurn` for CCTP transfers; see the
+[send-anywhere walkthrough](./contract-walkthroughs/send-anywhere.md).
 
 ## ChainHub
 
 ChainHub is a centralized registry of chains, connections, and denoms that simplifies accessing and interacting with
-multiple chains, providing a unified interface for the Orchestration logic to manage cross-chain operations effectively.
-A chainHub instance can be created using a call to `makeChainHub` that makes a new ChainHub in the zone (or in the heap
-if no [zone](/glossary/#zone) is provided). The resulting object is an [Exo](/glossary/#exo) singleton. It has no
-precious state. Its only state is a cache of queries to `agoricNames` and the info provided in registration calls. When
-you need a newer version you can simply make a hub and repeat the registrations. ChainHub allows dynamic registration
-and use of chain and connection information using the following APIs:
+multiple chains, providing a unified interface for the Orchestration logic to manage cross-chain operations
+effectively. The resulting object is an [Exo](/glossary/#exo) singleton. It has no precious state: its only state is
+a cache of queries to `agoricNames` and the info provided in registration calls. When you need a newer version you
+can simply make a hub and repeat the registrations.
 
-### Registration APIs
+`withOrchestration` (see [`start-helper.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/orchestration/src/utils/start-helper.js))
+creates and provides a `chainHub` instance as part of the `tools` passed to a contract's `start` function, so most
+contracts do not call `makeChainHub` directly; it is mainly useful when constructing a `ChainHub` outside of a
+contract, such as in tests.
 
-- `registerChain` register a new chain with `chainHub`. The name will override a name in well-known chain names.
-- `registerConnection` registers a connections between two given chain IDs.
-- `registerAsset` registers an asset that may be held on a chain other than the issuing chain. Both corresponding chains
-  should already be registered before this call.
+### Registering chains and assets
 
-### Information Retrieval
-
-- `getChainInfo` takes a chain name to get chain info.
-- `getConnectionInfo` returns `Vow<IBCConnectionInfo>` for two given chain IDs.
-- `getChainsAndConnection` is used to get chain and connection info given primary and counter chain names.
-- `getAsset` retrieves holding, issuing chain names etc. for a denom.
-- `getDenom` retrieves denom (string) for a `Brand`.
-
-In the below example, `chainHub` is used to register a new chain and establish a connection between the Agoric chain and
-the newly registered chain.
+The idiomatic way for a contract to populate its `chainHub` is `registerChainsAndAssets`, called once during
+`start` with the `chainInfo`/`assetInfo` the contract received in `privateArgs`:
 
 ```js
-const chainHub = makeChainHub(privateArgs.agoricNames, vowTools);
+import { registerChainsAndAssets } from '@agoric/orchestration/src/utils/chain-hub-helper.js';
 
-// Register a new chain with its information
+// inside the contract's start function, given `{ chainHub }` from `tools`
+registerChainsAndAssets(
+  chainHub,
+  zcf.getTerms().brands,
+  privateArgs.chainInfo,
+  privateArgs.assetInfo
+);
+```
+
+This registers every chain in `chainInfo` (and the connections nested under each chain's `connections` field), then
+every asset in `assetInfo`, resolving each asset's `brandKey` against the contract's `brands`. Well-known chains
+(the ones already indexed in `agoricNames`, such as `agoric`, `cosmoshub`, `osmosis`, `noble`) are looked up
+automatically and do not need to be registered this way.
+
+For lower-level, one-off registration (for example from a creator facet after the contract has started), `chainHub`
+also exposes the primitives `registerChain`, `registerConnection`, and `registerAsset` directly:
+
+```js
 chainHub.registerChain(chainKey, chainInfo);
-
-// Register a connection between the Agoric chain and the new chain
 chainHub.registerConnection(
   agoricChainInfo.chainId,
   chainInfo.chainId,
   connectionInfo
 );
+chainHub.registerAsset(denom, denomDetail);
 ```
+
+`prepareChainHubAdmin` (in [`chain-hub-admin.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/orchestration/src/exos/chain-hub-admin.js))
+wraps `registerChain`/`registerAsset` as a durable creator-facet API for adding chain configuration after the
+contract has already started.
+
+### Information Retrieval
+
+- `getChainInfo(chainName)` returns a `Vow<ChainInfo>` for a chain name.
+- `getChainInfoByChainId(chainId)` returns the `ChainInfo` (synchronously) for a CAIP chain ID, once that chain has
+  been registered or looked up.
+- `getConnectionInfo(primary, counter)` returns a `Vow<IBCConnectionInfo>` for two given chain IDs.
+- `getChainsAndConnection(primaryName, counterName)` returns a `Vow` of chain and connection info given primary and
+  counterparty chain names.
+- `getAsset(denom, srcChainName)` retrieves the `DenomDetail` (holding/issuing chain names, base denom, brand) for a
+  denom.
+- `getDenom(brand)` retrieves the denom (string) for a `Brand`, or `undefined` if it is not registered.
