@@ -1,8 +1,6 @@
 # Covered Call Contract
 
-<Zoe-Version/>
-
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/coveredCall.js) (Last updated: Sep 12, 2020)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/coveredCall.js)
 
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
@@ -25,7 +23,7 @@ to deposit assets. When they do so, the offer result is another invitation
 that serves as the call option. The invitation includes details of the
 transaction for the benefit of the counter-party. Their assured presence in
 the invitation allows the recipient of the invitation to verify what has
-been escrowed: `{ expirationDate, timerAuthority, underlyingAsset,
+been escrowed: `{ expirationDate, timeAuthority, underlyingAssets,
 strikePrice }`.
 
 ## The Contract's API
@@ -188,9 +186,9 @@ const { installation: daveSwapInstall, instance } =
 const daveSwapIssuers = await E(zoe).getIssuers(instance);
 
 // Dave does some checks
-assert(daveSwapInstall === swapInstallation, details`wrong installation`);
-assert(daveIssuers.Asset === moolaIssuer, details`unexpected Asset issuer`);
-assert(daveIssuers.Price === simoleanIssuer, details`unexpected Price issuer`);
+daveSwapInstall === swapInstallation || Fail`wrong installation`;
+daveSwapIssuers.Asset === moolaIssuer || Fail`unexpected Asset issuer`;
+daveSwapIssuers.Price === simoleanIssuer || Fail`unexpected Price issuer`;
 ```
 
 Dave can safely proceed with the swap because he knows that if Bob has lied
@@ -239,3 +237,12 @@ const daveCallSeat = await E(zoe).offer(
 const daveMoolaPayout = await daveCallSeat.getPayout('UnderlyingAsset');
 await daveMoolaPurse.deposit(daveMoolaPayout);
 ```
+
+## Durable Variant
+
+The walkthrough above describes the plain, heap-based
+[`coveredCall.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/coveredCall.js), whose in-memory state does not survive a contract upgrade. Agoric also
+ships [`coveredCall-durable.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/coveredCall-durable.js), the same contract rebuilt with baggage and
+`prepareExoClass` so its exerciser and creator facet persist across an
+upgrade. See [Contract Upgrade](../contract-upgrade) for background on
+durability and how upgrade works.

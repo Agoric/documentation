@@ -1,10 +1,19 @@
 # ConstantProduct AMM Contract
 
-<Zoe-Version/>
+::: warning Removed from agoric-sdk
+This contract was part of `@agoric/inter-protocol` and was removed from `agoric-sdk` in
+[Agoric/agoric-sdk#7074](https://github.com/Agoric/agoric-sdk/pull/7074) (closed March 1,
+2023), years before the rest of Inter Protocol followed in
+[Agoric/agoric-sdk#12744](https://github.com/Agoric/agoric-sdk/pull/12744). Vault liquidation
+moved to a descending-clock `auctioneer` at the same time; nothing in current `agoric-sdk`
+replaces this AMM's multi-pool trading role. The much simpler `autoswap.js` demo (single
+fixed pair, no multi-pool routing) is the closest thing still in the repository; see
+[the example contracts index](./). Treat everything below as historical.
+:::
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/7d141a47b311363f099f496d4ed9b4d0f28c8fff/packages/inter-protocol/src/vpool-xyk-amm/multipoolMarketMaker.js) (Last updated: Aug 15, 2022)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/70ba9b0ce1bf20c815e3d63ac98cc7086a813984/packages/inter-protocol/src/vpool-xyk-amm/multipoolMarketMaker.js) (last commit before removal: 2023)
 
-##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
+##### [View current demo contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 The Constant Product AMM is an automated market maker (AMM) that supports multiple
 liquidity pools and direct exchanges across pools. It's called the "Constant

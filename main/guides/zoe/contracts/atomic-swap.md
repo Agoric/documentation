@@ -1,8 +1,6 @@
 # Atomic Swap Contract
 
-<Zoe-Version/>
-
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/atomicSwap.js) (Last updated: Sep 12, 2020)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js)
 
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
@@ -52,10 +50,10 @@ In this case, Alice's exit rule is `onDemand`, meaning she
 can exit the contract instance at any time.
 
 ```js
-const threeMoola = AmountMath.make(moolaBrand, 3);
+const threeMoola = AmountMath.make(moolaBrand, 3n);
 const aliceProposal = harden({
   give: { Asset: threeMoola },
-  want: { Price: AmountMath.make(simoleanBrand, 7) },
+  want: { Price: AmountMath.make(simoleanBrand, 7n) },
   exit: { onDemand: null }
 });
 
@@ -85,27 +83,25 @@ Bob examines the invitation's details to see if they match Alice's claims
 about it.
 
 ```js secondary style2
-const { installation: bobInstallation, instance } =
-  E(zoe).getInvitationDetails(invitationP);
-const bobIssuers = E(zoe).getIssuers(instance);
+const invitationIssuer = E(zoe).getInvitationIssuer();
+const { installation: bobInstallation, instance } = await E(
+  zoe
+).getInvitationDetails(invitationP);
+const bobIssuers = await E(zoe).getIssuers(instance);
 
-const bobExclusiveInvitation = await invitationIssuer.claim(invitationP);
+const bobExclusiveInvitation = await E(invitationIssuer).claim(invitationP);
 const bobInvitationValue = await E(zoe).getInvitationDetails(
   bobExclusiveInvitation
 );
 
 // Bob verifies the invitation.
-assert(bobInstallation === atomicSwapInstallation, details`wrong contract`);
-assert(bobIssuers.Asset === moolaIssuer, details`unexpected Asset issuer`);
-assert(bobIssuers.Price === simoleanIssuer, details`unexpected Price issuer`);
-assert(
-  AmountMath.isEqual(bobInvitationValue.asset, moola(3)),
-  details`wrong asset`
-);
-assert(
-  AmountMath.isEqual(bobInvitationValue.price, simoleans(7)),
-  details`wrong price`
-);
+bobInstallation === atomicSwapInstallation || Fail`wrong contract`;
+bobIssuers.Asset === moolaIssuer || Fail`unexpected Asset issuer`;
+bobIssuers.Price === simoleanIssuer || Fail`unexpected Price issuer`;
+AmountMath.isEqual(bobInvitationValue.customDetails.asset, moola(3n)) ||
+  Fail`wrong asset`;
+AmountMath.isEqual(bobInvitationValue.customDetails.price, simoleans(7n)) ||
+  Fail`wrong price`;
 ```
 
 Bob decides to exercise the invitation, and to escrow his payments. He then

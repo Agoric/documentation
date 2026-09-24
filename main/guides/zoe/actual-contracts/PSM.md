@@ -1,8 +1,18 @@
 # PSM Contract
 
-<Zoe-Version/>
+::: warning Removed from agoric-sdk
+`@agoric/inter-protocol`, including the PSM, was removed from `agoric-sdk` in
+[Agoric/agoric-sdk#12744](https://github.com/Agoric/agoric-sdk/pull/12744) (merged June 18,
+2026); Inter Protocol is no longer supported and there is no current package to install a
+fresh PSM instance from. Instances started before that change keep running on mainnet, and
+the API below is accurate for them, but the source is only reachable at the historical commit
+linked next.
+:::
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/inter-protocol/src/psm/psm.js) (Last updated: Aug 15, 2022)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/cbcea8c2415f2c9c4bc1ea9ff90730f2773bafaa/packages/inter-protocol/src/psm/psm.js) (last commit before removal: June 2026)
+
+See [Deployed Zoe Contracts](./) for where the PSM's governance machinery (the economic
+committee and its charter) ended up after the removal.
 
 The Parity Stability Module (PSM) contract allows users to convert Inter Stable Tokens (ISTs)
 to external stable tokens at a specified fixed ratio, and vice versa.

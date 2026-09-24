@@ -1,8 +1,6 @@
 # Second-Price Auction Contract
 
-<Zoe-Version/>
-
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/a564c6081976d7b66b3cdf54e0ba8903c8f1ee6d/packages/zoe/src/contracts/auction/secondPriceAuction.js) (Last updated: Sep 14, 2020)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/auction/index.js) (winner-selection logic: [`secondPriceLogic.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/auction/secondPriceLogic.js))
 
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
@@ -14,59 +12,66 @@ used in production for real valuables.</b> It's a demonstration that auctions un
 Zoe can enforce different rules about how prices are calculated, or how winners are
 selected.
 
-An auction contract is which the seller offers an Asset for sale, and states a
-minimum price. The auction closes at the deadline specified by the timeAuthority and
-closesAfter parameters in the terms provided by the creator of the contract
-instance. The second price rule is followed, so the highest bidder pays the amount
-bid by the second highest bidder.
+This is one winner-price option of a shared `auction` contract; the other,
+`first-price`, is implemented by the sibling
+[`firstPriceLogic.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/auction/firstPriceLogic.js).
+An auction contract is one in which the seller offers an Asset for sale, and states a
+minimum price. The auction closes when `bidDuration` has elapsed on the `timeAuthority`
+timer passed in as a term. The second-price rule is followed, so the highest bidder pays
+the amount bid by the second-highest bidder.
 
-`startInstance()` specifies the issuers and the terms. An invitation for the seller is
-returned as the creatorInvitation. The seller's offer should look like
+`startInstance()` is given issuers for the `Asset` and `Ask` keywords, and terms
+`{ timeAuthority, bidDuration, winnerPriceOption }` (`winnerPriceOption` defaults to
+`'second-price'`). An invitation for the seller is returned as the creatorInvitation.
+The seller's offer should look like
 
 ```js
-{ give: { Asset: asset }, want: { Ask: minimumBidAmount}}
+{ give: { Asset: asset }, want: { Ask: minimumBidAmount } }
 ```
 
 The asset can be non-fungible, but the Ask amount should be of a
 fungible brand. Make the bidder invitations by calling
 `makeBidInvitation()` on the object returned from the seller's
-offer. Each bidder can submit an offer: `js { give: { Bid: null }
-want: { Asset: null } }.  `
+offer. Each bidder can submit an offer:
+
+```js
+{ give: { Bid: null }, want: { Asset: null } }
+```
 
 ## Public Second-Price Auction
 
-In this particular "public" second-price auction, anyone who has access to the
-auction instance can make a bid by submitting a proposal.
+In this particular "public" second-price auction, anyone who has access to a bid
+invitation can make a bid by submitting a proposal.
 
-Alice can create an auction from an existing second-price auction
-installation. (`installation` is the unique, unforgeable identifier for the
-installation.)
+Alice can create an auction from an existing auction installation, passing a timer and
+how long bidding should stay open. (`installation` is the unique, unforgeable identifier
+for the installation.)
 
 ```js
 const issuerKeywordRecord = harden({
   Asset: moolaIssuer,
-  Bid: simoleanIssuer
+  Ask: simoleanIssuer,
 });
 
-const terms = harden({ numBidsAllowed: 3 });
+const terms = harden({ timeAuthority, bidDuration: 1n });
 const { creatorInvitation } = await E(zoe).startInstance(
   installation,
   issuerKeywordRecord,
-  terms
+  terms,
 );
 ```
 
 She can put something up for auction by escrowing it with Zoe, so she provides a
 payment for what she wants to sell, and makes a `proposal`. The proposal's terms will
 be enforced by Zoe and will protect Alice from misbehavior by the smart contract and
-other participants. If no `exit` rule is given, as in this example, the default (`{
-onDemand: null }`) is used.
+other participants. The seller can't exit early; the auction only closes when the timer
+fires.
 
 ```js
 const aliceProposal = harden({
   give: { Asset: AmountMath.make(moolaBrand, 1n) },
-  want: { Bid: AmountMath.make(simoleanBrand, 3n) },
-  exit: { waived: null }
+  want: { Ask: AmountMath.make(simoleanBrand, 3n) },
+  exit: { waived: null },
 });
 
 const alicePayments = { Asset: aliceMoolaPayment };
@@ -74,10 +79,10 @@ const alicePayments = { Asset: aliceMoolaPayment };
 const aliceSeat = await E(zoe).offer(
   creatorInvitation,
   aliceProposal,
-  alicePayments
+  alicePayments,
 );
-const invitationMaker = await E(aliceSeat).getOfferResult();
-const bobInvitation = E(invitationMaker).makeBidInvitation();
+const offerResult = await E(aliceSeat).getOfferResult();
+const bobInvitation = E(offerResult).makeBidInvitation();
 ```
 
 Now Alice can share the counterparty invitation with her friends and see if there are
@@ -91,15 +96,12 @@ const invitationIssuer = await E(zoe).getInvitationIssuer();
 const bobExclusiveInvitation = await invitationIssuer.claim(bobInvitation);
 
 const { installation: bobInstallation, instance } = await E(
-  zoe
+  zoe,
 ).getInvitationDetails(bobExclusiveInvitation);
 const bobIssuers = await E(zoe).getIssuers(instance);
 
-assert(
-  bobInstallation === secondPriceAuctionInstallation,
-  details`wrong installation`
-);
-assert(bobIssuers.Asset === moolaIssuer, details`wrong issuer`);
+bobInstallation === auctionInstallation || Fail`wrong installation`;
+bobIssuers.Asset === moolaIssuer || Fail`wrong issuer`;
 ```
 
 Bob decides to join the contract and makes an offer:
@@ -107,7 +109,7 @@ Bob decides to join the contract and makes an offer:
 ```js
 const bobProposal = harden({
   give: { Bid: AmountMath.make(simoleanBrand, 11n) },
-  want: { Asset: AmountMath.make(moolaBrand, 1n) }
+  want: { Asset: AmountMath.make(moolaBrand, 1n) },
 });
 
 const bobPayments = { Bid: bobSimoleanPayment };
@@ -115,7 +117,7 @@ const bobPayments = { Bid: bobSimoleanPayment };
 const bobSeat = await E(zoe).offer(
   bobExclusiveInvitation,
   bobProposal,
-  bobPayments
+  bobPayments,
 );
 ```
 
@@ -131,16 +133,17 @@ simoleans (11-7), and Carol and Dave get a full refund.
 const aliceAssetPayout = await aliceSeat.getPayout('Asset');
 const moolaRefundAmount = aliceMoolaPurse.deposit(aliceAssetPayout);
 
-const alicePricePayout = await aliceSeat.getPayout('Price');
-const simoleanGainAmount = aliceSimPurse.deposit(alicePricePayout);
+const aliceAskPayout = await aliceSeat.getPayout('Ask');
+const simoleanGainAmount = aliceSimPurse.deposit(aliceAskPayout);
 ```
 
-Bob's payouts are also available.
+Bob's payouts are also available, keyed by `Asset` (what he won) and `Bid` (his refund,
+since bidders never use the `Ask` keyword):
 
 ```js
 const bobAssetPayout = await bobSeat.getPayout('Asset');
 const bobMoolaGainAmount = bobMoolaPurse.deposit(bobAssetPayout);
 
-const bobPricePayout = await bobSeat.getPayout('Price');
-const bobSimoleanRefundAmount = bobSimoleanPurse.deposit(bobPricePayout);
+const bobBidPayout = await bobSeat.getPayout('Bid');
+const bobSimoleanRefundAmount = bobSimoleanPurse.deposit(bobBidPayout);
 ```

@@ -1,10 +1,12 @@
 # Loan Contract
 
-<Zoe-Version/>
-
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/loan/index.js) (Last updated: Nov 23, 2021)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/loan/index.js)
 
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
+
+This is a demo loan contract that still ships in `agoric-sdk`; it is not the production
+lending path, which was the Inter Protocol `vaultFactory`, removed from `agoric-sdk` (see
+[Deployed Zoe Contracts](../actual-contracts/) for what is actually deployed today).
 
 The basic loan contract has two parties, a _lender_ and a _borrower_.
 It lets the borrower add collateral of a particular brand and get a
@@ -30,10 +32,11 @@ loaned amount and interest must be of the same (separate) brand.
   drops below `mmr`, liquidation can occur.
 - [`priceAuthority`](/guides/zoe/price-authority) - used for getting the current value of
   collateral and setting liquidation triggers.
-- `autoswapInstance` - The running contract instance for
-  [AMM](./constantProductAMM) installation. The `publicFacet`
-  of the instance is used to make an invitation to sell the
-  collateral on liquidation.
+- `autoswapInstance` - The running contract instance of an
+  [`autoswap.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/autoswap.js)
+  installation, the single-pair demo AMM that is the surviving contract of this shape in
+  `agoric-sdk` (see [the example contracts index](./)). The `publicFacet` of the instance is
+  used to make an invitation to sell the collateral on liquidation.
 - `periodNotifier` - the [notifier](/guides/js-programming/notifiers) used for notifications
   that a period has passed, on which compound interest will be
   calculated using the `interestRate`.
@@ -58,7 +61,7 @@ further actions. The loan is ongoing until it is paid back entirely or
 liquidated, at which point the lender receives a payout. This means
 the lender's payout will be in Loan-branded digital assets,
 not Collateral-brand. (The only exception is if the scheduling
-of liquidation triggers with the `priceAuthority` results in a error. In
+of liquidation triggers with the `priceAuthority` results in an error. In
 that case, we must give the collateral to the lender.
 The borrower has already exited with their loan.)
 
@@ -137,7 +140,7 @@ want a reminder to add collateral.
 
 ## Liquidating
 
-Actual liquidation is done through an AMM
-regardless of its current price.
-Even if the price is worse or better than what our `priceAuthority`
-quoted, we still liquidate.
+Actual liquidation is done by trading all the collateral into the
+[`autoswap.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/autoswap.js)
+instance named by `autoswapInstance`, regardless of its current price. Even if the price is
+worse or better than what our `priceAuthority` quoted, we still liquidate.

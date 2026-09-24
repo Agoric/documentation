@@ -1,8 +1,6 @@
 # Simple Exchange Contract
 
-<Zoe-Version/>
-
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/simpleExchange.js) (Last updated: Sep 12, 2020)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/simpleExchange.js)
 
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
@@ -99,12 +97,9 @@ installation he gets from the invitation with a canonical link he found in a
 public directory he trusts.
 
 ```js
-assert(
-  installation === simpleExchangeInstallation,
-  details`wrong installation`
-);
-assert(bobIssuers.Asset === moolaIssuer, details`wrong Asset issuer`);
-assert(bobIssuers.Price === simoleanIssuer, details`wrong Price issuer`);
+installation === simpleExchangeInstallation || Fail`wrong installation`;
+bobIssuers.Asset === moolaIssuer || Fail`wrong Asset issuer`;
+bobIssuers.Price === simoleanIssuer || Fail`wrong Price issuer`;
 ```
 
 Bob has checked that everything is in order, so he fulfills the buy order:
@@ -117,7 +112,7 @@ const bobBuyOrderProposal = harden({
 });
 
 const bobSimPayment = await E(bobSimoleanPurse).withdraw(
-  AmountMath(simoleanBrand, 7n)
+  AmountMath.make(simoleanBrand, 7n)
 );
 const bobPayments = { Price: bobSimPayment };
 

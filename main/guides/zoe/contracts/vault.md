@@ -1,10 +1,20 @@
 # Vault Contract
 
-<Zoe-Version/>
+::: warning Removed from agoric-sdk
+The `vaultFactory`, including this Vault contract, was part of `@agoric/inter-protocol`,
+removed from `agoric-sdk` in [Agoric/agoric-sdk#12744](https://github.com/Agoric/agoric-sdk/pull/12744)
+(merged June 18, 2026). Inter Protocol is no longer supported; there is no current package
+to link to. Vaults opened before that change keep running on mainnet, and the description
+below is accurate for them, but you can't start a new `vaultFactory` instance from
+`agoric-sdk` anymore. See [Deployed Zoe Contracts](../actual-contracts/) for what replaced
+its surrounding governance machinery, and [ConstantProduct AMM](./constantProductAMM) for
+the liquidation path this contract used to depend on (superseded years earlier by the
+descending-clock auctioneer).
+:::
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/7d141a47b311363f099f496d4ed9b4d0f28c8fff/packages/inter-protocol/src/vaultFactory/vaultFactory.js) (Last updated: Aug 15, 2022)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/cbcea8c2415f2c9c4bc1ea9ff90730f2773bafaa/packages/inter-protocol/src/vaultFactory/vaultFactory.js) (last commit before removal: June 2026)
 
-##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
+##### [View current demo contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 The Vault is the primary mechanism for making `IST` (the Agoric stable-value
 currency) available to participants in the economy. It does this by issuing
@@ -64,11 +74,12 @@ interest rate and required collateralization ratio.
 
 The `liquidationMargin` is the `collateralizationRatio` required to open a vault
 and keep it open. If the ratio of current value of collateral (according to the
-`priceAuthority`, currently driven by the AMM) to the outstanding debt falls
-below `liquidationMargin`, the collateral will be sold off, the debt repaid, and
-any remainder returned to the borrower. So it's prudent for borrowers to
-over-collateralize so that price volatility and interest charges don't quickly
-drive their loans into default.
+`priceAuthority`) to the outstanding debt falls below `liquidationMargin`, the
+collateral will be sold off, the debt repaid, and any remainder returned to the
+borrower. By the time of the removal described above, liquidation ran through a
+descending-clock `auctioneer`, not the AMM this page originally described. So
+it's prudent for borrowers to over-collateralize so that price volatility and
+interest charges don't quickly drive their loans into default.
 
 The `loanFee` (in basis points) is charged on the amount of `IST` issued when
 opening a loan or increasing the amount of a loan. The `interestRate` is an
@@ -104,9 +115,9 @@ governance, liquidation takes place in a separate vat.
 
 #### makeLoan
 
-The Vault's public API includes `makeVaultInvitation()` and
-`getCollaterals()`, as well as `getAMM()` and `getRunIssuer()`.
-`getCollaterals()` returns a list of the collateral types that are accepted.
-`getAmm()` returns the public facet of the AMM. `getRunIssuer()` provides access
-to the issuer of `IST` so anyone can hold, spend and recognize IST.
-`makeVaultInvitation()` is described above under [Borrowers](#borrowers)
+The Vault's public API included `makeVaultInvitation()` and `getCollaterals()`,
+as well as `getAMM()` and `getRunIssuer()` at the time this page was originally
+written; both of those method names predate the `RUN`-to-`IST` rename and the
+AMM's removal (see the warning above), so treat them as historical rather than
+current. `getCollaterals()` returns a list of the collateral types that are
+accepted. `makeVaultInvitation()` is described above under [Borrowers](#borrowers).
