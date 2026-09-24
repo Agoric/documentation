@@ -21,6 +21,9 @@ import {
 - **transfers**: **Array&lt;[TransferPart](./zoe-data-types#transferpart)>**
 - Returns: None.
 
+**Deprecated**: use **[zcf.atomicRearrange()](./zoe-contract-facet#zcf-atomicrearrange-transfers)**
+directly instead of this helper.
+
 Asks Zoe to rearrange the **[Allocations](./zoe-data-types#allocation)** among the seats mentioned in
 _transfers_. _transfers_ are a set of changes to **Allocations** that must satisfy several
 constraints. If these constraints are all met, then the reallocation happens atomically. Otherwise an
@@ -105,10 +108,10 @@ assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet)**
 - **seat**: **[ZCFSeat](./zcfseat)**
 - **update**: **[AmountKeywordRecord](./zoe-data-types#keywordrecord)**
-- Returns: **Boolean**
+- Returns: **0 | 1**
 
-Returns **true** if an update to a **seat**'s **currentAllocation** satisfies its
-**proposal.want**. Note this is half of the offer safety check;
+Returns **1** if an update to a **seat**'s **currentAllocation** satisfies its
+**proposal.want**, and **0** otherwise. Note this is half of the offer safety check;
 it does not check if the **[Allocation](./zoe-data-types#allocation)** constitutes a refund.
 The update is merged with **currentAllocation** such that
 _update_'s values prevail if the **[Keywords](./zoe-data-types#keyword)** are the same. If they

@@ -12,7 +12,7 @@ If the pair is already registered, throw unless `force` is `true`.
 
 #### Defined in
 
-[priceAuthorityRegistry.js:27](https://github.com/Agoric/agoric-sdk/blob/a8c322206/packages/vats/src/priceAuthorityRegistry.js#L27)
+[priceAuthorityRegistry.js:189](https://github.com/Agoric/agoric-sdk/blob/1db3919939eacd3194c4f07baf507612900ec754/packages/vats/src/priceAuthorityRegistry.js#L189)
 
 ## E(Deleter).delete()
 

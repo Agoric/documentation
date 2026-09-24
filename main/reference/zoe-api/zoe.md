@@ -267,7 +267,7 @@ to **[Issuers](/reference/ertp-api/issuer)**, such as **FirstCurrency: quatlooIs
 Parties to the contract will use the **Keywords** to index their proposal and their payments.
 
 The **terms** are values used by this contract instance, such as the
-number of bids an auction w ill wait for before closing. These values may
+number of bids an auction will wait for before closing. These values may
 be different for different instances of the same contract, but the contract
 defines what variables need their values passed in as **terms**.
 
@@ -426,4 +426,9 @@ Each contract can define the properties it supports and which are required.
 - **installation**: **Installation**
 - Returns: **Promise&lt;BundleId>**
 
-Reserved for future use.
+Returns the **BundleId** of the contract bundle the _installation_ argument was installed from.
+Throws if _installation_ isn't a valid, currently-known **Installation**.
+
+```js
+const bundleId = await E(zoe).getBundleIDFromInstallation(installation);
+```

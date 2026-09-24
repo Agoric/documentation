@@ -16,6 +16,19 @@ For example, if a seat expected to be paid 5 _Quatloos_ and 3 _Widgets_ after su
 }
 ```
 
+## ExitRule
+
+An **ExitRule** specifies how and when a seat can exit a contract, voluntarily or otherwise. It's
+one of:
+
+- **{ onDemand: null }** - The default. The seat can exit whenever it wants by calling
+  **[zcfSeat.exit()](./zcfseat#zcfseat-exit-completion)**.
+- **{ waived: null }** - The seat gives up its right to exit; only the contract can exit it.
+- **{ afterDeadline: { timer, deadline } }** - The seat is exited automatically when _timer_ reaches
+  _deadline_.
+  - **timer**: **TimerService**
+  - **deadline**: **Timestamp**
+
 ## Handle
 
 **Handles** are **Far** objects without any methods whose only useful property are their
@@ -37,6 +50,17 @@ You can get information about the contract instance via these methods:
 
 An **Invitation** is a non-fungible asset created by the **[InvitationIssuer](#invitationissuer)**.
 An **Invitation Payment** is a **[Payment](/reference/ertp-api/payment)** holding an **Invitation**.
+
+## InvitationDetails
+
+**InvitationDetails** is the value carried by an **[Invitation](#invitation)**'s
+**[Amount](/reference/ertp-api/ertp-data-types#amount)**. It consists of:
+
+- **installation**: **Installation** - The **Installation** the **Invitation**'s **Instance** was started from.
+- **instance**: **Instance** - The contract **Instance** the **Invitation** is for.
+- **handle**: **Handle** - A unique **Handle** identifying this **Invitation**.
+- **description**: **String** - The description passed to **[zcf.makeInvitation()](./zoe-contract-facet#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape)**.
+- **customDetails**: **Object** - Optional. The _customDetails_ passed to **zcf.makeInvitation()**, if any.
 
 ## InvitationIssuer
 
@@ -87,9 +111,45 @@ const paymentKeywordRecord = {
 };
 ```
 
+## MutableQuote
+
+A **MutableQuote** is a **[PriceQuote](#pricequote)**-yielding **Promise** whose trigger levels can be
+changed after it's created, instead of needing a new call for each new trigger. It's returned by the
+**[E(PriceAuthority).mutableQuoteWhen*()](./price-authority#e-priceauthority-mutablequotewhengt-amountin-amountoutlimit)**
+methods, and has its own **cancel()**, **getPromise()**, and **updateLevel()** methods, documented on
+the **[MutableQuote object](./mutable-quote)** page.
+
+Use a **MutableQuote** when you expect to make multiple calls that just replace the trigger value. If
+you only need a single quote and won't change the trigger level, use a plain **PriceQuote**.
+
 ## ParsableNumber
 
 A **ParsableNumber** is defined as a **bigint**, **number**, or **string**.
+
+## PriceQuote
+
+A **PriceQuote** represents a statement from a **[PriceAuthority](./price-authority)** as to the
+current price level at a particular time. The significant content (prices and time) is packaged in
+the **[Amount](/reference/ertp-api/ertp-data-types#amount)** and repeated in the
+**[Payment](/reference/ertp-api/payment)** for veracity. A **PriceQuote** is a
+**quoteAmount**/**quotePayment** pair, where **quoteAmount** is also the current balance of
+**quotePayment**:
+
+```js
+const { quoteAmount, quotePayment } = priceQuote;
+```
+
+- **quoteAmount**: **[Amount](/reference/ertp-api/ertp-data-types#amount)** whose value is a
+  one-element array holding a **PriceDescription**.
+- **quotePayment**: **ERef&lt;[Payment](/reference/ertp-api/payment)>** wrapping **quoteAmount**.
+
+A **PriceDescription** consists of:
+
+- **amountIn**: **[Amount](/reference/ertp-api/ertp-data-types#amount)** - The amount supplied to a trade.
+- **amountOut**: **Amount** - The quoted result of trading _amountIn_.
+- **timer**: **TimerService** - The service that gave the _timestamp_.
+- **timestamp**: **Timestamp** - A timestamp according to _timer_ for the quote.
+- **conditions**: **Object** - Optional. Additional conditions for the quote.
 
 ## Ratio
 

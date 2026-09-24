@@ -349,6 +349,18 @@ export default defineConfig({
                   text: 'Zoe Data Types',
                   link: '/reference/zoe-api/zoe-data-types',
                 },
+                {
+                  text: 'PriceAuthority Object',
+                  link: '/reference/zoe-api/price-authority',
+                },
+                {
+                  text: 'PriceAuthority Admin Object',
+                  link: '/reference/zoe-api/price-authority-admin',
+                },
+                {
+                  text: 'MutableQuote Object',
+                  link: '/reference/zoe-api/mutable-quote',
+                },
               ],
             },
             {
@@ -493,10 +505,6 @@ export default defineConfig({
                 {
                   text: 'PSM Contract',
                   link: '/guides/zoe/actual-contracts/PSM',
-                },
-                {
-                  text: 'PriceAuthority Object',
-                  link: '/reference/zoe-api/price-authority',
                 },
               ],
             },
