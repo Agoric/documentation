@@ -1,64 +1,115 @@
-# Wallet API Commands
+# agoric wallet CLI
 
-### `getBridge()`
+The `agoric wallet` subcommand prepares, signs, and inspects smart wallet
+traffic from a shell. It is the scripted counterpart to a signing UI like
+Keplr: useful for provisioning wallets, for testing, and for any workflow
+that needs to prepare a [`BridgeAction`](./wallet-bridge) offline before
+sending it.
 
-- Returns: `{Promise<WalletBridge>}`
+Source: [`packages/agoric-cli/src/commands/wallet.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/agoric-cli/src/commands/wallet.js).
 
-Returns the wallet bridge that bypasses Dapp-authorization. This should
-only be used within the REPL or deployment scripts that want to use the
-WalletBridge API without the effort of calling `getScopedBridge`.
-Since your REPL and deployment scripts already run using the ag-solo's full authority,
-it doesn't really make a difference to have them use a more restricted bridge.
+Every subcommand accepts `--home <dir>` (the `agd` application home
+directory) and `--keyring-backend <os|file|test>`.
 
-### `getScopedBridge(suggestedDappPetname, dappOrigin)`
+## `agoric wallet provision`
 
-- `suggestedDappPetname` `{Petname}`
-- `dappOrigin` `{String}`
-- Returns: `{Promise<WalletBridge>}`
+```sh
+agoric wallet provision --account <address> [--spend] [--nickname <string>]
+```
 
-Returns a wallet bridge corresponding to an origin that must be approved in the wallet UI.
-This is available for completeness to provide the underlying API that's available over the
-standard wallet-bridge.html.
+Provisions a smart wallet for `--account` by submitting a
+`provision-one <nickname> <address> SMART_WALLET` transaction, which the
+chain routes to `walletFactory`'s `provideSmartWallet`. Provisioning has an
+on-chain cost (a `power_flag_fee`); without `--spend` the command prints the
+cost and does a dry run instead of broadcasting:
 
-### `addPayment(payment)`
+```sh
+$ agoric wallet provision --account agoric1...
+Provisioning a wallet costs 10000000 uist
+To really provision, rerun with --spend or...
+```
 
-- `payment` `{ERef<Payment>}`
-- Returns: `void`
+Rerun with `--spend` to actually submit the transaction.
 
-Adds a payment to the Wallet for deposit to the user-specified purse,
-either via an autodeposit or manually approved.
+## `agoric wallet send`
 
-### `getDepositFacetId(brandBoardId)`
+```sh
+agoric wallet send --from <address> --offer <file> [--dry-run] \
+  [--gas <auto|number>] [--gas-adjustment <factor>] [--verbose]
+```
 
-- `brandBoardId` `{String}`
-- Returns: `{Promise<string>}`
+Signs and broadcasts a prepared `BridgeAction` as a
+`wallet-action --allow-spend` Swingset transaction from `--from`, which
+becomes a `MsgWalletSpendAction` (see [Spend authority](./wallet-bridge#spend-authority)).
+`--offer` points at a file containing the marshalled `CapData` JSON for the
+action (despite the flag name, this is any `BridgeAction`, not only
+`executeOffer`). `--gas` defaults to `auto` with a `1.2` adjustment factor.
+`--dry-run` prints the underlying `agd` command instead of running it.
 
-Returns the board ID for the deposit facet of the user's Wallet that accepts payments
-of the brand specified by the `brandBoardId` parameter.
+## `agoric wallet print`
 
-### `getIssuers()`
+```sh
+agoric wallet print --file <file>
+```
 
-- Returns: `{Array<[Petname, Issuer]>}`
+Unmarshals a prepared `BridgeAction` file with the chain's board marshaller
+and prints the plain object, so you can check what a prepared message
+actually says before sending it.
 
-Returns an array of all the Issuers and their petnames associated with this Wallet.
+## `agoric wallet extract-id`
 
-### `getIssuer(petname)`
+```sh
+agoric wallet extract-id --offer <file>
+```
 
-- `petname` `{Petname}`
-- Returns: `{Issuer}`
+Unmarshals a prepared offer file and prints its `offer.id`. Handy for
+scripting a `tryExitOffer` or a `continuing` invitation spec against an
+offer you prepared earlier.
 
-Returns the issuer with the specified petname associated with this Wallet.
+## `agoric wallet list`
 
-### `getPurses()`
+```sh
+agoric wallet list
+```
 
-- Returns: `{Array<[Petname, Purse]>}`
+Lists the addresses of every provisioned wallet, by querying the child
+keys of `published.wallet` in vstorage.
 
-Returns all the purses associated with this wallet.
+## `agoric wallet show`
 
-### `getPurse(pursePetname)`
+```sh
+agoric wallet show --from <address>
+```
 
-- `pursePetName` `{String}`
-- Returns `{Purse}`
-- Errors: Throws an error if there is no purse with the given petname.
+Prints a human-readable summary of a wallet's current state (purses, live
+offers) by coalescing its `published.wallet.<address>` update stream, plus
+its Cosmos bank balances via `agd query bank balances`.
 
-Returns the `purse` object with the given petname
+## `agoric wallet watch`
+
+```sh
+agoric wallet watch --from <address>
+```
+
+Follows `published.wallet.<address>` and prints each new `UpdateRecord` as
+it is published. Useful for watching an offer resolve in real time.
+
+## A typical offline-signing flow
+
+Prepare an offer as `CapData` in a file (see
+[Building Client Dapps](/guides/getting-started/contract-rpc#marshalling-amounts-and-instances)
+for how to construct it), then:
+
+```sh
+agoric wallet print --file offer.json        # sanity-check its contents
+agoric wallet extract-id --offer offer.json  # note its id, for later reference
+agoric wallet send --from acct1 --offer offer.json --verbose
+agoric wallet watch --from agoric1...        # observe it resolve
+```
+
+## See also
+
+- [BridgeAction Reference](./wallet-bridge) for the message shapes these
+  commands prepare and send.
+- [Smart Wallet](/guides/wallet/) for the wallet architecture and
+  provisioning model.

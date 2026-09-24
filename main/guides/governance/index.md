@@ -106,9 +106,13 @@ _For clarity, some Zoe API details are ommitted from this figure._
 
 ## Putting a question via an Election Manager
 
-An _ElectionManager_ is responsible for letting an appropriate party call `addQuestion()`. The `econCommitteeCharter.js` contract from `@agoric/inter-protocol` is sufficiently general to handle most forms of parameter
-governance, so we reuse it here. Swaparoo core eval deployment likewise
-starts this contract, asks it for invitations, and sends them to the voters:
+An _ElectionManager_ is responsible for letting an appropriate party call `addQuestion()`. The `econCommitteeCharter.js` contract from `@agoric/governance` is sufficiently general to handle most forms of parameter
+governance, so we reuse it here (it kept its `econCommitteeCharter` name and
+[agoricNames](/guides/integration/name-services) registration for legacy
+continuity when it moved from `@agoric/inter-protocol` to `@agoric/governance`,
+but there is nothing Inter Protocol-specific about it). Swaparoo core eval
+deployment likewise starts this contract, asks it for invitations, and sends
+them to the voters:
 
 <img src="./assets/gov-param-3.svg"
   style="border: 2px solid" width="800" />
@@ -130,8 +134,25 @@ test.serial('Voter0 accepts charter, committee invitations', async t => {
 <img src="./assets/gov-param-4-accept.svg"
   style="border: 2px solid" width="800" />
 
-To exercises their `VoteOnParamChange` capability,
-the committee participant makes a [continuing invitation](/glossary/#continuing-invitation-pattern),
+### Charter Invitation Makers
+
+Redeeming the charter invitation yields an `invitationMakers` object with
+three methods, one per question type the charter can raise:
+
+- `VoteOnParamChange()`: returns an invitation to propose new values for a
+  governed contract's parameters. Its offer takes `offerArgs` of
+  `{ deadline, instance, params, path? }`, as below.
+- `VoteOnApiCall(instance, methodName, methodArgs, deadline)`: returns an
+  invitation to propose invoking a governed API method, such as adding or
+  removing an oracle operator (see [API Governance](#api-governance)).
+- `VoteOnPauseOffers(instance, strings, deadline)`: returns an invitation
+  to propose an [offer filter](#offer-filters), disabling the listed offer
+  or invitation description strings.
+
+Each is redeemed the same way: a `continuing` invitation spec naming the
+maker and referring back to the charter-accepting offer. To exercise their
+`VoteOnParamChange` capability, the committee participant makes a
+[continuing invitation](/glossary/#continuing-invitation-pattern),
 referring back to `v0-accept-charter` as `charterAcceptOfferId`:
 
 ```js
@@ -141,7 +162,7 @@ const makeVoter = (t, wallet, wellKnown) => {
     const instance = await wellKnown.instance[contractName]; // swaparoo instance handle
     const path = { paramPath: { key: 'governedParams' } };
 
-    /** @type {import('@agoric/inter-protocol/src/econCommitteeCharter.js').ParamChangesOfferArgs} */
+    /** @type {import('@agoric/governance/src/econCommitteeCharter.js').ParamChangesOfferArgs} */
     const offerArgs = harden({ deadline, params, instance, path });
 
     /** @type {import('@agoric/smart-wallet/src/offers.js').OfferSpec} */
@@ -168,7 +189,7 @@ test.serial('vote to change swap fee', async t => {
   const targetFee = IST(50n, 100n); // 50 / 100 = 0.5 IST
   const changes = { Fee: targetFee };
   // ...
-  const deadline = BigInt(new Date(2024, 6, 1, 9, 10).valueOf() / 1000);
+  const deadline = BigInt(Math.round(Date.now() / 1000) + 3600); // an hour from now
   const result = await victor.putQuestion('proposeToSetFee', changes, deadline);
   t.log('question is posed', result);
   // ...
@@ -247,27 +268,52 @@ test.serial('vote to change swap fee', async t => {
 
 The swaparoo contract also publishes its updated parameters to vstorage.
 
+## Vote Counters, Quorum, and Closing Rules
+
+`addQuestion(voteCounterInstallation, questionSpec)` installs a fresh
+_vote counter_ contract instance to tally one question. `@agoric/governance`
+ships `binaryVoteCounter.js` for yes/no-shaped questions (parameter
+changes, API invocations, and offer filters all use it); other counters can
+be installed for other election shapes.
+
+A question's `quorumRule` (one of `QuorumRule.MAJORITY`, `QuorumRule.ALL`,
+or `QuorumRule.NO_QUORUM`) sets how many of the committee's voters must vote
+before the outcome counts, computed against the committee's size when the
+electorate is a `committee.js` instance. Its `closingRule` (`{ timer,
+deadline }`) is what actually ends the vote: the vote counter is told to
+close once `timer` reaches `deadline`, at which point it tallies the votes
+received so far and publishes an `OutcomeRecord`.
+
+## Replacing the Electorate
+
+`ContractGovernorKit`'s creator facet exposes `replaceElectorate(poserInvitation)`,
+which updates the governed contract's `Electorate` parameter to a new
+poser invitation, handing the ability to raise questions to a different
+electorate entirely (for example, moving from a bootstrap committee to a
+DAO-elected one). It reuses the same parameter-governance machinery as any
+other governed parameter: replacing the electorate is itself something a
+sitting electorate can vote on and carry out via `VoteOnParamChange` naming
+`Electorate` among the `params`.
+
 ## API Governance
 
 Just as parameter governance lets an electorate change parameters of a
 governed contract, API governance lets the electorate exercise contract APIs;
 in particular: creator facet methods on a governed contract.
 
-For example, in Inter Protocol, the Economic Committee can add and remove
-oracle operators:
+For example, in Inter Protocol (the vaultFactory, PSM, and related
+contracts, no longer part of `agoric-sdk` itself), the Economic Committee
+can add and remove oracle operators:
 
 <img src="./assets/inter-ec-invoke-method.png"
   style="border: 2px solid" width="800" />
 
-For details, see:
-
-- [dapp-econ-gov](https://github.com/Agoric/dapp-econ-gov)
-- `vaultFactory` contract in `@agoric/inter-protocol`
+For details, see [dapp-econ-gov](https://github.com/Agoric/dapp-econ-gov).
 
 ## Offer Filters
 
 An electorate can instruct a contract to have Zoe filter the offers that
-will be passed to the ocntract. See
+will be passed to the contract. See
 
 - [zcf.setOfferFilter(strings)](/reference/zoe-api/zoe-contract-facet#zcf-setofferfilter-strings).
 - [How to add a contract level pause feature? · agoric-sdk · Discussion #8172](https://github.com/Agoric/agoric-sdk/discussions/8172)

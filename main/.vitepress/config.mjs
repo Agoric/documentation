@@ -256,6 +256,15 @@ export default defineConfig({
                 { text: 'Contract Governance', link: '/guides/governance/' }
               ]
             },
+            {
+              text: 'Smart Wallet',
+              link: '/guides/wallet/',
+              collapsed: true,
+              items: [
+                { text: 'Smart Wallet', link: '/guides/wallet/' },
+                { text: 'Wallet UI', link: '/guides/wallet/ui' },
+              ],
+            },
 
             {
               text: 'UI Component Library',
@@ -352,6 +361,22 @@ export default defineConfig({
                   link: '/reference/ertp-api/ertp-data-types'
                 }
               ]
+            },
+            {
+              text: 'Smart Wallet API',
+              link: '/reference/wallet-api/',
+              collapsed: true,
+              items: [
+                { text: 'Smart Wallet API', link: '/reference/wallet-api/' },
+                {
+                  text: 'BridgeAction Reference',
+                  link: '/reference/wallet-api/wallet-bridge',
+                },
+                {
+                  text: 'agoric wallet CLI',
+                  link: '/reference/wallet-api/wallet-commands',
+                },
+              ],
             },
             {
               text: 'Zoe API',

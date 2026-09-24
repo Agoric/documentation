@@ -1,59 +1,70 @@
 # Wallet UI
 
-From a shell window, run `agoric open` to open the Wallet UI in a browser tab.
+::: tip Looking for a standalone Agoric Wallet app?
+There is no longer a separate Agoric Wallet web application to open and
+browse. Each dapp embeds wallet connection, provisioning, and offer signing
+directly in its own UI, using
+[`@agoric/react-components`](/guides/UIComponentLibrary/). Signing itself
+happens in the user's browser-extension wallet, typically Keplr.
+:::
 
-The wallet facilitates several core user interactions within the Agoric ecosystem, described in the below sections.
+## Connecting
 
-## Dapps
+A dapp built with `@agoric/react-components` renders a
+[Connect Wallet button](/guides/UIComponentLibrary/#connect-wallet). Clicking
+it opens the user's choice of Cosmos signing extension (Keplr is the common
+case) and asks them to approve the connection. Once connected, the dapp's
+`useAgoric()` hook exposes the connected address and a live, coalesced view
+of the wallet's purses, without the dapp needing to talk to vstorage
+directly. See
+[Connect Wallet](/guides/getting-started/ui-tutorial/connect-wallet) in the
+Getting Started tutorial for a worked example.
 
-To interact with a dapp, it first must be connected in the wallet. The dapp will attempt to connect to the wallet instance registered at https://wallet.agoric.app/locator/.
+## Provisioning
 
-Before the dapp is able to make offers, the connection must be accepted from the wallet. Incoming dapp connections can be managed from the Dashboard view:
+If the connected address has no smart wallet yet, `AgoricProviderLite` shows
+a provisioning notice before the dapp can make offers, explaining the
+one-time on-chain cost. See
+[Smart Wallet Provisioning](/guides/UIComponentLibrary/#smart-wallet-provisioning)
+for how a dapp customizes this notice, and
+[Provisioning](/guides/wallet/#provisioning) for what happens on chain when
+the user accepts it.
 
-<img width="500" alt="Dapp Connection" src="./assets/dapp-connection.png">
+## Making and approving an offer
 
-Once accepted, they can be viewed and managed from the Dapps view:
+When a dapp prepares an offer, it does not talk to the wallet directly.
+Instead it builds an `OfferSpec`, has `@agoric/react-components` marshal and
+wrap it as a `MsgWalletSpendAction`, and hands that transaction to the
+connected signing extension. Keplr then shows the user the transaction to
+approve: which contract instance the offer is for, and what assets it will
+give and want, decoded from the underlying `BridgeAction` rather than shown
+as opaque bytes. The user approves or rejects it in the extension, not in
+the dapp's own UI; the dapp only learns the outcome once the transaction is
+broadcast and its effects appear in the wallet's vstorage state.
 
-<img width="499" alt="Dapps" src="./assets/dapps.png">
+See [BridgeAction Reference](/reference/wallet-api/wallet-bridge) for what
+is actually inside that transaction, and
+[Making an Offer](/guides/getting-started/ui-tutorial/making-an-offer) for
+a worked dapp-side example.
 
-The petname is a string used to personally identify the dapp and should be unique. It can be modified as desired with the text field. It can be thought of like a contact name in a cellphone.
+## Purses and balances
 
-Dapps can be removed so that they are no longer able to propose offers.
+A connected dapp reads purse balances through `useAgoric()`'s `purses`,
+which merges the smart wallet's ERTP purses (published under
+`published.wallet.<address>.current`) with the address's native Cosmos bank
+balances, such as IST and BLD (queried directly from the bank module; the
+smart wallet does not republish these). See
+[VBank Assets and Cosmos Bank Balances](/guides/getting-started/contract-rpc#vbank-assets-and-cosmos-bank-balances)
+for how the two are correlated. The same balances are also visible directly
+in the signing extension's own asset list, since they are ordinary Cosmos
+bank holdings of the address, not something specific to the smart wallet.
 
-## Offers
+## Offer status
 
-After connecting to a dapp, it is able to propose offers in the user's wallet. Offers are a unique concept to Agoric's Zoe framework. Users are guaranteed to receive that they are asking for in an offer, or get a full refund (a property called "[Offer Safety](../zoe/#what-is-zoe)").
-
-When an offer is proposed (usually from some interaction in a dapp), it will appear in the dashboard view:
-
-<img width="501" alt="Propsed Offer" src="./assets/proposed-offer.png">
-
-If the offer is approved, it will show as pending:
-
-<img width="498" alt="Pending Offer" src="./assets/pending-offer.png">
-
-Depending on the terms of the smart contract being interacted with, some offers may be "exited" before completion. Exiting an offer does not revert any asset transfers that have already taken place, but may prevent the contract from executing any future planned transfers (e.g. a user may "exit" to withdraw a bid from an auction before the deadline).
-
-Completed offers will either show up in an accepted or rejected state, and can be dismissed by the user.
-
-<img width="500" alt="Accepted Offer" src="./assets/accepted-offer.png">
-
-## Transfers
-
-The wallet can be used to transfer funds to and from other wallets, as well as between purses within the same wallet.
-
-Every type of asset can be identified by a unique "Brand", and there exists one global Issuer for each Brand. If a user wants to send or receive a tokens of a particular Brand, its Issuer must be imported from the "Asset Issuers" view:
-
-<img width="630" alt="Issuers" src="./assets/issuers.png">
-
-Some issuers are imported by default in the wallet as shown above. The user can make as many purses as they want for each issuer. The purses are where the actual tokens are held, and can be managed from the "Dashboard" view:
-
-<img width="636" alt="Purses" src="./assets/purses.png">
-
-Tokens can be freely sent between purses within the same wallet. To send tokens to another wallet, that wallet's Board ID must be imported in the "Contacts" view:
-
-<img width="458" alt="Contacts" src="./assets/contacts.png">
-
-Then, a user can select the "Irrevocable one-way" transfer option to send their tokens to another wallet in their contacts:
-
-<img width="469" alt="Transfer" src="./assets/transfer.png">
+An offer's outcome (accepted, rejected, or still pending) is not a UI state
+the dapp invents. It is read from the wallet's `liveOffers` and the
+`offerStatus` updates streamed to `published.wallet.<address>`, described in
+[Smart Wallet VStorage Topics](/guides/getting-started/contract-rpc#smart-wallet-vstorage-topics).
+A dapp built on `@agoric/react-components` gets these coalesced
+automatically; a script or CLI workflow can follow them directly with
+[`agoric wallet watch`](/reference/wallet-api/wallet-commands#agoric-wallet-watch).
