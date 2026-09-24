@@ -122,3 +122,53 @@ If an object should never be exposed to other vats, you should make it
 a point **not** to use `Far()` on it. If an object is not marked as a Remotable but is accidentally
 exposed, an error is thrown. This prevents any vulnerability from such accidental exposure.
 :::
+
+## Beyond Far(): Exo Objects
+
+`Far()` marks an object as remotable, but it does nothing to validate the
+arguments its methods receive: a caller can pass a string where a number is
+expected, and the method only finds out when it misbehaves partway through.
+For a smart contract, where every method is potential attack surface, that's
+not enough.
+
+An **Exo** object is a `Far` remotable wrapped with an **interface guard**
+(from [`@endo/patterns`](https://github.com/endojs/endo/tree/master/packages/patterns)),
+declared once with `M.interface(...)`, that validates every method's
+arguments and return value automatically, before the method body ever runs:
+
+```js
+import { makeExo } from '@endo/exo';
+import { M } from '@endo/patterns';
+
+const CounterI = M.interface('Counter', {
+  increment: M.call(M.number()).returns(M.number())
+});
+
+let count = 0;
+const counter = makeExo('Counter', CounterI, {
+  increment(n) {
+    count += n; // n is guaranteed to be a number
+    return count;
+  }
+});
+
+counter.increment(5); // 5
+counter.increment('5'); // throws: Must be a number
+```
+
+`makeExo` is one of three ways to make an Exo, matching how much state
+management you need: `makeExo` for a single stateless-ish instance,
+`defineExoClass` for many instances each with their own state, and
+`defineExoClassKit` for a cohort of facets (for example, a
+public-facing read-only view and an admin-only write view) sharing one
+underlying state. Exo classes also compose with [zones](./zones) so that
+instances can be virtual (paged to disk) or durable (surviving a vat
+upgrade), which plain `Far()` objects cannot do.
+
+Use `Far()` directly for small, stateless, low-risk objects such as simple
+facets or callbacks. Reach for Exo whenever an object has an API worth
+guarding at the boundary, holds state that should survive an upgrade, or is
+part of your contract's public surface. See
+[Exo Objects and Interface Guards](./exo) for the full picture, including
+`M.call`/`M.callWhen`, `this.state`/`this.self`/`this.facets`, and
+`getInterfaceOf`.

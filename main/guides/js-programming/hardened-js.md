@@ -10,6 +10,56 @@ The last 10 minutes are Q&A._
 </ClientOnly>
 :::
 
+## Locking Down the Realm: `lockdown()`
+
+Before any of the techniques below take effect, a program must call `lockdown()`
+once, as early as possible, typically at the very top of its entry point:
+
+```js
+import 'ses';
+
+lockdown();
+```
+
+Importing `ses` installs the `lockdown`, `harden`, and `Compartment` globals.
+Calling `lockdown()` tamper-proofs the JavaScript intrinsics (`Object.prototype`,
+`Array.prototype`, and so on) so that no program sharing the realm can subvert
+them, and makes `harden()` (below) meaningful: hardening an object only
+guarantees safety once the intrinsics it depends on are themselves frozen.
+
+`lockdown()` takes an optional options object to tune its defaults. The most
+commonly adjusted options are:
+
+- `errorTaming` (`'safe'` default): whether `errorInstance.stack` is
+  accessible. `'unsafe'` restores unrestricted access, useful when debugging
+  locally.
+- `stackFiltering` (`'concise'` default): how much of a deep, cross-vat stack
+  trace is shown. `'verbose'` shows everything.
+- `overrideTaming` (`'moderate'` default): how aggressively lockdown defends
+  against the "override mistake" for legacy code that assigns to inherited
+  properties. `'min'` is best for code written from scratch as Hardened
+  JavaScript.
+- `domainTaming` (`'safe'` default): whether Node.js's legacy `domain` module
+  may be used. Most projects never need `'unsafe'`.
+- `consoleTaming` (`'safe'` default): whether to wrap the global `console` to
+  show deep stacks across turns.
+
+```js
+import 'ses';
+
+lockdown({
+  errorTaming: 'unsafe-debug',
+  overrideTaming: 'min'
+});
+```
+
+See the [`lockdown` options reference](https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/lockdown.md)
+for the complete list and their tradeoffs. The defaults are deliberately
+conservative and work for most projects unmodified; Agoric's own vat
+infrastructure calls `lockdown()` for you, so contract and dapp code
+typically never calls it directly, but understanding what it does is
+necessary to understand everything that follows on this page.
+
 ## Example Hardened JavaScript Code
 
 The example below demonstrates several features of Hardened JavaScript.
@@ -112,22 +162,27 @@ This `eslint` configuration provides tool support.
 :::
 
 1. If working from an empty directory, a package.json file must first be created by running `yarn init` or `yarn init -y`.
-2. From there, we can install eslint into our project along with the jessie.js eslint-plugin by running `yarn add eslint @jessie.js/eslint-plugin`.
-3. The final step is to set up our project's eslint configuration inside of the package.json file by adding the following code block.
+2. From there, we can install eslint into our project along with the jessie.js eslint-plugin by running `yarn add -D eslint @jessie.js/eslint-plugin`.
+3. The final step is to set up an `eslint.config.js` file (eslint's [flat config](https://eslint.org/docs/latest/use/configure/configuration-files) format) at the root of the project.
 
-```json
-"eslintConfig" : {
-  "parserOptions": {
-      "sourceType": "module",
-      "ecmaVersion": 6
-  },
-  "extends": [
-    "plugin:@jessie.js/recommended"
-  ]
-}
+```js
+// eslint.config.js
+import { defineConfig } from 'eslint/config';
+import jessie from '@jessie.js/eslint-plugin';
+
+export default defineConfig([
+  {
+    files: ['*.js', '**/*.js'],
+    plugins: {
+      '@jessie.js': jessie
+    },
+    extends: ['@jessie.js/recommended'],
+    processor: '@jessie.js/use-jessie'
+  }
+]);
 ```
 
-Now the contents of the package.json file should look similiar to the snippet below.
+Now the contents of the package.json file should look similar to the snippet below.
 
 ```json
 {
@@ -137,12 +192,8 @@ Now the contents of the package.json file should look similiar to the snippet be
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "@jessie.js/eslint-plugin": "^0.1.3",
-    "eslint": "^8.6.0"
-  },
-  "eslintConfig": {
-    "parserOptions": { "sourceType": "module", "ecmaVersion": 6 },
-    "extends": ["plugin:@jessie.js/recommended"]
+    "@jessie.js/eslint-plugin": "^0.4.3",
+    "eslint": "^9.11.0"
   }
 }
 ```
@@ -401,7 +452,7 @@ in [Higher-order Smart Contracts across Chains](https://www.youtube.com/watch?v=
 
 ```js
 const makeMint = () => {
-  const ledger = makeWeakMap();
+  const ledger = new WeakMap();
 
   const issuer = harden({
     makeEmptyPurse: () => mint.makePurse(0)
@@ -432,3 +483,13 @@ const makeMint = () => {
   return mint;
 };
 ```
+
+This `makeMint` sketch keeps everything in the JavaScript heap, so it
+disappears the moment its vat restarts. A real contract needs its purses and
+mint state to survive a vat upgrade. That requires two things this page
+doesn't cover: guarding the object's methods with an
+[interface guard](./exo#interface-guards-with-m) instead of a bare `harden()`, and
+allocating its state in a [durable zone](./zones) instead of a plain closure
+variable. See [Exo Objects and Interface Guards](./exo) and
+[Zones and Persistence](./zones) for the modern, upgrade-safe versions of
+this same pattern; ERTP's actual `makeMint` uses both.

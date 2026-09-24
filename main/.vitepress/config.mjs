@@ -526,7 +526,34 @@ export default defineConfig({
             {
               text: 'JavaScript Framework',
               ariaLabel: 'JavaScript Framework',
-              link: '/guides/js-programming/'
+              link: '/guides/js-programming/',
+              collapsed: true,
+              items: [
+                {
+                  text: 'Hardened JavaScript',
+                  link: '/guides/js-programming/hardened-js'
+                },
+                {
+                  text: 'E() for Eventual Send',
+                  link: '/guides/js-programming/eventual-send'
+                },
+                {
+                  text: 'Far(), Remotables, and Marshaling',
+                  link: '/guides/js-programming/far'
+                },
+                {
+                  text: 'Exo Objects and Interface Guards',
+                  link: '/guides/js-programming/exo'
+                },
+                {
+                  text: 'Zones and Persistence',
+                  link: '/guides/js-programming/zones'
+                },
+                {
+                  text: 'Notifiers, Subscriptions, and PublishKit',
+                  link: '/guides/js-programming/notifiers'
+                }
+              ]
             },
 
             {
