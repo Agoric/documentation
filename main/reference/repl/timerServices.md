@@ -4,7 +4,7 @@
 This page lives under `reference/repl/` alongside documentation for the
 retired `ag-solo` REPL, but `chainTimerService` and `@agoric/time` are not
 deprecated; they are the current timer API and remain in active use
-(including by the [Orchestration API](/guides/orchestration/)). Only the
+(including by the [Orchestration API](../../guides/orchestration/)). Only the
 REPL-specific pages in this section (`scratch`, `networking`, and the REPL
 itself) document retired workflows.
 :::

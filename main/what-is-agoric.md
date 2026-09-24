@@ -9,7 +9,7 @@ native token BLD is used for staking and governance. The
 over-collateralized IST stable token is used to pay network fees.
 
 This orchestration story ships as real code today: the
-[Orchestration API](/guides/orchestration/) lets a contract hold and move
+[Orchestration API](guides/orchestration/) lets a contract hold and move
 assets on other chains from a single JavaScript flow, and
 [Fast USDC](https://github.com/Agoric/agoric-sdk/tree/master/packages/fast-usdc#readme)
 is a production contract built on it that moves USDC from Noble to Agoric in

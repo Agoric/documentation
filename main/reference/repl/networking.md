@@ -9,7 +9,7 @@
 This page lives under `reference/repl/` alongside documentation for the
 retired `ag-solo` REPL, but the Network API itself (`Port`, `Connection`,
 `ConnectionHandler`) is current and actively used, including by the
-[Orchestration API](/guides/orchestration/) to open ICA and IBC connections
+[Orchestration API](../../guides/orchestration/) to open ICA and IBC connections
 to other chains. The `home.ibcport`/`home.network` objects below are
 `ag-solo`-era illustrative names for "whatever Port/NetworkInterface object
 your vat holds"; a modern vat gets these from its own bootstrap wiring or
