@@ -30,8 +30,8 @@ const inventory = {
     maxTickets: 5n
   },
   backRow: {
-    tradePrice: AmountMath.make(istBrand, n),
-    maxTickets: n
+    tradePrice: AmountMath.make(istBrand, 1n),
+    maxTickets: 10n
   }
 };
 ```

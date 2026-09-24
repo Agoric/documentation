@@ -7,18 +7,18 @@ In web browsers, a common pattern of remote communication is using the
 
 In the Agoric platform, communicating with remote objects is similar,
 using the `E()` wrapper. For example,
-a [deploy script](../getting-started/deploying) may want to use the
-[Zoe Service API](/reference/zoe-api/zoe) to install a contract on a blockchain.
-But the deploy script cannot call `zoe.install(bundle)`, because it does not have local
-access to the `zoe` object. However, the deploy
-script is given a `zoe` _remote presence_. To call methods on the
-actual Zoe object, the deploy script can do:
+a [core-eval script](../getting-started/explainer-deploying-a-smart-contact) may want to use the
+[Zoe Service API](/reference/zoe-api/zoe) to install a contract on the chain.
+But the script cannot call `zoe.installBundleID(bundleId)` directly, because it does not have local
+access to the `zoe` object. However, the script
+is given a `zoe` _remote presence_ among its permitted powers. To call methods on the
+actual Zoe object, the script can do:
 
 ```js
 import { E } from '@endo/eventual-send';
 
-E(zoe).install(bundle)
-  .then(installationHandle => { ... })
+E(zoe).installBundleID(bundleId)
+  .then(installation => { ... })
   .catch(err => { ... });
 ```
 
