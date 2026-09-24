@@ -251,20 +251,54 @@ See [Vow](/glossary/#vow); These tools handle promises and asynchronous operatio
 
 ```js
 const vowTools = prepareVowTools(zone.subZone('vows'));
+const chainHub = makeChainHub(
+  zone.subZone('chainHub'),
+  privateArgs.agoricNames,
+  vowTools
+);
 // ...
-const makeLocalOrchestrationAccountKit = prepareLocalChainAccountKit(
-  zone,
-  makeRecorderKit,
-  zcf,
-  privateArgs.timerService,
-  vowTools,
-  makeChainHub(privateArgs.agoricNames)
+const makeLocalOrchestrationAccountKit = prepareLocalOrchestrationAccountKit(
+  zone.subZone('orchestration'),
+  {
+    makeRecorderKit,
+    makeProgressTracker,
+    zcf,
+    timerService,
+    vowTools,
+    chainHub,
+    localchain,
+    zoeTools
+  }
 );
 // ...
 const makeCosmosOrchestrationAccount = prepareCosmosOrchestrationAccount(
-  zone,
-  makeRecorderKit,
-  vowTools,
-  zcf
+  zone.subZone('orchestration'),
+  {
+    chainHub,
+    makeProgressTracker,
+    makeRecorderKit,
+    timerService,
+    vowTools,
+    zcf
+  }
 );
 ```
+
+<small>_See [`start-helper.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/orchestration/src/utils/start-helper.js) for the full wiring these makers depend on._</small>
+
+### Moving Assets Between Seats
+
+Upgradable contracts still need to reallocate assets between seats, but the
+old `stage()`/`reallocate()` seat API isn't compatible with durability.
+Use `zcf.atomicRearrange(transfers)` instead; see [Moving Assets Between
+Seats](./moving-assets.md) for the primitive and its helpers (`atomicTransfer`,
+`fromOnly`, `toOnly`).
+
+### Worked Examples
+
+- [`coveredCall-durable.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/coveredCall-durable.js):
+  a durable variant of the covered-call contract, using `prepareExoClass`/`prepareExo`
+  directly against `baggage` so the exercise-option invitation survives upgrade.
+- [`valueVow.contract.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/valueVow.contract.js):
+  a minimal contract that exports `meta = { upgradability: 'canUpgrade' }` and
+  uses `zone.makeOnce()` to keep a durable Vow across incarnations.

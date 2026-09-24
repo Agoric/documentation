@@ -29,76 +29,36 @@ The `swaparoo` contract delegates the rest of publishing governance parameters t
 
 ## Publishing structured data to chainStorage
 
-Let's look at the Inter Protocol [assetReserve.js](https://github.com/Agoric/agoric-sdk/blob/agoric-upgrade-13/packages/inter-protocol/src/reserve/assetReserve.js) contract to get more of the details. It publishes to [published.reserve.metrics](https://github.com/Agoric/agoric-sdk/blob/agoric-upgrade-13/packages/inter-protocol/test/reserve/snapshots/test-reserve.js.md) data of the form
+Let's work through the details of writing a notification. A contract that
+manages a durable resource often wants to publish a metrics notification
+whenever that resource changes:
 
 ```js
 /**
  * @typedef {object} MetricsNotification
- * @property {AmountKeywordRecord} allocations
- * @property {Amount<'nat'>} shortfallBalance shortfall from liquidation that
- *   has not yet been compensated.
- * @property {Amount<'nat'>} totalFeeMinted total Fee tokens minted to date
- * @property {Amount<'nat'>} totalFeeBurned total Fee tokens burned to date
+ * @property {Amount<'nat'>} totalMinted total tokens minted to date
  */
 ```
 
-For example:
-
-```js
-    {
-      allocations: {
-        Fee: {
-          brand: Object @Alleged: IST brand {},
-          value: 64561373455n,
-        },
-        ATOM: {
-          brand: Object @Alleged: ATOM brand {},
-          value: 6587020n
-        },
-      },
-      shortfallBalance: {
-        brand: Object @Alleged: IST brand {},
-        value: 5747205025n,
-      },
-      totalFeeBurned: {
-        brand: Object @Alleged: IST brand {},
-        value: n,
-      },
-      totalFeeMinted: {
-        brand: Object @Alleged: IST brand {},
-        value: 0n,
-      },
-    },
-```
-
-The method that writes this data is:
+A method that writes this data using a `RecorderKit` looks like:
 
 ```js
         writeMetrics() {
           const { state } = this;
-          const metrics = harden({
-            allocations: state.collateralSeat.getCurrentAllocation(),
-            shortfallBalance: state.shortfallBalance,
-            totalFeeMinted: state.totalFeeMinted,
-            totalFeeBurned: state.totalFeeBurned,
-          });
-          void state.metricsKit.recorder.write(metrics);
+          const metrics = harden({ totalMinted: state.totalMinted });
+          void state.metricsRecorder.write(metrics);
         },
 ```
 
-The `metricsKit` is made with a `makeRecorderKit` function:
+The `metricsRecorder` comes from a `RecorderKit` made with `makeRecorderKit`:
 
 ```js
-        metricsKit: makeRecorderKit(
-          metricsNode,
-          /** @type {import('@agoric/zoe/src/contractSupport/recorder.js').TypedMatcher<MetricsNotification>} */ (
-            M.any()
-          ),
-        ),
+        metricsRecorder: makeRecorderKit(metricsNode, M.any()).recorder,
 ```
 
-We "prepare" (in the [exo](https://endojs.github.io/endo/modules/_endo_exo.html) sense) that function for making
-a `RecorderKit` using [prepareRecorderKitMakers](/reference/zoe-api/zoe-helpers#preparerecorderkitmakers-baggage-marshaller).
+`makeRecorderKit` itself is made by "preparing" (in the [exo](https://endojs.github.io/endo/modules/_endo_exo.html) sense)
+[`prepareRecorderKitMakers`](/reference/zoe-api/zoe-helpers#preparerecorderkitmakers-baggage-marshaller)
+against the contract's `baggage`:
 
 ```js
 const { makeRecorderKit } = prepareRecorderKitMakers(
@@ -107,53 +67,32 @@ const { makeRecorderKit } = prepareRecorderKitMakers(
 );
 ```
 
-The contract gets `baggage`, along with `privateArgs` when it starts in
-[the usual way for upgradable contracts](./contract-upgrade.html#upgradable-declaration):
+The contract gets `baggage`, along with `privateArgs`, as the standard `start`
+arguments described in [Durability](./contract-upgrade.md#durability):
 
 ```js
 /**
- * Asset Reserve holds onto assets for the Inter Protocol, and ...
- *
+ * @param {ZCF} zcf
  * @param {{
- *   ...
  *   marshaller: ERef<Marshaller>,
  *   storageNode: ERef<StorageNode>,
  * }} privateArgs
  * @param {Baggage} baggage
  */
-export const prepare = async (zcf, privateArgs, baggage) => {
+export const start = async (zcf, privateArgs, baggage) => {
   // ...
 };
 ```
 
-The reserve uses its `StorageNode` and makes a child to get `metricsNode`:
+The contract uses its `storageNode` and makes a child node to get `metricsNode`:
 
 ```js
-const metricsNode = await E(storageNode).makeChildNode('metrics');
+const metricsNode = await E(privateArgs.storageNode).makeChildNode('metrics');
 ```
 
 The `marshaller` is used to serialize data structures such as `MetricsNotification` above.
 
-### Deployment Capabilities for the reserve
-
-To start `assetReserve`, the [setupReserve](https://github.com/Agoric/agoric-sdk/blob/agoric-upgrade-13/packages/inter-protocol/src/proposals/econ-behaviors.js#L76) function again supplies
-the two relevant `privateArgs`, `marshaller` and `storageNode`:
-
-```js
-const STORAGE_PATH = 'reserve';
-const storageNode = await E(storageNode).makeChildNode(STORAGE_PATH);
-const marshaller = await E(board).getReadonlyMarshaller();
-```
-
-The `setupReserve` function gets `chainStorage` and `board` deployment capabilities passed in:
-
-```js
-export const setupReserve = async ({
-  consume: {
-    board,
-    chainStorage,
-// ...
-  },
-// ...
-}) => { ... };
-```
+For a real, current contract that wires up `prepareRecorderKitMakers`,
+`storageNode`, and `marshaller` this way (as part of a larger orchestration
+setup), see
+[`stake-bld.contract.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/orchestration/src/examples/stake-bld.contract.js).

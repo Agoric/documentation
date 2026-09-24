@@ -81,7 +81,7 @@ or to pass to separate recipients.
 
 These objects and facets are designed to be durable and shareable across address space boundaries. Since code
 in different vats might not be mutually trusting, code needs to be defensive about parameters received from
-remote callers. Interface Guards let us express in code what parameters each method expects and can handle
+remote callers. [Interface Guards](https://endojs.github.io/endo/modules/_endo_patterns.html) let us express in code what parameters each method expects and can handle
 safely. If a caller provides a parameter that doesn't match the template specified in the guard, SwingSet
 returns an exception to the caller without notifying the receiver. If the return value doesn't match, the
 function returns an exception to the caller.

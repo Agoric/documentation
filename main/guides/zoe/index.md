@@ -38,7 +38,11 @@ Note that in this flow, _assets are not sent to the contract_; only information 
 ## Building and Using Contracts
 
 - [Zoe Smart Contract Basics](./contract-basics.md)
+- [Contract Requirements](./contract-requirements.md)
+- [The Structure of Offers](./proposal.md)
+- [Offer Safety](./offer-safety.md)
 - [A Complete Contract Walk-Through: offer-up](./contract-walkthru)
+- [Moving Assets Between Seats](./moving-assets.md)
 
 ## Live Coding and Example Contracts
 
@@ -51,16 +55,7 @@ Note that in this flow, _assets are not sent to the contract_; only information 
 Agoric has written [a number of example contracts that you can
 use](./contracts/index), including:
 
-- an [Automated Market Maker (AMM)
-  implementation](./contracts/constantProductAMM)
 - a [covered call option contract](./contracts/covered-call)
 - an [OTC Desk market maker contract](./contracts/otc-desk)
 - contracts for [minting fungible](./contracts/mint-payments) and
   [non-fungible tokens](./contracts/mint-and-sell-nfts)
-
-::: warning Beta Features
-
-These contracts may depend on features from our Beta release
-that are not available in mainnet.
-
-:::
