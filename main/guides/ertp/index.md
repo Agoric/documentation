@@ -137,6 +137,11 @@ Here it also creates a new `mint` and formal `brand`
 for the argument, and returns all three new objects. The `mint`, `issuer`, and `brand`
 are all in unchangeable one-to-one relationships with each other.
 
+`makeIssuerKit()` makes an `issuer` that does not survive an upgrade of the
+vat holding it. A contract, which must keep working across upgrades, instead
+calls `prepareIssuerKit()` in durable storage (`baggage`); see
+[Durable Issuers](/reference/ertp-api/durable-issuers).
+
 In this case, you used the string 'quatloos' to name the `brand`.
 
 <<< @/../snippets/ertp/guide/test-readme.js#seven
@@ -253,12 +258,15 @@ for one performance of _Hamilton_.
 
 As before, you use `makeIssuerKit()` to create a `mint` that can create Agoric Theatre ticket assets.
 The difference from when you created a fungible asset is that you have to use a second argument,
-in this case `AssetKind.SET`.
+in this case `AssetKind.COPY_SET`.
 
-There are two `AssetKinds`. Each one polymorphically implements the same set of methods.
+There are three live `AssetKinds`. Each one polymorphically implements the same set of methods.
 
 - `AssetKind.NAT`: Works with natural number `values` and fungible assets. Default value for `makeIssuerKit()`.
-- `AssetKind.SET`: Used with non-fungible assets, operates on an array of records (objects) with keys and values.
+- `AssetKind.COPY_SET`: Used with non-fungible assets where there can't be duplicates, such as these theater tickets.
+- `AssetKind.COPY_BAG`: Used with semi-fungible assets where duplicates of the same element are fungible with each other.
+
+A fourth, `AssetKind.SET`, is deprecated; use `AssetKind.COPY_SET` instead.
 
 <<< @/../snippets/ertp/guide/test-readme.js#ticketPayments
 

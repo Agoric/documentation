@@ -139,6 +139,45 @@ issuer.getAmountOf(withdrawalPayment);
 purse.getCurrentAmount();
 ```
 
+## aPurse.getRecoverySet()
+
+- Returns: **CopySet&lt;[Payment](./payment)>**
+
+Returns the set of **Payments** withdrawn from this **Purse** that are
+still live: the **Payments** that can still be recovered in an emergency
+by, for example, depositing them back into this **Purse**. It's like
+canceling an outstanding check because you're tired of waiting for it;
+once the cancellation is acknowledged, you can spend the assets at stake
+on other things. If the recipient of the original check later tries to
+deposit it, their deposit fails.
+
+Returns an empty **CopySet** if this **Purse**'s **[Issuer](./issuer)**
+does not maintain recovery sets; see
+**[RecoverySetsOption](./durable-issuers#recoverysetsoption)**.
+
+```js
+const recoverySet = quatloosPurse.getRecoverySet();
+```
+
+## aPurse.recoverAll()
+
+- Returns: **[Amount](./ertp-data-types#amount)**
+
+For use in emergencies, such as recovering from a crash and upgrade of the
+vat holding this **Purse**. Deposits every **Payment** in this **Purse**'s
+recovery set back into the **Purse** itself, and returns the total
+**Amount** of assets recovered.
+
+Returns an empty **Amount** if this **Purse**'s **[Issuer](./issuer)**
+does not maintain recovery sets; see
+**[RecoverySetsOption](./durable-issuers#recoverysetsoption)**.
+
+```js
+// Deposit every outstanding payment from quatloosPurse's recovery set
+// back into quatloosPurse.
+const recoveredAmount = quatloosPurse.recoverAll();
+```
+
 ## aPurse.getAllegedBrand()
 
 - Returns: **[Brand](./brand)**

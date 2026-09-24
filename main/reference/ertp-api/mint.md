@@ -6,7 +6,7 @@ A **Mint** has a one-to-one relationship with both an **[Issuer](./issuer)** and
 So it can only mint new assets of that **Brand** and is the only **Mint** that can mint
 new assets of that **Brand**.
 
-**Mints** are created by calling the **[makeIssuerKit()](./issuer#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)** function. See the **[Issuer](./issuer)** documentation for detailed information about how to use this function.
+**Mints** are created by calling the **[makeIssuerKit()](./issuer#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-issueroptionsrecord)** function. See the **[Issuer](./issuer)** documentation for detailed information about how to use this function.
 
 ## aMint.getIssuer()
 
@@ -40,7 +40,7 @@ const {
   brand: quatloosBrand
 } = makeIssuerKit('quatloos');
 
-const quatloos1000 = amountMath.make(quatloosBrand, 1000n);
+const quatloos1000 = AmountMath.make(quatloosBrand, 1000n);
 // newPayment will have a balance of 1000 Quatloos
 const newPayment = quatloosMint.mintPayment(quatloos1000);
 ```

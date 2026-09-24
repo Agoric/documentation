@@ -65,10 +65,12 @@ API Reference](/reference/ertp-api/).
 - [aBrand.getAllegedName()](/reference/ertp-api/brand#abrand-getallegedname)
   - Returns the `brand`'s alleged name, but should not be trusted as accurate.
   - <<< @/../snippets/ertp/guide/test-amounts.js#getAllegedName
-- [aBrand.getDisplayInfo()](/reference/ertp-api/brand#abrand-getdisplayinfo)
+- [aBrand.getDisplayInfo()](/reference/ertp-api/brand#abrand-getdisplayinfo) **(deprecated: look up in `boardAux` instead)**
   - Returns the `DisplayInfo` associated with the `brand`. The `DisplayInfo`
     tells the UI how to correctly display `values` associated with the `brand`.
   - <<< @/../snippets/ertp/guide/test-amounts.js#getDisplayInfo
+- [aBrand.getAmountShape()](/reference/ertp-api/brand#abrand-getamountshape)
+  - Returns the `AmountShape` for a `brand` associated with a non-fungible asset.
 
 The following methods on other ERTP components also either operate on or
 return a `brand`.

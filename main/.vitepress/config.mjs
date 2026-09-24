@@ -340,6 +340,14 @@ export default defineConfig({
                   link: '/reference/ertp-api/amount-math'
                 },
                 {
+                  text: 'Durable Issuers',
+                  link: '/reference/ertp-api/durable-issuers',
+                },
+                {
+                  text: 'Legacy Payment Helpers',
+                  link: '/reference/ertp-api/legacy-payment-helpers',
+                },
+                {
                   text: 'ERTP Data Types',
                   link: '/reference/ertp-api/ertp-data-types'
                 }

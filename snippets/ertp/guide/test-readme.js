@@ -9,6 +9,7 @@ import { E } from '@endo/eventual-send';
 import { makeFakeBoard } from '@agoric/vats/tools/board-utils.js';
 
 import { AmountMath, makeIssuerKit, AssetKind } from '@agoric/ertp';
+import { makeCopySet } from '@endo/patterns';
 
 test('ertp guide readme', async t => {
   // #region makeIssuerKit
@@ -78,12 +79,12 @@ test('ertp guide readme', async t => {
 
   // #region makeTicketIssuer
   const { mint: agoricTheatreTicketMint, brand: agoricTheatreTicketBrand } =
-    makeIssuerKit('Agoric Theater tickets', AssetKind.SET);
+    makeIssuerKit('Agoric Theater tickets', AssetKind.COPY_SET);
   // #endregion makeTicketIssuer
 
   // #region ticketPayments
   const ticketAmounts = ticketValues.map(ticketValue =>
-    AmountMath.make(agoricTheatreTicketBrand, harden([ticketValue])),
+    AmountMath.make(agoricTheatreTicketBrand, makeCopySet([ticketValue])),
   );
   const agoricTheatreTicketPayments = ticketAmounts.map(ticketAmount =>
     agoricTheatreTicketMint.mintPayment(ticketAmount),

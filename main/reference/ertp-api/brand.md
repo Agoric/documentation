@@ -55,6 +55,10 @@ const name = brand.getAllegedName();
 
 ## aBrand.getDisplayInfo()
 
+::: warning DEPRECATED
+Look up display info in `boardAux` instead.
+:::
+
 - Returns: **[DisplayInfo](./ertp-data-types#displayinfo)**
 
 Returns the **DisplayInfo** associated with the **Brand**.
