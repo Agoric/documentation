@@ -89,7 +89,7 @@ source $(brew --prefix nvm)/nvm.sh
 Then, install Node.js.
 
 ```sh
-nvm install v18.18.0
+nvm install v22.11.0
 ```
 
 Finally, verify the Node.js version.
@@ -102,17 +102,17 @@ node --version
 
 ### Installing Yarn
 
-This will install yarn, and verify it is installed correctly. Install yarn by either running `npm install --global yarn`, or visit https://classic.yarnpkg.com/en/docs/install for more information. See below, `corepack enable` will add the Corepack shims to the install directories, and `yarn --version` will verify yarn is installed correctly.
+This will install yarn, and verify it is installed correctly. `corepack enable` will add the Corepack shims to the install directories, and `yarn --version` will verify yarn is installed correctly.
 
 ```sh
 corepack enable
 yarn --version # for verification
 ```
 
-This app uses Yarn 1, so running the above command will show a version in the format `1.x.x`. If you are using a different version of `yarn`, you can use `yarn set version <version>` to switch like in the example below.
+The sample dapp pins Yarn Berry (`"packageManager": "yarn@4.7.0"` in its `package.json`), so once you're inside the `demo` directory (see [Creating Your Dapp From a Template](#creating-your-dapp-from-a-template) below), Corepack will pick up that version automatically. If it does not, you can set it explicitly:
 
 ```sh
-yarn set version 1.22.5
+yarn set version 4.7.0
 ```
 
 ### Installing Docker

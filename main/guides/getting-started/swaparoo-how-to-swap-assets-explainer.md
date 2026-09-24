@@ -2,7 +2,7 @@
 
 This smart contract is designed to allow two parties to swap assets between themselves, with a fee charged to one of the parties. The contract is started with a `feeAmount` and a `namesByAddressAdmin` object, which is used to retrieve a deposit facet for the second party.
 
-**NOTE:** _`namesByAddressAdmin` is actually excess authority in this scenario. Normally read-only access can be attained via `namesByAddress`. The use of `namesByAddressAdmin` in this example is due to a bug, which will be addressed in an upcoming release._
+**NOTE:** _`namesByAddressAdmin` is actually excess authority in this scenario. Normally read-only access can be attained via `namesByAddress`. The use of `namesByAddressAdmin` in this example is due to a bug that has not yet been fixed upstream; treat it as a known rough edge rather than something a template consumer needs to work around._
 
 Let's take a look at how this contract works:
 
