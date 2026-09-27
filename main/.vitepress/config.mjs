@@ -137,6 +137,10 @@ export default defineConfig({
               link: '/guides/orchestration/key-concepts'
             },
             {
+              text: 'Async Flow',
+              link: '/guides/orchestration/async-flow'
+            },
+            {
               text: 'Contract Walkthroughs',
               link: '/guides/orchestration/contract-walkthroughs/',
               items: [

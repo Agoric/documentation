@@ -37,7 +37,9 @@ elements that make multichain applications possible:
 - **Multiblock execution with `async` and `await`**: Agoric applications
   communicate asynchronously and await responses which may come in the same block
   or many blocks (or weeks!) later. Contracts simply continue executing when the
-  response arrives.
+  response arrives, and keep running even across a contract upgrade. See
+  [Async Flow](./async-flow.md) for how a plain `async` function survives an
+  upgrade by deterministic replay.
 - **On-chain Timers**: Contracts can set timers for regular or scheduled
   execution, making recurring activities such as subscriptions straightforward to
   implement.

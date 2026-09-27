@@ -111,7 +111,8 @@ awaited value, survive its hosting vat's upgrade. A prepared guest function's
 first invocation runs it directly; on later replay (after an upgrade that
 interrupted it mid-flight) the function's arguments, awaited results, and
 console output are replayed from a durable log rather than re-executed, so it
-picks up exactly where it left off. See
+picks up exactly where it left off. See the
+[Async Flow guide](/guides/orchestration/async-flow) for a worked example, and
 [Vows and Durable Eventual-Send](/guides/js-programming/eventual-send#vows-and-durable-eventual-send),
 which async-flow is built on, and the
 [async-flow README](https://github.com/Agoric/agoric-sdk/tree/master/packages/async-flow).

@@ -1,7 +1,9 @@
 # Orchestration Key Concepts and APIs
 
 This document provides an overview of the fundamental concepts involved in building Orchestration smart contracts,
-focusing on Orchestrator Interface, Orchestration Accounts, and ChainHub.
+focusing on Orchestrator Interface, Orchestration Accounts, and ChainHub. The methods described here are called from
+inside orchestration **flows**; see [Async Flow](./async-flow.md) for how those flows run, and how they survive a
+contract upgrade by deterministic replay.
 
 ## Orchestrator Interface
 
