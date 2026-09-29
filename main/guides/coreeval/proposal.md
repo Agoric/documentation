@@ -23,7 +23,7 @@ import { allValues } from './objectTools.js';
 import {
   AmountMath,
   installContract,
-  startContract
+  startContract,
 } from './platform-goals/start-contract.js';
 
 const { Fail } = assert;
@@ -33,22 +33,22 @@ export const makeInventory = (brand, baseUnit) => {
   return {
     frontRow: {
       tradePrice: AmountMath.make(brand, baseUnit * 3n),
-      maxTickets: 3n
+      maxTickets: 3n,
     },
     middleRow: {
       tradePrice: AmountMath.make(brand, baseUnit * 2n),
-      maxTickets: 3n
+      maxTickets: 3n,
     },
     lastRow: {
       tradePrice: AmountMath.make(brand, baseUnit * 1n),
-      maxTickets: 3n
-    }
+      maxTickets: 3n,
+    },
   };
 };
 
 export const makeTerms = (brand, baseUnit) => {
   return {
-    inventory: makeInventory(brand, baseUnit)
+    inventory: makeInventory(brand, baseUnit),
   };
 };
 
@@ -78,17 +78,17 @@ export const startSellConcertTicketsContract = async (powers, config) => {
   console.log('core eval for', contractName);
   const {
     // must be supplied by caller or template-replaced
-    bundleID = Fail`no bundleID`
+    bundleID = Fail`no bundleID`,
   } = config?.options?.[contractName] ?? {};
 
   const installation = await installContract(powers, {
     name: contractName,
-    bundleID
+    bundleID,
   });
 
   const ist = await allValues({
     brand: powers.brand.consume.IST,
-    issuer: powers.issuer.consume.IST
+    issuer: powers.issuer.consume.IST,
   });
 
   const terms = makeTerms(ist.brand, 1n * IST_UNIT);
@@ -98,9 +98,9 @@ export const startSellConcertTicketsContract = async (powers, config) => {
     startArgs: {
       installation,
       issuerKeywordRecord: { Price: ist.issuer },
-      terms
+      terms,
     },
-    issuerNames: ['Ticket']
+    issuerNames: ['Ticket'],
   });
 
   console.log(contractName, '(re)started');
@@ -135,7 +135,7 @@ It also calls `powers.installation[name].resolve(installation)`.
  */
 export const installContract = async (
   { consume: { zoe }, installation: { produce: produceInstallation } },
-  { name, bundleID }
+  { name, bundleID },
 ) => {
   const installation = await E(zoe).installBundleID(bundleID);
   produceInstallation[name].reset();

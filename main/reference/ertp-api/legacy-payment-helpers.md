@@ -25,7 +25,7 @@ import {
   claim,
   combine,
   split,
-  splitMany
+  splitMany,
 } from '@agoric/ertp/src/legacy-payment-helpers.js';
 ```
 
@@ -45,7 +45,7 @@ source **Payment**'s amount must match it, or the deposit throws and no
 const newPayment = await claim(
   recoveryPurse,
   originalPayment,
-  amountToTransfer
+  amountToTransfer,
 );
 ```
 
@@ -79,7 +79,7 @@ _recoveryPurse_.
 const [paymentA, paymentB] = await split(
   recoveryPurse,
   oldPayment,
-  AmountMath.make(quatloosBrand, 10n)
+  AmountMath.make(quatloosBrand, 10n),
 );
 ```
 
@@ -99,6 +99,6 @@ throws once the source has already been deposited into _recoveryPurse_.
 const arrayOfNewPayments = await splitMany(
   recoveryPurse,
   oldPayment,
-  harden(goodAmounts)
+  harden(goodAmounts),
 );
 ```

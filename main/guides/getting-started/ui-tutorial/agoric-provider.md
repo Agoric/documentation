@@ -52,13 +52,13 @@ function App() {
             {
               testChain: {
                 chainId: 'agoriclocal',
-                chainName: 'agoric-local'
+                chainName: 'agoric-local',
               },
               apis: {
                 rest: ['http://localhost:1317'],
-                rpc: ['http://localhost:26657']
-              }
-            }
+                rpc: ['http://localhost:26657'],
+              },
+            },
           ]}
           defaultChainName="agoric-local"
         >

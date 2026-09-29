@@ -12,16 +12,16 @@ Explore our [pre-built contracts](/guides/zoe/contracts/index).
 
 The Zoe API supports the following objects:
 
-| Object                                     | Description                                            |
-| ------------------------------------------ | ------------------------------------------------------ |
-| [Zoe Service](./zoe)                       | Deploys and works with smart contracts.                |
-| [UserSeat](./user-seat)                    | Used outside contracts to access or manipulate offers. |
-| [Zoe Contract Facet](./zoe-contract-facet) | Accesses a running contract instance.                  |
-| [ZCFSeat](./zcfseat)                       | Used within contracts to access or manipulate offers.  |
-| [ZCFMint](./zcfmint)                       | Used by a contract to issue digital assets.            |
-| [PriceAuthority](./price-authority)        | Gives reliable price quotes for pairs of currencies.    |
-| [PriceAuthority Admin](./price-authority-admin) | Registers and deletes **PriceAuthorities**.       |
-| [MutableQuote](./mutable-quote)            | Returned by **PriceAuthority**'s **mutableQuoteWhen\*()** methods; lets you update the trigger level of an outstanding quote. |
+| Object                                          | Description                                                                                                                   |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| [Zoe Service](./zoe)                            | Deploys and works with smart contracts.                                                                                       |
+| [UserSeat](./user-seat)                         | Used outside contracts to access or manipulate offers.                                                                        |
+| [Zoe Contract Facet](./zoe-contract-facet)      | Accesses a running contract instance.                                                                                         |
+| [ZCFSeat](./zcfseat)                            | Used within contracts to access or manipulate offers.                                                                         |
+| [ZCFMint](./zcfmint)                            | Used by a contract to issue digital assets.                                                                                   |
+| [PriceAuthority](./price-authority)             | Gives reliable price quotes for pairs of currencies.                                                                          |
+| [PriceAuthority Admin](./price-authority-admin) | Registers and deletes **PriceAuthorities**.                                                                                   |
+| [MutableQuote](./mutable-quote)                 | Returned by **PriceAuthority**'s **mutableQuoteWhen\*()** methods; lets you update the trigger level of an outstanding quote. |
 
 The Zoe API provides the following libraries:
 
@@ -43,6 +43,6 @@ The Zoe API introduces and uses the following data types:
 | [Keyword](./zoe-data-types#keyword)                   | An ASCII identifier string that must begin with an upper case letter.                                                                                                                                                                                                         |
 | [MutableQuote](./zoe-data-types#mutablequote)         | A **[PriceQuote](./zoe-data-types#pricequote)**-yielding **Promise** whose trigger level can be changed after it's created.                                                                                                                                                   |
 | [ParsableNumber](./zoe-data-types#parsablenumber)     | Defined as a **bigint**, **number**, or **string**.                                                                                                                                                                                                                           |
-| [PriceQuote](./zoe-data-types#pricequote)             | A statement from a **[PriceAuthority](./price-authority)** as to the current price level at a particular time.                                                                                                                                                               |
+| [PriceQuote](./zoe-data-types#pricequote)             | A statement from a **[PriceAuthority](./price-authority)** as to the current price level at a particular time.                                                                                                                                                                |
 | [Ratio](./zoe-data-types#ratio)                       | Pass-by-value record that consists of a _numerator_ **[Amount](/reference/ertp-api/ertp-data-types#amount)** and a _denominator_ **Amount**.                                                                                                                                  |
 | [TransferPart](./zoe-data-types#transferpart)         | **[Allocation](./zoe-data-types#allocation)** changes for one or two existing **[ZCFSeats](./zcfseat)**. **TransferParts** are the individual elements of the _transfer_ array passed into the **[atomicRearrange()](./zoe-helpers#atomicrearrange-zcf-transfers)** function. |

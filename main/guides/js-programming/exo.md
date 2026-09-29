@@ -20,7 +20,7 @@ import { M } from '@endo/patterns';
 const CounterI = M.interface('Counter', {
   increment: M.call(M.number()).returns(M.number()),
   reset: M.call().optional(M.number()).returns(),
-  getValue: M.call().returns(M.number())
+  getValue: M.call().returns(M.number()),
 });
 ```
 
@@ -35,7 +35,7 @@ const CounterI = M.interface('Counter', {
 
   ```js
   const FetcherI = M.interface('Fetcher', {
-    fetch: M.callWhen(M.string()).returns(M.string())
+    fetch: M.callWhen(M.string()).returns(M.string()),
   });
   ```
 
@@ -55,7 +55,7 @@ const counter = makeExo('Counter', CounterI, {
   increment(n) {
     count += n; // guaranteed to be a number
     return count;
-  }
+  },
 });
 
 counter.increment('5'); // throws before increment() runs
@@ -77,7 +77,7 @@ const counter = makeExo('Counter', CounterI, {
     count += n;
     return count;
   },
-  getValue: () => count
+  getValue: () => count,
 });
 ```
 
@@ -99,8 +99,8 @@ const makeCounter = defineExoClass(
     },
     getValue() {
       return this.state.count;
-    }
-  }
+    },
+  },
 );
 
 const counter1 = makeCounter(0);
@@ -126,14 +126,14 @@ import { defineExoClassKit } from '@endo/exo';
 
 const CounterKitI = {
   up: M.interface('UpCounter', {
-    increment: M.call(M.number()).returns(M.number())
+    increment: M.call(M.number()).returns(M.number()),
   }),
   down: M.interface('DownCounter', {
-    decrement: M.call(M.number()).returns(M.number())
+    decrement: M.call(M.number()).returns(M.number()),
   }),
   reader: M.interface('CounterReader', {
-    getValue: M.call().returns(M.number())
-  })
+    getValue: M.call().returns(M.number()),
+  }),
 };
 
 const makeCounterKit = defineExoClassKit(
@@ -145,20 +145,20 @@ const makeCounterKit = defineExoClassKit(
       increment(delta) {
         this.state.count += delta;
         return this.state.count;
-      }
+      },
     },
     down: {
       decrement(delta) {
         this.state.count -= delta;
         return this.state.count;
-      }
+      },
     },
     reader: {
       getValue() {
         return this.state.count;
-      }
-    }
-  }
+      },
+    },
+  },
 );
 
 const { up, down, reader } = makeCounterKit(50);
@@ -193,8 +193,8 @@ const makeCounter = zone.exoClass(
     increment(delta = 1) {
       this.state.count += delta;
       return this.state.count;
-    }
-  }
+    },
+  },
 );
 ```
 

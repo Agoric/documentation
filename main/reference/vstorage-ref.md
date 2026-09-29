@@ -421,7 +421,7 @@ See also: [Smart Wallet VStorage Topics](/guides/getting-started/contract-rpc#sm
 [
   'agoric1003uxlkc77u6szrg603m273r00usecc0xvrhph',
   'agoric1009qfjzn5enucuwzmfv3kwy690y5vne4m7kyxr',
-  'agoric10229lxdgw6urj90h8xvkg7y6lw6s06u7zgwyy6'
+  'agoric10229lxdgw6urj90h8xvkg7y6lw6s06u7zgwyy6',
 ];
 ```
 

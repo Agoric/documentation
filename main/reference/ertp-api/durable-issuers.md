@@ -30,7 +30,7 @@ import { prepareIssuerKit } from '@agoric/ertp';
 const { issuer, mint, brand } = prepareIssuerKit(
   issuerBaggage,
   'quatloos',
-  AssetKind.NAT
+  AssetKind.NAT,
 );
 ```
 
@@ -68,7 +68,7 @@ match that shape.
 const ticketShape = harden({
   seat: M.number(),
   show: M.string(),
-  start: M.string()
+  start: M.string(),
 });
 
 const { issuer, mint, brand } = prepareIssuerKit(
@@ -77,7 +77,7 @@ const { issuer, mint, brand } = prepareIssuerKit(
   AssetKind.COPY_SET,
   undefined,
   undefined,
-  { elementShape: ticketShape }
+  { elementShape: ticketShape },
 );
 ```
 

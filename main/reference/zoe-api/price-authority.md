@@ -21,7 +21,7 @@ given _brandIn_/_brandOut_ pair.
 ```js
 const quoteIssuer = await E(PriceAuthority).getQuoteIssuer(
   collateralKit.brand,
-  loanKit.brand
+  loanKit.brand,
 );
 ```
 
@@ -37,7 +37,7 @@ given _brandIn_/_brandOut_ pair.
 ```js
 const myTimer = E(PriceAuthority).getTimerService(
   collateral.brand,
-  loanKit.brand
+  loanKit.brand,
 );
 ```
 
@@ -92,7 +92,7 @@ Resolves after _deadline_ passes on the **PriceAuthority**’s **timerService** 
 const priceQuoteOnThisAtTime = E(PriceAuthority).quoteAtTime(
   7n,
   quatloosAmount34,
-  usdBrand
+  usdBrand,
 );
 ```
 
@@ -107,7 +107,7 @@ Resolves when a **PriceQuote** of _amountIn_ exceeds _amountOutLimit_.
 ```js
 const quote = E(PriceAuthority).quoteWhenGT(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 
@@ -122,7 +122,7 @@ Resolves when a **PriceQuote** of _amountIn_ reaches or exceeds _amountOutLimit_
 ```js
 const quote = E(PriceAuthority).quoteWhenGTE(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 
@@ -137,7 +137,7 @@ Resolves when a **PriceQuote** of _amountIn_ drops below _amountOutLimit_.
 ```js
 const quote = E(PriceAuthority).quoteWhenLT(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 
@@ -152,7 +152,7 @@ Resolves when a **PriceQuote** of _amountIn_ reaches or drops below _amountOutLi
 ```js
 const quote = E(PriceAuthority).quoteWhenLTE(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 
@@ -167,7 +167,7 @@ Resolves when a **PriceQuote** of _amountIn_ exceeds _amountOutLimit_.
 ```js
 const quote = E(PriceAuthority).mutableQuoteWhenGT(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 
@@ -183,7 +183,7 @@ _amountOutLimit_.
 ```js
 const quote = E(PriceAuthority).mutableQuoteWhenGTE(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 
@@ -199,7 +199,7 @@ _amountOutLimit_.
 ```js
 const quote = E(PriceAuthority).mutableQuoteWhenLT(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 
@@ -215,7 +215,7 @@ _amountOutLimit_.
 ```js
 const quote = E(PriceAuthority).mutableQuoteWhenLTE(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 

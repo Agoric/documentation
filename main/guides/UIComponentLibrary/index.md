@@ -50,14 +50,14 @@ is accessible through the `useAgoric()` hook, backed by `AgoricContext`. See
 [`AgoricContext`](https://github.com/Agoric/ui-kit/blob/main/packages/react-components/src/lib/context/AgoricContext.ts)
 for the full interface, which includes:
 
-| Field | Type | Description |
-|----------|----------|----------|
-| `address` | `string \| undefined` | The connected wallet's address |
-| `purses` | `PurseJSONState[] \| undefined` | The connected wallet's purses |
-| `isSmartWalletProvisioned` | `boolean \| undefined` | Whether the address has a provisioned smart wallet |
-| `provisionSmartWallet` | function | Provisions a smart wallet for the connected address |
-| `smartWalletProvisionFee` / `smartWalletProvisionFeeUnit` | `bigint` / `string` | The current provisioning fee, and its denom |
-| `makeOffer` / `exitOffer` | function | Make or exit a Zoe offer through the connected wallet |
+| Field                                                     | Type                            | Description                                           |
+| --------------------------------------------------------- | ------------------------------- | ----------------------------------------------------- |
+| `address`                                                 | `string \| undefined`           | The connected wallet's address                        |
+| `purses`                                                  | `PurseJSONState[] \| undefined` | The connected wallet's purses                         |
+| `isSmartWalletProvisioned`                                | `boolean \| undefined`          | Whether the address has a provisioned smart wallet    |
+| `provisionSmartWallet`                                    | function                        | Provisions a smart wallet for the connected address   |
+| `smartWalletProvisionFee` / `smartWalletProvisionFeeUnit` | `bigint` / `string`             | The current provisioning fee, and its denom           |
+| `makeOffer` / `exitOffer`                                 | function                        | Make or exit a Zoe offer through the connected wallet |
 
 There is no separate "Smart Wallet Provisioning" component; a dapp reads
 `isSmartWalletProvisioned` and `smartWalletProvisionFee` from `useAgoric()`

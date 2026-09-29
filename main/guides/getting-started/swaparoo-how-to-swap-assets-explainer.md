@@ -30,14 +30,14 @@ const makeFirstInvitation = issuers => {
     }
   }
   const proposalShape = M.splitRecord({
-    give: M.splitRecord({ Fee: feeShape })
+    give: M.splitRecord({ Fee: feeShape }),
   });
 
   const firstInvitation = zcf.makeInvitation(
     makeSecondInvitation,
     'create a swap',
     undefined,
-    proposalShape
+    proposalShape,
   );
   return firstInvitation;
 };
@@ -54,7 +54,7 @@ const makeSecondInvitation = async (firstSeat, offerArgs) => {
 
   const secondDepositFacet = await E(depositFacetFromAddr).lookup(
     secondPartyAddress,
-    'depositFacet'
+    'depositFacet',
   );
   // ...
 };
@@ -75,7 +75,7 @@ const secondSeatOfferHandler = secondSeat => {
 const secondSeatInvitation = await zcf.makeInvitation(
   secondSeatOfferHandler,
   'matchOffer',
-  { give: give1, want: want1 }
+  { give: give1, want: want1 },
 );
 ```
 
@@ -92,8 +92,8 @@ export const swapWithFee = (zcf, firstSeat, secondSeat, feeSeat, feeAmount) => {
     harden([
       [firstSeat, secondSeat, firstGive],
       [secondSeat, firstSeat, secondSeat.getProposal().give],
-      [firstSeat, feeSeat, { Fee: feeAmount }]
-    ])
+      [firstSeat, feeSeat, { Fee: feeAmount }],
+    ]),
   );
 
   firstSeat.exit();
@@ -110,7 +110,7 @@ The contract also provides a `creatorFacet` with a `makeCollectFeesInvitation` m
 const creatorFacet = Far('Creator', {
   makeCollectFeesInvitation() {
     return makeCollectFeesInvitation(zcf, feeSeat, feeBrand, 'Fee');
-  }
+  },
 });
 ```
 

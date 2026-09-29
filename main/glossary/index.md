@@ -156,7 +156,7 @@ Before a contract can be installed on Zoe, its source code must be bundled. This
 ```js
 import bundleSource from '@endo/bundle-source';
 const atomicSwapBundle = await bundleSource(
-  require.resolve('@agoric/zoe/src/contracts/atomicSwap')
+  require.resolve('@agoric/zoe/src/contracts/atomicSwap'),
 );
 ```
 
@@ -326,7 +326,7 @@ You can make any number of facets of an entity. In JavaScript, you often make a 
 ```js
 import { Far } from '@endo/far';
 const facet = Far('FacetName', {
-  myMethod: (...args) => oldObject.method(...args)
+  myMethod: (...args) => oldObject.method(...args),
 });
 ```
 
@@ -612,7 +612,7 @@ For example:
 const myProposal = harden({
   give: { Asset: AmountMath.make(quatloosBrand, 4n) },
   want: { Price: AmountMath.make(moolaBrand, 15n) },
-  exit: { onDemand: null }
+  exit: { onDemand: null },
 });
 ```
 

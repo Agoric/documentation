@@ -62,8 +62,8 @@ export const buildRootObject = (vatPowers, _args, baggage) => {
       use() {
         this.state.uses += 1;
         return this.state.uses;
-      }
-    }
+      },
+    },
   );
 
   const widgets = zone.mapStore('widgets'); // a durable MapStore
@@ -72,7 +72,7 @@ export const buildRootObject = (vatPowers, _args, baggage) => {
     makeWidget,
     registerWidget(key, w) {
       widgets.init(key, w);
-    }
+    },
   });
 };
 ```

@@ -29,7 +29,7 @@ Agoric contracts are **durable**: their important state is kept in a
 [zone](/guides/js-programming/zones.md) so that it survives an upgrade to new
 contract code. Durable objects ([Exos](/guides/js-programming/exo.md)) and
 durable promises ([Vows](https://github.com/Agoric/agoric-sdk/tree/master/packages/vow))
-are the building blocks. But an `async` function's *execution state* is not one
+are the building blocks. But an `async` function's _execution state_ is not one
 of those building blocks. The moment you write:
 
 ```js
@@ -71,9 +71,9 @@ import type { GuestInterface } from '@agoric/async-flow';
 
 // ...
 
-  inertSubscriber: GuestInterface<ResolvedPublicTopic<never>['subscriber']>;
-  zoeTools: GuestInterface<ZoeTools>;
-  resolverClient: GuestInterface<ResolverKit['client']>;
+inertSubscriber: GuestInterface<ResolvedPublicTopic<never>['subscriber']>;
+zoeTools: GuestInterface<ZoeTools>;
+resolverClient: GuestInterface<ResolverKit['client']>;
 ```
 
 `ZoeTools` is a host-side durable facet. Inside the flow it appears as
@@ -93,8 +93,8 @@ On replay the membrane starts from an empty object mapping (its "bijection")
 and rebuilds the correspondence between guest and host objects as it re-drives
 the log. See the
 [async-flow-states writeup](https://github.com/Agoric/agoric-sdk/blob/master/packages/async-flow/docs/async-flow-states.md)
-for how an activation moves through the *Running*, *Sleeping*, *Replaying*,
-*Failed*, and *Done* states around an upgrade.
+for how an activation moves through the _Running_, _Sleeping_, _Replaying_,
+_Failed_, and _Done_ states around an upgrade.
 
 ## What you may and may not do in a flow
 
@@ -108,7 +108,7 @@ states them precisely; the practical summary is:
   Anything it needs must arrive through its arguments or its membrane-wrapped
   context, so that every effect flows through the replay machinery. Reading
   outside state, or causing effects outside the membrane, can make a later
-  replay diverge from the log and put the flow into the *Failed* state.
+  replay diverge from the log and put the flow into the _Failed_ state.
 - **Do all outside work through host calls.** Account operations, transfers,
   and queries are host calls, so they are logged and replayed. Ordinary local
   computation on the values you already hold is fine and is not logged.
@@ -149,7 +149,7 @@ const hostFn = asyncFlow(subZone, 'asyncFlow', guestFn);
 prepared once per contract in
 [`orchestration/src/utils/start-helper.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/orchestration/src/utils/start-helper.js).
 So when you call `orchestrateAll({ myFlow }, hostCtx)` you get back a **host
-wrapper** for `myFlow`. Calling that wrapper creates a durable *activation* of
+wrapper** for `myFlow`. Calling that wrapper creates a durable _activation_ of
 the flow whose eventual outcome is a vow, and `hostCtx` is passed through the
 membrane so the guest sees `GuestInterface`-typed views of it.
 
@@ -267,8 +267,8 @@ disturb the order of host calls an in-flight activation already logged.
 ## Further reading
 
 - [async-flow-states](https://github.com/Agoric/agoric-sdk/blob/master/packages/async-flow/docs/async-flow-states.md):
-  the authoritative activation state machine (*Running*, *Sleeping*,
-  *Replaying*, *Failed*, *Done*).
+  the authoritative activation state machine (_Running_, _Sleeping_,
+  _Replaying_, _Failed_, _Done_).
 - [`@agoric/async-flow` README](https://github.com/Agoric/agoric-sdk/blob/master/packages/async-flow/README.md):
   the closed-function requirement and its exceptions, stated precisely.
 - [Key Concepts and APIs](./key-concepts.md): the Orchestrator, Orchestration

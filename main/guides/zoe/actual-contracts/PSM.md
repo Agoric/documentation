@@ -79,7 +79,7 @@ To create an offer to swap external stable tokens for IST tokens, do the followi
     const seat = E(zoe).offer(
       myInvitation,
       harden(myProposal),
-      harden(myPaymentRecord)
+      harden(myPaymentRecord),
     );
     ```
 

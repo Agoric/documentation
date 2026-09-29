@@ -26,11 +26,11 @@ can create a swap instance for this particular transaction.
 ```js
 const issuerKeywordRecord = harden({
   Asset: moolaIssuer,
-  Price: simoleanIssuer
+  Price: simoleanIssuer,
 });
 const { creatorInvitation } = await E(zoe).startInstance(
   atomicSwapInstallation,
-  issuerKeywordRecord
+  issuerKeywordRecord,
 );
 ```
 
@@ -54,7 +54,7 @@ const threeMoola = AmountMath.make(moolaBrand, 3n);
 const aliceProposal = harden({
   give: { Asset: threeMoola },
   want: { Price: AmountMath.make(simoleanBrand, 7n) },
-  exit: { onDemand: null }
+  exit: { onDemand: null },
 });
 
 const alicePayment = await E(aliceMoolaPurse).withdraw(threeMoola);
@@ -68,7 +68,7 @@ gives her access to the offer's result and her payouts.
 const aliceSeat = await E(zoe).offer(
   creatorInvitation,
   aliceProposal,
-  harden({ Asset: alicePayment })
+  harden({ Asset: alicePayment }),
 );
 ```
 
@@ -84,14 +84,13 @@ about it.
 
 ```js secondary style2
 const invitationIssuer = E(zoe).getInvitationIssuer();
-const { installation: bobInstallation, instance } = await E(
-  zoe
-).getInvitationDetails(invitationP);
+const { installation: bobInstallation, instance } =
+  await E(zoe).getInvitationDetails(invitationP);
 const bobIssuers = await E(zoe).getIssuers(instance);
 
 const bobExclusiveInvitation = await E(invitationIssuer).claim(invitationP);
 const bobInvitationValue = await E(zoe).getInvitationDetails(
-  bobExclusiveInvitation
+  bobExclusiveInvitation,
 );
 
 // Bob verifies the invitation.
@@ -114,7 +113,7 @@ const sevenSimoleans = AmountMath.make(simoleanBrand, 7n);
 const bobProposal = harden({
   want: { Asset: AmountMath.make(moolaBrand, 3n) },
   give: { Price: sevenSimoleans },
-  exit: { onDemand: null }
+  exit: { onDemand: null },
 });
 
 const bobPayment = await E(bobSimoleansPurse).withdraw(sevenSimoleans);
@@ -122,7 +121,7 @@ const bobPayment = await E(bobSimoleansPurse).withdraw(sevenSimoleans);
 const bobSeat = await E(zoe).offer(
   bobExclusiveInvitation,
   bobProposal,
-  harden({ Price: bobPayment })
+  harden({ Price: bobPayment }),
 );
 ```
 

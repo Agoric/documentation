@@ -142,7 +142,7 @@ consume it:
 import {
   makePublishKit,
   subscribeEach,
-  subscribeLatest
+  subscribeLatest,
 } from '@agoric/notifier';
 
 const { publisher, subscriber } = makePublishKit();
@@ -198,7 +198,7 @@ import { makeStoredSubscriber } from '@agoric/notifier';
 const storedSubscriber = makeStoredSubscriber(
   subscriber,
   storageNode,
-  marshaller
+  marshaller,
 );
 ```
 
@@ -336,7 +336,7 @@ Subscriber Bob consumes using the `(observeIteration(asyncIterableP, iterationOb
 const observer = harden({
   updateState: val => console.log('non-final-value', val),
   finish: completion => console.log('finished', completion),
-  fail: reason => console.log('failed', reason)
+  fail: reason => console.log('failed', reason),
 });
 observeIteration(subscription, observer);
 // Eventually prints:
@@ -403,7 +403,7 @@ replace her call to `consume(subscription)` with:
 import { makeSubscription } from '@agoric/notifier';
 
 const localSubscription = makeSubscription(
-  E(subscription).getSharableSubsciptionInternals()
+  E(subscription).getSharableSubsciptionInternals(),
 );
 consume(localSubscription);
 ```

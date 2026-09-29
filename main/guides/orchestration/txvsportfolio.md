@@ -48,7 +48,7 @@ export const sendIt = async (
   orch,
   { chainHub, sharedLocalAccountP, log, zoeTools: { localTransfer } },
   seat,
-  { chainName, destAddr }
+  { chainName, destAddr },
 ) => {
   // 1. Extract the single token amount from the proposal, and resolve its denom.
   const { give } = seat.getProposal();
@@ -63,7 +63,7 @@ export const sendIt = async (
   const { chainId } = await chainHub.getChainInfo(chainName);
   await sharedLocalAccount.transfer(
     { value: destAddr, encoding: 'bech32', chainId },
-    { denom, value: amt.value }
+    { denom, value: amt.value },
   );
 
   // 4. Finish. No persistent state is stored for this user.

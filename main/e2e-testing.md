@@ -58,8 +58,8 @@ module.exports = defineConfig({
   ...baseConfig,
   e2e: {
     ...baseConfig.e2e,
-    baseUrl: 'http://localhost:5173'
-  }
+    baseUrl: 'http://localhost:5173',
+  },
 });
 ```
 
@@ -106,7 +106,7 @@ describe('User Login', () => {
 ```js
 it('should setup a Keplr wallet', () => {
   cy.setupWallet({
-    secretWords: 'KEPLR_MNEMONIC'
+    secretWords: 'KEPLR_MNEMONIC',
   });
   cy.visit('/');
 });

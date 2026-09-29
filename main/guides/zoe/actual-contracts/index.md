@@ -14,7 +14,7 @@ AMM) as the chain's flagship deployed contracts. All of that source was deleted 
 `agoric-sdk` in [Agoric/agoric-sdk#12744](https://github.com/Agoric/agoric-sdk/pull/12744)
 (merged June 18, 2026): Inter Protocol is no longer supported, and there is no current
 package to link to. The instances that were already running on mainnet before that change
-keep running (the PR removed repository *source*, not the *on-chain instances*), but nobody
+keep running (the PR removed repository _source_, not the _on-chain instances_), but nobody
 can install a fresh copy from `agoric-sdk` anymore.
 
 Two pieces of the surrounding governance machinery survived the removal, relocated rather
@@ -33,26 +33,26 @@ Treat it as historical: it will not build against current `agoric-sdk` packages.
 
 ## Contracts started during chain bootstrap
 
-| Contract             | Package                                                                                                       | Description                                                                          |
-| --------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| centralSupply        | [`@agoric/vats`](https://github.com/Agoric/agoric-sdk/blob/master/packages/vats/src/centralSupply.js)          | initializes the vbank IST purse balance from the supply reported by the Cosmos `x/bank` module |
-| mintHolder            | [`@agoric/vats`](https://github.com/Agoric/agoric-sdk/blob/master/packages/vats/src/mintHolder.js)             | holds mints for BLD and interchain assets such as ATOM, USDC, and USDT               |
-| provisionPool         | [`@agoric/vats`](https://github.com/Agoric/agoric-sdk/blob/master/packages/vats/src/provisionPool.js)          | funds new smart-wallet accounts; governed by the economic committee                  |
-| committee             | [`@agoric/governance`](https://github.com/Agoric/agoric-sdk/blob/master/packages/governance/src/committee.js)  | represents the economic committee that governs parameters of governed contracts      |
-| binaryVoteCounter     | [`@agoric/governance`](https://github.com/Agoric/agoric-sdk/blob/master/packages/governance/src/binaryVoteCounter.js) | instantiated once per yes/no question the committee votes on                  |
-| econCommitteeCharter  | [`@agoric/governance`](https://github.com/Agoric/agoric-sdk/blob/master/packages/governance/src/econCommitteeCharter.js) | controls what questions can be put to the economic committee                |
-| contractGovernor      | [`@agoric/governance`](https://github.com/Agoric/agoric-sdk/blob/master/packages/governance/src/contractGovernor.js) | each governed contract is started alongside its own governor instance          |
-| walletFactory         | [`@agoric/smart-wallet`](https://github.com/Agoric/agoric-sdk/blob/master/packages/smart-wallet/src/walletFactory.js) | creates and upgrades each user's [smart wallet](/guides/integration/name-services), and executes their Zoe offers |
+| Contract             | Package                                                                                                                  | Description                                                                                                       |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| centralSupply        | [`@agoric/vats`](https://github.com/Agoric/agoric-sdk/blob/master/packages/vats/src/centralSupply.js)                    | initializes the vbank IST purse balance from the supply reported by the Cosmos `x/bank` module                    |
+| mintHolder           | [`@agoric/vats`](https://github.com/Agoric/agoric-sdk/blob/master/packages/vats/src/mintHolder.js)                       | holds mints for BLD and interchain assets such as ATOM, USDC, and USDT                                            |
+| provisionPool        | [`@agoric/vats`](https://github.com/Agoric/agoric-sdk/blob/master/packages/vats/src/provisionPool.js)                    | funds new smart-wallet accounts; governed by the economic committee                                               |
+| committee            | [`@agoric/governance`](https://github.com/Agoric/agoric-sdk/blob/master/packages/governance/src/committee.js)            | represents the economic committee that governs parameters of governed contracts                                   |
+| binaryVoteCounter    | [`@agoric/governance`](https://github.com/Agoric/agoric-sdk/blob/master/packages/governance/src/binaryVoteCounter.js)    | instantiated once per yes/no question the committee votes on                                                      |
+| econCommitteeCharter | [`@agoric/governance`](https://github.com/Agoric/agoric-sdk/blob/master/packages/governance/src/econCommitteeCharter.js) | controls what questions can be put to the economic committee                                                      |
+| contractGovernor     | [`@agoric/governance`](https://github.com/Agoric/agoric-sdk/blob/master/packages/governance/src/contractGovernor.js)     | each governed contract is started alongside its own governor instance                                             |
+| walletFactory        | [`@agoric/smart-wallet`](https://github.com/Agoric/agoric-sdk/blob/master/packages/smart-wallet/src/walletFactory.js)    | creates and upgrades each user's [smart wallet](/guides/integration/name-services), and executes their Zoe offers |
 
 ## Product contracts deployed on top of the chain
 
 These ship as core-eval proposals after bootstrap, each from its own package rather than
 `agoric-sdk`'s bootstrap vats.
 
-| Contract         | Package                                                                                                                     | Description                                                                                     |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
-| Fast USDC          | [`@agoric/fast-usdc-contract`](https://github.com/Agoric/agoric-sdk/blob/master/packages/fast-usdc-contract/src/fast-usdc.contract.ts) | advances USDC to a recipient on Agoric ahead of a slower Circle CCTP transfer settling      |
-| Portfolio (YMax)   | [`@agoric/portfolio-contract`](https://github.com/Agoric/agoric-sdk/blob/master/packages/portfolio-contract/src/portfolio.contract.ts) | manages a multi-chain yield portfolio using orchestration accounts                          |
+| Contract         | Package                                                                                                                                | Description                                                                            |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Fast USDC        | [`@agoric/fast-usdc-contract`](https://github.com/Agoric/agoric-sdk/blob/master/packages/fast-usdc-contract/src/fast-usdc.contract.ts) | advances USDC to a recipient on Agoric ahead of a slower Circle CCTP transfer settling |
+| Portfolio (YMax) | [`@agoric/portfolio-contract`](https://github.com/Agoric/agoric-sdk/blob/master/packages/portfolio-contract/src/portfolio.contract.ts) | manages a multi-chain yield portfolio using orchestration accounts                     |
 
 ## Orchestration examples
 

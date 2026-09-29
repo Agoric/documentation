@@ -188,13 +188,13 @@ const waivedExitProposalShape = M.splitRecord(
   // optional properties
   { give: M.record(), want: M.record() },
   // unknown properties
-  M.record()
+  M.record(),
 );
 const creatorInvitation = zcf.makeInvitation(
   makeCallOption,
   'makeCallOption',
   undefined,
-  waivedExitProposalShape
+  waivedExitProposalShape,
 );
 ```
 

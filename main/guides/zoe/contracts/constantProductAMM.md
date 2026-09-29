@@ -77,7 +77,7 @@ amountOut of the result.)
 ```js
 const quote = E(publicFacet).getOutputPrice(
   AmountMath.make(BLDBrand, 275n),
-  AmountMath.makeEmpty(ATMBrand)
+  AmountMath.makeEmpty(ATMBrand),
 );
 ```
 
@@ -93,12 +93,12 @@ back.
 ```js
 const saraProposal = harden({
   want: { Out: AmountMath.make(BLDBrand, 275n) },
-  give: { In: AmountMath.make(atmBrand, 220n) }
+  give: { In: AmountMath.make(atmBrand, 220n) },
 });
 
 const swapInvitation = await E(publicFacet).makeSwapOutInvitation();
 const atmPayment = harden({
-  In: saraAtmPurse.withdraw(AmountMath.make(atmBrand, 220n))
+  In: saraAtmPurse.withdraw(AmountMath.make(atmBrand, 220n)),
 });
 
 const saraSeat = await E(zoe).offer(swapInvitation, saraProposal, atmPayment);
@@ -137,19 +137,19 @@ const aliceProposal = harden({
   want: { Liquidity: BLDLiquidity(50n) },
   give: {
     Secondary: AmountMath.make(BLDBrand, 100n),
-    Central: AmountMath.make(ISTBrand, 50n)
-  }
+    Central: AmountMath.make(ISTBrand, 50n),
+  },
 });
 const alicePayments = {
   Secondary: aliceBLDPayment,
-  Central: aliceISTPayment
+  Central: aliceISTPayment,
 };
 
 const aliceAddLiquidityInvitation = E(publicFacet).makeAddLiquidityInvitation();
 const addLiquiditySeat = await E(zoe).offer(
   aliceAddLiquidityInvitation,
   aliceProposal,
-  alicePayments
+  alicePayments,
 );
 ```
 
@@ -182,15 +182,15 @@ figure, but there's no need in this case.
 const bobProposal = harden({
   give: {
     Central: AmountMath.make(ISTBrand, 1800n),
-    Secondary: AmountMath.make(BLDBrand, 1200n)
+    Secondary: AmountMath.make(BLDBrand, 1200n),
   },
   want: { Liquidity: AmountMath.make(liquidityBrand, 0n) },
-  exit: { onDemand: null }
+  exit: { onDemand: null },
 });
 
 const bobPayments = {
   Central: bobISTPayment,
-  Secondary: bobBLDPayment
+  Secondary: bobBLDPayment,
 };
 
 const seat = await E(zoe).offer(addLiquidityInvite, bobProposal, bobPayments);

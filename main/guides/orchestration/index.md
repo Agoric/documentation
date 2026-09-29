@@ -86,7 +86,7 @@ const agoricToStrideTransfer = await agoricAccount.transfer(strideAddr, amount);
 const strideValidator = {
   chainId: 'stride-1',
   value: 'stridevaloper1...',
-  encoding: 'bech32'
+  encoding: 'bech32',
 };
 await strideAccount.delegate(strideValidator, amount);
 

@@ -55,11 +55,11 @@ interface for developers.
 ```js
 const [agoric, remoteChain] = await Promise.all([
   orch.getChain('agoric'),
-  orch.getChain(chainName)
+  orch.getChain(chainName),
 ]);
 const [localAccount, remoteAccount] = await Promise.all([
   agoric.makeAccount(),
-  remoteChain.makeAccount()
+  remoteChain.makeAccount(),
 ]);
 ```
 
@@ -143,7 +143,7 @@ registerChainsAndAssets(
   chainHub,
   zcf.getTerms().brands,
   privateArgs.chainInfo,
-  privateArgs.assetInfo
+  privateArgs.assetInfo,
 );
 ```
 
@@ -160,7 +160,7 @@ chainHub.registerChain(chainKey, chainInfo);
 chainHub.registerConnection(
   agoricChainInfo.chainId,
   chainInfo.chainId,
-  connectionInfo
+  connectionInfo,
 );
 chainHub.registerAsset(denom, denomDetail);
 ```

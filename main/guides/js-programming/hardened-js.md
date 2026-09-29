@@ -49,7 +49,7 @@ import 'ses';
 
 lockdown({
   errorTaming: 'unsafe-debug',
-  overrideTaming: 'min'
+  overrideTaming: 'min',
 });
 ```
 
@@ -174,11 +174,11 @@ export default defineConfig([
   {
     files: ['*.js', '**/*.js'],
     plugins: {
-      '@jessie.js': jessie
+      '@jessie.js': jessie,
     },
     extends: ['@jessie.js/recommended'],
-    processor: '@jessie.js/use-jessie'
-  }
+    processor: '@jessie.js/use-jessie',
+  },
 ]);
 ```
 
@@ -389,7 +389,7 @@ const makeCounter = init => {
     incr: () => {
       value += 1;
       return value;
-    }
+    },
   };
 };
 ```
@@ -455,7 +455,7 @@ const makeMint = () => {
   const ledger = new WeakMap();
 
   const issuer = harden({
-    makeEmptyPurse: () => mint.makePurse(0)
+    makeEmptyPurse: () => mint.makePurse(0),
   });
 
   const mint = harden({
@@ -473,11 +473,11 @@ const makeMint = () => {
           const newPurse = issuer.makeEmptyPurse();
           newPurse.deposit(amount, purse);
           return newPurse;
-        }
+        },
       });
       ledger.set(purse, initialBalance);
       return purse;
-    }
+    },
   });
 
   return mint;

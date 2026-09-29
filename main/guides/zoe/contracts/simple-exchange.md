@@ -42,11 +42,11 @@ The `publicFacet` is returned when the contract is started.
 ```js
 const { publicFacet } = await E(zoe).startInstance(installation, {
   Asset: moolaIssuer,
-  Price: simoleanIssuer
+  Price: simoleanIssuer,
 });
 const simpleExchangeInvitation = await E(publicFacet).makeInvitation();
 const { instance } = await E(zoe).getInvitationDetails(
-  simpleExchangeInvitation
+  simpleExchangeInvitation,
 );
 const aliceInvitation = await E(publicFacet).makeInvitation();
 ```
@@ -60,7 +60,7 @@ moola and receive at least 4 simoleans in return:
 const aliceSellOrderProposal = harden({
   give: { Asset: AmountMath.make(moolaBrand, 3n) },
   want: { Price: AmountMath.make(simoleanBrand, 4n) },
-  exit: { onDemand: null }
+  exit: { onDemand: null },
 });
 
 const alicePayment = { Asset: aliceMoolaPayment };
@@ -72,7 +72,7 @@ Alice escrows her payment with Zoe to add her sell order to the exchange.
 const aliceSeat = await E(zoe).offer(
   aliceInvitation,
   aliceSellOrderProposal,
-  alicePayment
+  alicePayment,
 );
 ```
 
@@ -87,7 +87,7 @@ const bobInvitation = E(publicFacet).makeInvitation();
 const invitationIssuer = E(zoe).getInvitationIssuer();
 const bobExclusiveInvitation = E(invitationIssuer).claim(bobInvitation);
 const { instance, installation } = await E(zoe).getInvitationDetails(
-  bobExclusiveInvitation
+  bobExclusiveInvitation,
 );
 const bobIssuers = await E(zoe).getIssuers(instance);
 ```
@@ -108,18 +108,18 @@ Bob has checked that everything is in order, so he fulfills the buy order:
 const bobBuyOrderProposal = harden({
   give: { Price: AmountMath.make(simoleanBrand, 7n) },
   want: { Asset: AmountMath.make(moolaBrand, 3n) },
-  exit: { onDemand: null }
+  exit: { onDemand: null },
 });
 
 const bobSimPayment = await E(bobSimoleanPurse).withdraw(
-  AmountMath.make(simoleanBrand, 7n)
+  AmountMath.make(simoleanBrand, 7n),
 );
 const bobPayments = { Price: bobSimPayment };
 
 const bobSeat = await E(zoe).offer(
   bobExclusiveInvitation,
   bobBuyOrderProposal,
-  bobPayments
+  bobPayments,
 );
 ```
 

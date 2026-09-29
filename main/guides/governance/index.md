@@ -25,8 +25,8 @@ swaparoo contract has a governed `Fee` amount parameter:
 ```js
 const paramTypes = harden(
   /** @type {const} */ ({
-    Fee: ParamTypes.AMOUNT
-  })
+    Fee: ParamTypes.AMOUNT,
+  }),
 );
 ```
 
@@ -59,7 +59,7 @@ export const start = async (zcf, privateArgs, baggage) => {
       privateArgs.initialPoserInvitation,
       paramTypes,
       privateArgs.storageNode,
-      privateArgs.marshaller
+      privateArgs.marshaller,
     );
   // ...
 };
@@ -76,16 +76,16 @@ export const start = async (zcf, privateArgs, baggage) => {
   // ...
   const publicFacet = Far('Public', {
     makeFirstInvitation,
-    ...publicMixin
+    ...publicMixin,
   });
   const limitedCreatorFacet = Far('Creator', {
     makeCollectFeesInvitation() {
       return makeCollectFeesInvitation(zcf, feeSeat, feeBrand, 'Fee');
-    }
+    },
   });
   const { governorFacet } = makeDurableGovernorFacet(
     baggage,
-    limitedCreatorFacet
+    limitedCreatorFacet,
   );
   return harden({ publicFacet, creatorFacet: governorFacet });
 };
@@ -171,10 +171,10 @@ const makeVoter = (t, wallet, wellKnown) => {
       invitationSpec: {
         source: 'continuing',
         previousOffer: NonNullish(charterAcceptOfferId),
-        invitationMakerName: 'VoteOnParamChange'
+        invitationMakerName: 'VoteOnParamChange',
       },
       offerArgs,
-      proposal: {}
+      proposal: {},
     };
     return doOffer(offer);
   };
@@ -225,9 +225,9 @@ const makeVoter = (t, wallet, wellKnown) => {
         source: 'continuing',
         previousOffer: NonNullish(committeeOfferId),
         invitationMakerName: 'makeVoteInvitation',
-        invitationArgs: harden([chosenPositions, details.questionHandle])
+        invitationArgs: harden([chosenPositions, details.questionHandle]),
       },
-      proposal: {}
+      proposal: {},
     };
     return doOffer(offer);
   };
@@ -242,7 +242,7 @@ published to vstorage.
 test.serial('vote to change swap fee', async t => {
   // ...
   const details = await vstorage.get(
-    `published.committee.swaparoo.latestQuestion`
+    `published.committee.swaparoo.latestQuestion`,
   );
   t.is(details.electionType, 'param_change');
   const voteResult = await victor.vote('voteToSetFee', details, 0);
@@ -258,7 +258,7 @@ carried. It instructs the swaparoo contract to change the fee.
 test.serial('vote to change swap fee', async t => {
   // ...
   const swapPub = E(zoe).getPublicFacet(
-    swapPowers.instance.consume[contractName]
+    swapPowers.instance.consume[contractName],
   );
   // ...
   const after = await E(swapPub).getAmount('Fee');

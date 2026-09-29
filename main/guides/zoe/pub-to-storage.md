@@ -63,7 +63,7 @@ against the contract's `baggage`:
 ```js
 const { makeRecorderKit } = prepareRecorderKitMakers(
   baggage,
-  privateArgs.marshaller
+  privateArgs.marshaller,
 );
 ```
 

@@ -43,7 +43,7 @@ one of its descendants - most likely as part of [permissioned contract deploymen
 ```js
 const { instance } = await E(zoe).startInstance(lemonadeStand);
 const {
-  brands: { Lemonade: lemonadeBrand }
+  brands: { Lemonade: lemonadeBrand },
 } = await E(zoe).getTerms(instance);
 const brandAdmin = E(agoricNamesAdmin).lookupAdmin('brand');
 await E(brandAdmin).update('Lemonade', lemonadeBrand);

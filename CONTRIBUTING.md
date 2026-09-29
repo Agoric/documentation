@@ -105,8 +105,8 @@ Turn it on for the whole site:
 // .vitepress/config.js
 module.exports = {
   themeConfig: {
-    sidebar: 'auto'
-  }
+    sidebar: 'auto',
+  },
 };
 ```
 
@@ -122,17 +122,17 @@ module.exports = {
         link: '/foo/', // optional, link of the title, which should be an absolute path and must exist
         collapsable: false, // optional, defaults to true
         sidebarDepth: 1, // optional, defaults to 1
-        items: [{ text: '', link: '/' }]
+        items: [{ text: '', link: '/' }],
       },
       {
         title: 'Group 2',
         items: [
           /* ... */
         ],
-        initialOpenGroupIndex: -1 // optional, defaults to 0, defines the index of initially opened subgroup
-      }
-    ]
-  }
+        initialOpenGroupIndex: -1, // optional, defaults to 0, defines the index of initially opened subgroup
+      },
+    ],
+  },
 };
 ```
 
@@ -545,25 +545,25 @@ export default ({ router }) => {
     { path: '/wallet-api.html', redirect: '/guides/wallet/' },
     {
       path: '/chainlink-integration/',
-      redirect: '/guides/chainlink-integration.md'
+      redirect: '/guides/chainlink-integration.md',
     },
     {
       path: '/chainlink-integration.html',
-      redirect: '/guides/chainlink-integration.md'
+      redirect: '/guides/chainlink-integration.md',
     },
     { path: '/distributed-programming/', redirect: '/guides/js-programming/' },
     {
       path: '/distributed-programming.html',
-      redirect: '/guides/js-programming/'
+      redirect: '/guides/js-programming/',
     },
     {
       path: '/getting-started/agoric-cli-guide/',
-      redirect: '/guides/agoric-cli/'
+      redirect: '/guides/agoric-cli/',
     },
     {
       path: '/getting-started/agoric-cli-guide.html',
-      redirect: '/guides/agoric-cli/'
-    }
+      redirect: '/guides/agoric-cli/',
+    },
   ]);
 };
 ```

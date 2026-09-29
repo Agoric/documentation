@@ -107,7 +107,7 @@ Users submit their **payments** as **KeywordRecords**:
 ```js
 const aFistfulOfQuatloos = AmountMath.make(quatloosBrand, 1000n);
 const paymentKeywordRecord = {
-  Asset: quatloosPurse.withdraw(aFistfulOfQuatloos)
+  Asset: quatloosPurse.withdraw(aFistfulOfQuatloos),
 };
 ```
 
@@ -115,7 +115,7 @@ const paymentKeywordRecord = {
 
 A **MutableQuote** is a **[PriceQuote](#pricequote)**-yielding **Promise** whose trigger levels can be
 changed after it's created, instead of needing a new call for each new trigger. It's returned by the
-**[E(PriceAuthority).mutableQuoteWhen*()](./price-authority#e-priceauthority-mutablequotewhengt-amountin-amountoutlimit)**
+**[E(PriceAuthority).mutableQuoteWhen\*()](./price-authority#e-priceauthority-mutablequotewhengt-amountin-amountoutlimit)**
 methods, and has its own **cancel()**, **getPromise()**, and **updateLevel()** methods, documented on
 the **[MutableQuote object](./mutable-quote)** page.
 

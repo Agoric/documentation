@@ -106,7 +106,7 @@ Use `zcf.makeInvitation()` to create the first party's `invitation`:
 ```js
 const creatorInvitation = zcf.makeInvitation(
   makeMatchingInvitation,
-  'firstOffer'
+  'firstOffer',
 );
 ```
 
@@ -118,8 +118,8 @@ const matchingSeatInvitation = zcf.makeInvitation(
   'matchOffer',
   {
     asset: give.Asset,
-    price: want.Price
-  }
+    price: want.Price,
+  },
 );
 ```
 

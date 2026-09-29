@@ -42,8 +42,8 @@ export const swap = (zcf, leftSeat, rightSeat) => {
     zcf.atomicRearrange(
       harden([
         [rightSeat, leftSeat, leftSeat.getProposal().want],
-        [leftSeat, rightSeat, rightSeat.getProposal().want]
-      ])
+        [leftSeat, rightSeat, rightSeat.getProposal().want],
+      ]),
     );
   } catch (err) {
     leftSeat.fail(err);
@@ -77,8 +77,8 @@ export const swapExact = (zcf, leftSeat, rightSeat) => {
         fromOnly(leftSeat, leftSeat.getProposal().give),
 
         toOnly(leftSeat, leftSeat.getProposal().want),
-        toOnly(rightSeat, rightSeat.getProposal().want)
-      ])
+        toOnly(rightSeat, rightSeat.getProposal().want),
+      ]),
     );
   } catch (err) {
     leftSeat.fail(err);

@@ -141,7 +141,7 @@ import { makeExo } from '@endo/exo';
 import { M } from '@endo/patterns';
 
 const CounterI = M.interface('Counter', {
-  increment: M.call(M.number()).returns(M.number())
+  increment: M.call(M.number()).returns(M.number()),
 });
 
 let count = 0;
@@ -149,7 +149,7 @@ const counter = makeExo('Counter', CounterI, {
   increment(n) {
     count += n; // n is guaranteed to be a number
     return count;
-  }
+  },
 });
 
 counter.increment(5); // 5

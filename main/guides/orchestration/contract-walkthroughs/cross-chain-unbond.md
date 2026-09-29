@@ -47,7 +47,7 @@ const contract = async (
   zcf,
   privateArgs,
   zone,
-  { orchestrateAll, zcfTools }
+  { orchestrateAll, zcfTools },
 ) => {
   const { unbondAndTransfer } = orchestrateAll(flows, { zcfTools });
 
@@ -60,10 +60,10 @@ const contract = async (
         harden({
           give: {},
           want: {},
-          exit: M.any()
-        })
+          exit: M.any(),
+        }),
       );
-    }
+    },
   });
 
   return harden({ publicFacet });

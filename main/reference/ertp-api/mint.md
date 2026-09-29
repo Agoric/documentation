@@ -37,7 +37,7 @@ one-to-one relationship with a **Brand**.
 const {
   issuer: quatloosIssuer,
   mint: quatloosMint,
-  brand: quatloosBrand
+  brand: quatloosBrand,
 } = makeIssuerKit('quatloos');
 
 const quatloos1000 = AmountMath.make(quatloosBrand, 1000n);

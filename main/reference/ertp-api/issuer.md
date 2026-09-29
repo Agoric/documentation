@@ -77,7 +77,7 @@ import { makeCopySet } from '@endo/patterns';
 const {
   issuer: quatloosIssuer,
   mint: quatloosMint,
-  brand: quatloosBrand
+  brand: quatloosBrand,
 } = makeIssuerKit('quatloos');
 // This is merely an amount, describing assets, not minting assets
 const quatloos2 = AmountMath.make(quatloosBrand, 2n);
@@ -85,14 +85,14 @@ const quatloos2 = AmountMath.make(quatloosBrand, 2n);
 const {
   issuer: titleIssuer,
   mint: titleMint,
-  brand: titleBrand
+  brand: titleBrand,
 } = makeIssuerKit('propertyTitle', AssetKind.COPY_SET);
 // These are merely amounts describing digital assets, not minting assets.
 const cornerProperty = AmountMath.make(titleBrand, makeCopySet(['1292826']));
 const adjacentProperty = AmountMath.make(titleBrand, makeCopySet(['1028393']));
 const combinedProperty = AmountMath.make(
   titleBrand,
-  makeCopySet(['1292826', '1028393'])
+  makeCopySet(['1292826', '1028393']),
 );
 ```
 
@@ -149,10 +149,10 @@ validate its **[Brand](./brand)** and report how much the returned **Amount** co
 const {
   issuer: quatloosIssuer,
   mint: quatloosMint,
-  brand: quatloosBrand
+  brand: quatloosBrand,
 } = makeIssuerKit('quatloos');
 const quatloosPayment = quatloosMint.mintPayment(
-  AmountMath.make(quatloosBrand, 100n)
+  AmountMath.make(quatloosBrand, 100n),
 );
 quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount of 100 Quatloos
 ```
@@ -206,7 +206,7 @@ If _payment_ is a promise, the operation proceeds after it resolves to a **Payme
 const {
   issuer: quatloosIssuer,
   mint: quatloosMint,
-  brand: quatloosBrand
+  brand: quatloosBrand,
 } = makeIssuerKit('quatloos');
 const amountToBurn = AmountMath.make(quatloosBrand, 10n);
 const paymentToBurn = quatloosMint.mintPayment(amountToBurn);

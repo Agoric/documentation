@@ -11,7 +11,7 @@ following imports the two ZoeHelper functions **[assertIssuerKeywords()](#assert
 ```js
 import {
   assertIssuerKeywords,
-  assertProposalShape
+  assertProposalShape,
 } from '@agoric/zoe/src/contractSupport/index.js';
 ```
 
@@ -235,7 +235,7 @@ import { assertProposalShape } from '@agoric/zoe/src/contractSupport/index.js';
 
 const sellAssetForPrice = harden({
   give: { Asset: null },
-  want: { Price: null }
+  want: { Price: null },
 });
 const sell = seat => {
   assertProposalShape(seat, sellAssetForPrice);
@@ -285,7 +285,7 @@ await depositToSeat(
   zcf,
   zcfSeat,
   { Dep: quatloos(2n) },
-  { Dep: quatloosPayment }
+  { Dep: quatloosPayment },
 );
 ```
 
@@ -308,7 +308,7 @@ Unlike **depositToSeat()**, a **PaymentPKeywordRecord** is returned, not a succe
 import { withdrawFromSeat } from '@agoric/zoe/src/contractSupport/index.js';
 
 const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, {
-  With: quatloos(2n)
+  With: quatloos(2n),
 });
 ```
 
@@ -365,7 +365,7 @@ from the contracts indicated by using "A" or "B" in the **Keyword** name.
 // Map the keywords in contractA to the keywords in contractB
 const keywordMapping = harden({
   TokenA1: 'TokenB1',
-  TokenA2: 'TokenB2'
+  TokenA2: 'TokenB2',
 });
 ```
 
@@ -395,7 +395,7 @@ const { userSeatPromise: AMMUserSeat, deposited } = zcf.offerTo(
   keywordMapping, // {}
   proposal,
   fromSeat,
-  lenderSeat
+  lenderSeat,
 );
 ```
 

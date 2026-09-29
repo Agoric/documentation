@@ -45,9 +45,9 @@ In order to ensure that only a single asset (or `brand`) is transferred per tran
 ```js
 export const SingleNatAmountRecord = M.and(
   M.recordOf(M.string(), AnyNatAmountShape, {
-    numPropertiesLimit: 1
+    numPropertiesLimit: 1,
   }),
-  M.not(harden({}))
+  M.not(harden({})),
 );
 harden(SingleNatAmountRecord);
 ```
@@ -66,7 +66,7 @@ registerChainsAndAssets(
   chainHub,
   zcf.getTerms().brands,
   privateArgs.chainInfo,
-  privateArgs.assetInfo
+  privateArgs.assetInfo,
 );
 ```
 
@@ -78,16 +78,16 @@ in transit, and a Noble account used for CCTP transfers. Both are created via `o
 const makeLocalAccount = orchestrate(
   'makeLocalAccount',
   {},
-  sharedFlows.makeLocalAccount
+  sharedFlows.makeLocalAccount,
 );
 const makeNobleAccount = orchestrate(
   'makeNobleAccountFlow',
   {},
-  makeNobleAccountFlow
+  makeNobleAccountFlow,
 );
 
 const sharedLocalAccountP = zone.makeOnce('localAccount', () =>
-  makeLocalAccount()
+  makeLocalAccount(),
 );
 const nobleAccountP = zone.makeOnce('nobleAccount', () => makeNobleAccount());
 ```
@@ -110,9 +110,9 @@ const sendAnywhere = orchestrate(
     sharedLocalAccountP,
     nobleAccountP,
     USDC: brands.USDC,
-    zoeTools
+    zoeTools,
   },
-  sendIt
+  sendIt,
 );
 ```
 
@@ -124,7 +124,7 @@ The contract provides a public-facing API (`publicFacet`) that allows external u
 const publicFacet = zone.exo(
   'Send PF',
   M.interface('Send PF', {
-    makeSendInvitation: M.callWhen().returns(InvitationShape)
+    makeSendInvitation: M.callWhen().returns(InvitationShape),
   }),
   {
     makeSendInvitation() {
@@ -132,10 +132,10 @@ const publicFacet = zone.exo(
         sendAnywhere,
         'send',
         undefined,
-        M.splitRecord({ give: SingleNatAmountRecord })
+        M.splitRecord({ give: SingleNatAmountRecord }),
       );
-    }
-  }
+    },
+  },
 );
 ```
 
@@ -198,7 +198,7 @@ const denomForBrand = async (orch, brand) => {
   const assets = await agoric.getVBankAssetInfo();
   const { denom } = NonNullish(
     assets.find(a => a.brand === brand),
-    `${brand} not registered in ChainHub`
+    `${brand} not registered in ChainHub`,
   );
   return denom;
 };
@@ -232,7 +232,7 @@ if (info.namespace === 'cosmos') {
 
   const [_a, _o, connection] = await chainHub.getChainsAndConnection(
     'agoric',
-    chainName
+    chainName,
   );
   connection.counterparty || Fail`No IBC connection to ${chainName}`;
 
@@ -241,7 +241,7 @@ if (info.namespace === 'cosmos') {
   try {
     await sharedLocalAccount.transfer(
       { value: destAddr, encoding: 'bech32', chainId },
-      { denom, value: amt.value }
+      { denom, value: amt.value },
     );
   } catch (e) {
     return recoverFailedTransfer(e);

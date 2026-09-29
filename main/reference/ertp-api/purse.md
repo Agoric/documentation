@@ -93,7 +93,7 @@ deposit still works on an empty **Purse**.
 const {
   issuer: quatloosIssuer,
   mint: quatloosMint,
-  brand: quatloosBrand
+  brand: quatloosBrand,
 } = makeIssuerKit('quatloos');
 const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 const payment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 123n));
@@ -103,7 +103,7 @@ const quatloos123 = AmountMath.make(quatloosBrand, 123n);
 const depositAmountA = quatloosPurse.deposit(payment, quatloos123);
 
 const secondPayment = quatloosMint.mintPayment(
-  AmountMath.make(quatloosBrand, 100n)
+  AmountMath.make(quatloosBrand, 100n),
 );
 // Throws error
 const depositAmountB = quatloosPurse.deposit(secondPayment, quatloos123);

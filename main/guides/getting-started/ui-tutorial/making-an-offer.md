@@ -24,7 +24,7 @@ const Item = ({
   label,
   value,
   onChange,
-  inputStep
+  inputStep,
 }: {
   label: string;
   value: number | string;
@@ -193,7 +193,7 @@ const submitOffer = () => {
     {
       source: 'contract',
       instance,
-      publicInvitationMaker: 'makeTradeInvitation'
+      publicInvitationMaker: 'makeTradeInvitation',
     },
     { give, want },
     undefined,
@@ -208,7 +208,7 @@ const submitOffer = () => {
       if (update.status === 'refunded') {
         alert('Offer rejected');
       }
-    }
+    },
   );
 };
 ```

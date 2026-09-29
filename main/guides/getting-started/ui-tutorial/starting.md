@@ -44,7 +44,7 @@ const consoleTaming = import.meta.env.DEV ? 'unsafe' : 'safe';
 lockdown({
   errorTaming: 'unsafe',
   overrideTaming: 'severe',
-  consoleTaming
+  consoleTaming,
 });
 
 Error.stackTraceLimit = Infinity;
