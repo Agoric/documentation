@@ -44,6 +44,8 @@ element (`updater`, `publication`, or `publisher`) produces the async
 iteration which is then consumed using the corresponding second element
 (`notifier`, `subscription`, or `subscriber`).
 
+<!-- excerpt: snippets/js-programming/notifiers-publish-kit.js#makePublishKitExample -->
+
 ```js
 import { makePublishKit } from '@agoric/notifier';
 const { publisher, subscriber } = makePublishKit();
@@ -138,8 +140,11 @@ consume it:
   equivalent to `NotifierKit`'s guarantees: the consumer only ever sees the
   most recent value, skipping ahead if it wasn't consuming fast enough.
 
+<!-- excerpt: snippets/js-programming/notifiers-subscribe.js#subscribeEachAndLatest -->
+
 ```js
 import {
+  makePinnedHistoryTopic,
   makePublishKit,
   subscribeEach,
   subscribeLatest,
@@ -147,17 +152,29 @@ import {
 
 const { publisher, subscriber } = makePublishKit();
 
+// A subscriber is forward-lossless: it conveys what is published after a
+// consumer reaches it, not what was published before. Pinning the history
+// first lets a consumer that arrives later still reach the whole iteration.
+const topic = makePinnedHistoryTopic(subscriber);
+
 publisher.publish('a');
 publisher.publish('b');
 publisher.finish('done');
 
-for await (const value of subscribeEach(subscriber)) {
-  console.log('lossless', value); // 'a', then 'b'
+// Lossless: every non-final value, in the order it was published.
+const lossless = [];
+for await (const value of subscribeEach(topic)) {
+  lossless.push(value);
 }
+// lossless is ['a', 'b']
 
-for await (const value of subscribeLatest(subscriber)) {
-  console.log('lossy', value); // 'a' and/or 'b', at least the latest
+// Lossy: a consumer skips straight to wherever the publisher is now, so one
+// that arrives after the iteration finished sees none of what it missed.
+const lossy = [];
+for await (const value of subscribeLatest(topic)) {
+  lossy.push(value);
 }
+// lossy is []
 ```
 
 Because a single `subscriber` supports both adaptors, the same producer can
@@ -173,6 +190,8 @@ that does, use **`prepareDurablePublishKit(baggage, kindName)`** from the
 same package, bound to a vat's baggage (typically through a
 [zone](./zones)) during the vat's first crank, the same rule that governs
 any other durable kind:
+
+<!-- excerpt: snippets/js-programming/notifiers-durable.js#durablePublishKit -->
 
 ```js
 import { prepareDurablePublishKit } from '@agoric/notifier';
@@ -191,6 +210,8 @@ A contract that wants its published values visible on-chain (in vstorage)
 rather than only to in-process subscribers uses the `stored-notifier.js`/
 `storesub.js` helpers to layer a `StorageNode` on top of an existing
 notifier or subscriber:
+
+<!-- excerpt: snippets/js-programming/notifiers-stored.js#storedSubscriber -->
 
 ```js
 import { makeStoredSubscriber } from '@agoric/notifier';
@@ -293,6 +314,8 @@ Let’s look at a subscription example. We have three characters: Paula the publ
 
 First we create a publication/subscription pair with `makeSubscriptionKit()`. Paula publishes an iteration with the non-final sequence 'a', 'b' and 'done' as its completion value.
 
+<!-- excerpt: snippets/js-programming/test-notifiers.js#subscriptionKitPublish -->
+
 ```js
 const { publication, subscription } = makeSubscriptionKit();
 // Paula the publisher says
@@ -311,6 +334,8 @@ the non-final values and whether the iteration completes or fails. She can see a
 failure reason, but the for-await-of syntax does not let her see the completion
 value 'done'. She can write code that only executes after the loop finishes, but
 the code won’t know what the completion value actually was “done”, “completed”, or something else. This is a limitation of JavaScript's iteration, whether asynchronous or synchronous (as consumed by a for-of loop).
+
+<!-- excerpt: snippets/js-programming/test-notifiers.js#consumeSubscription -->
 
 ```js
 const consume = async subscription => {
@@ -332,6 +357,8 @@ consume(subscription);
 
 Subscriber Bob consumes using the `(observeIteration(asyncIterableP, iterationObserver)` adaptor.
 
+<!-- excerpt: snippets/js-programming/test-notifiers.js#observeIterationExample -->
+
 ```js
 const observer = harden({
   updateState: val => console.log('non-final-value', val),
@@ -350,6 +377,8 @@ observeIteration(subscription, observer);
 A `NotifierKit` is a lossy conveyor of non-final values, but does
 losslessly convey termination. Let's say the subscription example above
 started with the following instead of `makeSubscriptionKit()`.
+
+<!-- excerpt: snippets/js-programming/test-notifiers.js#makeNotifierKitExample -->
 
 ```js
 const { updater, notifier } = makeNotifierKit();
@@ -396,14 +425,16 @@ coordinates better with producer Paula's `IterationObserver`.
 Subscriber Alice's code, located in the [Subscription Example section](#subscription-example) above, is less forgiving. She's using JavaScript's
 for-await-of loop which requires a local `AsyncIterable`. It cannot handle a
 remote reference to an `AsyncIterable` at Paula's site. Alice has to make an
-`AsyncIterable` at her site by using `getSharableSubsciptionInternals()`. She can
+`AsyncIterable` at her site by using `getSharableSubscriptionInternals()`. She can
 replace her call to `consume(subscription)` with:
+
+<!-- excerpt: snippets/js-programming/test-notifiers.js#makeLocalSubscription -->
 
 ```js
 import { makeSubscription } from '@agoric/notifier';
 
 const localSubscription = makeSubscription(
-  E(subscription).getSharableSubsciptionInternals(),
+  E(subscription).getSharableSubscriptionInternals(),
 );
 consume(localSubscription);
 ```
@@ -415,6 +446,8 @@ she has, and she must have the required making function code locally available.
 
 Alternatively, Alice can generically mirror any possibly remote `AsyncIterable` by
 making a new local pair and plugging them together with `observeIteration`.
+
+<!-- excerpt: snippets/js-programming/test-notifiers.js#adapterSubscription -->
 
 ```js
 const { publication: adapterPublication, subscription: adapterSubscription } =

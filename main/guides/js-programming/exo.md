@@ -14,11 +14,13 @@ An interface guard is built with `M.interface()` from
 [`@endo/patterns`](https://github.com/endojs/endo/tree/master/packages/patterns),
 naming each method and describing its call shape with `M.call()`:
 
+<!-- excerpt: snippets/js-programming/exo-interface.js#counterInterface -->
+
 ```js
 import { M } from '@endo/patterns';
 
 const CounterI = M.interface('Counter', {
-  increment: M.call(M.number()).returns(M.number()),
+  increment: M.call().optional(M.number()).returns(M.number()),
   reset: M.call().optional(M.number()).returns(),
   getValue: M.call().returns(M.number()),
 });
@@ -28,14 +30,20 @@ const CounterI = M.interface('Counter', {
   optional arguments, `.rest(...)` for a rest parameter, and `.returns(...)`
   for the return value (omit `.returns()` for a method returning nothing
   meaningful).
-- `M.callWhen(...)` is the async form: it **waits for any promise or
-  [Vow](./eventual-send#vows-and-durable-eventual-send) arguments to settle**,
-  validates the resolved values, and only then calls your method. Use it for
-  any `async` method whose arguments might be eventual references:
+- `M.callWhen(...)` is the async form: the method always answers a promise,
+  and every argument you wrap in `M.await(...)` is **waited on** (a promise or
+  a [Vow](./eventual-send#vows-and-durable-eventual-send) is settled first),
+  validated against the pattern inside `M.await(...)`, and only then handed to
+  your method. Use it for any `async` method whose arguments might be eventual
+  references. Arguments you do not wrap in `M.await(...)` are validated as
+  they arrive, so a promise passed where `M.string()` is expected is rejected
+  rather than awaited:
+
+  <!-- excerpt: snippets/js-programming/exo-interface.js#fetcherInterface -->
 
   ```js
   const FetcherI = M.interface('Fetcher', {
-    fetch: M.callWhen(M.string()).returns(M.string()),
+    fetch: M.callWhen(M.await(M.string())).returns(M.string()),
   });
   ```
 
@@ -48,17 +56,15 @@ const CounterI = M.interface('Counter', {
 
 A guard rejects a bad call before your method body ever executes, which
 means your method bodies can assume their arguments are already the shape
-they declared:
+they declared. Given the `counter` built from `CounterI` in
+[the next section](#makeexo-one-instance):
+
+<!-- excerpt: snippets/js-programming/test-exo.js#guardRejectsBadCall -->
 
 ```js
-const counter = makeExo('Counter', CounterI, {
-  increment(n) {
-    count += n; // guaranteed to be a number
-    return count;
-  },
-});
-
-counter.increment('5'); // throws before increment() runs
+counter.increment('5');
+// throws before increment() runs:
+// In "increment" method of (Counter): arg 0?: string "5" - Must be a number
 ```
 
 ## Three Ways to Make an Exo
@@ -68,14 +74,19 @@ counter.increment('5'); // throws before increment() runs
 For a single object with no interesting per-instance state (use closure
 variables if you need any):
 
+<!-- excerpt: snippets/js-programming/test-exo.js#makeExoCounter -->
+
 ```js
 import { makeExo } from '@endo/exo';
 
 let count = 0;
 const counter = makeExo('Counter', CounterI, {
-  increment(n) {
+  increment(n = 1) {
     count += n;
     return count;
+  },
+  reset(to = 0) {
+    count = to;
   },
   getValue: () => count,
 });
@@ -84,6 +95,8 @@ const counter = makeExo('Counter', CounterI, {
 ### `defineExoClass`: many instances, each with its own state
 
 For a maker function that produces many independent instances:
+
+<!-- excerpt: snippets/js-programming/test-exo.js#defineExoClassCounter -->
 
 ```js
 import { defineExoClass } from '@endo/exo';
@@ -96,6 +109,9 @@ const makeCounter = defineExoClass(
     increment(delta = 1) {
       this.state.count += delta; // this.state: this instance's state
       return this.state.count;
+    },
+    reset(to = 0) {
+      this.state.count = to;
     },
     getValue() {
       return this.state.count;
@@ -121,8 +137,11 @@ needs, and let them all share the same underlying state. The
 [Mint/Issuer/Purse/Payment split in ERTP](/glossary/#ertp) is the canonical
 example.
 
+<!-- excerpt: snippets/js-programming/test-exo.js#defineExoClassKitCounter -->
+
 ```js
 import { defineExoClassKit } from '@endo/exo';
+import { M } from '@endo/patterns';
 
 const CounterKitI = {
   up: M.interface('UpCounter', {
@@ -181,8 +200,10 @@ must survive a vat **upgrade** (**durable**), use the corresponding functions
 from [`@agoric/vat-data`](https://github.com/Agoric/agoric-sdk/tree/master/packages/vat-data),
 typically accessed through a [zone](./zones):
 
+<!-- excerpt: snippets/js-programming/exo-durable.js#durableExoClass -->
+
 ```js
-import { makeDurableZone } from '@agoric/zone';
+import { makeDurableZone } from '@agoric/zone/durable.js';
 
 const zone = makeDurableZone(baggage);
 const makeCounter = zone.exoClass(
@@ -192,6 +213,12 @@ const makeCounter = zone.exoClass(
   {
     increment(delta = 1) {
       this.state.count += delta;
+      return this.state.count;
+    },
+    reset(to = 0) {
+      this.state.count = to;
+    },
+    getValue() {
       return this.state.count;
     },
   },
@@ -221,13 +248,17 @@ Two related but distinct introspection points:
   its actual `InterfaceGuard` pattern object (the full `M.interface(...)`
   value), so callers can introspect argument and return shapes at runtime:
 
+  <!-- excerpt: snippets/js-programming/test-exo.js#getInterfaceGuard -->
+
   ```js
   import { GET_INTERFACE_GUARD } from '@endo/exo';
   import { getInterfaceMethodKeys } from '@endo/patterns';
   import { E } from '@endo/far';
 
-  const guard = await E(counter)[GET_INTERFACE_GUARD]();
-  getInterfaceMethodKeys(guard); // ['increment', 'reset', 'getValue']
+  const describeCounter = async aCounter => {
+    const guard = await E(aCounter)[GET_INTERFACE_GUARD]();
+    return getInterfaceMethodKeys(guard); // ['increment', 'reset', 'getValue']
+  };
   ```
 
 ## `Far()` vs. Exo

@@ -15,6 +15,8 @@ The last 10 minutes are Q&A._
 Before any of the techniques below take effect, a program must call `lockdown()`
 once, as early as possible, typically at the very top of its entry point:
 
+<!-- excerpt: snippets/js-programming/lockdown-basic.js#lockdownBasic -->
+
 ```js
 import 'ses';
 
@@ -43,6 +45,8 @@ commonly adjusted options are:
   may be used. Most projects never need `'unsafe'`.
 - `consoleTaming` (`'safe'` default): whether to wrap the global `console` to
   show deep stacks across turns.
+
+<!-- excerpt: snippets/js-programming/lockdown-options.js#lockdownOptions -->
 
 ```js
 import 'ses';
@@ -164,6 +168,8 @@ This `eslint` configuration provides tool support.
 1. If working from an empty directory, a package.json file must first be created by running `yarn init` or `yarn init -y`.
 2. From there, we can install eslint into our project along with the jessie.js eslint-plugin by running `yarn add -D eslint @jessie.js/eslint-plugin`.
 3. The final step is to set up an `eslint.config.js` file (eslint's [flat config](https://eslint.org/docs/latest/use/configure/configuration-files) format) at the root of the project.
+
+<!-- excerpt-exempt:  eslint configuration for a downstream project. It cannot run here, because @jessie.js/eslint-plugin is deliberately not a dependency of this documentation repository. -->
 
 ```js
 // eslint.config.js
@@ -379,6 +385,8 @@ can help prevent certain classes of coding errors. We recommend this style rathe
 writing in TypeScript syntax to remind ourselves that the type annotations really
 are only for lint tools and do not have any effect at runtime:
 
+<!-- excerpt: snippets/js-programming/advisory-counter.js#advisoryCounter -->
+
 ```js
 // @ts-check
 
@@ -398,7 +406,7 @@ If we're not careful, our clients can cause us to misbehave:
 
 ```
 > const evil = makeCounter('poison')
-> evil2.incr()
+> evil.incr()
 'poison1'
 ```
 
@@ -415,10 +423,12 @@ launch the missiles!
 
 To be defensively correct, we need runtime validation for any inputs that cross trust boundaries:
 
-```js
-import Nat from `@endo/nat`;
+<!-- excerpt: snippets/js-programming/defensive-counter.js#defensiveCounter -->
 
-/** @param {number | bignum} init */
+```js
+import { Nat } from '@endo/nat';
+
+/** @param {number | bigint} init */
 const makeCounter = init => {
   let value = Nat(init);
   return harden({
@@ -450,39 +460,7 @@ in [Higher-order Smart Contracts across Chains](https://www.youtube.com/watch?v=
 ](https://youtube.com/watch?v=iyuo0ymTt4g&t=1525&list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG)
 :::
 
-```js
-const makeMint = () => {
-  const ledger = new WeakMap();
-
-  const issuer = harden({
-    makeEmptyPurse: () => mint.makePurse(0),
-  });
-
-  const mint = harden({
-    makePurse: initialBalance => {
-      const purse = harden({
-        getIssuer: () => issuer,
-        getBalance: () => ledger.get(purse),
-
-        deposit: (amount, src) => {
-          Nat(ledger.get(purse) + Nat(amount));
-          ledger.set(src, Nat(ledger.get(src) - amount));
-          ledger.set(purse, ledger.get(purse) + amount);
-        },
-        withdraw: amount => {
-          const newPurse = issuer.makeEmptyPurse();
-          newPurse.deposit(amount, purse);
-          return newPurse;
-        },
-      });
-      ledger.set(purse, initialBalance);
-      return purse;
-    },
-  });
-
-  return mint;
-};
-```
+<<< @/../snippets/test-hardened-js.js#makeMint
 
 This `makeMint` sketch keeps everything in the JavaScript heap, so it
 disappears the moment its vat restarts. A real contract needs its purses and

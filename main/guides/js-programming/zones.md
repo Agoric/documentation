@@ -29,24 +29,33 @@ number regardless of regime.
 
 ## Making a Zone
 
+<!-- excerpt: snippets/js-programming/test-zones.js#zoneImports -->
+
 ```js
 import { makeHeapZone } from '@agoric/zone';
 // or, inside a vat with access to baggage:
-import { makeDurableZone } from '@agoric/zone';
+import { makeDurableZone } from '@agoric/zone/durable.js';
 ```
 
-- **`makeHeapZone(baseLabel?)`** makes a zone backed purely by the JS heap.
+Each flavor has its own entry point, so importing one never drags the others
+into your bundle:
+
+- **`makeHeapZone(baseLabel?)`**, from `@agoric/zone` or
+  `@agoric/zone/heap.js`, makes a zone backed purely by the JS heap.
   Useful for tests, and for library code that shouldn't force a durability
   choice on its caller.
-- **`makeVirtualZone(baseLabel?)`** makes a zone backed by external storage,
-  without durability.
-- **`makeDurableZone(baggage, baseLabel?)`** makes a zone backed by
+- **`makeVirtualZone(baseLabel?)`**, from `@agoric/zone/virtual.js`, makes a
+  zone backed by external storage, without durability.
+- **`makeDurableZone(baggage, baseLabel?)`**, from `@agoric/zone/durable.js`,
+  makes a zone backed by
   `baggage`, a `MapStore` provided to a vat's `buildRootObject` that is
   itself durable: whatever the zone stores under a given key, the successor
   incarnation finds again under that same key.
 
 All three expose the same `Zone` interface, so library code written against
 a `zone` parameter works the same way no matter which one its caller passes:
+
+<!-- excerpt: snippets/js-programming/test-zones.js#durableZoneVat -->
 
 ```js
 import { Far } from '@endo/far';
@@ -70,8 +79,8 @@ export const buildRootObject = (vatPowers, _args, baggage) => {
 
   return Far('WidgetFrobulator', {
     makeWidget,
-    registerWidget(key, w) {
-      widgets.init(key, w);
+    registerWidget(key, widget) {
+      widgets.init(key, widget);
     },
   });
 };

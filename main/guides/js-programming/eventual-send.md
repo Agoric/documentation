@@ -14,12 +14,21 @@ access to the `zoe` object. However, the script
 is given a `zoe` _remote presence_ among its permitted powers. To call methods on the
 actual Zoe object, the script can do:
 
+<!-- excerpt: snippets/js-programming/eventual-send-install.js#installBundleId -->
+
 ```js
 import { E } from '@endo/eventual-send';
 
-E(zoe).installBundleID(bundleId)
-  .then(installation => { ... })
-  .catch(err => { ... });
+const installationP = E(zoe)
+  .installBundleID(bundleId)
+  .then(installation => {
+    console.log('installed', installation);
+    return installation;
+  })
+  .catch(reason => {
+    console.error('installation failed', reason);
+    throw reason;
+  });
 ```
 
 ## Eventual Send
@@ -76,24 +85,32 @@ points for other shapes of eventual interaction:
   when `x` might be a presence, since a plain promise method assumes `x` is
   already a local promise.
 
+  <!-- excerpt: snippets/js-programming/test-eventual-send.js#eWhen -->
+
   ```js
   import { E } from '@endo/far';
 
   const installationHandle = await E.when(E(zoe).install(bundle));
   ```
 
-- **`E.get(x).property`** returns a promise for a remote object's property,
-  without waiting for a method call. Use this when the remote object exposes
-  plain data properties rather than only methods.
+- **`E.get(x).property`** returns a promise for a property of whatever `x`
+  settles to, without waiting for a method call. Reach for it when a remote
+  call answers with a record, such as an issuer kit or a contract's terms: a
+  `Far()` remotable's own properties are all methods, so `E.get` is for the
+  record on the other side of a promise rather than for a presence itself.
+
+  <!-- excerpt: snippets/js-programming/test-eventual-send.js#eGet -->
 
   ```js
-  const brand = await E.get(issuer).brand;
+  const brand = await E.get(issuerKitP).brand;
   ```
 
 - **`E.sendOnly(x).method(...args)`** sends a message the same way `E(x)`
   does, but discards the result and returns `undefined` immediately. Use it
   for fire-and-forget notifications where you don't need (and don't want to
   pay for tracking) a result promise.
+
+  <!-- excerpt: snippets/js-programming/test-eventual-send.js#eSendOnly -->
 
   ```js
   E.sendOnly(logger).record(event);
@@ -152,9 +169,11 @@ rather than raw promises for anything long-lived.
 `prepareVowTools(zone)` returns the tools bound to a particular
 [zone](./zones)'s durable storage:
 
+<!-- excerpt: snippets/js-programming/test-eventual-send.js#prepareVowTools -->
+
 ```js
 import { prepareVowTools } from '@agoric/vow';
-import { makeDurableZone } from '@agoric/zone';
+import { makeDurableZone } from '@agoric/zone/durable.js';
 
 // Once, at the start of a vat incarnation:
 const zone = makeDurableZone(baggage);

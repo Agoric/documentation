@@ -56,6 +56,8 @@ be passable.
 All Passables must be hardened. Consider what might happen if we had a remote `item` and we did not harden
 some pass-by-copy data that we passed to it:
 
+<!-- excerpt-exempt:  deliberately incorrect code. The surrounding prose states that the call throws, and shows what would go wrong if it did not. -->
+
 ```js
 let amount1 = { brand: brand1, value: 10n };
 await E(item).setPrice(amount1); // Throws an error, but let's imagine it doesn't.
@@ -136,6 +138,8 @@ An **Exo** object is a `Far` remotable wrapped with an **interface guard**
 declared once with `M.interface(...)`, that validates every method's
 arguments and return value automatically, before the method body ever runs:
 
+<!-- excerpt: snippets/js-programming/test-far.js#farExoCounter -->
+
 ```js
 import { makeExo } from '@endo/exo';
 import { M } from '@endo/patterns';
@@ -153,7 +157,7 @@ const counter = makeExo('Counter', CounterI, {
 });
 
 counter.increment(5); // 5
-counter.increment('5'); // throws: Must be a number
+// counter.increment('5') throws: arg 0: string "5" - Must be a number
 ```
 
 `makeExo` is one of three ways to make an Exo, matching how much state

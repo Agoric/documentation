@@ -60,7 +60,7 @@ const globPromise = util.promisify(glob);
  * carry an `excerpt:` or `excerpt-exempt:` annotation. Add a directory here
  * once all of its fences have been converted.
  */
-const enforcedRoots = [];
+const enforcedRoots = ['main/guides/js-programming/'];
 
 /** Fence languages whose contents are expected to be real, runnable code. */
 const checkedLanguages = new Set([
