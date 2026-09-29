@@ -40,3 +40,8 @@ jobs:
           corepack enable
           yarn install
           yarn lint:format
+
+      # Every code example a page shows literally must still match the
+      # checked-in, test-exercised file it was excerpted from.
+      - name: Check code-example provenance
+        run: yarn lint:excerpts

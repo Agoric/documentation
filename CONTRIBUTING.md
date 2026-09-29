@@ -177,7 +177,12 @@ These GitHub Actions run on every pull request and commit to `main`:
 - Test the build
   - Tests for build errors and does HTML5 validation.
 - Lint and Test Snippets
-  - Tests the imported code snippets. Code included inline is **not** tested or run.
+  - Tests the code snippet files under `snippets/`.
+- Lint Markdown
+  - Formats and style-checks the Markdown, and runs the code-example
+    provenance check (`yarn lint:excerpts`), which verifies that every
+    literal code block carrying an `<!-- excerpt: ... -->` annotation still
+    matches the checked-in, test-exercised file it was excerpted from.
 - Spellcheck - **Does not work yet. Until finished, please check your docs in an external spellchecker before merging.**
   - Checks Markdown files against a dictionary and a local wordlist.
 
@@ -263,6 +268,69 @@ To test your snippets files while writing your docs:
 3. Lint the files with `yarn lint-fix` (run from anywhere, but usually from the root of the repo).
 
 Note that the PR will automatically test and lint files. The above is for local testing while you're writing the docs.
+
+### Provenance of inline code examples
+
+Every code example a page shows should come from a file that is checked in
+and exercised by a test, so a reader can trust that the code on the page
+actually runs. There are two ways to get there, and the first is preferred.
+
+**1. Transclude it.** `<<< @/../snippets/<file>#<region>` puts the source
+file's region on the page at build time. The page never holds a copy, so the
+example cannot drift from its source. Use this whenever you can.
+
+**2. Annotate a literal fence.** Transclusion does not work everywhere: a
+fence nested inside a list item or a container directive has to be a literal
+fenced block, and sometimes a page reads better when its Markdown source
+carries the code. A literal fence can drift, so it carries an invisible
+provenance annotation naming the file and region it came from:
+
+<!-- prettier-ignore -->
+    <!-- excerpt: snippets/js-programming/exo-interface.js#counterInterface -->
+    ```js
+    import { M } from '@endo/patterns';
+
+    const CounterI = M.interface('Counter', {
+      increment: M.call().optional(M.number()).returns(M.number()),
+    });
+    ```
+
+The annotation is an HTML comment, so it never renders. The region it names
+is delimited in the source file by the same `// #region name` and
+`// #endregion name` markers transclusion uses.
+
+`yarn lint:excerpts` (run in CI by the Lint Markdown workflow) then checks
+each annotated fence:
+
+1. the named file and region exist;
+2. the fence text equals the region text, ignoring the indentation each side
+   carries from its own surroundings, so an excerpt that drifts from its
+   source fails the build;
+3. the named file is exercised by the AVA suite, either because AVA collects
+   it (it matches `snippets/**/test-*.js`) or because a file AVA collects
+   reaches it through static imports or a `require.resolve()` of its path.
+
+Because point 3 wants a test to actually run the excerpt, an example whose
+imports have to sit next to the code they support usually cannot share a
+module with another example that does the same. The convention for those
+files is a short `eslint-disable` header naming `import/first` and
+`import/order`, and one module per example where names would otherwise
+collide. `snippets/js-programming/` is worked through in full and is the
+reference for the shape.
+
+A fence that genuinely cannot be excerpted from running code (deliberately
+broken code shown as a hazard, configuration for a tool this repository does
+not depend on) opts out explicitly, stating why:
+
+<!-- prettier-ignore -->
+    <!-- excerpt-exempt: deliberately incorrect code, described as such in the surrounding prose -->
+
+**Coverage is enforced one directory at a time.** `enforcedRoots` at the top
+of `scripts/check-doc-excerpts.mjs` lists the directories where every
+JavaScript and TypeScript fence must be annotated or exempt. Outside those
+directories an unannotated fence is only counted and reported, so the
+convention can be adopted page by page. When you finish converting a
+directory, add it to `enforcedRoots` so it cannot regress.
 
 ### Check Links
 

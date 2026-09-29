@@ -13,6 +13,7 @@
     "lint": "eslint 'snippets/**/*.js'",
     "format": "node scripts/markdown-js-snippets-linter.mjs 'main/**/*.md' --fix && prettier --write '**/*.md' --config .prettierrc.json",
     "lint:format": "node scripts/format.mjs",
+    "lint:excerpts": "node scripts/check-doc-excerpts.mjs",
     "lint:check-links": "node scripts/checkLinks.mjs",
     "build": "exit 0"
   },
