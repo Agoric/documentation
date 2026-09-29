@@ -213,7 +213,7 @@ test('pricedCallSpread, mid-strike', async t => {
   const { longInvitation, shortInvitation } = invitationPair;
   // #endregion makeInvitationPriced
 
-  // region validatePricedInvitation
+  // #region validatePricedInvitation
   const invitationIssuer = await E(zoe).getInvitationIssuer();
   const longAmount = await E(invitationIssuer).getAmountOf(longInvitation);
   const longDetails = longAmount.value[0];
@@ -225,16 +225,16 @@ test('pricedCallSpread, mid-strike', async t => {
   t.is(installation, longDetails.installation);
   t.is('long', longCustomDetails.position);
   t.is(225n, longCustomDetails.collateral);
-  // endregion validatePricedInvitation
+  // #endregion validatePricedInvitation
 
-  // region checkTerms-priced
+  // #region checkTerms-priced
   const bobTerms = await E(zoe).getTerms(longDetails.instance);
   t.truthy(AmountMath.isEqual(simoleans(2n), bobTerms.underlyingAmount));
   t.truthy(AmountMath.isEqual(bucks(300n), bobTerms.settlementAmount));
-  // endregion checkTerms-priced
+  // #endregion checkTerms-priced
 
   // Bob makes an offer for the long option
-  // region exercisePricedInvitation
+  // #region exercisePricedInvitation
   const bobProposal = harden({
     want: { Option: longOption },
     give: { Collateral: bucks(longCustomDetails.collateral) },
@@ -243,14 +243,14 @@ test('pricedCallSpread, mid-strike', async t => {
     Collateral: bobBucksPayment,
   });
   const bobOption = await bobFundingSeat.getPayout('Option');
-  // endregion exercisePricedInvitation
+  // #endregion exercisePricedInvitation
 
-  // region exercisePricedOption
+  // #region exercisePricedOption
   // bob gets an option, and exercises it for the payout
   const bobOptionSeat = await E(zoe).offer(bobOption);
 
   const bobPayout = bobOptionSeat.getPayout('Collateral');
-  // region exercisePricedOption
+  // #endregion exercisePricedOption
   const bobDeposit = assertPayoutDeposit(
     t,
     bobPayout,
