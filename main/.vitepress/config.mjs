@@ -13,7 +13,7 @@ export default defineConfig({
   head: [
     [
       'meta',
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     ],
     ['link', { rel: 'icon', href: '/favicon-full.ico' }],
     [
@@ -28,19 +28,19 @@ export default defineConfig({
     }
     a[href^='#'] {
         font-style: italic;
-    }`
+    }`,
     ],
     [
       'script',
       {
         src: 'https://www.googletagmanager.com/gtag/js?id=UA-118217811-1',
-        async: ''
-      }
+        async: '',
+      },
     ],
     [
       'script',
       {},
-      "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-118217811-1'); "
+      "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-118217811-1'); ",
     ],
     [
       'script',
@@ -77,8 +77,8 @@ export default defineConfig({
         // console.log('fixups are done');
       }
     }, 500);
-    `
-    ]
+    `,
+    ],
   ],
   ignoreDeadLinks: [
     // ignore all localhost links
@@ -87,10 +87,10 @@ export default defineConfig({
     /^.\/packages\/*/,
     './MAINTAINERS',
     './CONTRIBUTING',
-    './LICENSE'
+    './LICENSE',
   ],
   sitemap: {
-    hostname: 'https://docs.agoric.com'
+    hostname: 'https://docs.agoric.com',
   },
   plugins: [],
   /* --- ROUTE REWRITES / REDIRECTS --- */
@@ -103,8 +103,8 @@ export default defineConfig({
       formatOptions: {
         dateStyle: 'medium',
         timeStyle: 'long',
-        timeZone: 'Etc/UTC'
-      }
+        timeZone: 'Etc/UTC',
+      },
     },
     logo: '/agoric-logo-red.svg',
     /* --- NAVBAR (top) --- */
@@ -126,19 +126,19 @@ export default defineConfig({
           items: [
             {
               text: 'What is Agoric Orchestration?',
-              link: '/guides/orchestration/'
+              link: '/guides/orchestration/',
             },
             {
               text: 'Transactional vs Portfolio',
-              link: '/guides/orchestration/txvsportfolio'
+              link: '/guides/orchestration/txvsportfolio',
             },
             {
               text: 'Key Concepts and APIs',
-              link: '/guides/orchestration/key-concepts'
+              link: '/guides/orchestration/key-concepts',
             },
             {
               text: 'Async Flow',
-              link: '/guides/orchestration/async-flow'
+              link: '/guides/orchestration/async-flow',
             },
             {
               text: 'Contract Walkthroughs',
@@ -146,13 +146,13 @@ export default defineConfig({
               items: [
                 {
                   text: 'Send Anywhere Example',
-                  link: '/guides/orchestration/contract-walkthroughs/send-anywhere'
+                  link: '/guides/orchestration/contract-walkthroughs/send-anywhere',
                 },
                 {
                   text: 'Cross-Chain Unbond Example',
-                  link: '/guides/orchestration/contract-walkthroughs/cross-chain-unbond'
-                }
-              ]
+                  link: '/guides/orchestration/contract-walkthroughs/cross-chain-unbond',
+                },
+              ],
             },
             {
               text: 'Example Orchestration DApp',
@@ -160,23 +160,23 @@ export default defineConfig({
               items: [
                 {
                   text: 'Installation and Deployment',
-                  link: '/guides/orchestration/orchestration-basics/installation'
+                  link: '/guides/orchestration/orchestration-basics/installation',
                 },
                 {
                   text: 'Orca Contract walkthrough',
-                  link: '/guides/orchestration/orchestration-basics/contract'
+                  link: '/guides/orchestration/orchestration-basics/contract',
                 },
                 {
                   text: 'UI Walkthrough',
-                  link: '/guides/orchestration/orchestration-basics/ui'
-                }
-              ]
+                  link: '/guides/orchestration/orchestration-basics/ui',
+                },
+              ],
             },
             {
               text: 'How Orchestration Works',
-              link: '/guides/orchestration/how-orch-works'
-            }
-          ]
+              link: '/guides/orchestration/how-orch-works',
+            },
+          ],
         },
         {
           text: 'Build',
@@ -188,17 +188,17 @@ export default defineConfig({
               items: [
                 {
                   text: 'Takeaway 1: Starting a Local Chain',
-                  link: '/guides/getting-started/explainer-how-to-start-a-local-chain'
+                  link: '/guides/getting-started/explainer-how-to-start-a-local-chain',
                 },
                 {
                   text: 'Takeaway 2: Deploying a Smart Contract',
-                  link: '/guides/getting-started/explainer-deploying-a-smart-contact'
+                  link: '/guides/getting-started/explainer-deploying-a-smart-contact',
                 },
                 {
                   text: 'Takeaway 3: Making an Offer',
-                  link: '/guides/getting-started/explainer-how-to-make-an-offer'
-                }
-              ]
+                  link: '/guides/getting-started/explainer-how-to-make-an-offer',
+                },
+              ],
             },
             {
               text: 'Smart Contract Basics',
@@ -207,58 +207,58 @@ export default defineConfig({
               items: [
                 {
                   text: 'Hello World Smart Contract',
-                  link: '/guides/zoe/contract-hello'
+                  link: '/guides/zoe/contract-hello',
                 },
                 {
                   text: 'Contract Requirements',
-                  link: '/guides/zoe/contract-requirements'
+                  link: '/guides/zoe/contract-requirements',
                 },
                 {
                   text: 'State Smart Contract',
-                  link: '/guides/zoe/contract-state'
+                  link: '/guides/zoe/contract-state',
                 },
                 {
                   text: 'Access Control Smart Contract',
-                  link: '/guides/zoe/contract-access-control'
+                  link: '/guides/zoe/contract-access-control',
                 },
                 {
                   text: 'The Structure of Offers',
-                  link: '/guides/zoe/proposal'
+                  link: '/guides/zoe/proposal',
                 },
                 {
                   text: 'Offer Safety',
-                  link: '/guides/zoe/offer-safety'
+                  link: '/guides/zoe/offer-safety',
                 },
                 {
                   text: 'Offer-Safety Enforcement',
-                  link: '/guides/zoe/offer-enforcement'
+                  link: '/guides/zoe/offer-enforcement',
                 },
                 {
                   text: 'Complete Contract Walk-Through',
-                  link: '/guides/zoe/contract-walkthru'
+                  link: '/guides/zoe/contract-walkthru',
                 },
                 {
                   text: 'Durable Contract Details',
-                  link: '/guides/zoe/contract-details'
+                  link: '/guides/zoe/contract-details',
                 },
                 {
                   text: 'Contract Upgrade',
-                  link: '/guides/zoe/contract-upgrade'
+                  link: '/guides/zoe/contract-upgrade',
                 },
                 {
                   text: 'Moving Assets Between Seats',
-                  link: '/guides/zoe/moving-assets'
+                  link: '/guides/zoe/moving-assets',
                 },
                 {
                   text: 'Price Authority',
-                  link: '/guides/zoe/price-authority'
+                  link: '/guides/zoe/price-authority',
                 },
                 {
                   text: 'Publishing to chainStorage',
-                  link: '/guides/zoe/pub-to-storage'
+                  link: '/guides/zoe/pub-to-storage',
                 },
-                { text: 'Contract Governance', link: '/guides/governance/' }
-              ]
+                { text: 'Contract Governance', link: '/guides/governance/' },
+              ],
             },
             {
               text: 'Smart Wallet',
@@ -272,11 +272,11 @@ export default defineConfig({
 
             {
               text: 'UI Component Library',
-              link: '/guides/UIComponentLibrary/'
+              link: '/guides/UIComponentLibrary/',
             },
             {
               text: 'Building Client Dapps',
-              link: '/guides/getting-started/contract-rpc'
+              link: '/guides/getting-started/contract-rpc',
             },
             {
               text: 'Permissioned Contract Deployment',
@@ -286,17 +286,17 @@ export default defineConfig({
               items: [
                 {
                   text: 'Write Code to Deploy a Contract',
-                  link: '/guides/coreeval/proposal'
+                  link: '/guides/coreeval/proposal',
                 },
                 {
                   text: 'Declare Required Capabilities',
-                  link: '/guides/coreeval/permissions'
+                  link: '/guides/coreeval/permissions',
                 },
                 {
                   text: 'Submit Transactions',
-                  link: '/guides/coreeval/local-testnet'
-                }
-              ]
+                  link: '/guides/coreeval/local-testnet',
+                },
+              ],
             },
             {
               text: 'Integrating with Agoric Network',
@@ -305,13 +305,13 @@ export default defineConfig({
               items: [
                 {
                   text: 'Name Services: agoricNames, namesByAddress, board',
-                  link: '/guides/integration/name-services'
+                  link: '/guides/integration/name-services',
                 },
                 {
                   text: 'SubQuery Indexing',
-                  link: '/guides/subquery-indexing'
-                }
-              ]
+                  link: '/guides/subquery-indexing',
+                },
+              ],
             },
             {
               text: 'Agoric CLI',
@@ -321,17 +321,17 @@ export default defineConfig({
                 { text: 'Agoric CLI Reference', link: '/guides/agoric-cli/' },
                 {
                   text: 'Using agd to make queries and transactions',
-                  link: '/guides/agoric-cli/agd-query-tx'
-                }
-              ]
+                  link: '/guides/agoric-cli/agd-query-tx',
+                },
+              ],
             },
             {
               text: 'Agoric API Reference',
-              link: 'https://agoric-sdk.pages.dev/'
+              link: 'https://agoric-sdk.pages.dev/',
             },
             {
               text: 'Endo API Reference',
-              link: 'https://endojs.github.io/endo/'
+              link: 'https://endojs.github.io/endo/',
             },
 
             {
@@ -346,11 +346,11 @@ export default defineConfig({
                 { text: 'Purse Object', link: '/reference/ertp-api/purse' },
                 {
                   text: 'Payment Object',
-                  link: '/reference/ertp-api/payment'
+                  link: '/reference/ertp-api/payment',
                 },
                 {
                   text: 'AmountMath Object',
-                  link: '/reference/ertp-api/amount-math'
+                  link: '/reference/ertp-api/amount-math',
                 },
                 {
                   text: 'Durable Issuers',
@@ -362,9 +362,9 @@ export default defineConfig({
                 },
                 {
                   text: 'ERTP Data Types',
-                  link: '/reference/ertp-api/ertp-data-types'
-                }
-              ]
+                  link: '/reference/ertp-api/ertp-data-types',
+                },
+              ],
             },
             {
               text: 'Smart Wallet API',
@@ -391,39 +391,39 @@ export default defineConfig({
                 { text: 'Zoe Service', link: '/reference/zoe-api/zoe' },
                 {
                   text: 'UserSeat Object',
-                  link: '/reference/zoe-api/user-seat'
+                  link: '/reference/zoe-api/user-seat',
                 },
                 {
                   text: 'Zoe Contract Facet (ZCF)',
-                  link: '/reference/zoe-api/zoe-contract-facet'
+                  link: '/reference/zoe-api/zoe-contract-facet',
                 },
                 { text: 'ZCFSeat Object', link: '/reference/zoe-api/zcfseat' },
                 { text: 'ZCFMint Object', link: '/reference/zoe-api/zcfmint' },
                 {
                   text: 'ZoeHelper Functions',
-                  link: '/reference/zoe-api/zoe-helpers'
+                  link: '/reference/zoe-api/zoe-helpers',
                 },
                 {
                   text: 'Ratio Math Functions',
-                  link: '/reference/zoe-api/ratio-math'
+                  link: '/reference/zoe-api/ratio-math',
                 },
                 {
                   text: 'Zoe Data Types',
-                  link: '/reference/zoe-api/zoe-data-types'
+                  link: '/reference/zoe-api/zoe-data-types',
                 },
                 {
                   text: 'PriceAuthority Object',
-                  link: '/reference/zoe-api/price-authority'
+                  link: '/reference/zoe-api/price-authority',
                 },
                 {
                   text: 'PriceAuthority Admin Object',
-                  link: '/reference/zoe-api/price-authority-admin'
+                  link: '/reference/zoe-api/price-authority-admin',
                 },
                 {
                   text: 'MutableQuote Object',
-                  link: '/reference/zoe-api/mutable-quote'
-                }
-              ]
+                  link: '/reference/zoe-api/mutable-quote',
+                },
+              ],
             },
             {
               text: 'Example Zoe Contracts',
@@ -433,85 +433,85 @@ export default defineConfig({
               items: [
                 {
                   text: 'Example Zoe Contracts',
-                  link: '/guides/zoe/contracts/'
+                  link: '/guides/zoe/contracts/',
                 },
                 {
                   text: 'Oracle Query Contract',
-                  link: '/guides/zoe/contracts/oracle'
+                  link: '/guides/zoe/contracts/oracle',
                 },
                 {
                   text: 'Vault Contract',
-                  link: '/guides/zoe/contracts/vault'
+                  link: '/guides/zoe/contracts/vault',
                 },
                 { text: 'Loan Contract', link: '/guides/zoe/contracts/loan' },
                 {
                   text: 'Funded Call Spread Contract',
-                  link: '/guides/zoe/contracts/fundedCallSpread'
+                  link: '/guides/zoe/contracts/fundedCallSpread',
                 },
                 {
                   text: 'Priced Call Spread Contract',
-                  link: '/guides/zoe/contracts/pricedCallSpread'
+                  link: '/guides/zoe/contracts/pricedCallSpread',
                 },
                 {
                   text: 'Covered Call Contract',
-                  link: '/guides/zoe/contracts/covered-call'
+                  link: '/guides/zoe/contracts/covered-call',
                 },
                 {
                   text: 'OTC Desk Contract',
-                  link: '/guides/zoe/contracts/otc-desk'
+                  link: '/guides/zoe/contracts/otc-desk',
                 },
                 {
                   text: 'ConstantProduct AMM Contract',
-                  link: '/guides/zoe/contracts/constantProductAMM'
+                  link: '/guides/zoe/contracts/constantProductAMM',
                 },
                 {
                   text: 'Sell Items Contract',
-                  link: '/guides/zoe/contracts/sell-items'
+                  link: '/guides/zoe/contracts/sell-items',
                 },
                 {
                   text: 'Atomic Swap Contract',
-                  link: '/guides/zoe/contracts/atomic-swap'
+                  link: '/guides/zoe/contracts/atomic-swap',
                 },
                 {
                   text: 'Barter Exchange Contract',
-                  link: '/guides/zoe/contracts/barter-exchange'
+                  link: '/guides/zoe/contracts/barter-exchange',
                 },
                 {
                   text: 'Second-Price Auction Contract',
-                  link: '/guides/zoe/contracts/second-price-auction'
+                  link: '/guides/zoe/contracts/second-price-auction',
                 },
                 {
                   text: 'Simple Exchange Contract',
-                  link: '/guides/zoe/contracts/simple-exchange'
+                  link: '/guides/zoe/contracts/simple-exchange',
                 },
                 {
                   text: 'Escrow To Vote Contract',
-                  link: '/guides/zoe/contracts/escrow-to-vote'
+                  link: '/guides/zoe/contracts/escrow-to-vote',
                 },
                 {
                   text: 'Mint Payments Contract',
-                  link: '/guides/zoe/contracts/mint-payments'
+                  link: '/guides/zoe/contracts/mint-payments',
                 },
                 {
                   text: 'Mint and Sell NFTs Contract',
-                  link: '/guides/zoe/contracts/mint-and-sell-nfts'
+                  link: '/guides/zoe/contracts/mint-and-sell-nfts',
                 },
                 {
                   text: 'Use Object Contract',
-                  link: '/guides/zoe/contracts/use-obj-example'
+                  link: '/guides/zoe/contracts/use-obj-example',
                 },
                 {
                   text: 'Automatic Refund Contract',
-                  link: '/guides/zoe/contracts/automatic-refund'
-                }
-              ]
+                  link: '/guides/zoe/contracts/automatic-refund',
+                },
+              ],
             },
             {
               text: 'End-to-End Testing',
               ariaLabel: 'End-to-End Testing',
-              link: '/e2e-testing'
-            }
-          ]
+              link: '/e2e-testing',
+            },
+          ],
         },
         {
           text: 'Learn',
@@ -519,17 +519,17 @@ export default defineConfig({
           items: [
             {
               text: 'What is Agoric?',
-              link: '/what-is-agoric'
+              link: '/what-is-agoric',
             },
             {
               text: 'Agoric Platform',
               link: '/guides/platform/',
               collapsed: true,
-              items: []
+              items: [],
             },
             {
               text: 'Zoe Smart Contract Framework',
-              link: '/guides/zoe/'
+              link: '/guides/zoe/',
             },
             {
               text: 'ERTP',
@@ -539,18 +539,18 @@ export default defineConfig({
               items: [
                 {
                   text: 'Amounts, Values, and Brands',
-                  link: '/guides/ertp/amounts'
+                  link: '/guides/ertp/amounts',
                 },
                 { text: 'AmountMath', link: '/guides/ertp/amount-math' },
                 {
                   text: 'Issuers and  Mints',
-                  link: '/guides/ertp/issuers-and-mints'
+                  link: '/guides/ertp/issuers-and-mints',
                 },
                 {
                   text: 'Purses and Payments',
-                  link: '/guides/ertp/purses-and-payments'
-                }
-              ]
+                  link: '/guides/ertp/purses-and-payments',
+                },
+              ],
             },
             {
               text: 'JavaScript Framework',
@@ -560,29 +560,29 @@ export default defineConfig({
               items: [
                 {
                   text: 'Hardened JavaScript',
-                  link: '/guides/js-programming/hardened-js'
+                  link: '/guides/js-programming/hardened-js',
                 },
                 {
                   text: 'E() for Eventual Send',
-                  link: '/guides/js-programming/eventual-send'
+                  link: '/guides/js-programming/eventual-send',
                 },
                 {
                   text: 'Far(), Remotables, and Marshaling',
-                  link: '/guides/js-programming/far'
+                  link: '/guides/js-programming/far',
                 },
                 {
                   text: 'Exo Objects and Interface Guards',
-                  link: '/guides/js-programming/exo'
+                  link: '/guides/js-programming/exo',
                 },
                 {
                   text: 'Zones and Persistence',
-                  link: '/guides/js-programming/zones'
+                  link: '/guides/js-programming/zones',
                 },
                 {
                   text: 'Notifiers, Subscriptions, and PublishKit',
-                  link: '/guides/js-programming/notifiers'
-                }
-              ]
+                  link: '/guides/js-programming/notifiers',
+                },
+              ],
             },
 
             {
@@ -593,23 +593,23 @@ export default defineConfig({
               items: [
                 {
                   text: 'PSM Contract',
-                  link: '/guides/zoe/actual-contracts/PSM'
-                }
-              ]
+                  link: '/guides/zoe/actual-contracts/PSM',
+                },
+              ],
             },
 
             {
               text: 'Glossary',
               ariaLabel: 'Glossary Menu',
-              link: '/glossary/'
+              link: '/glossary/',
             },
 
             {
               text: 'Papers',
               ariaLabel: 'Papers Page Link',
-              link: 'https://agoric.com/papers/'
-            }
-          ]
+              link: 'https://agoric.com/papers/',
+            },
+          ],
         },
         {
           text: 'Tutorials',
@@ -617,7 +617,7 @@ export default defineConfig({
           items: [
             {
               text: 'Tutorial: Dapp with Agoric',
-              link: '/guides/getting-started/tutorial/'
+              link: '/guides/getting-started/tutorial/',
             },
             {
               text: 'dapp-agoric-basics',
@@ -625,19 +625,19 @@ export default defineConfig({
               items: [
                 {
                   text: 'Takeaway 1: Sell Concert Tickets Contract Overview',
-                  link: '/guides/getting-started/sell-concert-tickets-contract-explainer'
+                  link: '/guides/getting-started/sell-concert-tickets-contract-explainer',
                 },
 
                 {
                   text: 'Takeaway 2: Swaparoo Contract Overview',
-                  link: '/guides/getting-started/swaparoo-how-to-swap-assets-explainer'
+                  link: '/guides/getting-started/swaparoo-how-to-swap-assets-explainer',
                 },
 
                 {
                   text: 'Takeaway 3: Sending Invitation Payments using an Address',
-                  link: '/guides/getting-started/swaparoo-making-a-payment-explainer'
-                }
-              ]
+                  link: '/guides/getting-started/swaparoo-making-a-payment-explainer',
+                },
+              ],
             },
 
             {
@@ -646,31 +646,31 @@ export default defineConfig({
               items: [
                 {
                   text: '1. Starting',
-                  link: '/guides/getting-started/ui-tutorial/starting'
+                  link: '/guides/getting-started/ui-tutorial/starting',
                 },
                 {
                   text: '2. Agoric Provider',
-                  link: '/guides/getting-started/ui-tutorial/agoric-provider'
+                  link: '/guides/getting-started/ui-tutorial/agoric-provider',
                 },
                 {
                   text: '3. Connect Wallet',
-                  link: '/guides/getting-started/ui-tutorial/connect-wallet'
+                  link: '/guides/getting-started/ui-tutorial/connect-wallet',
                 },
                 {
                   text: '4. Querying Vstorage',
-                  link: '/guides/getting-started/ui-tutorial/querying-vstorage'
+                  link: '/guides/getting-started/ui-tutorial/querying-vstorage',
                 },
                 {
                   text: '5. Making an Offer',
-                  link: '/guides/getting-started/ui-tutorial/making-an-offer'
+                  link: '/guides/getting-started/ui-tutorial/making-an-offer',
                 },
                 {
                   text: '6. Conclusion',
-                  link: '/guides/getting-started/ui-tutorial/conclusion'
-                }
-              ]
-            }
-          ]
+                  link: '/guides/getting-started/ui-tutorial/conclusion',
+                },
+              ],
+            },
+          ],
         },
         {
           text: 'Support',
@@ -679,37 +679,37 @@ export default defineConfig({
             {
               text: 'Agoric',
               ariaLabel: 'Agoric Homepage Link',
-              link: 'https://agoric.com/'
+              link: 'https://agoric.com/',
             },
             {
               text: 'Discord',
-              link: 'https://agoric.com/discord'
+              link: 'https://agoric.com/discord',
             },
             {
               text: 'Discussions (Q&A)',
-              link: 'https://github.com/Agoric/agoric-sdk/discussions'
+              link: 'https://github.com/Agoric/agoric-sdk/discussions',
             },
             {
               text: 'Office Hours',
-              link: 'https://github.com/Agoric/agoric-sdk/wiki/Office-Hours'
+              link: 'https://github.com/Agoric/agoric-sdk/wiki/Office-Hours',
             },
             {
               text: 'Twitter',
-              link: 'https://twitter.com/agoric'
+              link: 'https://twitter.com/agoric',
             },
             {
               text: 'YouTube',
               ariaLabel: 'Agoric YouTube Channel Page Link',
-              link: 'https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg/'
+              link: 'https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg/',
             },
             {
               text: 'Github',
               ariaLabel: 'Agoric Github Link',
-              link: 'https://github.com/Agoric/'
-            }
-          ]
-        }
-      ]
+              link: 'https://github.com/Agoric/',
+            },
+          ],
+        },
+      ],
     },
     docsRepo: 'Agoric/documentation',
     // if your docs are not at the root of the repo:
@@ -719,7 +719,7 @@ export default defineConfig({
     // custom text for edit link. Defaults to "Edit this page"
     editLink: {
       pattern: 'https://github.com/Agoric/documentation/edit/main/main/:path',
-      text: 'Help us improve this page!'
+      text: 'Help us improve this page!',
     },
 
     zoeVersion: 'v0.24.0',
@@ -744,7 +744,7 @@ export default defineConfig({
            */
           searchOptions: {
             /* ... */
-          }
+          },
           /**
            * @param {string} src
            * @param {import('vitepress').MarkdownEnv} env
@@ -752,33 +752,33 @@ export default defineConfig({
            */
           // _render(src, env, md) {
           // },
-        }
-      }
+        },
+      },
     },
     footer: {
-      copyright: `© ${new Date().getFullYear()} Agoric Systems Operating Company. All Rights Reserved.`
+      copyright: `© ${new Date().getFullYear()} Agoric Systems Operating Company. All Rights Reserved.`,
     },
     socialLinks: [
       {
         icon: 'discord',
         ariaLabel: 'Discord',
-        link: 'https://agoric.com/discord'
+        link: 'https://agoric.com/discord',
       },
       {
         icon: 'github',
         ariaLabel: 'GitHub',
-        link: 'https://github.com/Agoric/agoric-sdk'
+        link: 'https://github.com/Agoric/agoric-sdk',
       },
       {
         icon: 'twitter',
         ariaLabel: 'Twitter',
-        link: 'https://twitter.com/agoric'
+        link: 'https://twitter.com/agoric',
       },
       {
         icon: 'youtube',
         ariaLabel: 'YouTube',
-        link: 'https://www.youtube.com/@Agoric'
-      }
-    ]
-  }
+        link: 'https://www.youtube.com/@Agoric',
+      },
+    ],
+  },
 });
