@@ -1,6 +1,6 @@
 # Contract Governance
 
-To help build systems with a good balance of decentralization and executive control, the Agoric platform includes, in addition to chain-wide governance included in the Cosmos SDK platform, an [@agoric/governance](https://github.com/Agoric/agoric-sdk/blob/master/packages/governance/#readme) package with a flexible architecture supporting 3 main forms of control over a contract:
+To help build systems with a good balance of decentralization and executive control, the Agoric platform includes, in addition to chain-wide governance included in the Cosmos SDK platform, an [@agoric/governance](https://github.com/Agoric/agoric-sdk/tree/master/packages/governance) package with a flexible architecture supporting 3 main forms of control over a contract:
 
 - **Parameter Governance**: control of parameter values
 - **API governance**: capability to invoke particular methods called out by the contract's authors

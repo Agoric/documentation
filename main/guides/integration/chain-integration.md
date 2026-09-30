@@ -6,14 +6,14 @@ The Agoric network builds a blockchain for smart contracts in JavaScript using t
 
 This section points at relevant reference documentation for the underlying `cosmos-sdk` and CometBFT consensus engine, and summarizes the differences.
 
-The Agoric Network currently uses `cosmos-sdk` v0.53. The general Cosmos documentation for this version can be [found here](https://docs.cosmos.network/sdk/v0.53/), including structure and `golang` documentation, and REST API documentation.
+The Agoric Network currently uses `cosmos-sdk` v0.53. The general Cosmos documentation for this version can be [found here](https://docs.cosmos.network/sdk/v0.53/learn), including structure and `golang` documentation, and REST API documentation.
 
 To browse and try the REST/gRPC-gateway API interactively, use a chain's LCD Swagger UI (served at `/swagger/` on an API node that has Swagger enabled) or a public explorer's API console. To use the "Try it out" functionality, change the Base URL to a live Agoric API endpoint such as `main.api.agoric.net` (see [Chain resources](#chain-resources) below for how to discover current endpoints):
 
 | ![Alt name of image](./assets/cosmos-api.png) |
 | --------------------------------------------- |
 
-The chain can also be accessed via JavaScript using the [`cosmjs` library](https://github.com/cosmos/cosmjs) (and [associated tutorials](https://tutorials.cosmos.network/tutorials/7-cosmjs/1-cosmjs-intro.html)), or using [CosmosKit](https://cosmoskit.com/).
+The chain can also be accessed via JavaScript using the [`cosmjs` library](https://github.com/cosmos/cosmjs) (and [associated tutorials](https://docs.cosmos.network/)), or using [CosmosKit](https://cosmoskit.com/).
 
 ## Chain resources
 

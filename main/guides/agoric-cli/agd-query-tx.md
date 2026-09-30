@@ -1,7 +1,7 @@
 # Using `agd` to make queries and transactions
 
 `agd` is the Agoric Cosmos App, analagous to `simd` in the [Cosmos SDK](https://docs.cosmos.network/) simapp or `gaiad` in
-the Cosmos hub. Most of the `simd` [query commands](https://docs.cosmos.network/v0.46/core/cli.html#query-commands) and [transaction commands](https://docs.cosmos.network/v0.46/core/cli.html#transaction-commands) work similarly in `agd`.
+the Cosmos hub. Most of the `simd` [query and transaction commands](https://docs.cosmos.network/sdk/latest/learn/concepts/cli-grpc-rest) work similarly in `agd`.
 
 ::: tip agd for Building Dapps
 
@@ -9,7 +9,7 @@ This section focusses on commands relevant to developing and deploying smart con
 
 - [Validators topics \- Agoric Community Forum](https://community.agoric.com/c/validators/9)
 - [Governance topics \- Agoric Community Forum](https://community.agoric.com/c/governance/6)
-- [Delegator Guide \(CLI\) \| Cosmos Hub](https://hub.cosmos.network/delegators/delegator-guide-cli.html)
+- [Delegator Guide \(CLI\) \| Cosmos Hub](https://docs.cosmos.network/hub/latest)
 
 :::
 
@@ -56,7 +56,7 @@ $ agd status
 
 ::: tip Formatting with jq
 
-For pretty-printed JSON, or to select parts, pipe the output through [jq](https://jqlang.github.io/jq/).
+For pretty-printed JSON, or to select parts, pipe the output through [jq](https://jqlang.org/).
 
 ```console
 $ agd status | jq .ValidatorInfo
@@ -147,7 +147,7 @@ children:
 Making transactions requires setting up an **account** with a private key for signing. The [basic dapp local chain](../getting-started/#starting-a-local-agoric-blockchain) container has a number of keys set up for use with `--keyring-backend=test`. Use `agd keys list --keyring-backend=test` to see them.
 
 For accounts that control real negotiable assets, using
-a [consumer grade wallet](https://agoric.com/ecosystem/category/wallets) such as [Keplr](https://www.keplr.app/) is more straightforward.
+a consumer grade wallet such as [Keplr](https://www.keplr.app/) is more straightforward.
 _Consider a hardware wallet such as a Ledger as well._
 
 ## agd keys add
@@ -204,7 +204,7 @@ ADDRESS=$(agd keys show $KEY_NAME $KEYRING_BACKEND | grep address | awk '{print 
 agd tx swingset provision-one $NICKNAME $ADDRESS SMART_WALLET --from $KEY_NAME $KEYRING_BACKEND --chain-id agoriclocal -y -b block
 ```
 
-See `MsgProvision` in [swingset/msgs.proto](https://github.com/Agoric/agoric-sdk/tree/agoric-upgrade-15/golang/cosmos/proto/agoric/swingset/msgs.proto#L86-L109) for more details.
+See `MsgProvision` in [swingset/msgs.proto](https://github.com/Agoric/agoric-sdk/blob/agoric-upgrade-15/golang/cosmos/proto/agoric/swingset/msgs.proto) for more details.
 
 ## agd tx swingset install-bundle
 

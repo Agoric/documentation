@@ -1,0 +1,37 @@
+name: Check external links
+
+# External links rot on their own schedule, independent of any PR, so this
+# runs weekly rather than gating every push/PR (it would also make every PR
+# build flaky against third-party outages and bot-wall rate limits that have
+# nothing to do with the change under review).
+
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+env:
+  NODE_NEW_VERSION: 'lts/jod'
+
+jobs:
+  check-external-links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ env.NODE_NEW_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_NEW_VERSION }}
+
+      - name: Install
+        run: |
+          corepack enable
+          yarn install
+
+      # Fails only on a confirmed 404/410/5xx or a genuine network error; a
+      # site that bot-walls scripted requests (401/403/429) is reported, not
+      # treated as broken. See scripts/checkExternalLinks.mjs.
+      - name: Check links
+        run: yarn lint:check-external-links

@@ -131,7 +131,7 @@ across incarnations but code does not. Concretely, this means:
 See the
 [Exo Taxonomy's make/define/prepare section](https://github.com/endojs/endo/blob/master/packages/exo/docs/exo-taxonomy.md#makedefine-vs-prepare)
 for how `prepare*` relates to `make*`/`define*`, and
-[SwingSet's vat-upgrade documentation](https://github.com/Agoric/agoric-sdk/tree/master/packages/SwingSet/docs/vat-upgrade.md)
+[SwingSet's vat-upgrade documentation](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/vat-upgrade.md)
 for the upgrade process itself.
 
 ## Zones and the Rest of the Modern Stack

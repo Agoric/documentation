@@ -15,6 +15,7 @@
     "lint:format": "node scripts/format.mjs",
     "lint:excerpts": "node scripts/check-doc-excerpts.mjs",
     "lint:check-links": "node scripts/checkLinks.mjs",
+    "lint:check-external-links": "node scripts/checkExternalLinks.mjs --fail-on-broken",
     "build": "exit 0"
   },
   "packageManager": "yarn@4.6.0",

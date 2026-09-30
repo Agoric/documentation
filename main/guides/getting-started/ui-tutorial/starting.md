@@ -10,7 +10,7 @@ This tutorial will make use of these libraries and provide pointers along the wa
 
 ## Scaffolding
 
-This tutorial will make use of [@agoric/react-components](https://github.com/Agoric/ui-kit/tree/main/packages/react-components) for greatest convenience, and hence the first step will be to scaffold a new React app with [Vite](https://vitejs.dev/). Create a new workspace and use the following command to scaffold a new `react-ts` app:
+This tutorial will make use of [@agoric/react-components](https://github.com/Agoric/ui-kit/tree/main/packages/react-components) for greatest convenience, and hence the first step will be to scaffold a new React app with [Vite](https://vite.dev/). Create a new workspace and use the following command to scaffold a new `react-ts` app:
 
 ```
 yarn create vite my-agoric-ui --template react-ts
@@ -26,7 +26,7 @@ The next step is to install [Endo](https://github.com/endojs/endo), because the 
 yarn add -D ses @endo/eventual-send
 ```
 
-Also, we'll need to add `buffer` to use [cosmos-kit](https://github.com/cosmology-tech/cosmos-kit) later on, so let's do that now:
+Also, we'll need to add `buffer` to use [cosmos-kit](https://github.com/hyperweb-io/cosmos-kit) later on, so let's do that now:
 
 ```
 yarn add -D buffer

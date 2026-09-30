@@ -57,7 +57,7 @@ lockdown({
 });
 ```
 
-See the [`lockdown` options reference](https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/lockdown.md)
+See the [`lockdown` options reference](https://github.com/endojs/endo/blob/HEAD/docs/lockdown.md)
 for the complete list and their tradeoffs. The defaults are deliberately
 conservative and work for most projects unmodified; Agoric's own vat
 infrastructure calls `lockdown()` for you, so contract and dapp code
@@ -276,12 +276,12 @@ Now let's review the `makeCounter` example:
 Each call to `makeCounter` creates a new encapsulated `count` variable
 along with `incr` and `decr` functions. The `incr` and `decr` functions
 access the `count` variable from their lexical scope as usual
-in [JavaScript closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures).
+in [JavaScript closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures).
 
 To see how this works in detail, you may want to step through this
-[visualization of the code](https://pythontutor.com/live.html#code=const%20makeCounter%20%3D%20%28%29%20%3D%3E%20%7B%0A%20%20let%20count%20%3D%200%3B%0A%20%20const%20it%20%3D%20%7B%0A%20%20%20%20incr%3A%20%28%29%20%3D%3E%20%28count%20%2B%3D%201%29,%0A%20%20%20%20decr%3A%20%28%29%20%3D%3E%20%28count%20-%3D%201%29,%0A%20%20%7D%3B%0A%20%20return%20Object.freeze%28it%29%3B%0A%7D%3B%0A%0Aconst%20c1%20%3D%20makeCounter%28%29%3B%0A%0Aconst%20c2%20%3D%20makeCounter%28%29%3B%0Aconsole.log%28c2.incr%28%29%29%3B%0Aconsole.log%28%5Bc1.incr%28%29,%20c2.incr%28%29%5D%29%3B&cumulative=false&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-live.js&py=js&rawInputLstJSON=%5B%5D&textReferences=):
+[visualization of the code](https://pythontutor.com/visualize.html):
 
-[![makeCounter code animation](../assets/counter-animation.png)](https://pythontutor.com/live.html#code=const%20makeCounter%20%3D%20%28%29%20%3D%3E%20%7B%0A%20%20let%20count%20%3D%200%3B%0A%20%20const%20it%20%3D%20%7B%0A%20%20%20%20incr%3A%20%28%29%20%3D%3E%20%28count%20%2B%3D%201%29,%0A%20%20%20%20decr%3A%20%28%29%20%3D%3E%20%28count%20-%3D%201%29,%0A%20%20%7D%3B%0A%20%20return%20Object.freeze%28it%29%3B%0A%7D%3B%0A%0Aconst%20c1%20%3D%20makeCounter%28%29%3B%0A%0Aconst%20c2%20%3D%20makeCounter%28%29%3B%0Aconsole.log%28c2.incr%28%29%29%3B%0Aconsole.log%28%5Bc1.incr%28%29,%20c2.incr%28%29%5D%29%3B&cumulative=false&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-live.js&py=js&rawInputLstJSON=%5B%5D&textReferences=)
+[![makeCounter code animation](../assets/counter-animation.png)](https://pythontutor.com/visualize.html)
 
 ## Hardening JavaScript: Strict Mode
 
@@ -453,11 +453,11 @@ Careful study of this 8 minute presentation segment provides
 a firm foundation for writing smart contracts with Zoe.
 
 ::: tip Watch: The Mint Pattern
-8 minutes [starting at 25:25](https://youtube.com/watch?v=iyuo0ymTt4g&t=1525&list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG),
+8 minutes [starting at 25:25](https://www.youtube.com/watch?v=iyuo0ymTt4g&t=1525&list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG),
 in [Higher-order Smart Contracts across Chains](https://www.youtube.com/watch?v=iyuo0ymTt4g&list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG)
 
 [![image](https://user-images.githubusercontent.com/150986/129462162-4599c0f4-8519-4a04-a707-88ef6e6044d7.png)
-](https://youtube.com/watch?v=iyuo0ymTt4g&t=1525&list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG)
+](https://www.youtube.com/watch?v=iyuo0ymTt4g&t=1525&list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG)
 :::
 
 <<< @/../snippets/test-hardened-js.js#makeMint

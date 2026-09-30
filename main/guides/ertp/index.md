@@ -337,4 +337,4 @@ The security advantage is that the other party can only use the deposit facet to
 
 Several ERTP methods are _asynchronous_ and instead of immediately returning their expected value, return a _promise_ for that value.
 
-JavaScript implements `Promise` objects, and recently added the two keywords `async` and `await` to simplify working with them. For general, and extensive, information about JavaScript's implementation, see [javascript.info](https://javascript.info/async) or [MDN](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous).
+JavaScript implements `Promise` objects, and recently added the two keywords `async` and `await` to simplify working with them. For general, and extensive, information about JavaScript's implementation, see [javascript.info](https://javascript.info/async) or [MDN](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Async_JS).

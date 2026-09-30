@@ -17,9 +17,9 @@ contract's on-chain behavior across a chain upgrade, see
 
 Developing Decentralized Applications (DApps) on the Cosmos network often involves integrating with the Keplr wallet. Testing is key for ensuring users can flawlessly interact with your DApp through the Keplr wallet.
 
-[`@agoric/synpress`](https://github.com/agoric-labs/synpress) is an end-to-end (e2e) testing framework that simplifies the testing process for Keplr-based DApps. This framework automates testing how your DApp interacts with the Keplr wallet, simulating real user experiences. `@agoric/synpress` is a long-lived fork of [`synthetixio/synpress`](https://github.com/Synthetixio/synpress) predating that project's move to a Playwright-only architecture; `@agoric/synpress` still uses the original Cypress-based API described below.
+[`@agoric/synpress`](https://github.com/agoric-labs/synpress) is an end-to-end (e2e) testing framework that simplifies the testing process for Keplr-based DApps. This framework automates testing how your DApp interacts with the Keplr wallet, simulating real user experiences. `@agoric/synpress` is a long-lived fork of [`synthetixio/synpress`](https://github.com/synpress/synpress) predating that project's move to a Playwright-only architecture; `@agoric/synpress` still uses the original Cypress-based API described below.
 
-Since `@agoric/synpress` is based on [Cypress](https://www.cypress.io/), the official [Cypress documentation](https://docs.cypress.io/guides/overview/why-cypress) has a lot of information that you can use with `@agoric/synpress`.
+Since `@agoric/synpress` is based on [Cypress](https://www.cypress.io/), the official [Cypress documentation](https://docs.cypress.io/app/get-started/why-cypress) has a lot of information that you can use with `@agoric/synpress`.
 
 ### Installation
 

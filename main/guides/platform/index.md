@@ -52,7 +52,7 @@ consensus engine (CometBFT), and back again.
 ## Dynamic IBC
 
 IBC is the protocol for [Inter-Blockchain
-Communication](https://cosmos.network/ibc/). IBC enables messages to
+Communication](https://cosmos.network/technology). IBC enables messages to
 be sent from one blockchain to another with the use of intermediary
 relayers.
 

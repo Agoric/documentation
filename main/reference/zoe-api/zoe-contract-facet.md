@@ -175,8 +175,8 @@ The optional **proposalShape** argument can be used to describe the required and
 Proposals that don't match the pattern will be rejected by Zoe without even being sent to the contract.
 
 Patterns are often constructed using the
-**[M](https://endojs.github.io/endo/interfaces/_endo_patterns.PatternMatchers.html)** (for '**M**atcher') object.
-**proposalShape**s are usually built from [`M.splitRecord(required, optional, rest)`](https://endojs.github.io/endo/interfaces/_endo_patterns.PatternMatchers.html#splitRecord).
+**[M](https://docs.endojs.org/types/_endo_patterns.PatternMatchers.html)** (for '**M**atcher') object.
+**proposalShape**s are usually built from [`M.splitRecord(required, optional, rest)`](https://docs.endojs.org/types/_endo_patterns.PatternMatchers.html#splitrecord).
 For example, when making a covered call, to express that the offering party can't cancel:
 
 ```js
@@ -198,7 +198,7 @@ const creatorInvitation = zcf.makeInvitation(
 );
 ```
 
-Full details are in the [@endo/patterns](https://endojs.github.io/endo/modules/_endo_patterns.html) package. Here's a handy reference:
+Full details are in the [@endo/patterns](https://docs.endojs.org/modules/_endo_patterns.html) package. Here's a handy reference:
 
 ```js
 interface PatternMatchers {

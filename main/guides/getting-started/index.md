@@ -25,7 +25,7 @@ The Offer Up Dapp allows users to view all listed items up for sale in a marketp
 Before getting started, there are some resources you might want to keep handy in case you get stuck, have questions, or are curious about any of the components. Getting in contact with us is easy!
 
 - Join us for our Weekly [Developer Office Hours](https://github.com/Agoric/agoric-sdk/wiki/Office-Hours)
-- Come chat with us and other developers on the Official [Agoric Discord](https://agoric.com/discord)
+- Come chat with us and other developers on the Official [Agoric Discord](https://discord.com/invite/U4v67V7GCh)
 - Search and post [Q & A](https://github.com/Agoric/agoric-sdk/discussions/categories/q-a) in [agoric-sdk discussions](https://github.com/Agoric/agoric-sdk/discussions)
 - Send us a message on [X](https://twitter.com/agoric)
 - Send an Email to [Developer Relations](mailto://devrel@agoric.com)
@@ -120,7 +120,7 @@ yarn set version 4.7.0
 <details>
 <summary>Installing Docker</summary>
 
-For docker, you can either download Docker UI using the steps on the [installation for Ubuntu](https://docs.docker.com/desktop/install/ubuntu/) or [installation for Mac](https://docs.docker.com/desktop/install/mac-install/)
+For docker, you can either download Docker UI using the steps on the [installation for Ubuntu](https://docs.docker.com/desktop/setup/install/linux/ubuntu/) or [installation for Mac](https://docs.docker.com/desktop/setup/install/mac-install/)
 
 To install via CLI, you can check following details.
 
@@ -172,7 +172,7 @@ You can install Docker using their official documentation or Homebrew.
 
 **Using Docker's Website:**
 
-Follow the [official Docker installation guide for Mac](https://docs.docker.com/desktop/install/mac-install/).
+Follow the [official Docker installation guide for Mac](https://docs.docker.com/desktop/setup/install/mac-install/).
 
 After installing Docker Desktop, you can start docker with:
 
@@ -257,7 +257,7 @@ yarn install
 If you run into errors during `yarn install`, check that you are on a [supported platform](#platform-requirements) and not native Windows.
 
 Then make sure you have the relevant developer tools installed. For example, on Debian or Ubuntu Linux, run `sudo apt get install build-essential`.
-On macOS, be sure to install [Xcode](https://apps.apple.com/us/app/xcode/id497799835).
+On macOS, be sure to install [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12).
 
 </details>
 
@@ -319,11 +319,11 @@ This `start:contract` script will do a number of things that we will cover in mo
 
 ## Setting up a Keplr Wallet Demo Account
 
-Next, ensure you have the [Keplr wallet plug-in](https://www.keplr.app/download) installed.
+Next, ensure you have the [Keplr wallet plug-in](https://www.keplr.app/get) installed.
 
 <details><summary>Installing Keplr Wallet</summary>
 
-Open up your browser and navigate to [https://www.keplr.app/download](https://www.keplr.app/download). Select the version appropriate to your browser.
+Open up your browser and navigate to [https://www.keplr.app/download](https://www.keplr.app/get). Select the version appropriate to your browser.
 
 ![Installing the Keplr Wallet Plug-In](./assets/037.png)
 

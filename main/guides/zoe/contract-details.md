@@ -81,7 +81,7 @@ or to pass to separate recipients.
 
 These objects and facets are designed to be durable and shareable across address space boundaries. Since code
 in different vats might not be mutually trusting, code needs to be defensive about parameters received from
-remote callers. [Interface Guards](https://endojs.github.io/endo/modules/_endo_patterns.html) let us express in code what parameters each method expects and can handle
+remote callers. [Interface Guards](https://docs.endojs.org/modules/_endo_patterns.html) let us express in code what parameters each method expects and can handle
 safely. If a caller provides a parameter that doesn't match the template specified in the guard, SwingSet
 returns an exception to the caller without notifying the receiver. If the return value doesn't match, the
 function returns an exception to the caller.
@@ -100,7 +100,7 @@ method. `M.callWhen(M.await(paramsBGuard))` awaits the resolution of the paramet
 result matches before invoking the method. When a guard is written this latter way, the method doesn't have to
 be `async`. In both cases, the method doesn't have to check for compliance with the guard.
 
-[Shapes can specify](https://endojs.github.io/endo/interfaces/_endo_patterns.PatternMatchers.html) simple
+[Shapes can specify](https://docs.endojs.org/types/_endo_patterns.PatternMatchers.html) simple
 types like `M.string()`, `M.remotable()`, and `M.number()`, as well as complex structures of records and
 arrays. The list of parameters can specify required and optional parameters, as well as allowing unspecified
 rest parameters.
@@ -112,7 +112,7 @@ latter returns a boolean.
 ### Options: finish and stateShape
 
 All the type definers can also take an [options
-argument](https://endojs.github.io/endo/types/_endo_exo.FarClassOptions.html) at the end, which is commonly
+argument](https://docs.endojs.org/types/_endo_exo.FarClassOptions.html) at the end, which is commonly
 used for a `finish()` function to complete initialization, or a stateShape, which can enforce invariants on
 the state values.
 

@@ -51,7 +51,7 @@ payout if that update is offer-safe and conserves total supply.
 
 The offer safety enforcement code is in
 [offerSafety.js](https://github.com/Agoric/agoric-sdk/blob/HEAD/packages/zoe/src/contractFacet/offerSafety.js).
-Tests, including edge cases, are in [test-offerSafety.js](https://github.com/Agoric/agoric-sdk/blob/HEAD/packages/zoe/test/unitTests/test-offerSafety.js).
+Tests, including edge cases, are in [offerSafety.test.js](https://github.com/Agoric/agoric-sdk/blob/HEAD/packages/zoe/test/unitTests/offerSafety.test.js).
 
 ## Implementation Questions
 

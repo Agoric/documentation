@@ -56,7 +56,7 @@ The `metricsRecorder` comes from a `RecorderKit` made with `makeRecorderKit`:
         metricsRecorder: makeRecorderKit(metricsNode, M.any()).recorder,
 ```
 
-`makeRecorderKit` itself is made by "preparing" (in the [exo](https://endojs.github.io/endo/modules/_endo_exo.html) sense)
+`makeRecorderKit` itself is made by "preparing" (in the [exo](https://docs.endojs.org/modules/_endo_exo.html) sense)
 [`prepareRecorderKitMakers`](/reference/zoe-api/zoe-helpers#preparerecorderkitmakers-baggage-marshaller)
 against the contract's `baggage`:
 

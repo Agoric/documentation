@@ -41,7 +41,7 @@ There are four broad kinds of Passable:
   _CopyRecords_ like `harden({ keys: [0, 1], values: ['foo', 'bar'] })`, and
   _CopyTaggeds_ representing types like CopySet, CopyBag, and CopyMap
   (which extend the `passStyleOf` level of abstraction with
-  [tag-specific shapes and semantics](https://github.com/endojs/endo/blob/master/packages/patterns/docs/marshal-vs-patterns-level#kindof-vs-passstyleof))
+  [tag-specific shapes and semantics](https://github.com/endojs/endo/blob/master/packages/patterns/docs/marshal-vs-patterns-level.md#kindof-vs-passstyleof))
 - Pass-by-reference "**PassableCaps**":
   - _Remotables_: objects that can be shared with remote systems which can then
     invoke methods using e.g. `E()` eventual send notation. Remotables are created by [`Far()`](#far-api)

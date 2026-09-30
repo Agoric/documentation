@@ -1,7 +1,7 @@
 # Eventual Send with E()
 
 In web browsers, a common pattern of remote communication is using the
-[asynchronous fetch API with promises](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Introducing#promises):
+[asynchronous fetch API with promises](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Async_JS/Introducing):
 
 <<< @/../snippets/test-distributed-programming.js#asyncFetch
 

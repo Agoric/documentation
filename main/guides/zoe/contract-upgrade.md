@@ -70,7 +70,7 @@ approach is deprecated._)
 
 `meta` is a record with any or all of `upgradability`, `customTermsShape`, and `privateArgsShape`
 defined. The latter two are optional
-[Patterns](https://endojs.github.io/endo/modules/_endo_patterns.html) restricting respectively
+[Patterns](https://docs.endojs.org/modules/_endo_patterns.html) restricting respectively
 acceptable `terms`, and `privateArgs`. `upgradability` can be `none` (the contract is not
 upgradable), `canUpgrade` (this code can perform an upgrade), or `canBeUpgraded` (the contract
 stores kinds durably such that the next version can upgrade).
@@ -174,10 +174,10 @@ const RoomI = M.interface('Room', {
 - Values of state properties are hardened on assignment.
 - You can replace the value of a state property (e.g. `state.zot = [...state.zot, 'last']`), and you can update stores (`state.players.set(1, player1)`), but you cannot do things like `state.zot.push('last')`, and if jot is part of state (`state.jot = { x: 1 };`), then you can't do `state.jot.x = 2;`
 - The tag (1st arg) is used to form a key in `baggage`, so take care to avoid collisions. `zone.subZone()` may be used to partition namespaces.
-- See also [defineExoClass](https://endojs.github.io/endo/functions/_endo_exo.defineExoClass.html) for further detail `zone.exoClass`.
+- See also [defineExoClass](https://docs.endojs.org/functions/_endo_exo.defineExoClass.html) for further detail `zone.exoClass`.
 - To define multiple objects that share state, use `zone.exoClassKit`.
-  - See also [defineExoClassKit](https://endojs.github.io/endo/functions/_endo_exo.defineExoClassKit.html)
-- For an extended test / example, see [test-coveredCall-service-upgrade.js](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/test/swingsetTests/upgradeCoveredCall/test-coveredCall-service-upgrade.js).
+  - See also [defineExoClassKit](https://docs.endojs.org/functions/_endo_exo.defineExoClassKit.html)
+- For an extended test / example, see [coveredCall-service-upgrade.test.js](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/test/swingsetTests/upgradeCoveredCall/coveredCall-service-upgrade.test.js).
 
 :::
 
@@ -227,9 +227,9 @@ const publicFacet = zone.exo(
 
 ### Zones
 
-Each [Zone](/glossary/#zone) provides an API that allows the allocation of [Exo objects](#exo) and Stores [(object collections)](https://github.com/Agoric/agoric-sdk/tree/master/packages/store/README.md) which use the same underlying persistence mechanism. This allows library code to be agnostic to whether its objects are backed purely by the JS heap (ephemeral), pageable out to disk (virtual), or can be revived after a vat upgrade (durable).
+Each [Zone](/glossary/#zone) provides an API that allows the allocation of [Exo objects](#exo) and Stores [(object collections)](https://github.com/Agoric/agoric-sdk/blob/master/packages/store/README.md) which use the same underlying persistence mechanism. This allows library code to be agnostic to whether its objects are backed purely by the JS heap (ephemeral), pageable out to disk (virtual), or can be revived after a vat upgrade (durable).
 
-See [SwingSet vat upgrade documentation](https://github.com/Agoric/agoric-sdk/tree/master/packages/SwingSet/docs/vat-upgrade.md) for more example use of the zone API.
+See [SwingSet vat upgrade documentation](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/vat-upgrade.md) for more example use of the zone API.
 
 ```js
 const zone = makeDurableZone(baggage);
