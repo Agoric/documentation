@@ -130,8 +130,12 @@ exposed, an error is thrown. This prevents any vulnerability from such accidenta
 `Far()` marks an object as remotable, but it does nothing to validate the
 arguments its methods receive: a caller can pass a string where a number is
 expected, and the method only finds out when it misbehaves partway through.
-For a smart contract, where every method is potential attack surface, that's
-not enough.
+This is true no matter where the call comes from: a message arriving from
+another vat through `E()` and a direct call from another object in your own
+vat both get exactly the same (zero) validation from `Far()`, so bare `Far()`
+protects local integrity no better than it protects remote integrity. For a
+smart contract, where every method is potential attack surface, that's not
+enough.
 
 An **Exo** object is a `Far` remotable wrapped with an **interface guard**
 (from [`@endo/patterns`](https://github.com/endojs/endo/tree/master/packages/patterns)),
@@ -169,10 +173,15 @@ underlying state. Exo classes also compose with [zones](./zones) so that
 instances can be virtual (paged to disk) or durable (surviving a vat
 upgrade), which plain `Far()` objects cannot do.
 
-Use `Far()` directly for small, stateless, low-risk objects such as simple
-facets or callbacks. Reach for Exo whenever an object has an API worth
-guarding at the boundary, holds state that should survive an upgrade, or is
-part of your contract's public surface. See
+Reach for Exo by default, even for an object you expect to stay inside your
+own vat. A guard is declared once and enforced on every call; hand-written
+checks scattered across method bodies (the `Types: Defensive` pattern from
+[Hardened JavaScript](./hardened-js#types-defensive)) have to be reproduced
+for every method, are easy to forget on the next one added, and cannot, on
+their own, enforce that an argument belongs to the [passable
+subset](#pass-styles-and-harden) the way a declared guard does. Keep bare
+`Far()` only for objects with no arguments worth protecting, such as a
+zero-argument callback, where a guard would have nothing to check. See
 [Exo Objects and Interface Guards](./exo) for the full picture, including
 `M.call`/`M.callWhen`, `this.state`/`this.self`/`this.facets`, and
 `getInterfaceOf`.

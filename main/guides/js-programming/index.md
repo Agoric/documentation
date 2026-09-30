@@ -59,11 +59,12 @@ The framework includes:
     consumption from a single producer.
 
 - **[Exo Objects and Interface Guards](./exo)**
-  - `Far()` alone doesn't validate its methods' arguments. An Exo object
+  - `Far()` alone doesn't validate its methods' arguments, whether the
+    caller is remote or another object in your own vat. An Exo object
     (`makeExo`, `defineExoClass`, `defineExoClassKit`) adds a declarative
     interface guard, built with the `M` pattern language, that validates
-    every call at the boundary. Exo is the remotable-object surface every
-    modern contract writes against.
+    every call at the boundary, local or remote. Exo, not bare `Far()`, is
+    the remotable-object surface every modern contract writes against.
 
 - **[Zones and Persistence](./zones)**
   - A vat can be upgraded, replacing its code while some of its state

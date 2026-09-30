@@ -263,14 +263,25 @@ Two related but distinct introspection points:
 
 ## `Far()` vs. Exo
 
-Use plain [`Far()`](./far#far-api) for small, low-risk, stateless objects,
-such as a one-off callback or a simple attenuating facet, where writing an
-interface guard would be pure overhead. Reach for Exo whenever an object:
+Default to Exo, even for an object you expect to stay inside your own vat.
+An interface guard protects **local** integrity as much as remote integrity:
+[`Far()` validates nothing](./far#beyond-far-exo-objects) whether a call
+arrives from another vat through `E()` or from another object in the same
+vat holding a direct reference, so a bare `Far()` object is exactly as
+exposed to a same-host caller as to a remote one. Hand-written checks
+scattered across method bodies are highly duplicative, easy to omit on the
+next method added, and cannot enforce the passable subset the way a declared
+guard does. Reach for Exo whenever an object:
 
-- exposes a public API worth defending at the boundary (most contract facets
-  and vat root objects),
+- exposes an API to any other party, whether in this vat or another (most
+  contract facets and vat root objects),
+- takes arguments worth validating at all,
 - holds state that should be virtual or durable, or
 - benefits from splitting into multiple least-authority facets sharing state.
+
+Reserve plain [`Far()`](./far#far-api) for objects with no arguments worth
+guarding, such as a zero-argument callback or thunk, where an interface guard
+would have nothing to check.
 
 See also [Zones and Persistence](./zones) for how Exo instances become
 virtual or durable, and [Vows and Durable Eventual-Send](./eventual-send#vows-and-durable-eventual-send)
