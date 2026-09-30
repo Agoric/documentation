@@ -217,6 +217,20 @@ in which each key is a string and each value is [passable](#passable), such as
 For more information, see the
 [Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far#marshaling-by-copy-or-by-presence).
 
+## Crank
+
+A crank is the kernel's transactional unit of work: one message delivery or promise-resolution
+notification given to a single vat. Whatever state changes the vat makes during a crank, and
+whatever messages it sends out, commit or roll back together with it; a
+[message embargo](#message-embargo) holds those outbound messages back until the crank has been
+durably committed, which is what keeps a [hangover inconsistency](#hangover-inconsistency) from
+ever reaching the outside world. A contract's first crank must define all its [Exo](#exo) classes
+and kits before handling any incoming method call from another vat; see
+[Crank in the Contract Upgrade guide](/guides/zoe/contract-upgrade#crank).
+
+For more information, see
+[Cranks in the SwingSet run-policy docs](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/run-policy.md#cranks).
+
 ## Creator Invitation
 
 An [invitation](#invitation) optionally returned by [`E(zoe).startInstance(...)`](/reference/zoe-api/zoe#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs) that the contract instance
@@ -349,6 +363,19 @@ is meaningful, so handles do not have properties. Unlike number or string identi
 handles are unforgeable. This means the only way to know a handle identity is being given
 an object reference, and no identity can be guessed and no fake identity will succeed.
 
+## Hangover Inconsistency
+
+The failure mode where a system has durably committed to having told the outside world
+something (sent a message, released a payment) that its own, truer state then contradicts,
+typically because a crash or reboot rewound it to an earlier checkpoint after the outbound
+message had already gone out. SwingSet avoids it, following the lead of the Waterken and E
+systems, with a [message embargo](#message-embargo): output is held back until the
+[crank](#crank) that produced it has been durably committed, so a rewind can never leave a
+stale message already delivered.
+
+For more information, see
+[the SwingSet host-app docs](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/host-app.md).
+
 ## Harden
 
 A hardened object’s properties cannot be changed, so the only way to interact with a hardened object is through its methods.
@@ -452,6 +479,19 @@ Keys can be used as elements of CopySets and CopyBags and as keys of CopyMaps (s
 A _Keyword_ is a string that is an ASCII-only [identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier),
 starts with an upper case letter, and is not equal to "NaN" or "Infinity".
 See **[Zoe Data Types](/reference/zoe-api/zoe-data-types#keyword)**.
+
+## Message Embargo
+
+The discipline of holding all outbound communication (device output, messages to other
+machines) until every consequence of the inbound delivery that produced it has been durably
+committed to storage. Embargoed output is exactly what protects against
+[hangover inconsistency](#hangover-inconsistency): if the [crank](#crank) is rolled back before
+commit, the embargoed messages are simply discarded rather than having to be un-sent.
+
+For more information, see
+[the SwingSet host-app docs](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/host-app.md)
+and
+[the VatTP mailbox device docs](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/devices.md).
 
 ## Mint
 
@@ -691,7 +731,7 @@ Secure ECMAScript has been renamed to [Hardened JavaScript](#hardened-javascript
 
 An imaginary currency Agoric documentation uses in examples.
 
-## smallcaps
+## Smallcaps
 
 The current [marshal](https://github.com/endojs/endo/tree/master/packages/marshal)
 wire encoding for [Passable](#passable) data, superseding the older `capdata`
@@ -721,6 +761,20 @@ the auction, they want the minimum bid set at $1000. At other instances, they'd 
 it set at $10. They can specify the instance's minimum bid amount in its terms.
 
 For example, see [starting the offer-up contract](/guides/zoe/contract-walkthru.html#starting-a-contract-instance).
+
+## Turn
+
+A turn is the synchronous processing of one pending delivery: a return to an empty call stack.
+A [vat](#vat)'s state evolves only through a sequence of turns, each running to completion with
+exclusive access to that state before the next one begins, so a turn is atomic and
+indivisible from every other vat's point of view. A [crank](#crank) is the coarser-grained
+unit built from turns: the kernel's return to an empty event queue, encompassing however many
+turns the vat needs to settle all the synchronous and locally-queued work that one delivery
+provokes, before the crank as a whole can commit.
+
+For more information, see
+[Vats: the Unit of Synchrony](/guides/js-programming/#vats-the-unit-of-synchrony) and
+["Turns as Micro-Transactions"](https://erights.github.io/erights-org-website/elib/concurrency/turns.html).
 
 ## Vat
 
@@ -799,7 +853,7 @@ A set of API methods for deploying and working with smart contracts. See [Zoe Se
 
 ## Zone
 
-Each Zone provides an API that allows the allocation of [Exo objects](#exo) and [Stores (object collections)](https://github.com/Agoric/agoric-sdk/tree/master/packages/store/README.md) which use the same underlying persistence mechanism. This allows library code to be agnostic to whether its objects are backed purely by the JS heap ([heap](#heap)), pageable out to disk ([virtual](#virtual)) or can be revived after a vat upgrade ([durable](#durable)).
+Each Zone provides an API that allows the allocation of [Exo objects](#exo) and [Stores (object collections)](https://github.com/Agoric/agoric-sdk/blob/master/packages/store/README.md) which use the same underlying persistence mechanism. This allows library code to be agnostic to whether its objects are backed purely by the JS heap ([heap](#heap)), pageable out to disk ([virtual](#virtual)) or can be revived after a vat upgrade ([durable](#durable)).
 
 See [Zones and Persistence](/guides/js-programming/zones) for a full guide, and the
-[SwingSet vat upgrade documentation](https://github.com/Agoric/agoric-sdk/tree/master/packages/SwingSet/docs/vat-upgrade.md) for more example use of the zone API.
+[SwingSet vat upgrade documentation](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/vat-upgrade.md) for more example use of the zone API.
