@@ -18,8 +18,8 @@ take out, say, only 3 _Quatloos_ from it.
 
 However, you can split a **Payment** into multiple **Payments**. For example, you could split a
 10 _Quatloos_ **Payment** into two new **Payments** of 3 _Quatloos_ and 7 _Quatloos_ by calling the
-**[anIssuer.split()](./issuer#anissuer-split-payment-paymentamounta)** method which consumes the
-original 10 _Quatloos_ **Payment** and creates two new smaller **Payments**.
+deprecated **[split()](./legacy-payment-helpers#split-recoverypurse-srcpaymentp-paymentamounta)**
+helper, which consumes the original 10 _Quatloos_ **Payment** and creates two new smaller **Payments**.
 
 **Payments** are often received from other actors. Since they are not self-verifying,
 you cannot trust **Payments**. To get the verified balance of a **Payment**, call the **[anIssuer.getAmountOf()](./issuer#anissuer-getamountof-payment)** method.
@@ -67,13 +67,16 @@ on or return a **Payment**.
   - Creates and returns a new deposit-only facet of the **Purse** that allows arbitrary other parties to deposit **Payments** into the **Purse**.
 - [**aPurse.withdraw()**](./purse#apurse-withdraw-amount)
   - Withdraws the _amount_ of specified digital assets from **Purse** into a new **Payment**.
-    ::: warning DEPRECATED
-- [**anIssuer.split()**](./issuer#anissuer-split-payment-paymentamounta)
+
+::: warning DEPRECATED
+The following standalone helpers, no longer **Issuer** methods, also operate on **Payments**. See [Legacy Payment Helpers](./legacy-payment-helpers).
+
+- [**split()**](./legacy-payment-helpers#split-recoverypurse-srcpaymentp-paymentamounta)
   - Splits a single **Payment** into two new **Payments**.
-- [**anIssuer.splitMany()**](./issuer#anissuer-splitmany-payment-amountarray)
+- [**splitMany()**](./legacy-payment-helpers#splitmany-recoverypurse-srcpaymentp-amounts)
   - Split a single **Payment** into multiple **Payments**.
-- [**anIssuer.claim()**](./issuer#anissuer-claim-payment-optamount)
-  - Transfers all digital assets from _payment_ to a new **Payment**.
-- [**anIssuer.combine()**](./issuer#anissuer-combine-paymentsarray-opttotalamount)
+- [**claim()**](./legacy-payment-helpers#claim-recoverypurse-srcpaymentp-optamountshape)
+  - Transfers all digital assets from _srcPaymentP_ to a new **Payment**.
+- [**combine()**](./legacy-payment-helpers#combine-recoverypurse-srcpaymentsps-opttotalamount)
   - Combines multiple **Payments** into one new **Payment**.
     :::

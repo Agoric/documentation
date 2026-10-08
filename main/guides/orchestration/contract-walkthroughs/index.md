@@ -29,3 +29,20 @@ The Unbond Contract focuses on the process of unbonding staked assets and perfor
 - Managing asynchronous operations and ensuring the completion of long-running processes.
 
 [See Contract Overview](/guides/orchestration/contract-walkthroughs/cross-chain-unbond)
+
+## More examples
+
+The `orchestration` package's
+[`src/examples`](https://github.com/Agoric/agoric-sdk/tree/master/packages/orchestration/src/examples) directory
+has more contracts worth reading directly from source, not (yet) walked through here:
+
+- `swap-anything`: a generalized swap across chains.
+- `staking-combinations`: combined delegate/undelegate/transfer flows across multiple chains, reusing accounts
+  across invocations.
+- `axelar-gmp`: calling EVM contracts via Axelar's General Message Passing.
+
+Two flagship products are also built on Orchestration:
+[Fast USDC](https://github.com/Agoric/agoric-sdk/tree/master/packages/fast-usdc) (fast, liquidity-provider-backed
+USDC transfers) and the
+[YMax portfolio contract](https://github.com/Agoric/agoric-sdk/tree/master/packages/portfolio-contract)
+(multi-chain, multi-protocol yield portfolio rebalancing).

@@ -4,13 +4,24 @@ sidebar: auto
 
 # Testing
 
+This page covers two different kinds of end-to-end testing on Agoric:
+browser-driven DApp testing with Keplr, and on-chain testing of the chain
+software itself (upgrades and core-eval proposals). If you're testing a
+frontend that talks to a wallet, start with
+[Testing DApps with `@agoric/synpress`](#testing-dapps-with-agoric-synpress)
+below. If you're testing chain software, a governance proposal, or a
+contract's on-chain behavior across a chain upgrade, see
+[Testing chain software with `@agoric/synthetic-chain`](#testing-chain-software-with-agoric-synthetic-chain).
+
+## Testing DApps with `@agoric/synpress`
+
 Developing Decentralized Applications (DApps) on the Cosmos network often involves integrating with the Keplr wallet. Testing is key for ensuring users can flawlessly interact with your DApp through the Keplr wallet.
 
-[`@agoric/synpress`](https://github.com/agoric-labs/synpress) is an end-to-end (e2e) testing framework that simplifies the testing process for Keplr-based DApps. This framework automates testing how your DApp interacts with the Keplr wallet, simulating real user experiences. `@agoric/synpress` is built upon [`synthetixio/synpress`](https://github.com/Synthetixio/synpress), a framework designed for Metamask-based DApps.
+[`@agoric/synpress`](https://github.com/agoric-labs/synpress) is an end-to-end (e2e) testing framework that simplifies the testing process for Keplr-based DApps. This framework automates testing how your DApp interacts with the Keplr wallet, simulating real user experiences. `@agoric/synpress` is a long-lived fork of [`synthetixio/synpress`](https://github.com/synpress/synpress) predating that project's move to a Playwright-only architecture; `@agoric/synpress` still uses the original Cypress-based API described below.
 
-Since `@agoric/synpress` is based on [Cypress](https://www.cypress.io/), the official [Cypress documentation](https://docs.cypress.io/guides/overview/why-cypress) has a lot of information that you can use with `@agoric/synpress`.
+Since `@agoric/synpress` is based on [Cypress](https://www.cypress.io/), the official [Cypress documentation](https://docs.cypress.io/app/get-started/why-cypress) has a lot of information that you can use with `@agoric/synpress`.
 
-## Installation
+### Installation
 
 Before you start testing your DApp with Keplr, you'll need to install the `@agoric/synpress` in your project using the following command:
 
@@ -18,7 +29,7 @@ Before you start testing your DApp with Keplr, you'll need to install the `@agor
 yarn add -D @agoric/synpress
 ```
 
-## Project structure
+### Project structure
 
 We recommend the following project structure for keeping your e2e tests clean and manageable:
 
@@ -33,7 +44,7 @@ project_dir
             └── test.spec.js
 ```
 
-## Configure `synpress.config.js`
+### Configure `synpress.config.js`
 
 Before you start writing your E2E tests, you'll need to create a configuration file named `synpress.config.js` in the `tests/e2e` directory of your project.
 
@@ -47,8 +58,8 @@ module.exports = defineConfig({
   ...baseConfig,
   e2e: {
     ...baseConfig.e2e,
-    baseUrl: 'http://localhost:5173'
-  }
+    baseUrl: 'http://localhost:5173',
+  },
 });
 ```
 
@@ -62,7 +73,7 @@ Since you have a separate `synpress.config.js` in the `tests/e2e` folder, you ne
 EXTENSION=keplr synpress run --configFile=tests/e2e/synpress.config.js
 ```
 
-## Creating a Support File
+### Creating a Support File
 
 Navigate to your project's `tests/e2e` directory and create a new file named `support.js`. This file can be used to create reusable commands that encapsulate common testing actions. For example, you can create a custom command to navigate to a specific page within your application. You can read more about it [over here](https://docs.cypress.io/api/cypress-api/custom-commands).
 
@@ -74,11 +85,11 @@ import '@agoric/synpress/support/index';
 
 This import is essential because it brings in the necessary functionalities from `@agoric/synpress` to interact with the Keplr wallet within your e2e tests. Without it, your tests won't be able to leverage the features provided by `@agoric/synpress` for Keplr integration.
 
-## Example Tests
+### Example Tests
 
 With the environment set up, let's write end-to-end (e2e) tests to test your DApp's functionality. In the `tests/e2e/specs` folder, create a new file with a descriptive name that reflects what it tests (e.g., `user_login.spec.js` or `token_transfer.spec.js`).
 
-### Test Structure
+#### Test Structure
 
 You use `describe` blocks to group related tests together, and `it` blocks to define individual test cases within those groups.
 
@@ -90,12 +101,12 @@ describe('User Login', () => {
 });
 ```
 
-### Test 1: Setting Up Keplr Wallet
+#### Test 1: Setting Up Keplr Wallet
 
 ```js
 it('should setup a Keplr wallet', () => {
   cy.setupWallet({
-    secretWords: 'KEPLR_MNEMONIC'
+    secretWords: 'KEPLR_MNEMONIC',
   });
   cy.visit('/');
 });
@@ -105,7 +116,7 @@ This test case simulates setting up a Keplr wallet for your tests, using the `cy
 
 After setting up the wallet, we visit the root path (`/`) of the DApp using `cy.visit('/')`.
 
-### Test 2: Connecting Keplr Wallet
+#### Test 2: Connecting Keplr Wallet
 
 ```js
 it('should accept connection with wallet', () => {
@@ -116,7 +127,7 @@ it('should accept connection with wallet', () => {
 
 This test simulates a user connecting their Keplr wallet to your DApp. `cy.contains('Connect Wallet')` searches for an element containing the text `Connect Wallet` on the webpage and triggers a click event. `cy.acceptAccess` simulates accepting Keplr wallet access for your DApp.
 
-### Test 3: Signing a Transaction
+#### Test 3: Signing a Transaction
 
 ```js
 it('should confirm make an offer transaction', () => {
@@ -127,7 +138,7 @@ it('should confirm make an offer transaction', () => {
 
 This test simulates transaction Signing on your DApp. `cy.contains('Make an Offer')` searches for an element containing the text `Make an Offer` and triggers a click event. `cy.confirmTransaction` simulates confirming a transaction.
 
-### Running the Tests
+#### Running the Tests
 
 You can now trigger the tests by running this command:
 
@@ -135,18 +146,18 @@ You can now trigger the tests by running this command:
 EXTENSION=keplr synpress run --configFile=tests/e2e/synpress.config.js
 ```
 
-## Projects Using `@agoric/synpress`
+### Projects Using `@agoric/synpress`
 
 Some examples projects utilizing `@agoric/synpress` for e2e tests:
 
 - [PSM dApp E2E Tests](https://github.com/Agoric/dapp-psm/tree/main/tests/e2e)
 - [Wallet dApp E2E Tests](https://github.com/frazarshad/wallet-app/tree/main/test/e2e)
 
-## @agoric/synpress Commands
+### @agoric/synpress Commands
 
 The `@agoric/synpress` commands are custom Cypress commands designed for use with Keplr. They provide ready-made functions to interact with Keplr-specific elements and workflows.
 
-### `setupWallet`
+#### `setupWallet`
 
 Initializes a Keplr wallet for testing. You can either create a new one or import an existing one using the provided options.
 
@@ -167,7 +178,7 @@ The command takes a single object as an argument with the following keys:
 
 - _(**boolean**)_: `true` if the wallet was set up successfully, `false` otherwise.
 
-### `acceptAccess`
+#### `acceptAccess`
 
 Handles the authorization process for connecting the Keplr wallet to a DApp. DApps provide a `Connect Wallet` option to initiate this process.
 
@@ -175,7 +186,7 @@ Handles the authorization process for connecting the Keplr wallet to a DApp. DAp
 
 - _(**boolean**)_: `true` if access was accepted successfully, `false` otherwise.
 
-### `confirmTransaction`
+#### `confirmTransaction`
 
 Handles signing transactions within a DApp using the Keplr wallet. This occurs when a user initiates a transaction, such as sending tokens or interacting with a smart contract.
 
@@ -183,7 +194,7 @@ Handles signing transactions within a DApp using the Keplr wallet. This occurs w
 
 - _(**boolean**)_: `true` if transaction was approved successfully, `false` otherwise.
 
-### `disconnectWalletFromDapp`
+#### `disconnectWalletFromDapp`
 
 Disconnects the Keplr wallet from all previously connected DApps.
 
@@ -191,7 +202,7 @@ Disconnects the Keplr wallet from all previously connected DApps.
 
 - _(**boolean**)_:`true` if the disconnection was successful, `false` otherwise.
 
-### `getWalletAddress`
+#### `getWalletAddress`
 
 Retrieves the wallet address of the currently active wallet associated with a specified blockchain.
 
@@ -203,7 +214,7 @@ Retrieves the wallet address of the currently active wallet associated with a sp
 
 - _(**string**)_: The wallet address for the specified blockchain.
 
-### `switchWallet`
+#### `switchWallet`
 
 Switches the active wallet to the specified wallet by name.
 
@@ -215,7 +226,7 @@ Switches the active wallet to the specified wallet by name.
 
 - _(**boolean**)_: `true` if the wallet switch was successful, `false` otherwise.
 
-### `addNewTokensFound`
+#### `addNewTokensFound`
 
 Adds all the new tokens discovered by the Keplr extension to the user's token portfolio when it connects to a new blockchain network.
 
@@ -223,7 +234,7 @@ Adds all the new tokens discovered by the Keplr extension to the user's token po
 
 - _(**boolean**)_: `true` if the tokens were successfully added to the user's token portfolio `false` otherwise.
 
-### `getTokenAmount`
+#### `getTokenAmount`
 
 Retrieves the balance of a specified token in the wallet.
 
@@ -235,7 +246,7 @@ Retrieves the balance of a specified token in the wallet.
 
 - _(**number**)_: The amount of the specified token currently held in the wallet.
 
-### `isExtensionWindowActive`
+#### `isExtensionWindowActive`
 
 Determines whether the Keplr extension window is the currently active tab.
 
@@ -243,7 +254,7 @@ Determines whether the Keplr extension window is the currently active tab.
 
 - _(**boolean**)_:`true` if the Keplr extension window is active, `false` otherwise.
 
-### `switchToExtensionWindow`
+#### `switchToExtensionWindow`
 
 Switches the focus to the Keplr extension window tab. Keplr window is used for managing wallet related operations.
 
@@ -251,7 +262,7 @@ Switches the focus to the Keplr extension window tab. Keplr window is used for m
 
 - _(**boolean**)_:`true` if the focus change was successful, `false` otherwise.
 
-### `isCypressWindowActive`
+#### `isCypressWindowActive`
 
 Determines whether the Cypress window, where the DApp is running, is the currently active tab.
 
@@ -259,7 +270,7 @@ Determines whether the Cypress window, where the DApp is running, is the current
 
 - _(**boolean**)_:`true` if the Cypress window is active, `false` otherwise.
 
-### `switchToCypressWindow`
+#### `switchToCypressWindow`
 
 Switches the focus to the Cypress window tab.
 
@@ -270,3 +281,59 @@ Switches the focus to the Cypress window tab.
 <br />
 
 For a full list of commands, you can refer to the [Keplr plugin file](https://github.com/agoric-labs/synpress/blob/dev/plugins/keplr-plugin.js).
+
+## Testing chain software with `@agoric/synthetic-chain`
+
+The tests above exercise a DApp frontend against a wallet. A different kind of
+e2e test exercises the chain software itself: does a governance proposal or a
+chain software upgrade actually produce the on-chain state it's supposed to,
+against an environment that behaves like the real `agoric-3` mainnet chain?
+That's what
+[`a3p-integration`](https://github.com/Agoric/agoric-sdk/tree/master/a3p-integration)
+in `agoric-sdk` is for, built on the
+[`@agoric/synthetic-chain`](https://www.npmjs.com/package/@agoric/synthetic-chain)
+test tool (published from the
+[`agoric-3-proposals`](https://github.com/Agoric/agoric-3-proposals) repository).
+
+`a3p-integration` spins up a synthetic `agoric-3`-like chain in Docker,
+applies one or more **proposals** (a chain software upgrade, a core-eval
+proposal, or both in sequence), and then runs functional tests against the
+result. This is the harness the SDK itself uses to verify that a chain
+upgrade or a core-eval (like deploying Fast USDC) behaves as intended before
+it goes to a real network.
+
+### Proposal packages
+
+Each proposal lives in its own package under `a3p-integration/proposals`,
+isolated from the rest of the SDK and from each other; they run inside the
+Docker image and can't reach SDK source directly. A proposal's `package.json`
+`agoricProposal` field configures its type (`Software Upgrade Proposal` or
+`/agoric.swingset.CoreEvalProposal`), its ordering relative to other
+proposals, and, for a core-eval, the submission it evaluates.
+
+### Running it
+
+`a3p-integration` is a self-contained Yarn 4 project, not part of the
+`agoric-sdk` root workspace (so it doesn't run under the root CI for
+`packages/`). From `agoric-sdk/a3p-integration`, with Docker and Buildx
+available:
+
+```bash
+corepack enable
+yarn install
+
+# build the synthetic chain image, including this checkout's chain software
+yarn build
+
+# run every proposal's tests
+yarn test
+
+# run a single proposal's tests, or drop into it interactively
+yarn test -m fast-usdc --debug
+```
+
+`-m <substring>` matches proposal package names, so `yarn test -m fast-usdc`
+runs (or `--debug`-attaches to) just the Fast USDC core-eval proposal. See the
+[`a3p-integration` README](https://github.com/Agoric/agoric-sdk/blob/master/a3p-integration/README.md)
+and the [`agoric-3-proposals` README](https://github.com/Agoric/agoric-3-proposals/blob/main/README.md)
+for the full proposal-package layout and how to add a new one.

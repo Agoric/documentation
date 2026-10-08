@@ -70,7 +70,7 @@ approach is deprecated._)
 
 `meta` is a record with any or all of `upgradability`, `customTermsShape`, and `privateArgsShape`
 defined. The latter two are optional
-[Patterns](https://endojs.github.io/endo/modules/_endo_patterns.html) restricting respectively
+[Patterns](https://docs.endojs.org/modules/_endo_patterns.html) restricting respectively
 acceptable `terms`, and `privateArgs`. `upgradability` can be `none` (the contract is not
 upgradable), `canUpgrade` (this code can perform an upgrade), or `canBeUpgraded` (the contract
 stores kinds durably such that the next version can upgrade).
@@ -103,7 +103,7 @@ The `provide` function supports a concise idiom for this find-or-create pattern:
 import { provide } from '@agoric/vat-data';
 
 const rooms = provide(baggage, 'rooms', () =>
-  makeScalarBigMapStore('rooms', { durable: true })
+  makeScalarBigMapStore('rooms', { durable: true }),
 );
 ```
 
@@ -152,7 +152,7 @@ const makeRoom = zone.exoClass('Room', RoomI, id => ({ id, value: 0 }), {
   // ...
   clear(delta) {
     this.state.value = 0;
-  }
+  },
 });
 ```
 
@@ -163,7 +163,7 @@ guards._</small>
 ```js
 const RoomI = M.interface('Room', {
   // ...
-  clear: M.call().returns()
+  clear: M.call().returns(),
 });
 ```
 
@@ -174,10 +174,10 @@ const RoomI = M.interface('Room', {
 - Values of state properties are hardened on assignment.
 - You can replace the value of a state property (e.g. `state.zot = [...state.zot, 'last']`), and you can update stores (`state.players.set(1, player1)`), but you cannot do things like `state.zot.push('last')`, and if jot is part of state (`state.jot = { x: 1 };`), then you can't do `state.jot.x = 2;`
 - The tag (1st arg) is used to form a key in `baggage`, so take care to avoid collisions. `zone.subZone()` may be used to partition namespaces.
-- See also [defineExoClass](https://endojs.github.io/endo/functions/_endo_exo.defineExoClass.html) for further detail `zone.exoClass`.
+- See also [defineExoClass](https://docs.endojs.org/functions/_endo_exo.defineExoClass.html) for further detail `zone.exoClass`.
 - To define multiple objects that share state, use `zone.exoClassKit`.
-  - See also [defineExoClassKit](https://endojs.github.io/endo/functions/_endo_exo.defineExoClassKit.html)
-- For an extended test / example, see [test-coveredCall-service-upgrade.js](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/test/swingsetTests/upgradeCoveredCall/test-coveredCall-service-upgrade.js).
+  - See also [defineExoClassKit](https://docs.endojs.org/functions/_endo_exo.defineExoClassKit.html)
+- For an extended test / example, see [coveredCall-service-upgrade.test.js](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/test/swingsetTests/upgradeCoveredCall/coveredCall-service-upgrade.test.js).
 
 :::
 
@@ -205,7 +205,7 @@ const publicFacet = zone.exo(
   'StakeAtom',
   M.interface('StakeAtomI', {
     makeAccount: M.callWhen().returns(M.remotable('ChainAccount')),
-    makeAccountInvitationMaker: M.callWhen().returns(InvitationShape)
+    makeAccountInvitationMaker: M.callWhen().returns(InvitationShape),
   }),
   {
     async makeAccount() {
@@ -220,16 +220,16 @@ const publicFacet = zone.exo(
         const holder = await makeAccountKit();
         return holder.asContinuingOffer();
       }, 'wantStakingAccount');
-    }
-  }
+    },
+  },
 );
 ```
 
 ### Zones
 
-Each [Zone](/glossary/#zone) provides an API that allows the allocation of [Exo objects](#exo) and Stores [(object collections)](https://github.com/Agoric/agoric-sdk/tree/master/packages/store/README.md) which use the same underlying persistence mechanism. This allows library code to be agnostic to whether its objects are backed purely by the JS heap (ephemeral), pageable out to disk (virtual), or can be revived after a vat upgrade (durable).
+Each [Zone](/glossary/#zone) provides an API that allows the allocation of [Exo objects](#exo) and Stores [(object collections)](https://github.com/Agoric/agoric-sdk/blob/master/packages/store/README.md) which use the same underlying persistence mechanism. This allows library code to be agnostic to whether its objects are backed purely by the JS heap (ephemeral), pageable out to disk (virtual), or can be revived after a vat upgrade (durable).
 
-See [SwingSet vat upgrade documentation](https://github.com/Agoric/agoric-sdk/tree/master/packages/SwingSet/docs/vat-upgrade.md) for more example use of the zone API.
+See [SwingSet vat upgrade documentation](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/vat-upgrade.md) for more example use of the zone API.
 
 ```js
 const zone = makeDurableZone(baggage);
@@ -251,20 +251,54 @@ See [Vow](/glossary/#vow); These tools handle promises and asynchronous operatio
 
 ```js
 const vowTools = prepareVowTools(zone.subZone('vows'));
-// ...
-const makeLocalOrchestrationAccountKit = prepareLocalChainAccountKit(
-  zone,
-  makeRecorderKit,
-  zcf,
-  privateArgs.timerService,
+const chainHub = makeChainHub(
+  zone.subZone('chainHub'),
+  privateArgs.agoricNames,
   vowTools,
-  makeChainHub(privateArgs.agoricNames)
+);
+// ...
+const makeLocalOrchestrationAccountKit = prepareLocalOrchestrationAccountKit(
+  zone.subZone('orchestration'),
+  {
+    makeRecorderKit,
+    makeProgressTracker,
+    zcf,
+    timerService,
+    vowTools,
+    chainHub,
+    localchain,
+    zoeTools,
+  },
 );
 // ...
 const makeCosmosOrchestrationAccount = prepareCosmosOrchestrationAccount(
-  zone,
-  makeRecorderKit,
-  vowTools,
-  zcf
+  zone.subZone('orchestration'),
+  {
+    chainHub,
+    makeProgressTracker,
+    makeRecorderKit,
+    timerService,
+    vowTools,
+    zcf,
+  },
 );
 ```
+
+<small>_See [`start-helper.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/orchestration/src/utils/start-helper.js) for the full wiring these makers depend on._</small>
+
+### Moving Assets Between Seats
+
+Upgradable contracts still need to reallocate assets between seats, but the
+old `stage()`/`reallocate()` seat API isn't compatible with durability.
+Use `zcf.atomicRearrange(transfers)` instead; see [Moving Assets Between
+Seats](./moving-assets.md) for the primitive and its helpers (`atomicTransfer`,
+`fromOnly`, `toOnly`).
+
+### Worked Examples
+
+- [`coveredCall-durable.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/coveredCall-durable.js):
+  a durable variant of the covered-call contract, using `prepareExoClass`/`prepareExo`
+  directly against `baggage` so the exercise-option invitation survives upgrade.
+- [`valueVow.contract.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/valueVow.contract.js):
+  a minimal contract that exports `meta = { upgradability: 'canUpgrade' }` and
+  uses `zone.makeOnce()` to keep a durable Vow across incarnations.

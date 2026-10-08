@@ -7,13 +7,16 @@ Depositing and withdrawing assets from a
 all require adding and subtracting digital assets.
 ERTP uses the `AmountMath` library for all these operations.
 
-The `AmountMath` library functions work for both fungible and nonfungible tokens.
-There are two `AssetKinds`, each of which implements the same methods. Which kind is used
+The `AmountMath` library functions work for fungible, non-fungible, and semi-fungible tokens.
+There are three live `AssetKinds`, each of which implements the same methods. Which kind is used
 for a particular `brand` depends on what was specified when the `brand` and
 its `issuer` were created. They are:
 
 - `AssetKind.NAT` ("nat"): Used with fungible assets. Values are natural numbers using the JavaScript [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript `Number` type.
-- `AssetKind.SET` ("set"): Used with non-fungible assets. Values are [copyArray](../js-programming/far#passstyleof-api)s such as hardened arrays of strings.
+- `AssetKind.COPY_SET` ("copySet"): Used with non-fungible assets where there can't be duplicates, such as assigned seats in a stadium. Values are [CopySets](/reference/ertp-api/ertp-data-types#assetkind).
+- `AssetKind.COPY_BAG` ("copyBag"): Used with semi-fungible assets where duplicates of the same element are fungible with each other, such as weapons in a computer game. Values are [CopyBags](/reference/ertp-api/ertp-data-types#assetkind).
+
+A fourth, `AssetKind.SET` ("set"), is deprecated; use `AssetKind.COPY_SET` instead.
 
 ## AmountMath Methods
 
@@ -47,6 +50,12 @@ to add verification that the `brand` of "amount" argument(s) corresponds with th
     - Takes an `amount` and returns it if it's a valid `amount`.
       If invalid, it throws an error.
     - <<< @/../snippets/ertp/guide/test-amount-math.js#coerce
+  - [AmountMath.min(x, y, brand?)](/reference/ertp-api/amount-math#amountmath-min-x-y-brand)
+    - Returns the smaller of the `x` and `y` `amount` arguments, using `isGTE`.
+    - <<< @/../snippets/ertp/guide/test-amount-math.js#min
+  - [AmountMath.max(x, y, brand?)](/reference/ertp-api/amount-math#amountmath-max-x-y-brand)
+    - Returns the larger of the `x` and `y` `amount` arguments, using `isGTE`.
+    - <<< @/../snippets/ertp/guide/test-amount-math.js#max
 - **Manipulator Methods**
   - [AmountMath.add(leftAmount, rightAmount, brand?)](/reference/ertp-api/amount-math#amountmath-add-leftamount-rightamount-brand)
     - Returns an `amount` that is the union of the `leftAmount` and `rightAmount`
@@ -73,7 +82,7 @@ to add verification that the `brand` of "amount" argument(s) corresponds with th
     - Returns an `amount` representing an empty `amount`, which is the identity
       element for the `AmountMath` `add()` and `subtract()`
       operations. Note that this value varies depending on the
-      `brand` and whether it is of kind `AssetKind.NAT` or `AssetKind.SET`.
+      `brand` and its `AssetKind`.
     - <<< @/../snippets/ertp/guide/test-amount-math.js#makeEmpty
   - [AmountMath.makeEmptyFromAmount(amount)](/reference/ertp-api/amount-math#amountmath-makeemptyfromamount-amount)
     - Returns an `amount` representing an empty `amount`, using another `amount`
@@ -85,7 +94,7 @@ to add verification that the `brand` of "amount" argument(s) corresponds with th
 These methods return an **[AssetKind](/reference/ertp-api/ertp-data-types#assetkind)**:
 
 - [anIssuer.getAssetKind()](/reference/ertp-api/issuer#anissuer-getassetkind)
-  - Returns the `AssetKind` of the `issuer`'s `brand`. (`AssetKind.NAT` or `AssetKind.SET`).
+  - Returns the `AssetKind` of the `issuer`'s `brand`.
   - <<< @/../snippets/ertp/guide/test-amount-math.js#getAssetKind2
 - [zcf.getAssetKind(brand)](/reference/zoe-api/zoe-contract-facet#zcf-getassetkind-brand)
   - Returns the `AssetKind` of the `brand` argument.

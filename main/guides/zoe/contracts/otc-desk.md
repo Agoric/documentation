@@ -1,8 +1,6 @@
 # OTC Desk Contract
 
-<Zoe-Version/>
-
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/otcDesk.js) (Last updated: Mar 1, 2022)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/otcDesk.js)
 
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
@@ -25,7 +23,7 @@ The OTC Desk contract is based on an idea by Haseeb Qureshi in
 
 In this OTC Desk Contract:
 
-- Trades are atomic and “trustless”
+- Trades are atomic and "trustless"
 - Creator keeps all profits
 - Can use any pricing mechanism
 - Can stop quoting when the market is crazy

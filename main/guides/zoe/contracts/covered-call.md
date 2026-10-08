@@ -1,8 +1,6 @@
 # Covered Call Contract
 
-<Zoe-Version/>
-
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/coveredCall.js) (Last updated: Sep 12, 2020)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/coveredCall.js)
 
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
@@ -25,7 +23,7 @@ to deposit assets. When they do so, the offer result is another invitation
 that serves as the call option. The invitation includes details of the
 transaction for the benefit of the counter-party. Their assured presence in
 the invitation allows the recipient of the invitation to verify what has
-been escrowed: `{ expirationDate, timerAuthority, underlyingAsset,
+been escrowed: `{ expirationDate, timeAuthority, underlyingAssets,
 strikePrice }`.
 
 ## The Contract's API
@@ -94,12 +92,12 @@ issuerKeywordRecord to specify the issuers to be used with each keyword.
 ```js
 const issuerKeywordRecord = harden({
   UnderlyingAsset: moolaIssuer,
-  StrikePrice: simoleanIssuer
+  StrikePrice: simoleanIssuer,
 });
 
 const { creatorInvitation } = await E(zoe).startInstance(
   coveredCallInstallation,
-  issuerKeywordRecord
+  issuerKeywordRecord,
 );
 ```
 
@@ -110,7 +108,7 @@ const threeMoola = AmountMath.make(moolaBrand, 3n);
 const aliceProposal = harden({
   give: { UnderlyingAsset: threeMoola },
   want: { StrikePrice: AmountMath.make(simoleanBrand, 7n) },
-  exit: { afterDeadline: { deadline: 1599856578n, timer: chainTimer } }
+  exit: { afterDeadline: { deadline: 1599856578n, timer: chainTimer } },
 });
 
 const alicePayment = { UnderlyingAsset: aliceMoolaPurse.withdraw(threeMoola) };
@@ -122,7 +120,7 @@ Alice makes an offer and gets a seat.
 const aliceSeat = await E(zoe).offer(
   creatorInvitation,
   aliceProposal,
-  alicePayment
+  alicePayment,
 );
 
 const coveredCall = aliceSeat.getOfferResult();
@@ -145,11 +143,11 @@ instance to trade this invitation for bucks.
 ```js
 const swapIssuerKeywordRecord = harden({
   Asset: invitationIssuer,
-  Price: bucksR.issuer
+  Price: bucksR.issuer,
 });
 const bobSwapSeat = await E(zoe).startInstance(
   swapInstallation,
-  swapIssuerKeywordRecord
+  swapIssuerKeywordRecord,
 );
 ```
 
@@ -160,14 +158,14 @@ share.
 ```js
 const bobProposalSwap = harden({
   give: { Asset: invitationIssuer.getAmountOf(bobExclOption) },
-  want: { Price: bucks(1) }
+  want: { Price: bucks(1) },
 });
 
 const bobPayments = harden({ Asset: bobExclOption });
 const bobSwapSeat = await E(zoe).offer(
   bobSwapInvitation,
   bobProposalSwap,
-  bobPayments
+  bobPayments,
 );
 
 const daveSwapInvitation = bobSwapSeat.getOfferResult();
@@ -188,9 +186,9 @@ const { installation: daveSwapInstall, instance } =
 const daveSwapIssuers = await E(zoe).getIssuers(instance);
 
 // Dave does some checks
-assert(daveSwapInstall === swapInstallation, details`wrong installation`);
-assert(daveIssuers.Asset === moolaIssuer, details`unexpected Asset issuer`);
-assert(daveIssuers.Price === simoleanIssuer, details`unexpected Price issuer`);
+daveSwapInstall === swapInstallation || Fail`wrong installation`;
+daveSwapIssuers.Asset === moolaIssuer || Fail`unexpected Asset issuer`;
+daveSwapIssuers.Price === simoleanIssuer || Fail`unexpected Price issuer`;
 ```
 
 Dave can safely proceed with the swap because he knows that if Bob has lied
@@ -200,7 +198,7 @@ Dave escrows his 1 buck with Zoe and forms his proposal.
 ```js
 const daveSwapProposal = harden({
   want: { Asset: optionAmount },
-  give: { Price: bucks(1) }
+  give: { Price: bucks(1) },
 });
 
 const daveSwapPayments = harden({ Price: daveBucksPayment });
@@ -208,7 +206,7 @@ const daveSwapPayments = harden({ Price: daveBucksPayment });
 const daveSwapSeat = await E(zoe).offer(
   daveSwapInvitation,
   daveSwapProposal,
-  daveSwapPayments
+  daveSwapPayments,
 );
 ```
 
@@ -223,19 +221,28 @@ const daveOption = await daveSwapSeat.getPayout('Asset');
 
 const daveCoveredCallProposal = harden({
   want: { UnderlyingAsset: AmountMath.make(moolaBrand, 3n) },
-  give: { StrikePrice: AmountMath.make(simoleanBrand, 7n) }
+  give: { StrikePrice: AmountMath.make(simoleanBrand, 7n) },
 });
 
 const daveCoveredCallPayments = harden({
-  StrikePrice: daveSimoleanPayment
+  StrikePrice: daveSimoleanPayment,
 });
 
 const daveCallSeat = await E(zoe).offer(
   daveOption,
   daveCoveredCallProposal,
-  daveCoveredCallPayments
+  daveCoveredCallPayments,
 );
 
 const daveMoolaPayout = await daveCallSeat.getPayout('UnderlyingAsset');
 await daveMoolaPurse.deposit(daveMoolaPayout);
 ```
+
+## Durable Variant
+
+The walkthrough above describes the plain, heap-based
+[`coveredCall.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/coveredCall.js), whose in-memory state does not survive a contract upgrade. Agoric also
+ships [`coveredCall-durable.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/coveredCall-durable.js), the same contract rebuilt with baggage and
+`prepareExoClass` so its exerciser and creator facet persist across an
+upgrade. See [Contract Upgrade](../contract-upgrade) for background on
+durability and how upgrade works.

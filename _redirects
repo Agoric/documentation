@@ -36,8 +36,11 @@
 /getting-started/start-a-project.html /guides/getting-started/ 
 /getting-started/start-a-project/* /guides/getting-started/start-a-project/:splat
 /guides/agoric-cli/commands /guides/agoric-cli/
-/guides/agoric-cli/commands.html /guides/agoric-cli/ 
+/guides/agoric-cli/commands.html /guides/agoric-cli/
 /guides/agoric-cli/commands/* /guides/agoric-cli/:splat
+/guides/getting-started/deploying /guides/getting-started/explainer-deploying-a-smart-contact
+/guides/getting-started/deploying.html /guides/getting-started/explainer-deploying-a-smart-contact
+/guides/getting-started/deploying/* /guides/getting-started/explainer-deploying-a-smart-contact:splat
 /guides/js-programming/ses/lockdown https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/lockdown.md 
 /guides/js-programming/ses/lockdown.html https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/lockdown.md 
 /guides/js-programming/ses/ses-guide https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.md 

@@ -32,7 +32,7 @@ Proposals are records with **give**, **want**, and/or **exit** keys.
 const myProposal = harden({
   give: { Asset: AmountMath.make(quatloosBrand, 4n) },
   want: { Price: AmountMath.make(moolaBrand, 15n) },
-  exit: { onDemand: null }
+  exit: { onDemand: null },
 });
 ```
 
@@ -72,7 +72,7 @@ or rejected or the assets are reassigned to another offer.
 ```js
 const payments = {
   Asset: quatloosPayment,
-  Price: moolaPayment
+  Price: moolaPayment,
 };
 ```
 

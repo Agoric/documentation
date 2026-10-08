@@ -9,7 +9,7 @@ Let's take a look at the following code snippet from the Swaparoo contract:
 ```js
 const secondDepositFacet = await E(depositFacetFromAddr).lookup(
   secondPartyAddress,
-  'depositFacet'
+  'depositFacet',
 );
 
 await E(secondDepositFacet).receive(secondSeatInvitation);

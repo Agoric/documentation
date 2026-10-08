@@ -34,7 +34,7 @@ and the values are the **Brands** for particular **[Issuers](/reference/ertp-api
 // Record example
 const brandKeywordRecord = {
   FirstCurrency: quatloosBrand,
-  SecondCurrency: moolaBrand
+  SecondCurrency: moolaBrand,
   // etc.
 };
 ```
@@ -58,7 +58,7 @@ and the values are **Issuers**.
 // Record example
 const issuerKeywordRecord = {
   FirstCurrency: quatloosIssuer,
-  SecondCurrency: moolaIssuer
+  SecondCurrency: moolaIssuer,
 };
 ```
 
@@ -267,7 +267,7 @@ to **[Issuers](/reference/ertp-api/issuer)**, such as **FirstCurrency: quatlooIs
 Parties to the contract will use the **Keywords** to index their proposal and their payments.
 
 The **terms** are values used by this contract instance, such as the
-number of bids an auction w ill wait for before closing. These values may
+number of bids an auction will wait for before closing. These values may
 be different for different instances of the same contract, but the contract
 defines what variables need their values passed in as **terms**.
 
@@ -345,11 +345,11 @@ represented as a **Payment**.
 ```js
 const issuerKeywordRecord = {
   Asset: moolaIssuer,
-  Price: quatlooIssuer
+  Price: quatlooIssuer,
 };
 const terms = { numBids: 3 };
 const { creatorFacet, publicFacet, creatorInvitation } = await E(
-  Zoe
+  Zoe,
 ).startInstance(installation, issuerKeywordRecord, terms);
 ```
 
@@ -381,7 +381,7 @@ it may inspect it and reject it for any reason
 const myProposal = harden({
   give: { Asset: AmountMath.make(quatloosBrand, 4n) },
   want: { Price: AmountMath.make(moolaBrand, 15n) },
-  exit: { onDemand: null }
+  exit: { onDemand: null },
 });
 ```
 
@@ -426,4 +426,9 @@ Each contract can define the properties it supports and which are required.
 - **installation**: **Installation**
 - Returns: **Promise&lt;BundleId>**
 
-Reserved for future use.
+Returns the **BundleId** of the contract bundle the _installation_ argument was installed from.
+Throws if _installation_ isn't a valid, currently-known **Installation**.
+
+```js
+const bundleId = await E(zoe).getBundleIDFromInstallation(installation);
+```

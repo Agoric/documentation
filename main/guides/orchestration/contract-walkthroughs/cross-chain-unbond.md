@@ -47,7 +47,7 @@ const contract = async (
   zcf,
   privateArgs,
   zone,
-  { orchestrateAll, zcfTools }
+  { orchestrateAll, zcfTools },
 ) => {
   const { unbondAndTransfer } = orchestrateAll(flows, { zcfTools });
 
@@ -60,10 +60,10 @@ const contract = async (
         harden({
           give: {},
           want: {},
-          exit: M.any()
-        })
+          exit: M.any(),
+        }),
       );
-    }
+    },
   });
 
   return harden({ publicFacet });
@@ -77,7 +77,7 @@ The `orchestrateAll` function links the flows from the flows file to the contrac
 The following code defines the `start` function of the contract that is returned by a call to `withOrchestration` with [`contract` function](#contract-function) as a parameter. In essence `contract` function is the entry point or `start` function of this contract with some Orchestration setup.
 
 ```js
-export const start = withOrchestration(contract);
+export const start = withOrchestration(contract, { publishAccountInfo: true });
 ```
 
 ## Flows: `unbond.flows.js`

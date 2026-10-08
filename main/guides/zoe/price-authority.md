@@ -6,7 +6,15 @@ various time and price conditions.
 
 ## Examples
 
-To see a `priceAuthority` in use, see the [Loan
+The production path for price feeds composes
+[`priceAggregator.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/priceAggregator.js),
+which combines quotes from multiple oracles into a median price, with
+[`scaledPriceAuthority.js`](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/scaledPriceAuthority.js),
+which rescales a source `priceAuthority` (for example, to change units)
+without adding any durable state of its own.
+
+For simpler, single-file demos that use a `priceAuthority` in their terms,
+see the [Loan
 contract](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts/loan)
 and the [Call Spread
 contracts](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts/callSpread).
@@ -35,10 +43,11 @@ const verifiedQuoteAmount = await E(quoteIssuer).getAmountOf(quotePayment);
 ```
 
 Once you have a `quoteAmount` (or a `verifiedQuoteAmount`), you can extract the
-quoted amounts:
+quoted amounts. `quoteAmount.value` is a one-element array holding the quote's
+`PriceDescription` record:
 
 ```js
-const [{ value: { amountIn, amountOut, timestamp, timer }] = quoteAmount;
+const [{ amountIn, amountOut, timestamp, timer }] = quoteAmount.value;
 ```
 
 This means that the `priceAuthority` asserts that when `timestamp` according to

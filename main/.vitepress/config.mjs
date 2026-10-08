@@ -137,6 +137,10 @@ export default defineConfig({
               link: '/guides/orchestration/key-concepts',
             },
             {
+              text: 'Async Flow',
+              link: '/guides/orchestration/async-flow',
+            },
+            {
               text: 'Contract Walkthroughs',
               link: '/guides/orchestration/contract-walkthroughs/',
               items: [
@@ -147,8 +151,8 @@ export default defineConfig({
                 {
                   text: 'Cross-Chain Unbond Example',
                   link: '/guides/orchestration/contract-walkthroughs/cross-chain-unbond',
-                }
-              ]
+                },
+              ],
             },
             {
               text: 'Example Orchestration DApp',
@@ -165,14 +169,14 @@ export default defineConfig({
                 {
                   text: 'UI Walkthrough',
                   link: '/guides/orchestration/orchestration-basics/ui',
-                }
-              ]
+                },
+              ],
             },
             {
               text: 'How Orchestration Works',
               link: '/guides/orchestration/how-orch-works',
             },
-          ]
+          ],
         },
         {
           text: 'Build',
@@ -184,18 +188,15 @@ export default defineConfig({
               items: [
                 {
                   text: 'Takeaway 1: Starting a Local Chain',
-                  link:
-                    '/guides/getting-started/explainer-how-to-start-a-local-chain',
+                  link: '/guides/getting-started/explainer-how-to-start-a-local-chain',
                 },
                 {
                   text: 'Takeaway 2: Deploying a Smart Contract',
-                  link:
-                    '/guides/getting-started/explainer-deploying-a-smart-contact',
+                  link: '/guides/getting-started/explainer-deploying-a-smart-contact',
                 },
                 {
                   text: 'Takeaway 3: Making an Offer',
-                  link:
-                    '/guides/getting-started/explainer-how-to-make-an-offer',
+                  link: '/guides/getting-started/explainer-how-to-make-an-offer',
                 },
               ],
             },
@@ -209,12 +210,28 @@ export default defineConfig({
                   link: '/guides/zoe/contract-hello',
                 },
                 {
+                  text: 'Contract Requirements',
+                  link: '/guides/zoe/contract-requirements',
+                },
+                {
                   text: 'State Smart Contract',
                   link: '/guides/zoe/contract-state',
                 },
                 {
                   text: 'Access Control Smart Contract',
                   link: '/guides/zoe/contract-access-control',
+                },
+                {
+                  text: 'The Structure of Offers',
+                  link: '/guides/zoe/proposal',
+                },
+                {
+                  text: 'Offer Safety',
+                  link: '/guides/zoe/offer-safety',
+                },
+                {
+                  text: 'Offer-Safety Enforcement',
+                  link: '/guides/zoe/offer-enforcement',
                 },
                 {
                   text: 'Complete Contract Walk-Through',
@@ -228,7 +245,28 @@ export default defineConfig({
                   text: 'Contract Upgrade',
                   link: '/guides/zoe/contract-upgrade',
                 },
+                {
+                  text: 'Moving Assets Between Seats',
+                  link: '/guides/zoe/moving-assets',
+                },
+                {
+                  text: 'Price Authority',
+                  link: '/guides/zoe/price-authority',
+                },
+                {
+                  text: 'Publishing to chainStorage',
+                  link: '/guides/zoe/pub-to-storage',
+                },
                 { text: 'Contract Governance', link: '/guides/governance/' },
+              ],
+            },
+            {
+              text: 'Smart Wallet',
+              link: '/guides/wallet/',
+              collapsed: true,
+              items: [
+                { text: 'Smart Wallet', link: '/guides/wallet/' },
+                { text: 'Wallet UI', link: '/guides/wallet/ui' },
               ],
             },
 
@@ -288,12 +326,12 @@ export default defineConfig({
               ],
             },
             {
-                text: 'Agoric API Reference',
-                link: 'https://agoric-sdk.pages.dev/'
+              text: 'Agoric API Reference',
+              link: 'https://agoric-sdk.pages.dev/',
             },
             {
-                text: 'Endo API Reference',
-                link: 'https://endojs.github.io/endo/'
+              text: 'Endo API Reference',
+              link: 'https://endojs.github.io/endo/',
             },
 
             {
@@ -315,8 +353,32 @@ export default defineConfig({
                   link: '/reference/ertp-api/amount-math',
                 },
                 {
+                  text: 'Durable Issuers',
+                  link: '/reference/ertp-api/durable-issuers',
+                },
+                {
+                  text: 'Legacy Payment Helpers',
+                  link: '/reference/ertp-api/legacy-payment-helpers',
+                },
+                {
                   text: 'ERTP Data Types',
                   link: '/reference/ertp-api/ertp-data-types',
+                },
+              ],
+            },
+            {
+              text: 'Smart Wallet API',
+              link: '/reference/wallet-api/',
+              collapsed: true,
+              items: [
+                { text: 'Smart Wallet API', link: '/reference/wallet-api/' },
+                {
+                  text: 'BridgeAction Reference',
+                  link: '/reference/wallet-api/wallet-bridge',
+                },
+                {
+                  text: 'agoric wallet CLI',
+                  link: '/reference/wallet-api/wallet-commands',
                 },
               ],
             },
@@ -348,6 +410,18 @@ export default defineConfig({
                 {
                   text: 'Zoe Data Types',
                   link: '/reference/zoe-api/zoe-data-types',
+                },
+                {
+                  text: 'PriceAuthority Object',
+                  link: '/reference/zoe-api/price-authority',
+                },
+                {
+                  text: 'PriceAuthority Admin Object',
+                  link: '/reference/zoe-api/price-authority-admin',
+                },
+                {
+                  text: 'MutableQuote Object',
+                  link: '/reference/zoe-api/mutable-quote',
                 },
               ],
             },
@@ -482,6 +556,33 @@ export default defineConfig({
               text: 'JavaScript Framework',
               ariaLabel: 'JavaScript Framework',
               link: '/guides/js-programming/',
+              collapsed: true,
+              items: [
+                {
+                  text: 'Hardened JavaScript',
+                  link: '/guides/js-programming/hardened-js',
+                },
+                {
+                  text: 'E() for Eventual Send',
+                  link: '/guides/js-programming/eventual-send',
+                },
+                {
+                  text: 'Far(), Remotables, and Marshaling',
+                  link: '/guides/js-programming/far',
+                },
+                {
+                  text: 'Exo Objects and Interface Guards',
+                  link: '/guides/js-programming/exo',
+                },
+                {
+                  text: 'Zones and Persistence',
+                  link: '/guides/js-programming/zones',
+                },
+                {
+                  text: 'Notifiers, Subscriptions, and PublishKit',
+                  link: '/guides/js-programming/notifiers',
+                },
+              ],
             },
 
             {
@@ -493,10 +594,6 @@ export default defineConfig({
                 {
                   text: 'PSM Contract',
                   link: '/guides/zoe/actual-contracts/PSM',
-                },
-                {
-                  text: 'PriceAuthority Object',
-                  link: '/reference/zoe-api/price-authority',
                 },
               ],
             },
@@ -528,21 +625,17 @@ export default defineConfig({
               items: [
                 {
                   text: 'Takeaway 1: Sell Concert Tickets Contract Overview',
-                  link:
-                    '/guides/getting-started/sell-concert-tickets-contract-explainer',
+                  link: '/guides/getting-started/sell-concert-tickets-contract-explainer',
                 },
 
                 {
                   text: 'Takeaway 2: Swaparoo Contract Overview',
-                  link:
-                    '/guides/getting-started/swaparoo-how-to-swap-assets-explainer',
+                  link: '/guides/getting-started/swaparoo-how-to-swap-assets-explainer',
                 },
 
                 {
-                  text:
-                    'Takeaway 3: Sending Invitation Payments using an Address',
-                  link:
-                    '/guides/getting-started/swaparoo-making-a-payment-explainer',
+                  text: 'Takeaway 3: Sending Invitation Payments using an Address',
+                  link: '/guides/getting-started/swaparoo-making-a-payment-explainer',
                 },
               ],
             },

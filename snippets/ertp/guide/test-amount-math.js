@@ -2,6 +2,7 @@
 import { test } from '../../prepare-test-env-ava.js';
 
 import { AmountMath, makeIssuerKit, AssetKind } from '@agoric/ertp';
+import { makeCopySet } from '@endo/patterns';
 
 import { setupZCFTest } from '../../tools/setupZcfTest.js';
 
@@ -93,6 +94,30 @@ test('ertp guide AmountMath methods isEqual', async t => {
   t.falsy(AmountMath.isEqual(empty, quatloos1));
 });
 
+test('ertp guide AmountMath methods min', async t => {
+  // #region min
+  const { brand: quatloosBrand } = makeIssuerKit('quatloos');
+  const quatloos5 = AmountMath.make(quatloosBrand, 5n);
+  const quatloos10 = AmountMath.make(quatloosBrand, 10n);
+
+  // Returns an amount equivalent to quatloos5
+  const smaller = AmountMath.min(quatloos5, quatloos10);
+  // #endregion min
+  t.deepEqual(smaller, quatloos5);
+});
+
+test('ertp guide AmountMath methods max', async t => {
+  // #region max
+  const { brand: quatloosBrand } = makeIssuerKit('quatloos');
+  const quatloos5 = AmountMath.make(quatloosBrand, 5n);
+  const quatloos10 = AmountMath.make(quatloosBrand, 10n);
+
+  // Returns an amount equivalent to quatloos10
+  const larger = AmountMath.max(quatloos5, quatloos10);
+  // #endregion max
+  t.deepEqual(larger, quatloos10);
+});
+
 test('ertp guide AmountMath methods coerce', async t => {
   // #region coerce
   const { brand: quatloosBrand } = makeIssuerKit('quatloos');
@@ -104,25 +129,33 @@ test('ertp guide AmountMath methods coerce', async t => {
 
 test('ertp guide AmountMath methods add', async t => {
   // #region add
-  const { brand: myItemsBrand } = makeIssuerKit('myItems', 'set');
-  const listAmountA = AmountMath.make(myItemsBrand, harden(['1', '2', '4']));
-  const listAmountB = AmountMath.make(myItemsBrand, harden(['3']));
+  const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.COPY_SET);
+  const listAmountA = AmountMath.make(
+    myItemsBrand,
+    makeCopySet(['1', '2', '4']),
+  );
+  const listAmountB = AmountMath.make(myItemsBrand, makeCopySet(['3']));
 
   // Returns an amount containing all of ['1', '2', '4', '3']
   const combinedList = AmountMath.add(listAmountA, listAmountB);
   // #endregion add
-  t.deepEqual(
-    combinedList,
-    AmountMath.make(myItemsBrand, harden(['1', '2', '4', '3'])),
+  t.true(
+    AmountMath.isEqual(
+      combinedList,
+      AmountMath.make(myItemsBrand, makeCopySet(['1', '2', '4', '3'])),
+    ),
   );
 });
 
 test('ertp guide AmountMath methods subtract', async t => {
   // #region subtract
-  const { brand: myItemsBrand } = makeIssuerKit('myItems', 'set');
-  const listAmountA = AmountMath.make(myItemsBrand, harden(['1', '2', '4']));
-  const listAmountB = AmountMath.make(myItemsBrand, harden(['3']));
-  const listAmountC = AmountMath.make(myItemsBrand, harden(['2']));
+  const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.COPY_SET);
+  const listAmountA = AmountMath.make(
+    myItemsBrand,
+    makeCopySet(['1', '2', '4']),
+  );
+  const listAmountB = AmountMath.make(myItemsBrand, makeCopySet(['3']));
+  const listAmountC = AmountMath.make(myItemsBrand, makeCopySet(['2']));
   // Returns ['1', '4']
   const subtractedList = AmountMath.subtract(listAmountA, listAmountC);
   // Throws error
@@ -130,9 +163,11 @@ test('ertp guide AmountMath methods subtract', async t => {
     message: /right element .* was not in left/,
   });
   // #endregion subtract
-  t.deepEqual(
-    subtractedList,
-    AmountMath.make(myItemsBrand, harden(['1', '4'])),
+  t.true(
+    AmountMath.isEqual(
+      subtractedList,
+      AmountMath.make(myItemsBrand, makeCopySet(['1', '4'])),
+    ),
   );
 });
 

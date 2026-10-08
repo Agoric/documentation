@@ -23,10 +23,10 @@ test('ertp guide issuers and mints makeIssuerKit', async t => {
   // It does not create new assets.
   const quatloos2 = AmountMath.make(quatloosBrand, 2n);
   // Non-fungible asset, which needs an AssetKind
-  // of AssetKind.SET
+  // of AssetKind.COPY_SET
   const { mint: titleMint, issuer: titleIssuer } = makeIssuerKit(
     'alamedaCountyPropertyTitle',
-    AssetKind.SET,
+    AssetKind.COPY_SET,
   );
   // #endregion makeIssuerKit
 

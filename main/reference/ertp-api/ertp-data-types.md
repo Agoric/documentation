@@ -25,7 +25,7 @@ An **AmountShape** is a description of non-fungible digital assets. Similar to *
 and a **ValueShape**, which is an object containing however many properties are required to describe
 this non-fungible asset. Note that an asset's **ValueShape** is defined by the _elementShape_ parameter
 when the asset's **[Issuer](./issuer)** is created via the
-**[makeIssuerKit()](./issuer#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)** function.
+**[makeIssuerKit()](./issuer#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-issueroptionsrecord)** function.
 
 ```js
 someAmountShape: {
@@ -51,13 +51,13 @@ There are several kinds of Assets.
 
 - **AssetKind.NAT** : Used with fungible assets. **AmountValues** are natural numbers using the JavaScript [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript **Number** type.
 - **AssetKind.SET** : Deprecated.
-- **AssetKind.COPY_SET** : Used with non-fungible assets where there can't be duplicates (e.g., assigned seats in a stadium). See [@endo/patterns CopySet](https://endojs.github.io/endo/types/_endo_patterns.CopySet.html).
-- **AssetKind.COPY_BAG** : Used with semi-fungible assets where there can be duplicates. The duplicates of the same asset are fungible with each other (e.g., weapons in a computer game). See [@endo/patterns CopyBag](https://endojs.github.io/endo/types/_endo_patterns.CopyBag.html).
+- **AssetKind.COPY_SET** : Used with non-fungible assets where there can't be duplicates (e.g., assigned seats in a stadium). See [@endo/patterns CopySet](https://docs.endojs.org/types/_endo_patterns.CopySet.html).
+- **AssetKind.COPY_BAG** : Used with semi-fungible assets where there can be duplicates. The duplicates of the same asset are fungible with each other (e.g., weapons in a computer game). See [@endo/patterns CopyBag](https://docs.endojs.org/types/_endo_patterns.CopyBag.html).
 
 Even though very different mathematical processes are performed,
 **[AmountMath](./amount-math)** methods work for all kinds of assets.
 
-Use **[makeIssuerKit()](./issuer#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)** to specify which **AssetKind**
+Use **[makeIssuerKit()](./issuer#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-issueroptionsrecord)** to specify which **AssetKind**
 your contract uses. See the **[Issuer](./issuer)** documentation for details on how to use this method.
 
 ```js
@@ -67,6 +67,10 @@ makeIssuerKit('kitties', AssetKind.COPY_SET); // Defaults to undefined DisplayIn
 ```
 
 ## DisplayInfo
+
+::: warning DEPRECATED
+Look up display info in `boardAux` instead of `aBrand.getDisplayInfo()`.
+:::
 
 A **DisplayInfo** data type is associated with a **[Brand](./brand)** and gives information about how
 to display that **Brand**'s **[Amounts](#amount)**. **DisplayInfo** has one optional property,

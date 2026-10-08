@@ -35,6 +35,7 @@ The keys of `agoricNames` include:
 - `oracleBrand` - USD, ATOM
 - `installation` - psm, reserve, priceAuthority, ... (see [deployed contracts](../zoe/actual-contracts/))
 - `instance` - reserve, one for each psm, one for each priceAuthority, ... (see [deployed contracts](../zoe/actual-contracts/))
+- `uiConfig` - per-contract UI configuration (for example the VaultFactory dApp config), keyed the same way as `installation` and `instance`
 
 Adding or updating an entry requires access to the corresponding _NameAdmin_ facet: `agoricNamesAdmin` or
 one of its descendants - most likely as part of [permissioned contract deployment](../coreeval/). For example:
@@ -42,7 +43,7 @@ one of its descendants - most likely as part of [permissioned contract deploymen
 ```js
 const { instance } = await E(zoe).startInstance(lemonadeStand);
 const {
-  brands: { Lemonade: lemonadeBrand }
+  brands: { Lemonade: lemonadeBrand },
 } = await E(zoe).getTerms(instance);
 const brandAdmin = E(agoricNamesAdmin).lookupAdmin('brand');
 await E(brandAdmin).update('Lemonade', lemonadeBrand);

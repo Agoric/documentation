@@ -67,7 +67,7 @@ the swap contract behaves badly, we both get a refund, and at
 best, we get what we each wanted.
 
 Let's look at the basic [Atomic Swap contract](/guides/zoe/contracts/atomic-swap)
-(link includes [real contract code](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/atomicSwap.js)).
+(link includes [real contract code](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js)).
 
 Here's a high-level overview of what happens:
 
@@ -94,19 +94,23 @@ Here's a high-level overview of what happens:
 Writing smart contracts that run on Zoe is easy. Let's look
 at a simple contract like [Automatic Refund](/guides/zoe/contracts/automatic-refund)
 (link includes [real contract
-code](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/automaticRefund.js)).
+code](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/automaticRefund.js)).
 It only does one thing, and it's pretty useless&mdash;it gives you back what you put in.
 
 ```js
 const start = zcf => {
+  let offersCount = 0n;
+
   const refund = seat => {
+    offersCount += 1n;
     seat.exit();
     return `The offer was accepted`;
   };
   const makeRefundInvitation = () => zcf.makeInvitation(refund, 'getRefund');
 
   const publicFacet = Far('publicFacet', {
-    makeInvitation: makeRefundInvitation
+    getOffersCount: () => offersCount,
+    makeInvitation: makeRefundInvitation,
   });
 
   const creatorInvitation = makeRefundInvitation();
@@ -139,11 +143,12 @@ several optional properties:
 ## Diving Deeper
 
 Let's dive back into the [Atomic Swap contract](/guides/zoe/contracts/atomic-swap)
-(link includes [real contract code](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/atomicSwap.js)).
+(link includes [real contract code](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js)).
 
 The contract first confirms that `issuers` are setup for the `Asset` and `Price` keywords. Those are the two items that will be swapped.
 
-The following uses the [`assertIssuerKeywords` helper function](/reference/zoe-api/zoe-helpers#assertissuerkeywords-zcf-expected). It
+The following uses the [`assertIssuerKeywords` helper function](/reference/zoe-api/zoe-helpers#assertissuerkeywords-zcf-expected), imported
+along with `swap` from `@agoric/zoe/src/contractSupport/index.js`. It
 checks properties of the running contract instance's terms.
 
 ```js
@@ -186,12 +191,14 @@ handler is responsible for the final step.
 It uses the [`swap` helper function](/reference/zoe-api/zoe-helpers#swap-zcf-leftseat-rightseat)
 to attempt asset reallocation between the two seats as described above and then
 (whether or not the attempt succeeds) exits both seats, making payouts available to
-both parties. Finally, `matchingSeatOfferHandler()` shuts down the contract.
+both parties. Finally, `matchingSeatOfferHandler()` shuts down the contract. Under the
+hood, `swap` reallocates with [`zcf.atomicRearrange`](./moving-assets.md), the
+current replacement for the deprecated `stage()`/`reallocate()` seat API.
 
 ```js
 const matchingSeatOfferHandler = matchingSeat => {
   const swapResult = swap(zcf, firstSeat, matchingSeat);
-  zcf.shutdown();
+  zcf.shutdown('Swap completed.');
   return swapResult;
 };
 ```

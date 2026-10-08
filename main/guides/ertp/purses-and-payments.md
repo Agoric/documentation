@@ -33,9 +33,10 @@ whatever assets already exist there. So a 3 Quatloos deposit
 into a `purse` with 8 Quatloos results in a `purse` with 11 Quatloos.
 
 When adding a `payment` to a `purse`, you must add the entire `payment`. To
-only add part of a `payment`, you must first call [anIssuer.split()](/reference/ertp-api/issuer#anissuer-split-payment-paymentamounta)
-or [anIssuer.splitMany()](/reference/ertp-api/issuer#anissuer-splitmany-payment-amountarray)
-to split it into two or more new `payments`.
+only add part of a `payment`, you must first call the deprecated
+[split()](/reference/ertp-api/legacy-payment-helpers#split-recoverypurse-srcpaymentp-paymentamounta)
+or [splitMany()](/reference/ertp-api/legacy-payment-helpers#splitmany-recoverypurse-srcpaymentp-amounts)
+helper to split it into two or more new `payments`.
 
 `mints` create entirely new digital assets and put them in a new `payment`.
 You also create a `payment` by withdrawing assets from a `purse`, by splitting an
@@ -100,6 +101,16 @@ API Reference](/reference/ertp-api/).
   - Return a deposit-only facet on the `purse`. Note that the command to add a `payment`'s
     assets via a `DepositFacet` is not `deposit()` but `receive()` as shown here.
   - <<< @/../snippets/ertp/guide/test-purses-and-payments.js#getDepositFacet
+- [aPurse.getCurrentAmountNotifier()](/reference/ertp-api/purse#apurse-getcurrentamountnotifier)
+  - Return a lossy notifier for changes to this `purse`'s balance.
+- [aPurse.getRecoverySet()](/reference/ertp-api/purse#apurse-getrecoveryset)
+  - Return the set of `payments` withdrawn from this `purse` that are still live and can
+    still be recovered by depositing them back into the `purse`. Empty if the `purse`'s
+    `issuer` does not maintain recovery sets.
+- [aPurse.recoverAll()](/reference/ertp-api/purse#apurse-recoverall)
+  - Deposit every `payment` in this `purse`'s recovery set back into the `purse`, returning
+    the total `amount` recovered. Used to recover from an emergency, such as a vat crash
+    and upgrade.
 
 In addition, the method to create a new, empty, `purse` is called on an `issuer`:
 
@@ -178,17 +189,23 @@ API Reference](/reference/ertp-api/index).
 - [aPurse.withdraw(amount)](/reference/ertp-api/purse#apurse-withdraw-amount)
   - Withdraw the `amount` of specified digital assets from `purse` into a new `payment`.
   - <<< @/../snippets/ertp/guide/test-purses-and-payments.js#withdraw
-    ::: warning DEPRECATED
-- [anIssuer.combine(paymentsArray)](/reference/ertp-api/issuer#anissuer-combine-paymentsarray-opttotalamount)
+
+`combine`, `claim`, `splitMany`, and `split` are no longer `Issuer` methods; they
+remain available as deprecated, standalone helper functions. See
+[Legacy Payment Helpers](/reference/ertp-api/legacy-payment-helpers).
+
+::: warning DEPRECATED
+
+- [combine(recoveryPurse, srcPaymentsPs, optTotalAmount?)](/reference/ertp-api/legacy-payment-helpers#combine-recoverypurse-srcpaymentsps-opttotalamount)
   - Combine multiple Payments into one new Payment.
   - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#combine
-- [anIissuer.claim(payment, optAmount)](/reference/ertp-api/issuer#anissuer-claim-payment-optamount)
-  - Transfer all digital assets from `payment` to a new Payment.
+- [claim(recoveryPurse, srcPaymentP, optAmountShape?)](/reference/ertp-api/legacy-payment-helpers#claim-recoverypurse-srcpaymentp-optamountshape)
+  - Transfer all digital assets from `srcPaymentP` to a new Payment.
   - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#claim
-- [anIssuer.splitMany(payment, amountArray)](/reference/ertp-api/issuer#anissuer-splitmany-payment-amountarray)
+- [splitMany(recoveryPurse, srcPaymentP, amounts)](/reference/ertp-api/legacy-payment-helpers#splitmany-recoverypurse-srcpaymentp-amounts)
   - Split a single `payment` into multiple Payments.
   - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#splitManyConcise
-- [anIssuer.split(payment, paymentAmountA)](/reference/ertp-api/issuer#anissuer-split-payment-paymentamounta)
+- [split(recoveryPurse, srcPaymentP, paymentAmountA)](/reference/ertp-api/legacy-payment-helpers#split-recoverypurse-srcpaymentp-paymentamounta)
   - Split a single `payment` into two new Payments.
   - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#split
     :::

@@ -2,8 +2,21 @@
 
 <!--
   content should remain synchronized with
-  https://github.com/Agoric/agoric-sdk/blob/HEAD/packages/SwingSet/docs/networking.md
+  https://github.com/Agoric/agoric-sdk/blob/master/packages/network/README.md
 -->
+
+::: warning
+This page lives under `reference/repl/` alongside documentation for the
+retired `ag-solo` REPL, but the Network API itself (`Port`, `Connection`,
+`ConnectionHandler`) is current and actively used, including by the
+[Orchestration API](../../guides/orchestration/) to open ICA and IBC connections
+to other chains. The `home.ibcport`/`home.network` objects below are
+`ag-solo`-era illustrative names for "whatever Port/NetworkInterface object
+your vat holds"; a modern vat gets these from its own bootstrap wiring or
+from Orchestration, not from an `ag-solo`'s `home` object. This content is
+kept in sync with [`packages/network`](https://github.com/Agoric/agoric-sdk/tree/master/packages/network#readme)
+in `agoric-sdk`.
+:::
 
 Suitably-empowered code inside a vat can access a "network API" that works
 vaguely like the BSD socket API. This code can:
@@ -16,9 +29,9 @@ vaguely like the BSD socket API. This code can:
 The type of connection is limited by the host in which the vat is running. Chain-based machines must operate in a platonic realm of replicated consensus, so their network options are limited to protocols like IBC, which allow one gestalt chain to talk to other chain-like entities. Each such entity is defined by an evolving set of consensus rules, which typically include a current set of validator public keys and a particular history of hashed block identifiers.
 
 **CAVEAT:** IBC uses
-[Connection](https://github.com/cosmos/ibc/tree/main/spec/core/ics-003-connection-semantics/README)
+[Connection](https://github.com/cosmos/ibc/blob/main/spec/core/ics-003-connection-semantics/README.md)
 to mean a chain-to-chain hop, and
-[Channel](https://github.com/cosmos/ibc/tree/main/spec/core/ics-004-channel-and-packet-semantics/README)
+[Channel](https://github.com/cosmos/ibc/blob/main/spec/core/ics-004-channel-and-packet-semantics/README.md)
 to mean a Port-to-Port pathway through a series of hops.
 This is unfortunate, because IBC "Channels" correspond most precisely to
 TCP "connections", and most discussions of network APIs (including this one,
@@ -50,7 +63,14 @@ You must also prepare a `ConnectionHandler` object to manage the connection you'
 Then you will call the `connect()` method on your local `Port`. This will return a `Promise` that will fire with a new `Connection` object, on which you can send data. Your `ConnectionHandler` will be notified about the new channel, and will receive inbound data from the other side.
 
 ```js
-const remoteEndpoint = `/ibc-hop/${hopName}/ibc-port/${portName}/ordered/${version}`;
+import { encodeIbcEndpoint } from '@agoric/network/ibc/utils.js';
+
+const remoteEndpoint = encodeIbcEndpoint({
+  hops: [connectionID],
+  portID,
+  order: 'ordered',
+  version,
+});
 E(home.ibcport[0])
   .connect(remoteEndpoint, connectionHandler)
   .then(conn => doSomethingWithConnection(conn));
@@ -60,17 +80,13 @@ E(home.ibcport[0])
 
 The other side of `connect()` is a "listening port". These ports are waiting for inbound connections to be established.
 
-To get a listening port, you need a `NetworkInterface` object (such as the one on your `ag-solo` under `home.network`) and ask it to `bind()` to an endpoint. You can either provide a specific port name, or allow the API to allocate a random one for you. The endpoint specifies the type of connection that this port will be able to accept (IBC, TCP, etc), and some properties of that connection. `bind()` uses a "multiaddress" to encode this information.
+To get a listening port, you need a `NetworkInterface` object (such as the one on your `ag-solo` under `home.network`) and ask it for a port, via the `PortAllocator`.
 
 ```js
-// Ask for a random allocation - ends with a slash
+// ask for a random allocation - ends with a slash
 E(home.network)
-  .bind('/ibc-port/')
-  .then(port => usePort(port));
-
-// or ask for a specific port name
-E(home.network)
-  .bind('/ibc-port/my-cool-port-name')
+  .getPortAllocator()
+  .then(portAllocator => E(portAllocator).allocateCustomIBCPort())
   .then(port => usePort(port));
 ```
 
@@ -153,12 +169,10 @@ Note that if you want to listen on this port again, you can just call `port.addL
 
 ### Closing the Port Entirely
 
-Removing a listener doesn't release the port address to make it available for other `bind()` requests. You can call:
+Removing a listener doesn't release the port address to make it available for other `PortAllocator` requests. You can call:
 
 ```js
 port.revoke();
 ```
 
 to completely deallocate the port, remove all listeners, close all pending connections, and release its address.
-
-**CAUTION:** Be aware that if you call `E(home.ibcport[0]).revoke()`, it will be useless for new `connect()` or `addListener()` attempts. You will need to provision a new Agoric client to obtain a new setup with a functioning `home.ibcport[0]`.

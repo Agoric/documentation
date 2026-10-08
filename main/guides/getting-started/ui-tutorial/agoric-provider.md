@@ -14,7 +14,7 @@ This makes it easy to handle all the platform-specific implementation details, s
 Install the following dependencies:
 
 ```
-yarn add -D @agoric/react-components@0.2.0 cosmos-kit@2.8.5 @interchain-ui/react@1.22.11
+yarn add -D @agoric/react-components@0.2.0 cosmos-kit@2.8.5 @interchain-ui/react@1.23.11
 ```
 
 The `cosmos-kit` dependency is used to provide different wallets in the wallet connection modal.
@@ -52,13 +52,13 @@ function App() {
             {
               testChain: {
                 chainId: 'agoriclocal',
-                chainName: 'agoric-local'
+                chainName: 'agoric-local',
               },
               apis: {
                 rest: ['http://localhost:1317'],
-                rpc: ['http://localhost:26657']
-              }
-            }
+                rpc: ['http://localhost:26657'],
+              },
+            },
           ]}
           defaultChainName="agoric-local"
         >

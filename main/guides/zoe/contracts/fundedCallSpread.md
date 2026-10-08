@@ -1,8 +1,6 @@
 # Funded Call Spread Contract
 
-<Zoe-Version/>
-
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/callSpread/fundedCallSpread.js) (Last updated: Feb 20, 2022)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/callSpread/fundedCallSpread.js)
 
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
@@ -95,5 +93,5 @@ neither waits for the other to exercise.
 <<< @/../snippets/zoe/contracts/test-callSpread.js#bobExercise
 
 There is a
-[unit test](https://github.com/Agoric/agoric-sdk/blob/0b44d486390768fbf828e64ce52c99192f67ada0/packages/zoe/test/unitTests/contracts/test-callSpread.js#L440)
+[unit test](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/test/unitTests/contracts/callSpread.test.js#L465)
 showing how you could offer these options for sale using the SimpleExchange contract.

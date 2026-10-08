@@ -1,6 +1,6 @@
-# Deploying a Smart Contact
+# Deploying a Smart Contract
 
-In the `dapp-offer-up` tutorial you just went through you saw how quick and easy it was to deploy a contact on Agoric using the `yarn start:contract` command. Let's take a look at how this command works and what's going on behind the scenes.
+In the `dapp-offer-up` tutorial you just went through you saw how quick and easy it was to deploy a contract on Agoric using the `yarn start:contract` command. Let's take a look at how this command works and what's going on behind the scenes.
 
 ## How it Works
 

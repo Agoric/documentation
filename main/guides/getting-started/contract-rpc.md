@@ -34,7 +34,7 @@ agd tx swingset wallet-action --allow-spend "$ACTION" \
 Another is using a wallet signing UI such as Keplr via the [Keplr API](https://docs.keplr.app/api/).
 
 Given sufficient care with key management, a [cosmjs SigningStargateClient](https://cosmos.github.io/cosmjs/latest/stargate/classes/SigningStargateClient.html) or any other client that can deliver a [agoric.swingset.MsgWalletSpendAction](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/golang/cosmos/proto/agoric/swingset/msgs.proto#L70) to a
-[Cosmos SDK endpoint](https://docs.cosmos.network/main/core/grpc_rest) works.
+[Cosmos SDK endpoint](https://docs.cosmos.network/sdk/latest/learn/concepts/cli-grpc-rest) works.
 
 ```proto
 message MsgWalletSpendAction {
@@ -388,7 +388,7 @@ import('./offers.js').OfferSpec & {
 ## VBank Assets and Cosmos Bank Balances
 
 Note that balances of assets such as **IST** and **BLD** are already
-available via consensus layer queries to the Cosmos SDK [bank module](https://docs.cosmos.network/main/modules/bank).
+available via consensus layer queries to the Cosmos SDK [bank module](https://docs.cosmos.network/sdk/latest/modules/bank/README).
 
 ```sh
 $ agd query bank balances agoric1h4d3mdvyqhy2vnw2shq4pm5duz5u8wa33jy6cl -o json | jq .balances

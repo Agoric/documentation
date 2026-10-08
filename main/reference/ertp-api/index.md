@@ -10,11 +10,13 @@ The ERTP API supports the following objects:
 | [Purse](./purse)     | Holds digital assets.                                                |
 | [Payment](./payment) | Holds digital assets that are in transit.                            |
 
-The ETRP API uses the following library:
+The ERTP API uses the following library:
 
-| Object                      | Description                                                                                                                        |
-| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| [AmountMath](./amount-math) | The **AmountMath** object has several methods which can be used to manipulate and analyze **[Amounts](./ertp-data-types#amount)**. |
+| Object                                             | Description                                                                                                                        |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| [AmountMath](./amount-math)                        | The **AmountMath** object has several methods which can be used to manipulate and analyze **[Amounts](./ertp-data-types#amount)**. |
+| [Durable Issuers](./durable-issuers)               | How contracts create an **Issuer** that survives vat upgrade.                                                                      |
+| [Legacy Payment Helpers](./legacy-payment-helpers) | Deprecated standalone replacements for the removed `Issuer` methods `claim`, `combine`, `split`, and `splitMany`.                  |
 
 The ERTP API introduces and uses the following data types:
 

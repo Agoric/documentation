@@ -30,7 +30,7 @@ The following definitions create shapes for validating the structure of `amount`
 ```js
 const SingleAmountRecord = M.and(
   M.recordOf(M.string(), AmountShape, { numPropertiesLimit: 1 }),
-  M.not(harden({}))
+  M.not(harden({})),
 );
 
 const OrchestrationPowersShape = M.splitRecord({
@@ -38,7 +38,7 @@ const OrchestrationPowersShape = M.splitRecord({
   orchestrationService: M.remotable('orchestrationService'),
   storageNode: M.remotable('storageNode'),
   timerService: M.remotable('timerService'),
-  agoricNames: M.remotable('agoricNames')
+  agoricNames: M.remotable('agoricNames'),
 });
 ```
 
@@ -51,7 +51,7 @@ const contract = async (
   zcf,
   privateArgs,
   zone,
-  { orchestrateAll, zoeTools, chainHub }
+  { orchestrateAll, zoeTools, chainHub },
 ) => {
   // ... (contract logic)
 };
@@ -67,7 +67,7 @@ for (const [name, info] of entries(chainDetails)) {
   const { connections = {} } = info;
   trace('register', name, {
     chainId: info.chainId,
-    connections: keys(connections)
+    connections: keys(connections),
   });
   chainHub.registerChain(name, info);
   for (const [chainId, connInfo] of entries(connections)) {
@@ -82,7 +82,7 @@ for (const [name, info] of entries(chainDetails)) {
 
 ```js
 const { makeAccount, makeCreateAndFund } = orchestrateAll(flows, {
-  localTransfer: zoeTools.localTransfer
+  localTransfer: zoeTools.localTransfer,
 });
 ```
 
@@ -94,7 +94,7 @@ const publicFacet = zone.exo(
   'Orca Public Facet',
   M.interface('Orca PF', {
     makeAccountInvitation: M.callWhen().returns(InvitationShape),
-    makeCreateAndFundInvitation: M.callWhen().returns(InvitationShape)
+    makeCreateAndFundInvitation: M.callWhen().returns(InvitationShape),
   }),
   {
     makeAccountInvitation() {
@@ -105,10 +105,10 @@ const publicFacet = zone.exo(
         makeCreateAndFund,
         'Make an Orchestration Account and Fund it',
         undefined,
-        M.splitRecord({ give: SingleAmountRecord })
+        M.splitRecord({ give: SingleAmountRecord }),
       );
-    }
-  }
+    },
+  },
 );
 ```
 
@@ -182,7 +182,7 @@ const { give } = seat.getProposal();
 const [[_kw, amt]] = Object.entries(give);
 const [agoric, chain] = await Promise.all([
   orch.getChain('agoric'),
-  orch.getChain(chainName)
+  orch.getChain(chainName),
 ]);
 const localAccount = await agoric.makeAccount();
 const remoteAccount = await chain.makeAccount();
@@ -191,9 +191,9 @@ await localTransfer(seat, localAccount, give);
 await localAccount.transfer(
   {
     denom: 'ubld',
-    value: amt.value / 2n
+    value: amt.value / 2n,
   },
-  remoteAddress
+  remoteAddress,
 );
 seat.exit();
 return remoteAccount.asContinuingOffer();

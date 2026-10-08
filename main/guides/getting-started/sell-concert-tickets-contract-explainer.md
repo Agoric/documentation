@@ -23,16 +23,16 @@ Let us first consider an `inventory` object, which holds essential information a
 const inventory = {
   frontRow: {
     tradePrice: AmountMath.make(istBrand, 3n),
-    maxTickets: 3n
+    maxTickets: 3n,
   },
   middleRow: {
     tradePrice: AmountMath.make(istBrand, 2n),
-    maxTickets: 5n
+    maxTickets: 5n,
   },
   backRow: {
-    tradePrice: AmountMath.make(istBrand, n),
-    maxTickets: n
-  }
+    tradePrice: AmountMath.make(istBrand, 1n),
+    maxTickets: 10n,
+  },
 };
 ```
 
@@ -67,14 +67,14 @@ Take a look at [brand](/glossary/#brand), [AmountKeywordRecord](/reference/zoe-a
 const inventoryBag = makeCopyBag(
   Object.entries(inventory).map(([ticket, { maxTickets }], _i) => [
     ticket,
-    maxTickets
-  ])
+    maxTickets,
+  ]),
 );
 const toMint = {
   Tickets: {
     brand: ticketBrand,
-    value: inventoryBag
-  }
+    value: inventoryBag,
+  },
 };
 const inventorySeat = ticketMint.mintGains(toMint);
 ```
@@ -105,7 +105,7 @@ const tradeHandler = buyerSeat => {
 const proposalShape = harden({
   give: { Price: AmountShape },
   want: { Tickets: { brand: ticketBrand, value: M.bag() } },
-  exit: M.any()
+  exit: M.any(),
 });
 ```
 
@@ -140,8 +140,8 @@ atomicRearrange(
     // price from buyer to proceeds
     [buyerSeat, proceeds, { Price: totalPrice }],
     // tickets from inventory to buyer
-    [inventorySeat, buyerSeat, want]
-  ])
+    [inventorySeat, buyerSeat, want],
+  ]),
 );
 ```
 

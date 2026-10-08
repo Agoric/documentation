@@ -1,8 +1,6 @@
 # Mint and Sell NFTs Contract
 
-<Zoe-Version/>
-
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/mintAndSellNFT.js) (Last updated: Jan 31, 2022)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/mintAndSellNFT.js)
 
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
@@ -17,12 +15,12 @@ specification of what is being sold, such as:
   customValueProperties: { ...arbitrary },
   count: 3,
   moneyIssuer: moolaIssuer,
-  sellItemsInstallationHandle,
+  sellItemsInstallation,
   pricePerItem: AmountMath.make(moolaBrand, 20n),
 }
 ```
 
 The `offerResult` is a record with useful properties such as the
 `creatorFacet` for the sales contract. You can reuse the
-`creatorFacet` of this contract to mint more batches of NFTs (e.g.
-more tickets for a separate show.)
+`creatorFacet` of this contract to mint more batches of NFTs, for
+example more tickets for a separate show.

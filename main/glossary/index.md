@@ -104,6 +104,19 @@ For more information, see the [ERTP documentation's AmountValue section](/guides
 [Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain
 digital assets in the quantity specified by an [amount](#amount).
 
+## Async Flow
+
+`@agoric/async-flow` lets an `async function` itself, not just an individual
+awaited value, survive its hosting vat's upgrade. A prepared guest function's
+first invocation runs it directly; on later replay (after an upgrade that
+interrupted it mid-flight) the function's arguments, awaited results, and
+console output are replayed from a durable log rather than re-executed, so it
+picks up exactly where it left off. See the
+[Async Flow guide](/guides/orchestration/async-flow) for a worked example, and
+[Vows and Durable Eventual-Send](/guides/js-programming/eventual-send#vows-and-durable-eventual-send),
+which async-flow is built on, and the
+[async-flow README](https://github.com/Agoric/agoric-sdk/tree/master/packages/async-flow).
+
 ## Baggage
 
 `baggage` is a `MapStore` that provides a way to preserve state and behavior of objects between [smart contract upgrades](/guides/zoe/contract-upgrade) in a way that preserves identity of objects as seen from other [vats](#vat).
@@ -143,7 +156,7 @@ Before a contract can be installed on Zoe, its source code must be bundled. This
 ```js
 import bundleSource from '@endo/bundle-source';
 const atomicSwapBundle = await bundleSource(
-  require.resolve('@agoric/zoe/src/contracts/atomicSwap')
+  require.resolve('@agoric/zoe/src/contracts/atomicSwap'),
 );
 ```
 
@@ -204,6 +217,20 @@ in which each key is a string and each value is [passable](#passable), such as
 For more information, see the
 [Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far#marshaling-by-copy-or-by-presence).
 
+## Crank
+
+A crank is the kernel's transactional unit of work: one message delivery or promise-resolution
+notification given to a single vat. Whatever state changes the vat makes during a crank, and
+whatever messages it sends out, commit or roll back together with it; a
+[message embargo](#message-embargo) holds those outbound messages back until the crank has been
+durably committed, which is what keeps a [hangover inconsistency](#hangover-inconsistency) from
+ever reaching the outside world. A contract's first crank must define all its [Exo](#exo) classes
+and kits before handling any incoming method call from another vat; see
+[Crank in the Contract Upgrade guide](/guides/zoe/contract-upgrade#crank).
+
+For more information, see
+[Cranks in the SwingSet run-policy docs](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/run-policy.md#cranks).
+
 ## Creator Invitation
 
 An [invitation](#invitation) optionally returned by [`E(zoe).startInstance(...)`](/reference/zoe-api/zoe#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs) that the contract instance
@@ -219,6 +246,17 @@ appropriately branded assets to the purse, but cannot withdraw assets from the p
 
 Dynamic version of the [Inter-Blockchain Communication](#ibc) protocol.
 For more details, see the [agoric-sdk `network` package](https://github.com/Agoric/agoric-sdk/tree/master/packages/network).
+
+## Durable
+
+A [Zone](#zone)'s durable regime: [Exo](#exo) instances and stores allocated
+in a durable zone survive not just paging to disk (as [virtual](#virtual)
+instances do) but also a [vat](#vat) upgrade, becoming addressable again from
+[baggage](#baggage) in the successor incarnation. Durable state is the
+mechanism behind [Orthogonal Persistence](#orthogonal-persistence) at the
+application level. See
+[Zones and Persistence](/guides/js-programming/zones) for the full
+heap/virtual/durable picture.
 
 ## E()
 
@@ -290,6 +328,10 @@ This [`@endo/exo` package](https://github.com/endojs/endo/tree/master/packages/e
 the APIs for making Exo objects, and for defining ExoClasses and ExoClassKits for making Exo
 objects.
 
+See [Exo Objects and Interface Guards](/guides/js-programming/exo) for a full
+guide, including [InterfaceGuard](#interfaceguard)s and the heap/virtual/durable
+[Zone](#zone) regimes an Exo class can be allocated in.
+
 ## Facet
 
 A _facet_ is an object that exposes an API or particular view of some larger entity, which may be an object itself.
@@ -298,7 +340,7 @@ You can make any number of facets of an entity. In JavaScript, you often make a 
 ```js
 import { Far } from '@endo/far';
 const facet = Far('FacetName', {
-  myMethod: (...args) => oldObject.method(...args)
+  myMethod: (...args) => oldObject.method(...args),
 });
 ```
 
@@ -321,11 +363,33 @@ is meaningful, so handles do not have properties. Unlike number or string identi
 handles are unforgeable. This means the only way to know a handle identity is being given
 an object reference, and no identity can be guessed and no fake identity will succeed.
 
+## Hangover Inconsistency
+
+The failure mode where a system has durably committed to having told the outside world
+something (sent a message, released a payment) that its own, truer state then contradicts,
+typically because a crash or reboot rewound it to an earlier checkpoint after the outbound
+message had already gone out. SwingSet avoids it, following the lead of the Waterken and E
+systems, with a [message embargo](#message-embargo): output is held back until the
+[crank](#crank) that produced it has been durably committed, so a rewind can never leave a
+stale message already delivered.
+
+For more information, see
+[the SwingSet host-app docs](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/host-app.md).
+
 ## Harden
 
 A hardened object’s properties cannot be changed, so the only way to interact with a hardened object is through its methods.
 `harden()` is similar to `Object.freeze()` but more powerful. For more about `harden()`, see
 its [section in the JavaScript Distributed Programming Guide](https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.md)
+
+## Heap
+
+A [Zone](#zone)'s default regime: [Exo](#exo) instances and stores allocated
+in a heap zone live as ordinary JavaScript objects, occupying room in the
+vat's heap and its snapshot, and are lost when the vat terminates (including
+a normal upgrade). Appropriate for low-cardinality, short-lived state; see
+[virtual](#virtual) and [durable](#durable) for the alternatives, and
+[Zones and Persistence](/guides/js-programming/zones) for the full picture.
 
 ## Hardened JavaScript (SES)
 
@@ -344,6 +408,18 @@ For more details, see [What developers need to know about inter-blockchain commu
 ## Interchain Account (ICA)
 
 Interchain Accounts are an [IBC](#ibc) feature used in Agoric's [Orchestration API](#orchestration) to enable an Agoric smart contract to control an account on another blockchain within the Cosmos ecosystem. This feature leverages the [Inter-Blockchain Communication (IBC)](#ibc) protocol to facilitate interactions and transactions across different blockchains seamlessly.
+
+## InterfaceGuard
+
+An InterfaceGuard, built with `M.interface(...)` from
+[`@endo/patterns`](https://github.com/endojs/endo/tree/master/packages/patterns),
+declares the argument and return shape of each method on an [Exo](#exo)
+object, so that calls are validated automatically at the boundary before the
+method body runs. `M.call(...)` describes a synchronous method,
+`M.callWhen(...)` describes an async method whose promise or
+[Vow](#vow) arguments should be awaited and validated before the resolved
+values reach the method. See
+[Exo Objects and Interface Guards](/guides/js-programming/exo).
 
 ## Invitation
 
@@ -403,6 +479,19 @@ Keys can be used as elements of CopySets and CopyBags and as keys of CopyMaps (s
 A _Keyword_ is a string that is an ASCII-only [identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier),
 starts with an upper case letter, and is not equal to "NaN" or "Infinity".
 See **[Zoe Data Types](/reference/zoe-api/zoe-data-types#keyword)**.
+
+## Message Embargo
+
+The discipline of holding all outbound communication (device output, messages to other
+machines) until every consequence of the inbound delivery that produced it has been durably
+committed to storage. Embargoed output is exactly what protects against
+[hangover inconsistency](#hangover-inconsistency): if the [crank](#crank) is rolled back before
+commit, the embargoed messages are simply discarded rather than having to be un-sent.
+
+For more information, see
+[the SwingSet host-app docs](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/host-app.md)
+and
+[the VatTP mailbox device docs](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/devices.md).
 
 ## Mint
 
@@ -563,13 +652,24 @@ For example:
 const myProposal = harden({
   give: { Asset: AmountMath.make(quatloosBrand, 4n) },
   want: { Price: AmountMath.make(moolaBrand, 15n) },
-  exit: { onDemand: null }
+  exit: { onDemand: null },
 });
 ```
 
 `give` and `want` each associate [Keywords](#keyword) defined by the contract with corresponding [Amounts](#amount) describing respectively what will be given and what is being requested in exchange.
 
 See [Offers](/guides/zoe/proposal).
+
+## PublishKit
+
+The current recommended pub-sub primitive, made with `makePublishKit()` from
+[`@agoric/notifier`](https://github.com/Agoric/agoric-sdk/tree/master/packages/notifier),
+returning a `{ publisher, subscriber }` pair. Unlike the deprecated
+`NotifierKit` (always lossy) and `SubscriptionKit` (always lossless), a
+single `subscriber` supports both `subscribeEach` (forward-lossless) and
+`subscribeLatest` (lossy) consumption. A **Durable PublishKit**, made with
+`prepareDurablePublishKit(baggage, kindName)`, additionally survives a vat
+upgrade. See [Notifiers, Subscriptions, and PublishKit](/guides/js-programming/notifiers).
 
 ## Purse
 
@@ -588,6 +688,17 @@ episode [The Gamesters of Triskelion](https://en.wikipedia.org/wiki/The_Gamester
 
 A transfer of [amounts](#amount) between [seats](#seat) within Zoe; i.e. a change in their [allocations](#allocation). When a seat exits, it gets its
 current allocation as a [payout](#payout).
+
+## Remotable
+
+An object created by [`Far()`](#far) or an [Exo](#exo)-making function
+(`makeExo`, `defineExoClass`, `defineExoClassKit`, or their virtual/durable
+counterparts). A Remotable is [passable](#passable): it crosses a
+[marshal](/guides/js-programming/far#marshaling-by-copy-or-by-presence)
+boundary as a capability reference (a [presence](#presence) on the far side)
+rather than being copied, and any vat holding a reference to one can invoke
+its methods with [`E()`](#e). `getInterfaceOf(x)` returns a Remotable's
+interface name; `passStyleOf(x)` reports `"remotable"` for one.
 
 ## Seat
 
@@ -620,6 +731,18 @@ Secure ECMAScript has been renamed to [Hardened JavaScript](#hardened-javascript
 
 An imaginary currency Agoric documentation uses in examples.
 
+## Smallcaps
+
+The current [marshal](https://github.com/endojs/endo/tree/master/packages/marshal)
+wire encoding for [Passable](#passable) data, superseding the older `capdata`
+`@qclass`-tagged encoding. Smallcaps represents non-JSON-native values
+(`BigInt`s, `undefined`, [Remotables](#remotable), promises, symbols) as
+specially prefixed strings (for example, a leading `$` marks a remotable
+slot reference, `+`/`-` mark a bigint) so the overall structure remains
+plain, round-trippable JSON. Application code never encodes or decodes
+smallcaps directly; it's produced and consumed by `@endo/marshal`'s
+`toCapData`/`fromCapData` on your behalf.
+
 ## Smart Contract
 
 A smart contract is a contract-​like arrangement expressed in code, where the behavior of the
@@ -639,6 +762,20 @@ it set at $10. They can specify the instance's minimum bid amount in its terms.
 
 For example, see [starting the offer-up contract](/guides/zoe/contract-walkthru.html#starting-a-contract-instance).
 
+## Turn
+
+A turn is the synchronous processing of one pending delivery: a return to an empty call stack.
+A [vat](#vat)'s state evolves only through a sequence of turns, each running to completion with
+exclusive access to that state before the next one begins, so a turn is atomic and
+indivisible from every other vat's point of view. A [crank](#crank) is the coarser-grained
+unit built from turns: the kernel's return to an empty event queue, encompassing however many
+turns the vat needs to settle all the synchronous and locally-queued work that one delivery
+provokes, before the crank as a whole can commit.
+
+For more information, see
+[Vats: the Unit of Synchrony](/guides/js-programming/#vats-the-unit-of-synchrony) and
+["Turns as Micro-Transactions"](https://erights.github.io/erights-org-website/elib/concurrency/turns.html).
+
 ## Vat
 
 A vat is a unit of isolation.
@@ -649,9 +786,42 @@ For more information, see the [Vat section in the Distributed JS Programming doc
 
 The concept of a vat is metaphorically inspired by the philosophical experiment known as “Brain in a Vat.” This thought experiment, explored in philosophy, posits a scenario in which a brain is sustained in a vat and connected to a computer that simulates reality, raising questions about knowledge, reality, and perception. Similarly, in the context of distributed systems, a vat isolates and encapsulates its contents, maintaining strict boundaries on synchronous and asynchronous communication, much like the hypothetical brain’s isolated and controlled environment. For more details, see the Wikipedia page on [Brain in a Vat](https://en.wikipedia.org/wiki/Brain_in_a_vat).
 
+## Virtual
+
+A [Zone](#zone)'s virtual regime: like [heap](#heap), [Exo](#exo) instances
+and stores allocated in a virtual zone are lost when the vat terminates, but
+unlike heap allocation, they're paged out to external storage rather than
+kept in the JS heap, so a vat can hold far more virtual instances at once
+than would fit in memory (high cardinality). Virtual addresses memory
+pressure only; for state that must also survive a vat upgrade, use
+[durable](#durable).
+
 ## Vow
 
-Vows are objects that represent promises that can be stored durably. Native promises are not compatible with Agoric's durable stores, which means that on the Agoric platform, such promises disconnect their clients when their creator vat is upgraded.
+Vows are objects (from
+[`@agoric/vow`](https://github.com/Agoric/agoric-sdk/tree/master/packages/vow))
+that represent promises that can be stored durably. Native promises are not
+compatible with Agoric's durable stores, which means that on the Agoric
+platform, such promises disconnect their clients when their creator vat is
+upgraded.
+
+`prepareVowTools(zone)` returns the operators for working with Vows, bound to
+a particular [zone](#zone)'s storage:
+
+- **`when(vowOrPromise)`** returns a promise for a Vow's eventual settlement,
+  retrying automatically across a disconnection caused by an upgrade of some
+  other vat, though it cannot itself survive an upgrade of its own calling
+  vat.
+- **`watch(vowOrPromise, watcher, context)`** subscribes a durable watcher to
+  a Vow such that the subscription survives an upgrade of both the producing
+  and the consuming vat, since the watcher and its resumption state live in
+  baggage rather than a closure.
+- **`watchPromise(promise, watcher, ...args)`** (from `@agoric/base-zone`) is
+  the equivalent durable subscription for an ordinary, non-Vow promise.
+
+See [Vows and Durable Eventual-Send](/guides/js-programming/eventual-send#vows-and-durable-eventual-send)
+for the full picture, and [Async Flow](#async-flow) for the companion
+mechanism covering entire `async function` bodies.
 
 ## Wallet
 
@@ -683,6 +853,7 @@ A set of API methods for deploying and working with smart contracts. See [Zoe Se
 
 ## Zone
 
-Each Zone provides an API that allows the allocation of [Exo objects](#exo) and [Stores (object collections)](https://github.com/Agoric/agoric-sdk/tree/master/packages/store/README.md) which use the same underlying persistence mechanism. This allows library code to be agnostic to whether its objects are backed purely by the JS heap (ephemeral), pageable out to disk (virtual) or can be revived after a vat upgrade (durable).
+Each Zone provides an API that allows the allocation of [Exo objects](#exo) and [Stores (object collections)](https://github.com/Agoric/agoric-sdk/blob/master/packages/store/README.md) which use the same underlying persistence mechanism. This allows library code to be agnostic to whether its objects are backed purely by the JS heap ([heap](#heap)), pageable out to disk ([virtual](#virtual)) or can be revived after a vat upgrade ([durable](#durable)).
 
-See [SwingSet vat upgrade documentation](https://github.com/Agoric/agoric-sdk/tree/master/packages/SwingSet/docs/vat-upgrade.md) for more example use of the zone API.
+See [Zones and Persistence](/guides/js-programming/zones) for a full guide, and the
+[SwingSet vat upgrade documentation](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/vat-upgrade.md) for more example use of the zone API.

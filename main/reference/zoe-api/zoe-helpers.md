@@ -11,7 +11,7 @@ following imports the two ZoeHelper functions **[assertIssuerKeywords()](#assert
 ```js
 import {
   assertIssuerKeywords,
-  assertProposalShape
+  assertProposalShape,
 } from '@agoric/zoe/src/contractSupport/index.js';
 ```
 
@@ -20,6 +20,9 @@ import {
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet)**
 - **transfers**: **Array&lt;[TransferPart](./zoe-data-types#transferpart)>**
 - Returns: None.
+
+**Deprecated**: use **[zcf.atomicRearrange()](./zoe-contract-facet#zcf-atomicrearrange-transfers)**
+directly instead of this helper.
 
 Asks Zoe to rearrange the **[Allocations](./zoe-data-types#allocation)** among the seats mentioned in
 _transfers_. _transfers_ are a set of changes to **Allocations** that must satisfy several
@@ -105,10 +108,10 @@ assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet)**
 - **seat**: **[ZCFSeat](./zcfseat)**
 - **update**: **[AmountKeywordRecord](./zoe-data-types#keywordrecord)**
-- Returns: **Boolean**
+- Returns: **0 | 1**
 
-Returns **true** if an update to a **seat**'s **currentAllocation** satisfies its
-**proposal.want**. Note this is half of the offer safety check;
+Returns **1** if an update to a **seat**'s **currentAllocation** satisfies its
+**proposal.want**, and **0** otherwise. Note this is half of the offer safety check;
 it does not check if the **[Allocation](./zoe-data-types#allocation)** constitutes a refund.
 The update is merged with **currentAllocation** such that
 _update_'s values prevail if the **[Keywords](./zoe-data-types#keyword)** are the same. If they
@@ -232,7 +235,7 @@ import { assertProposalShape } from '@agoric/zoe/src/contractSupport/index.js';
 
 const sellAssetForPrice = harden({
   give: { Asset: null },
-  want: { Price: null }
+  want: { Price: null },
 });
 const sell = seat => {
   assertProposalShape(seat, sellAssetForPrice);
@@ -282,7 +285,7 @@ await depositToSeat(
   zcf,
   zcfSeat,
   { Dep: quatloos(2n) },
-  { Dep: quatloosPayment }
+  { Dep: quatloosPayment },
 );
 ```
 
@@ -305,7 +308,7 @@ Unlike **depositToSeat()**, a **PaymentPKeywordRecord** is returned, not a succe
 import { withdrawFromSeat } from '@agoric/zoe/src/contractSupport/index.js';
 
 const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, {
-  With: quatloos(2n)
+  With: quatloos(2n),
 });
 ```
 
@@ -362,7 +365,7 @@ from the contracts indicated by using "A" or "B" in the **Keyword** name.
 // Map the keywords in contractA to the keywords in contractB
 const keywordMapping = harden({
   TokenA1: 'TokenB1',
-  TokenA2: 'TokenB2'
+  TokenA2: 'TokenB2',
 });
 ```
 
@@ -392,7 +395,7 @@ const { userSeatPromise: AMMUserSeat, deposited } = zcf.offerTo(
   keywordMapping, // {}
   proposal,
   fromSeat,
-  lenderSeat
+  lenderSeat,
 );
 ```
 

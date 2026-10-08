@@ -1,12 +1,8 @@
-# NOT CURRENTLY INCLUDED IN THE PUBLISHED DOCS; PLEASE IGNORE
-
 # MutableQuote Object
 
-Use a **MutableQuote** when you expect to make multiple calls, replacing the trigger
-value. If you just need a single quote, and won't change the trigger level, then use
-a non-mutable quote.
-
-There are four _mutable quote_ methods, which return a **MutableQuote** object with the methods:
+A **[MutableQuote](./zoe-data-types#mutablequote)** is what the
+**[E(PriceAuthority).mutableQuoteWhen\*()](./price-authority#e-priceauthority-mutablequotewhengt-amountin-amountoutlimit)**
+methods resolve to. It has the following methods:
 
 ## aMutableQuote.cancel(e)
 

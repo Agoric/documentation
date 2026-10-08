@@ -10,6 +10,60 @@ The last 10 minutes are Q&A._
 </ClientOnly>
 :::
 
+## Locking Down the Realm: `lockdown()`
+
+Before any of the techniques below take effect, a program must call `lockdown()`
+once, as early as possible, typically at the very top of its entry point:
+
+<!-- excerpt: snippets/js-programming/lockdown-basic.js#lockdownBasic -->
+
+```js
+import 'ses';
+
+lockdown();
+```
+
+Importing `ses` installs the `lockdown`, `harden`, and `Compartment` globals.
+Calling `lockdown()` tamper-proofs the JavaScript intrinsics (`Object.prototype`,
+`Array.prototype`, and so on) so that no program sharing the realm can subvert
+them, and makes `harden()` (below) meaningful: hardening an object only
+guarantees safety once the intrinsics it depends on are themselves frozen.
+
+`lockdown()` takes an optional options object to tune its defaults. The most
+commonly adjusted options are:
+
+- `errorTaming` (`'safe'` default): whether `errorInstance.stack` is
+  accessible. `'unsafe'` restores unrestricted access, useful when debugging
+  locally.
+- `stackFiltering` (`'concise'` default): how much of a deep, cross-vat stack
+  trace is shown. `'verbose'` shows everything.
+- `overrideTaming` (`'moderate'` default): how aggressively lockdown defends
+  against the "override mistake" for legacy code that assigns to inherited
+  properties. `'min'` is best for code written from scratch as Hardened
+  JavaScript.
+- `domainTaming` (`'safe'` default): whether Node.js's legacy `domain` module
+  may be used. Most projects never need `'unsafe'`.
+- `consoleTaming` (`'safe'` default): whether to wrap the global `console` to
+  show deep stacks across turns.
+
+<!-- excerpt: snippets/js-programming/lockdown-options.js#lockdownOptions -->
+
+```js
+import 'ses';
+
+lockdown({
+  errorTaming: 'unsafe-debug',
+  overrideTaming: 'min',
+});
+```
+
+See the [`lockdown` options reference](https://github.com/endojs/endo/blob/HEAD/docs/lockdown.md)
+for the complete list and their tradeoffs. The defaults are deliberately
+conservative and work for most projects unmodified; Agoric's own vat
+infrastructure calls `lockdown()` for you, so contract and dapp code
+typically never calls it directly, but understanding what it does is
+necessary to understand everything that follows on this page.
+
 ## Example Hardened JavaScript Code
 
 The example below demonstrates several features of Hardened JavaScript.
@@ -112,22 +166,29 @@ This `eslint` configuration provides tool support.
 :::
 
 1. If working from an empty directory, a package.json file must first be created by running `yarn init` or `yarn init -y`.
-2. From there, we can install eslint into our project along with the jessie.js eslint-plugin by running `yarn add eslint @jessie.js/eslint-plugin`.
-3. The final step is to set up our project's eslint configuration inside of the package.json file by adding the following code block.
+2. From there, we can install eslint into our project along with the jessie.js eslint-plugin by running `yarn add -D eslint @jessie.js/eslint-plugin`.
+3. The final step is to set up an `eslint.config.js` file (eslint's [flat config](https://eslint.org/docs/latest/use/configure/configuration-files) format) at the root of the project.
 
-```json
-"eslintConfig" : {
-  "parserOptions": {
-      "sourceType": "module",
-      "ecmaVersion": 6
+<!-- excerpt-exempt:  eslint configuration for a downstream project. It cannot run here, because @jessie.js/eslint-plugin is deliberately not a dependency of this documentation repository. -->
+
+```js
+// eslint.config.js
+import { defineConfig } from 'eslint/config';
+import jessie from '@jessie.js/eslint-plugin';
+
+export default defineConfig([
+  {
+    files: ['*.js', '**/*.js'],
+    plugins: {
+      '@jessie.js': jessie,
+    },
+    extends: ['@jessie.js/recommended'],
+    processor: '@jessie.js/use-jessie',
   },
-  "extends": [
-    "plugin:@jessie.js/recommended"
-  ]
-}
+]);
 ```
 
-Now the contents of the package.json file should look similiar to the snippet below.
+Now the contents of the package.json file should look similar to the snippet below.
 
 ```json
 {
@@ -137,12 +198,8 @@ Now the contents of the package.json file should look similiar to the snippet be
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "@jessie.js/eslint-plugin": "^0.1.3",
-    "eslint": "^8.6.0"
-  },
-  "eslintConfig": {
-    "parserOptions": { "sourceType": "module", "ecmaVersion": 6 },
-    "extends": ["plugin:@jessie.js/recommended"]
+    "@jessie.js/eslint-plugin": "^0.4.3",
+    "eslint": "^9.11.0"
   }
 }
 ```
@@ -219,12 +276,12 @@ Now let's review the `makeCounter` example:
 Each call to `makeCounter` creates a new encapsulated `count` variable
 along with `incr` and `decr` functions. The `incr` and `decr` functions
 access the `count` variable from their lexical scope as usual
-in [JavaScript closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures).
+in [JavaScript closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures).
 
 To see how this works in detail, you may want to step through this
-[visualization of the code](https://pythontutor.com/live.html#code=const%20makeCounter%20%3D%20%28%29%20%3D%3E%20%7B%0A%20%20let%20count%20%3D%200%3B%0A%20%20const%20it%20%3D%20%7B%0A%20%20%20%20incr%3A%20%28%29%20%3D%3E%20%28count%20%2B%3D%201%29,%0A%20%20%20%20decr%3A%20%28%29%20%3D%3E%20%28count%20-%3D%201%29,%0A%20%20%7D%3B%0A%20%20return%20Object.freeze%28it%29%3B%0A%7D%3B%0A%0Aconst%20c1%20%3D%20makeCounter%28%29%3B%0A%0Aconst%20c2%20%3D%20makeCounter%28%29%3B%0Aconsole.log%28c2.incr%28%29%29%3B%0Aconsole.log%28%5Bc1.incr%28%29,%20c2.incr%28%29%5D%29%3B&cumulative=false&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-live.js&py=js&rawInputLstJSON=%5B%5D&textReferences=):
+[visualization of the code](https://pythontutor.com/visualize.html):
 
-[![makeCounter code animation](../assets/counter-animation.png)](https://pythontutor.com/live.html#code=const%20makeCounter%20%3D%20%28%29%20%3D%3E%20%7B%0A%20%20let%20count%20%3D%200%3B%0A%20%20const%20it%20%3D%20%7B%0A%20%20%20%20incr%3A%20%28%29%20%3D%3E%20%28count%20%2B%3D%201%29,%0A%20%20%20%20decr%3A%20%28%29%20%3D%3E%20%28count%20-%3D%201%29,%0A%20%20%7D%3B%0A%20%20return%20Object.freeze%28it%29%3B%0A%7D%3B%0A%0Aconst%20c1%20%3D%20makeCounter%28%29%3B%0A%0Aconst%20c2%20%3D%20makeCounter%28%29%3B%0Aconsole.log%28c2.incr%28%29%29%3B%0Aconsole.log%28%5Bc1.incr%28%29,%20c2.incr%28%29%5D%29%3B&cumulative=false&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-live.js&py=js&rawInputLstJSON=%5B%5D&textReferences=)
+[![makeCounter code animation](../assets/counter-animation.png)](https://pythontutor.com/visualize.html)
 
 ## Hardening JavaScript: Strict Mode
 
@@ -328,6 +385,8 @@ can help prevent certain classes of coding errors. We recommend this style rathe
 writing in TypeScript syntax to remind ourselves that the type annotations really
 are only for lint tools and do not have any effect at runtime:
 
+<!-- excerpt: snippets/js-programming/advisory-counter.js#advisoryCounter -->
+
 ```js
 // @ts-check
 
@@ -338,7 +397,7 @@ const makeCounter = init => {
     incr: () => {
       value += 1;
       return value;
-    }
+    },
   };
 };
 ```
@@ -347,7 +406,7 @@ If we're not careful, our clients can cause us to misbehave:
 
 ```
 > const evil = makeCounter('poison')
-> evil2.incr()
+> evil.incr()
 'poison1'
 ```
 
@@ -364,10 +423,12 @@ launch the missiles!
 
 To be defensively correct, we need runtime validation for any inputs that cross trust boundaries:
 
-```js
-import Nat from `@endo/nat`;
+<!-- excerpt: snippets/js-programming/defensive-counter.js#defensiveCounter -->
 
-/** @param {number | bignum} init */
+```js
+import { Nat } from '@endo/nat';
+
+/** @param {number | bigint} init */
 const makeCounter = init => {
   let value = Nat(init);
   return harden({
@@ -392,43 +453,21 @@ Careful study of this 8 minute presentation segment provides
 a firm foundation for writing smart contracts with Zoe.
 
 ::: tip Watch: The Mint Pattern
-8 minutes [starting at 25:25](https://youtube.com/watch?v=iyuo0ymTt4g&t=1525&list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG),
+8 minutes [starting at 25:25](https://www.youtube.com/watch?v=iyuo0ymTt4g&t=1525&list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG),
 in [Higher-order Smart Contracts across Chains](https://www.youtube.com/watch?v=iyuo0ymTt4g&list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG)
 
 [![image](https://user-images.githubusercontent.com/150986/129462162-4599c0f4-8519-4a04-a707-88ef6e6044d7.png)
-](https://youtube.com/watch?v=iyuo0ymTt4g&t=1525&list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG)
+](https://www.youtube.com/watch?v=iyuo0ymTt4g&t=1525&list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG)
 :::
 
-```js
-const makeMint = () => {
-  const ledger = makeWeakMap();
+<<< @/../snippets/test-hardened-js.js#makeMint
 
-  const issuer = harden({
-    makeEmptyPurse: () => mint.makePurse(0)
-  });
-
-  const mint = harden({
-    makePurse: initialBalance => {
-      const purse = harden({
-        getIssuer: () => issuer,
-        getBalance: () => ledger.get(purse),
-
-        deposit: (amount, src) => {
-          Nat(ledger.get(purse) + Nat(amount));
-          ledger.set(src, Nat(ledger.get(src) - amount));
-          ledger.set(purse, ledger.get(purse) + amount);
-        },
-        withdraw: amount => {
-          const newPurse = issuer.makeEmptyPurse();
-          newPurse.deposit(amount, purse);
-          return newPurse;
-        }
-      });
-      ledger.set(purse, initialBalance);
-      return purse;
-    }
-  });
-
-  return mint;
-};
-```
+This `makeMint` sketch keeps everything in the JavaScript heap, so it
+disappears the moment its vat restarts. A real contract needs its purses and
+mint state to survive a vat upgrade. That requires two things this page
+doesn't cover: guarding the object's methods with an
+[interface guard](./exo#interface-guards-with-m) instead of a bare `harden()`, and
+allocating its state in a [durable zone](./zones) instead of a plain closure
+variable. See [Exo Objects and Interface Guards](./exo) and
+[Zones and Persistence](./zones) for the modern, upgrade-safe versions of
+this same pattern; ERTP's actual `makeMint` uses both.

@@ -21,7 +21,7 @@ given _brandIn_/_brandOut_ pair.
 ```js
 const quoteIssuer = await E(PriceAuthority).getQuoteIssuer(
   collateralKit.brand,
-  loanKit.brand
+  loanKit.brand,
 );
 ```
 
@@ -37,7 +37,7 @@ given _brandIn_/_brandOut_ pair.
 ```js
 const myTimer = E(PriceAuthority).getTimerService(
   collateral.brand,
-  loanKit.brand
+  loanKit.brand,
 );
 ```
 
@@ -92,7 +92,7 @@ Resolves after _deadline_ passes on the **PriceAuthority**’s **timerService** 
 const priceQuoteOnThisAtTime = E(PriceAuthority).quoteAtTime(
   7n,
   quatloosAmount34,
-  usdBrand
+  usdBrand,
 );
 ```
 
@@ -107,7 +107,7 @@ Resolves when a **PriceQuote** of _amountIn_ exceeds _amountOutLimit_.
 ```js
 const quote = E(PriceAuthority).quoteWhenGT(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 
@@ -122,7 +122,7 @@ Resolves when a **PriceQuote** of _amountIn_ reaches or exceeds _amountOutLimit_
 ```js
 const quote = E(PriceAuthority).quoteWhenGTE(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 
@@ -137,7 +137,7 @@ Resolves when a **PriceQuote** of _amountIn_ drops below _amountOutLimit_.
 ```js
 const quote = E(PriceAuthority).quoteWhenLT(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 
@@ -152,7 +152,7 @@ Resolves when a **PriceQuote** of _amountIn_ reaches or drops below _amountOutLi
 ```js
 const quote = E(PriceAuthority).quoteWhenLTE(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 
@@ -167,7 +167,7 @@ Resolves when a **PriceQuote** of _amountIn_ exceeds _amountOutLimit_.
 ```js
 const quote = E(PriceAuthority).mutableQuoteWhenGT(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 
@@ -183,7 +183,7 @@ _amountOutLimit_.
 ```js
 const quote = E(PriceAuthority).mutableQuoteWhenGTE(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 
@@ -199,7 +199,7 @@ _amountOutLimit_.
 ```js
 const quote = E(PriceAuthority).mutableQuoteWhenLT(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 
@@ -215,41 +215,11 @@ _amountOutLimit_.
 ```js
 const quote = E(PriceAuthority).mutableQuoteWhenLTE(
   AmountMath.make(brands.In, 29n),
-  AmountMath.make(brands.Out, 974n)
+  AmountMath.make(brands.Out, 974n),
 );
 ```
 
-## MutableQuote
-
-A **MutableQuote** represents a statement from a **[PriceAuthority](./price-authority)** as to the
-current price level at a particular time. The significant content (prices
-and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types#amount)**, and repeated
-in the **[Payment](/reference/ertp-api/payment)** for veracity.
-
-**MutableQuotes** should be used when you expect to make multiple calls, replacing the trigger
-value. If you just need a single quote, and won't change the trigger level, you should use
-**PriceQuotes**.
-
-A **MutableQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current
-balance of the **Payment**.
-
-## PriceQuote
-
-A **PriceQuote** represents a statement from a **[PriceAuthority](./price-authority)** as to the
-current price level at a particular time. The significant content (prices
-and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types#amount)** and repeated
-in the **[Payment](/reference/ertp-api/payment)** for veracity.
-A **PriceQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current
-balance of the **Payment**.
-
-```js
-const { quoteAmount, quotePayment } = priceQuote;
-```
-
-**PriceQuotes** are returned in two forms:
-
-- **PriceDescription**
-  - Always includes **amountIn**, **amountOut**, the quote's **Timestamp**,
-    and the **TimerService** the **Timestamp** is relative to.
-- **PriceDescription** wrapped as a **QuoteAuthority** issued payment.
-  - This lets quotes be shared in a format letting others verify the time and values.
+See the **[PriceQuote](./zoe-data-types#pricequote)** and **[MutableQuote](./zoe-data-types#mutablequote)**
+data type entries for the shape of the values these methods return. The object a
+**mutableQuoteWhen\*()** call resolves to has its own **cancel()**, **getPromise()**, and
+**updateLevel()** methods, documented on the **[MutableQuote object](./mutable-quote)** page.

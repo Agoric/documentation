@@ -13,11 +13,11 @@ and may import other code, including:
   for testing whether something is a natural number (natural numbers
   are recommended for currency-related programming in order to avoid
   rounding issues) and throwing an error if not.
-- [@agoric/notifier](https://www.npmjs.com/package/@agoric/zoe): A package that provides updates through
+- [@agoric/notifier](https://www.npmjs.com/package/@agoric/notifier): A package that provides updates through
   smartly resolving promises rather than polling.
 - [@agoric/zoe](https://www.npmjs.com/package/@agoric/zoe): Zoe has
   helpers that contracts can use by importing
-  `@agoric/zoe/src/contractSupport/zoeHelpers.js`.
+  `@agoric/zoe/src/contractSupport/index.js`.
 
 A Zoe contract will be bundled up, so you should feel free to divide
 your contract into multiple files (perhaps putting helper functions in a
@@ -28,14 +28,23 @@ JavaScript code is incompatible with Hardened JavaScript, because Lockdown freez
 JavaScript objects you start out with (the primordials, such as `Object`), and some legacy code tries to
 mutate these.
 
-If you add this type annotation, TypeScript-aware tools
+If you add JSDoc type annotations, TypeScript-aware tools
 (IDEs like vsCode and WebStorm) will inform the developer about parameters
 and return values for your contract and `zcf` methods and warn about mismatches.
-Put it right before the start of your contract code.
+Current contracts import their types with an `@import` tag and annotate
+`start`'s parameters directly, rather than typing the whole function as a
+`ContractStartFn`:
 
 ```js
 /**
- * @type {ContractStartFn}
+ * @import {Baggage} from '@agoric/vat-data';
+ * @import {ZCF} from '@agoric/zoe';
+ */
+
+/**
+ * @param {ZCF} zcf
+ * @param {object} privateArgs
+ * @param {Baggage} baggage
  */
 ```
 
@@ -46,9 +55,12 @@ The second argument, `privateArgs`, is used by the caller of `startInstance`
 to pass in any arguments that should not be part of the public terms.
 `privateArgs` is an object with keys and values as decided by the caller of
 `startInstance`. If no private arguments are passed, `privateArgs` is undefined.
+The third argument, `baggage`, is a durable `MapStore` the kernel preserves
+across upgrades of the contract's vat; see [Durability](./contract-upgrade.md#durability)
+for how contracts use it to keep state and behavior between incarnations.
 
 ```js
-const start = (zcf, privateArgs) => {
+const start = (zcf, privateArgs, baggage) => {
   // ...
   // your code here
   return harden({ creatorFacet, creatorInvitation, publicFacet });
@@ -56,6 +68,11 @@ const start = (zcf, privateArgs) => {
 harden(start);
 export { start };
 ```
+
+A contract that wants to declare whether it supports upgrade also exports a
+`meta` record alongside `start`, with an `upgradability` field of `none`,
+`canUpgrade`, or `canBeUpgraded`. See [Upgradable Declaration](./contract-upgrade.md#upgradable-declaration)
+for details; a `prepare` export is no longer used for this purpose.
 
 The contract must return a record with any (or none) of the following:
 
@@ -89,7 +106,7 @@ Use `zcf.makeInvitation()` to create the first party's `invitation`:
 ```js
 const creatorInvitation = zcf.makeInvitation(
   makeMatchingInvitation,
-  'firstOffer'
+  'firstOffer',
 );
 ```
 
@@ -101,8 +118,8 @@ const matchingSeatInvitation = zcf.makeInvitation(
   'matchOffer',
   {
     asset: give.Asset,
-    price: want.Price
-  }
+    price: want.Price,
+  },
 );
 ```
 

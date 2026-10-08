@@ -17,10 +17,10 @@ the sections below.
 
 ## Vats: the Unit of Synchrony
 
-The Agoric framework uses the same [event loop concurrency model](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop) as web browsers and Node.js.
+The Agoric framework uses the same [event loop concurrency model](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Execution_model) as web browsers and Node.js.
 Each event loop has a message queue, a call stack of frames, and a heap of objects:
 
-![heap, stack, and queue](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_Loop/the_javascript_runtime_environment_example.svg)
+![heap, stack, and queue](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Execution_model/runtime-environment-diagram.svg)
 
 We refer to this combination of an event loop with a message queue, a stack, and a heap as a _vat_.
 
@@ -51,8 +51,32 @@ The framework includes:
   - Objects used across vats are called _remotables_.
     To mark an object for exporting from a vat, use the `Far()` function.
 
-- **[Notifiers and Subscriptions](./notifiers)**
-  - Notifiers and Subscriptions distribute state change
-    updates. Both deliver an asynchronous stream of messages as a publish-subscribe system
-    might, without requiring explicit management of lists of subscribers. Notifiers are
-    lossy conveyors of non-final values while subscriptions are lossless value conveyors.
+- **[Notifiers, Subscriptions, and PublishKit](./notifiers)**
+  - These distribute state change updates, each delivering an asynchronous
+    stream of messages as a publish-subscribe system might, without requiring
+    explicit management of lists of subscribers. `makePublishKit()` is the
+    current recommended primitive, supporting both lossy and lossless
+    consumption from a single producer.
+
+- **[Exo Objects and Interface Guards](./exo)**
+  - `Far()` alone doesn't validate its methods' arguments, whether the
+    caller is remote or another object in your own vat. An Exo object
+    (`makeExo`, `defineExoClass`, `defineExoClassKit`) adds a declarative
+    interface guard, built with the `M` pattern language, that validates
+    every call at the boundary, local or remote. Exo, not bare `Far()`, is
+    the remotable-object surface every modern contract writes against.
+
+- **[Zones and Persistence](./zones)**
+  - A vat can be upgraded, replacing its code while some of its state
+    survives. Zones give the same Exo- and store-allocating code a uniform
+    API across the three persistence regimes: heap (ephemeral), virtual
+    (pageable, still ephemeral), and durable (pageable and upgrade-surviving).
+
+- **Vows and Durable Eventual-Send**
+  - covered in [`E()` for Eventual Send](./eventual-send#vows-and-durable-eventual-send).
+    Native promises don't survive a vat upgrade; a Vow is a Passable,
+    durably storable stand-in that does, with `watch`/`when`/`watchPromise`
+    as its `.then()`-equivalents. See also
+    [`@agoric/async-flow`](https://github.com/Agoric/agoric-sdk/tree/master/packages/async-flow)
+    for the complementary durable-replay mechanism for entire `async`
+    function bodies.

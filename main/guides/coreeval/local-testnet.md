@@ -56,7 +56,7 @@ bundle-sell-concert-tickets.js          deploy-sell-concert-tickets-permit.json 
 ## Ensuring you have enough IST to install a bundle
 
 The price to install a contract is subject to chain governance.
-As of [proposal #61](https://agoric.explorers.guru/proposal/61) Nov 2023, it's 0.02IST per kilobyte.
+As of proposal #61, Nov 2023, it's 0.02IST per kilobyte.
 
 On a local chain, `yarn start` includes a `yarn docker:make mint100` step to get 100 IST, which should be enough. _`mint100` works by sending some ATOM from a `validator` account and using the ATOM to open a vault._
 
@@ -172,11 +172,11 @@ For testnet access and governance norms, see [Guide to Agoric Testnets \- Agoric
 - Feel free to join us at [office hours](https://github.com/Agoric/agoric-sdk/wiki/Office-Hours), whether you're just getting started or you're struggling with a detailed issue.
 - Let the community know what you propose to deploy by posting to [community.agoric.com](https://community.agoric.com/).
 - Choose appropriate and distinct names for any entries in the [agoricNames](../integration/name-services#agoricnames-agoricnamesadmin-well-known-names) name service.
-- Chat with peers on [Agoric Discord](https://agoric.com/discord). See [#get-roles](https://discord.com/channels/585576150827532298/966411985833050164) to add roles for access to channels such as `#dev` and `#devnet`.
+- Chat with peers on [Agoric Discord](https://discord.com/invite/U4v67V7GCh). See [#get-roles](https://discord.com/channels/585576150827532298/966411985833050164) to add roles for access to channels such as `#dev` and `#devnet`.
 - For troubleshooting, access to network node logs is important. Contact a [devnet validator](https://devnet.explorer.agoric.net/agoric/uptime) or [operate your own follower node](https://github.com/Agoric/agoric-sdk/wiki/Validator-Guide-for-Devnet).
 - `emerynet` is primarily used for the qualification of production-ready software before it is promoted to mainnet.
 
-In [Getting Started](/guides/getting-started/), we [set up a keplr wallet demo account](/guides/getting-started/#setting-up-a-keplr-wallet-demo-account) with a previously generated key and address for use on the `agoriclocal` chain. You should have your own account and address for **devnet** and other chains. Generate a key and address with [Keplr](https://www.keplr.app/) or [other wallets](https://agoric.com/ecosystem/category/wallets) or with [agd keys add](../agoric-cli/agd-query-tx#agd-keys-add).
+In [Getting Started](/guides/getting-started/), we [set up a keplr wallet demo account](/guides/getting-started/#setting-up-a-keplr-wallet-demo-account) with a previously generated key and address for use on the `agoriclocal` chain. You should have your own account and address for **devnet** and other chains. Generate a key and address with [Keplr](https://www.keplr.app/) or another wallet, or with [agd keys add](../agoric-cli/agd-query-tx#agd-keys-add).
 
 With the [devnet faucet](https://devnet.faucet.agoric.net/), you can
 

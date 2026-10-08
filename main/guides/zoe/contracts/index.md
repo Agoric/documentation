@@ -1,10 +1,15 @@
 # Example Zoe Contracts
 
-<Zoe-Version/>
-
 While Zoe provides the means to build custom smart contracts, there is a good chance you will
-want to use one that follows a commonly-used structure. Therefore, we currently provide several
-pre-built example contracts that can be imported and run on Zoe. Note that none of the contracts described below are automatically deployed on-chain.
+want to use one that follows a commonly-used structure. `agoric-sdk` currently ships the demo
+contracts below in
+[`packages/zoe/src/contracts`](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts).
+None of them are automatically deployed on-chain; for what actually runs in production, see
+[Deployed Zoe Contracts](../actual-contracts/).
+
+The economy contracts that used to be listed here (PSM, Vault, the constant-product AMM) were
+removed from `agoric-sdk`; see [Vault](./vault) and [ConstantProduct AMM](./constantProductAMM)
+for where that history went.
 
 ## Oracle Contracts
 
@@ -19,18 +24,27 @@ These contracts create various sorts of financial instruments.
 
 | Contract                                 | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Vault](./vault)                         | The Vault is the primary mechanism for making IST (the Agoric stable-value currency) available to participants in the economy. It does this by issuing loans against supported types of collateral. The creator of the contract can add new types of collateral. (This is expected to be under the control of on-chain governance after the initial currencies are defined when the contract starts up.)                                                                      |
-| [Loan](./loan)                           | A basic collateralized loan contract.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| [Loan](./loan)                           | A basic collateralized loan contract. Demo-only: the production loan path was the (now-removed) Inter Protocol `vaultFactory`.                                                                                                                                                                                                                                                                                                                                                |
 | [Funded Call Spread](./fundedCallSpread) | Creates a pair of fully collateralized call spread options. They are ERTP assets and can be used as such in other contracts. This contract has two variants, which affect how invitations are created. This version is fully funded by the creator, who receives a matching pair of call spread options. They can be traded or sold separately.                                                                                                                               |
 | [Priced Call Spread](./pricedCallSpread) | Creates a pair of fully collateralized call spread options. They are ERTP assets and can be used as such in other contracts. This contract has two variants, which affect how invitations are created. In this version, the creator requests a pair of invitations. Each one lets the holder obtain one of the positions by providing a started portion of the collateral. This version is useful for a market maker who finds pairs of participants with matching interests. |
 | [Covered Call](./covered-call)           | Creates a call option, which is the right to buy an underlying asset.                                                                                                                                                                                                                                                                                                                                                                                                         |
 | [OTC Desk](./otc-desk)                   | A contract for giving quotes that can be exercised. The quotes are guaranteed to be exercisable because they are actually options with escrowed underlying assets.                                                                                                                                                                                                                                                                                                            |
 
-## AMM (Automatic Market Maker) Contract
+## Removed from agoric-sdk
 
-| Contract                                    | Description                                                                                                                                                                                                                                                                                                                               |
-| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [ConstantProduct AMM](./constantProductAMM) | An automated market maker with multiple liquidity pools that can trade between any pair of funded currencies. It charges a poolFee (added to the liquidity pools) and a protocolFee (set aside for the benefit of the Agoric economy). These fees are subject to change by votes controlled by and made visible by the governance system. |
+| Contract                                    | Status                                                                                                                                                      |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Vault](./vault)                            | The production collateralized-loan contract; part of Inter Protocol, removed from `agoric-sdk`. The page covers where its parts went.                       |
+| [ConstantProduct AMM](./constantProductAMM) | The production automated market maker; part of Inter Protocol, removed from `agoric-sdk`. The page covers its history and the surviving demo `autoswap.js`. |
+
+## Orchestration Example Contracts
+
+[`@agoric/orchestration`](https://github.com/Agoric/agoric-sdk/tree/master/packages/orchestration/src/examples)
+ships current `*.contract.js` examples of Zoe contracts that drive interchain accounts through
+`vowTools` and `orchestrationKit`: `stake-bld`, `stake-ica`, `send-anywhere`, `swap-anything`,
+`swap`, `unbond`, `auto-stake-it`, and `staking-combinations`. They're a better current
+reference for a production-style contract than the demos on this page. See
+[Deployed Zoe Contracts](../actual-contracts/) for what's actually running on mainnet.
 
 ## Generic Sales/Trading Contracts
 
@@ -44,11 +58,15 @@ These contracts involve trading or selling ERTP digital assets.
 | [Second-Price Auction](./second-price-auction) | An auction in which the highest bidder wins and pays the second-highest bid. This version doesn't conceal the bids (an essential aspect of second price auctions). Therefore, **it should not be used in production**. |
 | [Simple Exchange](./simple-exchange)           | A basic exchange with an order book for one asset, priced in a second asset.                                                                                                                                           |
 
-## Governance Contract
+## Test-fixture Contracts
 
-| Contract                           | Description                                                                           |
-| ---------------------------------- | ------------------------------------------------------------------------------------- |
-| [Escrow To Vote](./escrow-to-vote) | A coin voting contract in which votes are weighted by the escrowed governance tokens. |
+These live under `packages/zoe/test/unitTests/contracts/`, not `packages/zoe/src/contracts/`;
+they exist to exercise Zoe's test suite, not as contracts you'd reuse directly.
+
+| Contract                           | Description                                                                                                                                                                             |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Escrow To Vote](./escrow-to-vote) | A coin voting contract in which votes are weighted by the escrowed governance tokens.                                                                                                   |
+| [Use Object](./use-obj-example)    | An example of how you might associate the ability to take an action with ownership of a particular digital asset. In this case, you can color a pixel if you own the NFT for the pixel. |
 
 ## Minting Contracts
 
@@ -59,7 +77,6 @@ These contracts involve trading or selling ERTP digital assets.
 
 ## Miscellaneous Contracts
 
-| Contract                               | Description                                                                                                                                                                             |
-| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Use Object](./use-obj-example)        | An example of how you might associate the ability to take an action with ownership of a particular digital asset. In this case, you can color a pixel if you own the NFT for the pixel. |
-| [Automatic Refund](./automatic-refund) | A trivial contract that gives the user back what they put in.                                                                                                                           |
+| Contract                               | Description                                                   |
+| -------------------------------------- | ------------------------------------------------------------- |
+| [Automatic Refund](./automatic-refund) | A trivial contract that gives the user back what they put in. |

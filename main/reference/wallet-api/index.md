@@ -1,23 +1,20 @@
-# Wallet API
+# Smart Wallet API
 
-You can interact with a Wallet via the JavaScript _REPL_ (_Read-Eval-Print Loop_),
-which is visible at the bottom of the Wallet UI display.
-In the REPL, you send messages to `home.wallet`, which is the Wallet running on that
-page/process. Typing `E(home.wallet).foo()` in the REPL returns the names of all the Wallet
-API methods by the clever method of asking it to evaluate a non-existent API method and
-getting an error message listing all the valid methods.
+A smart wallet is an on-chain object, one per provisioned address, created
+and held by the `walletFactory` contract. There is no local REPL or
+`home.wallet` presence to script against: everything a client does with a
+wallet is a [`BridgeAction`](./wallet-bridge) message, delivered over the
+Cosmos bridge and reflected back through vstorage. See
+[Smart Wallet](/guides/wallet/) for the architecture and
+[Building Client Dapps](/guides/getting-started/contract-rpc) for the full
+dapp-integration walkthrough, including how a `BridgeAction` is marshalled
+and signed.
 
-Running `agoric open --repl only` opens a browser tab that shows only the REPL, and not
-the combination of Wallet UI and REPL area. When issuing commands to the Wallet from the
-REPL, they must be of the form `E(home.wallet).<Wallet API command and arguments>`. For more
-information about `E()`, see the [`E()` section](/guides/js-programming/eventual-send) in
-the Distributed JavaScript Programming Guide.
+This section documents:
 
-There are two objects on which the Wallet API commands work:
-
-- `WalletUser`: The presence exposed as `local.wallet` (and `home.wallet` for backwards compatibility).  
-  It provides a place for Wallet API commands.
-- `WalletBridge`: Its methods can be used by an untrusted
-  Dapp without breaching the wallet's integrity. These methods are also
-  exposed via the iframe/WebSocket bridge that a Dapp UI can use to access the
-  wallet.
+- [BridgeAction Reference](./wallet-bridge): the `executeOffer` /
+  `tryExitOffer` / `invokeEntry` message shapes a wallet accepts, and the
+  `OfferSpec` / `OfferStatus` / `ResultPlan` types they carry.
+- [agoric wallet CLI](./wallet-commands): the `agoric wallet` subcommands
+  for provisioning a wallet and preparing, signing, and inspecting
+  `BridgeAction` messages from a shell.

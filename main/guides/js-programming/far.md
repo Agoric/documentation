@@ -41,7 +41,7 @@ There are four broad kinds of Passable:
   _CopyRecords_ like `harden({ keys: [0, 1], values: ['foo', 'bar'] })`, and
   _CopyTaggeds_ representing types like CopySet, CopyBag, and CopyMap
   (which extend the `passStyleOf` level of abstraction with
-  [tag-specific shapes and semantics](https://github.com/endojs/endo/blob/master/packages/patterns/docs/marshal-vs-patterns-level#kindof-vs-passstyleof))
+  [tag-specific shapes and semantics](https://github.com/endojs/endo/blob/master/packages/patterns/docs/marshal-vs-patterns-level.md#kindof-vs-passstyleof))
 - Pass-by-reference "**PassableCaps**":
   - _Remotables_: objects that can be shared with remote systems which can then
     invoke methods using e.g. `E()` eventual send notation. Remotables are created by [`Far()`](#far-api)
@@ -55,6 +55,8 @@ be passable.
 
 All Passables must be hardened. Consider what might happen if we had a remote `item` and we did not harden
 some pass-by-copy data that we passed to it:
+
+<!-- excerpt-exempt:  deliberately incorrect code. The surrounding prose states that the call throws, and shows what would go wrong if it did not. -->
 
 ```js
 let amount1 = { brand: brand1, value: 10n };
@@ -122,3 +124,64 @@ If an object should never be exposed to other vats, you should make it
 a point **not** to use `Far()` on it. If an object is not marked as a Remotable but is accidentally
 exposed, an error is thrown. This prevents any vulnerability from such accidental exposure.
 :::
+
+## Beyond Far(): Exo Objects
+
+`Far()` marks an object as remotable, but it does nothing to validate the
+arguments its methods receive: a caller can pass a string where a number is
+expected, and the method only finds out when it misbehaves partway through.
+This is true no matter where the call comes from: a message arriving from
+another vat through `E()` and a direct call from another object in your own
+vat both get exactly the same (zero) validation from `Far()`, so bare `Far()`
+protects local integrity no better than it protects remote integrity. For a
+smart contract, where every method is potential attack surface, that's not
+enough.
+
+An **Exo** object is a `Far` remotable wrapped with an **interface guard**
+(from [`@endo/patterns`](https://github.com/endojs/endo/tree/master/packages/patterns)),
+declared once with `M.interface(...)`, that validates every method's
+arguments and return value automatically, before the method body ever runs:
+
+<!-- excerpt: snippets/js-programming/test-far.js#farExoCounter -->
+
+```js
+import { makeExo } from '@endo/exo';
+import { M } from '@endo/patterns';
+
+const CounterI = M.interface('Counter', {
+  increment: M.call(M.number()).returns(M.number()),
+});
+
+let count = 0;
+const counter = makeExo('Counter', CounterI, {
+  increment(n) {
+    count += n; // n is guaranteed to be a number
+    return count;
+  },
+});
+
+counter.increment(5); // 5
+// counter.increment('5') throws: arg 0: string "5" - Must be a number
+```
+
+`makeExo` is one of three ways to make an Exo, matching how much state
+management you need: `makeExo` for a single stateless-ish instance,
+`defineExoClass` for many instances each with their own state, and
+`defineExoClassKit` for a cohort of facets (for example, a
+public-facing read-only view and an admin-only write view) sharing one
+underlying state. Exo classes also compose with [zones](./zones) so that
+instances can be virtual (paged to disk) or durable (surviving a vat
+upgrade), which plain `Far()` objects cannot do.
+
+Reach for Exo by default, even for an object you expect to stay inside your
+own vat. A guard is declared once and enforced on every call; hand-written
+checks scattered across method bodies (the `Types: Defensive` pattern from
+[Hardened JavaScript](./hardened-js#types-defensive)) have to be reproduced
+for every method, are easy to forget on the next one added, and cannot, on
+their own, enforce that an argument belongs to the [passable
+subset](#pass-styles-and-harden) the way a declared guard does. Keep bare
+`Far()` only for objects with no arguments worth protecting, such as a
+zero-argument callback, where a guard would have nothing to check. See
+[Exo Objects and Interface Guards](./exo) for the full picture, including
+`M.call`/`M.callWhen`, `this.state`/`this.self`/`this.facets`, and
+`getInterfaceOf`.
