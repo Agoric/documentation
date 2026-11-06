@@ -19,6 +19,7 @@ The chain can also be accessed via JavaScript using the [`cosmjs` library](https
 
 - The base network entry points for the Agoric chain are specified in the [network config](https://main.agoric.net/network-config).
 - Additional chain information, including tokens and their logos, gas fee information for wallets, additional entry points, and explorers is maintained in the Cosmos [Chain Registry](https://github.com/cosmos/chain-registry/tree/master/agoric).
+- Live latency of the public Agoric RPC endpoints (p50 / p90 / p99 and success rate, probed every 60 seconds from US-East, EU-West and Singapore) is published on the [OpenChainBench Agoric RPC benchmark](https://openchainbench.com/benchmarks/agoric-rpc).
 - The source code for the Agoric Network runtime and contracts is in [the Agoric open source repository](https://github.com/Agoric/agoric-sdk) on GitHub.
 - The base unit for staking is `ubld` (corresponding to `uatom` for Cosmos Hub)
 - The command utility of the agoric chain is `agd` (corresponding to [`simd` for the Cosmos Hub](https://docs.cosmos.network/v0.45/run-node/interact-node.html)).
