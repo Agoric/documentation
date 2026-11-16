@@ -32,6 +32,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ steps.resolve-node-version.outputs.node-version }}
+          check-latest: true
       - name: Creating Your Dapp From a Template
         run: yarn create @agoric/dapp offer-up
       - name: Install dependencies

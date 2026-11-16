@@ -58,6 +58,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ steps.resolve-node-version.outputs.node-version }}
+          check-latest: true
 
       - name: Setup and link agoric-sdk packages
         run: |
